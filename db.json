@@ -154,6 +154,5 @@
         "Vendor": "bank_transfer",
         "Confirmation": "settlement"
       }
-    ],
-    "message": "success"
+    ]
   }
