@@ -1,0 +1,159 @@
+{
+    "data": [
+      {
+        "TransactionId": 1,
+        "OrderId": "91b049e8-cfed-4d0d-af7b-41993a5b40d7",
+        "UserId": 2,
+        "SeatId": 1,
+        "User": {
+          "UserId": 2,
+          "Name": "chandra",
+          "Email": "nismara.chandra@gmail.com",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 1,
+          "Name": "A8",
+          "Price": 145000,
+          "Link": "3545acc9-f148-4b2c-a062-40eed0cce47b",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      },
+      {
+        "TransactionId": 2,
+        "OrderId": "91b049e8-cfed-4d0d-af7b-41993a5b40d7",
+        "UserId": 2,
+        "SeatId": 2,
+        "User": {
+          "UserId": 2,
+          "Name": "chandra",
+          "Email": "nismara.chandra@gmail.com",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 2,
+          "Name": "A9",
+          "Price": 145000,
+          "Link": "ce0e7f9b-f497-4232-bd06-bfa6c6d4618a",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      },
+      {
+        "TransactionId": 3,
+        "OrderId": "f6366a01-e114-48ed-addd-27b39a1a4b9a",
+        "UserId": 2,
+        "SeatId": 3,
+        "User": {
+          "UserId": 2,
+          "Name": "chandra",
+          "Email": "nismara.chandra@gmail.com",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 3,
+          "Name": "A22",
+          "Price": 145000,
+          "Link": "463fd780-f4be-4f52-83c1-a0a8cf08f9b2",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      },
+      {
+        "TransactionId": 4,
+        "OrderId": "f6366a01-e114-48ed-addd-27b39a1a4b9a",
+        "UserId": 2,
+        "SeatId": 4,
+        "User": {
+          "UserId": 2,
+          "Name": "chandra",
+          "Email": "nismara.chandra@gmail.com",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 4,
+          "Name": "A23",
+          "Price": 145000,
+          "Link": "ac62fada-32cf-4f08-a60f-01c8aa87b38f",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      },
+      {
+        "TransactionId": 5,
+        "OrderId": "f6366a01-e114-48ed-addd-27b39a1a4b9a",
+        "UserId": 2,
+        "SeatId": 5,
+        "User": {
+          "UserId": 2,
+          "Name": "chandra",
+          "Email": "nismara.chandra@gmail.com",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 5,
+          "Name": "C1",
+          "Price": 165000,
+          "Link": "c7894ab9-a437-42bb-9132-66111206f6f2",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      },
+      {
+        "TransactionId": 6,
+        "OrderId": "85345b8c-d572-4618-8e81-0695183412bb",
+        "UserId": 5,
+        "SeatId": 6,
+        "User": {
+          "UserId": 5,
+          "Name": "chandra",
+          "Email": "nismara.chandra@mail.ugm.ac.id",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 6,
+          "Name": "C2",
+          "Price": 165000,
+          "Link": "62b776a6-119c-430b-9335-fa31257c14c7",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      },
+      {
+        "TransactionId": 7,
+        "OrderId": "85345b8c-d572-4618-8e81-0695183412bb",
+        "UserId": 5,
+        "SeatId": 7,
+        "User": {
+          "UserId": 5,
+          "Name": "chandra",
+          "Email": "nismara.chandra@mail.ugm.ac.id",
+          "Phone": "123456789"
+        },
+        "Seat": {
+          "SeatId": 7,
+          "Name": "D1",
+          "Price": 165000,
+          "Link": "d25bc0fe-80bf-43d9-9bc7-0db92ab9ad63",
+          "Status": "purchased",
+          "PostSaleStatus": ""
+        },
+        "Vendor": "bank_transfer",
+        "Confirmation": "settlement"
+      }
+    ],
+    "message": "success"
+  }
