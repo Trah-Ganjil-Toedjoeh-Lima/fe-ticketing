@@ -3,8 +3,10 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import styles from "@/styles/Home.module.css";
 import { useEffect, useRef } from "react";
+import ScrollReveal from "scrollreveal";
 
 export default function Home() {
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -34,9 +36,9 @@ export default function Home() {
               <p className="py-2 px-4 text-black text-lg">
                 Auditorium MM FEB UGM
               </p>
-              <div className="py-2 px-4 bg-blue-600 rounded-xl">
+              <button className="py-2 px-4 bg-gmco-blue-main rounded-xl">
                 <Link href="/"> Buy Ticket Now! </Link>
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -79,7 +81,7 @@ export default function Home() {
               Yogyakarta.
             </p>
             <a className="text-black" href="https://gmco.ukm.ugm.ac.id/">
-              <button className="rounded-md text-md font-bold bg-blue-400 py-3 px-6 mt-4">
+              <button className="rounded-md text-md font-bold bg-gmco-blue py-3 px-6 mt-4">
                 More About GMCO
               </button>
             </a>
