@@ -1,6 +1,5 @@
 import React from "react";
-import { UserIcon } from "@heroicons/react/24/outline";
-import image from "../../public/herotemp.jpg";
+
 
 export default function index() {
   return (
@@ -25,16 +24,16 @@ export default function index() {
             </button>
           </form>
         </div>
-      </div>
-      {/* right side */}
-      <div class="relative">
-        <img
-          src="{image}"
-          alt=""
-          className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
-        />
-        <div class="absolute hidden bottom-10 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
-          <span class="text-white text-xl">Welcome to GC GMCO</span>
+        {/* right side */}
+        <div class="relative">
+          <img
+            src="/herotemp.jpg"
+            alt=""
+            className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
+          />
+          <div class="absolute hidden top-5 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
+            <span class="text-white text-xl">Welcome to GC GMCO</span>
+          </div>
         </div>
       </div>
     </section>
