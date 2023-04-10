@@ -4,13 +4,14 @@ import Link from "next/link";
 import styles from "@/styles/Home.module.css";
 import { useEffect, useRef } from "react";
 import { RevealWrapper } from "next-reveal";
-import Navbar1 from "@/components/navbar";
+import NavigationBar from "@/components/navbar";
+import FooterBar from "@/components/footer";
 
 export default function Home() {
   return (
     <>
-      <Navbar1 />
-      <div className="bg-white">
+      <NavigationBar />
+      <div className="bg-gmco-white">
         {/* Hero Section */}
         <div className="relative h-screen">
           <video
@@ -19,7 +20,7 @@ export default function Home() {
             autoPlay
             muted
             loop
-            className="absolute w-full h-full -skew-y-2 object-cover"
+            className="absolute w-full h-full object-cover"
           >
             <source src="/video.mp4" type="video/mp4" />
           </video>
@@ -102,6 +103,9 @@ export default function Home() {
         </RevealWrapper>
 
         {/* Home Content 1 */}
+      </div>
+      <div className="bg-gmco-grey">
+        <FooterBar />
       </div>
     </>
   );
