@@ -1,4 +1,7 @@
 import React from "react";
+import { useState } from "react";
+import { notifyError } from "../../components/notify"
+import Router from "next/router";
 
 export default function index() {
 
@@ -10,13 +13,22 @@ export default function index() {
   e.persist();
   setLoginInput({ ...loginInput, [e.target.id]: e.target.value });
 }
+  function emailtoOTP(value){
+    Router.push({
+      pathname:'/auth/otp',
+      query:{
+        value: value
+      }
+    })
+  }
 
   async function loginSubmit(e) {
     e.preventDefault();
     try {
+      console.log(loginInput.email)
       await axiosInstance
-        .post(`${URL}login`, {
-          email: loginInput.email
+        .post("http://localhost:3001/registerUser", {
+          email: loginInput.email,
         })
         .then((res) => {
           if (res.status === 200) {
@@ -33,7 +45,7 @@ export default function index() {
                 popup: "",
               },
             }).then(() => {
-              window.location.href = `${CLIENT_URL}MataKuliah`;
+              emailtoOTP(loginInput.email);
             });
           }
         });
@@ -42,16 +54,21 @@ export default function index() {
     }
   }
 
-   const btn = document.getElementById("login");
-   if (btn) {
-     // Not called
-     btn.addEventListener("keypress", (e) => {
-       if (e.key === "Enter") {
-         e.preventDefault();
-         document.getElementById("login").click();
-       }
-     });
+   
+   if (process.browser){
+    const btn = document.getElementById("login");
+    if (btn) {
+      // Not called
+      btn.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          document.getElementById("login").click();
+        }
+      });
+    }
+
    }
+   
 
 
   return (
