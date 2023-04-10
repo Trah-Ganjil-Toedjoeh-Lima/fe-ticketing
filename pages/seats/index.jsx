@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
@@ -9,6 +10,29 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [seatmap, setSeatMap] = useState([]);
+  const [l_seatmap, set_L_seatmap] = useState([]);
+  const [m_seatmap, set_M_seatmap] = useState([]);
+  const [r_seatmap, set_R_seatmap] = useState([]);
+
+  const mappers = [
+    { A: [10, 10, 10] },
+    { B: [10, 10, 10] },
+    { C: [10, 10, 10] },
+    { D: [10, 10, 10] },
+    { E: [10, 10, 10] },
+    { F: [10, 10, 15] },
+    { G: [10, 10, 15] },
+    { H: [10, 10, 10] },
+    { I: [10, 10, 10] },
+    { J: [10, 10, 10] },
+    { K: [10, 10, 10] },
+    { L: [10, 10, 10] },
+    { M: [10, 10, 10] },
+    { N: [10, 10, 10] },
+    { O: [10, 10, 10] },
+    { P: [10, 10, 10] },
+  ];
+
   const axiosInstance = axios.create({
     withCredentials: true,
   });
@@ -25,72 +49,102 @@ export default function Home() {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   setSeatMap(seatMapping(seatmap));
-  // }, [seatmap]);
-
+  // Mapping the data
   function seatMapping(value) {
-    // let contoh = value;
     let seatArr = [];
     let arr = [];
-    const regex = /([a-zA-Z]+)(\d+)/;
+    let seatDict = {};
 
-    value.filter((item) => {
-      const result = item.name.match(regex);
-      if (result[2] >= 0 && result[2] <= 10) {
-        if (seatArr[0]) {
-          seatArr[0].push(item);
-        } else {
-          seatArr[0] = [item];
-        }
-      }
-      if (result[2] >= 11 && result[2] <= 20) {
-        if (seatArr[1]) {
-          seatArr[1].push(item);
-        } else {
-          seatArr[1] = [item];
-        }
-      }
-      if (result[2] >= 21 && result[2] <= 31) {
-        if (seatArr[2]) {
-          seatArr[2].push(item);
-        } else {
-          seatArr[2] = [item];
-        }
-      }
-    });
+    for (const mapper of mappers) {
+      let row = Object.keys(mapper);
+      let lengths = Object.values(mapper);
 
-    for (const [index, seats] of seatArr.entries()) {
-      let seatDict = {};
-      for (const seat of seats) {
-        const result = seat.name.match(regex);
-        if (seatDict[result[1]]) {
-          seatDict[result[1]][result[2]] = seat;
-        } else {
-          seatDict[result[1]] = [seat];
-        }
+      // Divide into 3 major alligment = left, middle, and right area of seats
+      for (const length of lengths) {
+        value.map((item) => {
+          // Left
+          if (item.column >= 0 && item.column <= length[0] && item.row == row) {
+            if (seatArr[0]) {
+              seatArr[0].push(item);
+            } else {
+              seatArr[0] = [item];
+            }
+          }
+          // Middle
+          else if (
+            item.column > length[0] &&
+            item.column <= length[0] + length[1] &&
+            item.row == row
+          ) {
+            if (seatArr[1]) {
+              seatArr[1].push(item);
+            } else {
+              seatArr[1] = [item];
+            }
+          }
+          // Right
+          else if (
+            item.column > length[0] + length[1] &&
+            item.column <= length[0] + length[1] + length[2] &&
+            item.row == row
+          ) {
+            if (seatArr[2]) {
+              seatArr[2].push(item);
+            } else {
+              seatArr[2] = [item];
+            }
+          }
+        });
       }
-      arr[index] = Object.values(seatDict);
     }
 
-    // for (const seats of seatArr) {
-    //   for (const seat of seats) {
-    //     const result = seat.name.match(regex);
-    //     if (seatDict[result[1]]) {
-    //       seatDict[result[1]][result[2]] = seat;
-    //     } else {
-    //       seatDict[result[1]] = [seat];
-    //     }
-    //   }
-    // }
+    // for each major division, group the data into the coressponding row (row A, row B, etc)
+    for (const entry of seatArr.entries()) {
+      let start = [1, 11, 20];
+      if (entry) {
+        const datas = entry[1];
+        const index = entry[0];
+        seatDict[index] = new Array();
+        for (const item of datas) {
+          if (seatDict[index][item.row]) {
+            seatDict[index][item.row][item.column - start[index]] = item;
+          } else {
+            seatDict[index][item.row] = new Array();
+            seatDict[index][item.row][item.column - start[index]] = item;
+          }
+        }
+        arr[index] = Object.values(seatDict[index]);
+      }
+    }
 
-    console.log(arr);
+    console.log(seatDict);
+
+    // make into different variable
+    set_L_seatmap(arr[0]);
+    set_M_seatmap(arr[1]);
+    set_R_seatmap(arr[2]);
 
     return arr;
   }
 
   function print(halo) {
     console.log(halo);
+  }
+
+  // display the data
+  function mapper(array) {
+    console.log(array[0]);
+    let arr = [];
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]) {
+        arr.push(<div className="">{array[i].name}</div>);
+      }
+      // If the data is empty, then display blackbox
+      else {
+        arr.push(<div className="h-3 w-3 bg-black"></div>);
+      }
+    }
+    return arr;
   }
 
   return (
@@ -134,17 +188,48 @@ export default function Home() {
         </div>
         <div className="w-3/4 p-5">
           <p className="text-[#2D2D2F] font-semibold text-xl">Lantai 1</p>
-          <div>
-            {/* {print(seatmap)} */}
-            {/* {seatmap.map((item) => (
-              <h1>{item}</h1>
-            ))} */}
+          {/* {print(l_seatmap)} */}
+
+          <div className="flex flex-row gap-10">
+            {/* row wise */}
+            <div className="flex flex-col gap-2">
+              {l_seatmap.map((seats) => (
+                // col wise
+                <div className="flex flex-row gap-4">{mapper(seats)}</div>
+              ))}
+            </div>
+
+            {/* row wise */}
+            <div className="flex flex-col gap-2">
+              {m_seatmap.map((seats) => (
+                // col wise
+                <div className="flex flex-row gap-4">{mapper(seats)}</div>
+              ))}
+            </div>
+            {/* row wise
+            <div className="flex flex-col gap-2">
+              {m_seatmap.map((seats) => (
+                // col wise
+                <div className="flex flex-row gap-4">
+                  {seats.map((seat) => (
+                    // TODO - BUAT BUTTON INPUT
+                    <div className="">{seat.name}</div>
+                  ))}
+                </div>
+              ))}
+            </div> */}
+            <div className="flex flex-col gap-2">
+              {r_seatmap.map((seats) => (
+                <div className="flex flex-row gap-4">
+                  {seats.map((seat) => (
+                    <div className="">{seat.name}</div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      {/* {seatmap.map((item) => (
-        <h1>{item.name}</h1>
-      ))} */}
     </>
   );
 }
