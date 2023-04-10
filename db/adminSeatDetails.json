@@ -8,7 +8,7 @@
         "User": {
           "UserId": 2,
           "Name": "chandra",
-          "Email": "nismara.chandra@gmail.com",
+          "Email": "example@gmail.com",
           "Phone": "123456789"
         },
         "Seat": {
@@ -29,8 +29,8 @@
         "SeatId": 2,
         "User": {
           "UserId": 2,
-          "Name": "chandra",
-          "Email": "nismara.chandra@gmail.com",
+          "Name": "Brother",
+          "Email": "example@gmail.com",
           "Phone": "123456789"
         },
         "Seat": {
@@ -51,8 +51,8 @@
         "SeatId": 3,
         "User": {
           "UserId": 2,
-          "Name": "chandra",
-          "Email": "nismara.chandra@gmail.com",
+          "Name": "Also Brother",
+          "Email": "example@gmail.com",
           "Phone": "123456789"
         },
         "Seat": {
@@ -73,8 +73,8 @@
         "SeatId": 4,
         "User": {
           "UserId": 2,
-          "Name": "chandra",
-          "Email": "nismara.chandra@gmail.com",
+          "Name": "Yoink",
+          "Email": "example@gmail.com",
           "Phone": "123456789"
         },
         "Seat": {
@@ -95,8 +95,8 @@
         "SeatId": 5,
         "User": {
           "UserId": 2,
-          "Name": "chandra",
-          "Email": "nismara.chandra@gmail.com",
+          "Name": "Big Bird",
+          "Email": "example@gmail.com",
           "Phone": "123456789"
         },
         "Seat": {
@@ -117,8 +117,8 @@
         "SeatId": 6,
         "User": {
           "UserId": 5,
-          "Name": "chandra",
-          "Email": "nismara.chandra@mail.ugm.ac.id",
+          "Name": "Trah Ganjil",
+          "Email": "example@mail.ugm.ac.id",
           "Phone": "123456789"
         },
         "Seat": {
@@ -139,8 +139,8 @@
         "SeatId": 7,
         "User": {
           "UserId": 5,
-          "Name": "chandra",
-          "Email": "nismara.chandra@mail.ugm.ac.id",
+          "Name": "SHEEEEEESH",
+          "Email": "example@mail.ugm.ac.id",
           "Phone": "123456789"
         },
         "Seat": {
