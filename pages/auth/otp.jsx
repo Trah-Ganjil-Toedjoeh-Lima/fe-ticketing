@@ -7,11 +7,9 @@ import { useRouter } from "next/router";
 
 export default function otp() {
   const router = useRouter()
-  const{
-    query:{value},
-  } = router
+  const loginInput = router.query
   const [otp, setOtp] = useState("");
-  console.log(otp);
+  console.log(loginInput,"ini dari login");
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <Card className=" flex  py-14 max-w-sm sm:pl-1 md:px-4 md:py-7 md:max-w-xl lg:px-6 items-center">

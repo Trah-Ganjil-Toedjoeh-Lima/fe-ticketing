@@ -1,31 +1,31 @@
 import React from "react";
 import { useState } from "react";
-import { notifyError } from "../../components/notify"
-import Router from "next/router";
+import { notifyError } from "../../components/notify";
+import { useRouter } from "next/router";
 
 export default function index() {
-
+  const router = useRouter();
   const [loginInput, setLoginInput] = useState({
     email: "",
   });
 
   function handleInput(e) {
-  e.persist();
-  setLoginInput({ ...loginInput, [e.target.id]: e.target.value });
-}
-  function emailtoOTP(value){
-    Router.push({
-      pathname:'/auth/otp',
-      query:{
-        value: value
-      }
-    })
+    e.persist();
+    setLoginInput({ ...loginInput, [e.target.id]: e.target.value });
+  }
+
+  function testSubmit(e) {
+    e.preventDefault();
+    router.push({
+      pathname: "/auth/otp",
+      query: { loginInput: loginInput.email },
+    });
   }
 
   async function loginSubmit(e) {
     e.preventDefault();
     try {
-      console.log(loginInput.email)
+      console.log(JSON.stringify(loginInput));
       await axiosInstance
         .post("http://localhost:3001/registerUser", {
           email: loginInput.email,
@@ -45,7 +45,10 @@ export default function index() {
                 popup: "",
               },
             }).then(() => {
-              emailtoOTP(loginInput.email);
+              router.push({
+                pathname: "/auth/otp",
+                query: { loginInput: loginInput.email },
+              });
             });
           }
         });
@@ -54,8 +57,7 @@ export default function index() {
     }
   }
 
-   
-   if (process.browser){
+  if (process.browser) {
     const btn = document.getElementById("login");
     if (btn) {
       // Not called
@@ -66,10 +68,7 @@ export default function index() {
         }
       });
     }
-
-   }
-   
-
+  }
 
   return (
     <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
@@ -77,7 +76,10 @@ export default function index() {
         {/* leftside */}
         <div className=" backdrop-filter flex flex-col text-white justify-center items-center w-full p-4 md:w-1/2 md:p-10  ">
           <h1 className="mb-3 text-4xl font-bold md:text-3xl"> GC GMCO </h1>
-          <p className="mb-3 text-2xl font-bold md:text-xl"> Anjangsana Symphony </p>
+          <p className="mb-3 text-2xl font-bold md:text-xl">
+            {" "}
+            Anjangsana Symphony{" "}
+          </p>
         </div>
 
         <div className="py-40 bg-white flex flex-col items-center p-4 space-y-8 w-full md:w-1/2 md:h-1/2  ">
@@ -85,7 +87,11 @@ export default function index() {
             <h1 className="mb-3 text-xl font-bold"> Welcome to GC GMCO</h1>
             <p>Login to your account</p>
           </div>
-          <form action="#" className="flex flex-col items-center space-y-4" onSubmit={loginSubmit}>
+          <form
+            action="#"
+            className="flex flex-col items-center space-y-4"
+            onSubmit={testSubmit}
+          >
             <div className="relative">
               <label class="mb-2 text-md">Email</label>
               <input
@@ -97,9 +103,10 @@ export default function index() {
                 id="email"
               />
             </div>
-            <button 
-            type="submit"
-            class="w-full bg-gmco-blue text-white p-2 rounded-lg mb-6 hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type">
+            <button
+              type="submit"
+              class="w-full bg-gmco-blue text-white p-2 rounded-lg mb-6 hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
+            >
               Sign in
             </button>
           </form>
