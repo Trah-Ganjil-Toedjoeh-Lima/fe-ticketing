@@ -3,14 +3,14 @@ import React from "react";
 export default function index() {
   return (
     <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
-      <div className=" bg-[url('/GMCO.jpg')] bg-cover bg-left-top flex flex-col items-center  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row">
+      <div className=" bg-[url('/GMCO.jpg')] bg-cover bg-left-top flex flex-col items-center  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10">
         {/* leftside */}
-        <div className=" backdrop-filter flex flex-col text-white justify-center items-center  w-full p-4 md:w-1/2 ">
-          <h1 className="mb-3 text-4xl font-bold"> GC GMCO </h1>
-          <p className="mb-3 text-2xl font-bold"> Anjangsana Symphony </p>
+        <div className=" backdrop-filter flex flex-col text-white justify-center items-center w-full p-4 md:w-1/2 md:p-10  ">
+          <h1 className="mb-3 text-4xl font-bold md:text-3xl"> GC GMCO </h1>
+          <p className="mb-3 text-2xl font-bold md:text-xl"> Anjangsana Symphony </p>
         </div>
 
-        <div className="py-40 bg-white flex flex-col items-center p-4 space-y-8 w-full md:w-1/2 ">
+        <div className="py-40 bg-white flex flex-col items-center p-4 space-y-8 w-full md:w-1/2 md:h-1/2  ">
           <div className="flex flex-col items-center ">
             <h1 className="mb-3 text-xl font-bold"> Welcome to GC GMCO</h1>
             <p>Login to your account</p>
