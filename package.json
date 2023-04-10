@@ -19,7 +19,8 @@
     "next": "13.2.4",
     "next-reveal": "^1.0.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "scrollreveal": "^4.0.9"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
