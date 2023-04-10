@@ -109,7 +109,7 @@ export default function Profile() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <p className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-2xl font-medium text-start">
+          <p className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-2xl font-medium">
             My Tickets
           </p>
           {/* This is the ticket */}
