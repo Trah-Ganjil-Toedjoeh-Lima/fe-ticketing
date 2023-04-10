@@ -1,10 +1,18 @@
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
 import { Dropdown, Avatar } from "flowbite-react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function NavigationBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  const routes = [
+    { name: "Home", route: "/" },
+    { name: "About", route: "/#about" },
+    { name: "Seat", route: "/seats" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,18 +33,18 @@ export default function NavigationBar() {
         scrollPosition > 0 || isOpen
           ? "bg-gmco-white text-black"
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
-      }`} 
+      }`}
     >
       <div className="flex justify-between px-4 md:px-8 lg:px-48">
         {/* Logo & Nama */}
         <Link href="/" className="flex items-center">
           <img
-            src="https://www.svgrepo.com/show/361653/vercel-logo.svg"
+            src="/logo_gmco.webp"
             className="mr-3 h-6 sm:h-9"
             alt="GMCO Event Logo"
           />
           <span href="#" className="text-lg font-bold">
-            My App
+            GMCO Event
           </span>
         </Link>
 
@@ -44,12 +52,14 @@ export default function NavigationBar() {
           {/* Route when MD*/}
           <div className="hidden mr-2 md:flex md:items-center md:w-auto">
             <div className="text-lg flex space-x-2">
-              <a
-                href="#"
-                className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
-              >
-                Home
-              </a>
+              {routes.map((route) => (
+                <a
+                  href={route.route}
+                  className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
+                >
+                  {route.name}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -78,46 +88,35 @@ export default function NavigationBar() {
           <div className="flex items-center ml-2 md:m-0 md:hidden">
             <button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition duration-150 ease-in-out"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition duration-300 ease-in-out"
               aria-label="Toggle navigation"
               onClick={() => setIsOpen(!isOpen)}
             >
-              <svg
-                className="h-6 w-6 bg-transparent"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
+              {isOpen ? (
+                <XMarkIcon className="h-5 w-5" />
+              ) : (
+                <Bars3Icon className="h-5 w-5" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
       {/* Route when Mobile*/}
-      <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>
-        <div className="px-2 pt-2 pb-3">
-          <a
-            href="#"
-            className="block text-sm font-medium  hover:text-gray-700 transition duration-150 ease-in-out"
-          >
-            Home
-          </a>
+      <div
+        className={`${
+          isOpen ? "block" : "hidden"
+        } md:hidden transition duration-300 ease-in-out`}
+      >
+        <div className="px-2 pt-2">
+          {routes.map((route) => (
+            <ul
+              href={route.route}
+              className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
+            >
+              <li>{route.name}</li>
+            </ul>
+          ))}
         </div>
       </div>
     </nav>

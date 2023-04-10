@@ -1,10 +1,34 @@
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { HiOutlineChevronRight } from "react-icons/hi";
 
 export default function FooterBar() {
+  const menus = [
+    {
+      title: "About",
+      submenu: [
+        { name: "FLowbite", route: "/" },
+        { name: "Tailwind CSS", route: "/" },
+      ],
+    },
+    {
+      title: "Follow us",
+      submenu: [
+        { name: "Github", route: "/" },
+        { name: "Discord", route: "/" },
+      ],
+    },
+    {
+      title: "Legal",
+      submenu: [
+        { name: "Privacy Policy", route: "/" },
+        { name: "Terms & Conditions", route: "/" },
+      ],
+    },
+  ];
+
   return (
-    <footer className="bg-gmco-grey text-gmco-white pt-10 pb-6 px-4 md:px-8 lg:px-48">
-      <div className="grid grid-cols-2 gap-8 md:grid-cols-5 lg:grid-cols-7 md:gap-2">
+    <footer className="bg-gmco-grey text-gmco-white pt-10 pb-6 px-8 md:px-8 lg:px-48">
+      <div className="grid grid-cols-2 gap-8 mb-4 md:mb-24 md:grid-cols-5 lg:grid-cols-7 md:gap-2">
         <div className="col-span-2 lg:col-span-4 md:mr-24">
           <div className="flex items-center">
             <img
@@ -17,51 +41,20 @@ export default function FooterBar() {
             </span>
           </div>
         </div>
-        <div>
-          <div className="text-xl font-bold mb-4">About</div>
-          <ul className="space-y-2">
-            <li>
-              <Link href="#" className="hover:text-white">
-                Flowbite
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-white">
-                Tailwind CSS
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="text-xl font-bold mb-4">Follow us</div>
-          <ul className="space-y-2">
-            <li>
-              <Link href="#" className="hover:text-white">
-                Github
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-white">
-                Discord
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="text-xl font-bold mb-4">Legal</div>
-          <ul className="space-y-2">
-            <li>
-              <Link href="#" className="hover:text-white">
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-white">
-                Terms &amp; Conditions
-              </Link>
-            </li>
-          </ul>
-        </div>
+        {menus.map((menu) => (
+          <div>
+            <div className="text-xl font-bold mb-4">{menu.title}</div>
+            <ul className="space-y-2">
+              {menu.submenu.map((submenu) => (
+                <li>
+                  <Link href={submenu.route} className="hover:text-white">
+                    {submenu.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
       {/* Divider */}
@@ -72,15 +65,17 @@ export default function FooterBar() {
         <div className="text-sm text-gray-500">
           &copy; GMCO UGM courtesy by Trah Ganjil 75 {new Date().getFullYear()}
         </div>
+
+        {/* to do : cari icon */}
         <div className="flex space-x-4 mt-2 md:m-0">
           <Link href="#" className="hover:text-white">
-            <HiOutlineChevronRight className="h-6 w-6" />
+            <QuestionMarkCircleIcon className="h-6 w-6" />
           </Link>
           <Link href="#" className="hover:text-white">
-            <HiOutlineChevronRight className="h-6 w-6" />
+            <QuestionMarkCircleIcon className="h-6 w-6" />
           </Link>
           <Link href="#" className="hover:text-white">
-            <HiOutlineChevronRight className="h-6 w-6" />
+            <QuestionMarkCircleIcon className="h-6 w-6" />
           </Link>
         </div>
       </div>

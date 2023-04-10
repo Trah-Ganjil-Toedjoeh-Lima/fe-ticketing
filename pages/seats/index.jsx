@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
+import NavigationBar from "@/components/navbar";
+import FooterBar from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -149,6 +151,7 @@ export default function Home() {
 
   return (
     <>
+      <NavigationBar />
       <div className="h-40 bg-[#287D92] border-b-4 border-[#F6F7F1]">
         <div className="p-7">
           <p className="text-[#F6F7F1] text-2xl font-semibold">
@@ -230,6 +233,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <FooterBar/>
     </>
   );
 }
