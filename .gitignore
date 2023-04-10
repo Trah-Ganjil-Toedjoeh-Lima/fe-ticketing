@@ -36,6 +36,3 @@ yarn-error.log*
 .idea/
 .next/
 
-# JSON server
-db/
-
