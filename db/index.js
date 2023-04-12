@@ -11,10 +11,12 @@ const adminSeatDetails = require("./adminSeatDetails.json");
 const appConfig = require("./appConfig.json");
 const registerUser = require("./registerUser.json");
 const verifyOtp = require("./verifyOtp.json");
+const transactionDetail = require("./transactionDetail.json");
 
 module.exports = () => ({
   adminSeatDetails: adminSeatDetails,
   appConfig: appConfig,
   registerUser: registerUser,
   verifyOtp: verifyOtp,
+  transactionDetail: transactionDetail
 });

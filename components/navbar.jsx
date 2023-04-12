@@ -47,18 +47,17 @@ export default function NavigationBar() {
             GMCO Event
           </span>
         </Link>
-
         <div className="flex w-max">
           {/* Route when MD*/}
           <div className="hidden mr-2 md:flex md:items-center md:w-auto">
             <div className="text-lg flex space-x-2">
               {routes.map((route) => (
-                <a
+                <Link
                   href={route.route}
                   className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
                 >
                   {route.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -110,12 +109,12 @@ export default function NavigationBar() {
       >
         <div className="px-2 pt-2">
           {routes.map((route) => (
-            <ul
+            <Link
               href={route.route}
               className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
             >
               <li>{route.name}</li>
-            </ul>
+            </Link>
           ))}
         </div>
       </div>

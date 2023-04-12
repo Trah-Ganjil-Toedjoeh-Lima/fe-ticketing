@@ -4,17 +4,18 @@ import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
 export default function Admin() {
-  const URL = process.env.NEXT_PUBLIC_JSON_URL;
   const { asPath, pathname } = useRouter();
   const [adminData, setAdminData] = useState([]);
   const [appConfig, setAppConfig] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const res = await axiosInstance.get(`${URL}/adminSeatDetails`);
+      const [res, res1] = await Promise.all([
+        axiosInstance.get("/adminSeatDetails"),
+        axiosInstance.get("/appConfig")
+      ]);
+  
       setAdminData(res.data.data);
-
-      const res1 = await axiosInstance.get(`${URL}/appConfig`);
       setAppConfig(res1.data.app_config.IsOpenGate);
     })();
   }, [URL]);
