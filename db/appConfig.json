@@ -1,0 +1,6 @@
+{
+  "app_config": {
+      "IsOpenGate": false,
+      "QrScanBehaviour": "open_gate"
+  }
+}

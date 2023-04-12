@@ -4,16 +4,19 @@ import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
 export default function Admin() {
-  const URL = process.env.NEXT_PUBLIC_JSON_URL;
   const { asPath, pathname } = useRouter();
-
   const [adminData, setAdminData] = useState([]);
-  const [adminSeat, setAdminSeat] = useState([]);
+  const [appConfig, setAppConfig] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const res = await axiosInstance.get(`${URL}/data`);
-      setAdminData(res.data);
+      const [res, res1] = await Promise.all([
+        axiosInstance.get("/adminSeatDetails"),
+        axiosInstance.get("/appConfig")
+      ]);
+  
+      setAdminData(res.data.data);
+      setAppConfig(res1.data.app_config.IsOpenGate);
     })();
   }, [URL]);
 
@@ -23,66 +26,39 @@ export default function Admin() {
     return item;
   });
 
-  console.log(mapAdminData);
-
   return (
     <div>
       <table>
         <caption>Seats</caption>
         <thead>
           <tr>
-            <th>User ID</th>
+            <th>ID</th>
+            <th>Seat</th>
+            <th>Price</th>
+            <th>Link</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Seat ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Link</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           {mapAdminData.map((item) => (
-            <tr key={item.User.UserId} className='bg-white border-b'>
-              <td className='pl-8 pr-4 py-4 font-medium text-gray-900 whitespace-nowrap'>
-                {item.User.UserId}
-              </td>
-              <td className='pl-8 pr-4'>{item.User.Name}</td>
-              <td className='pl-8 pr-4'>{item.User.Email}</td>
-              <td className='pl-8 pr-4'>{item.User.Phone}</td>
+            <tr key={item.Seat.SeatId} className='bg-white border-b'>
               <td className='pl-8 pr-4 py-4 font-medium text-gray-900 whitespace-nowrap'>
                 {item.Seat.SeatId}
               </td>
               <td className='pl-8 pr-4'>{item.Seat.Name}</td>
               <td className='pl-8 pr-4'>{item.Seat.Price}</td>
               <td className='pl-8 pr-4'>{item.Seat.Link}</td>
+              <td className='pl-8 pr-4'>{item.User.Name}</td>
+              <td className='pl-8 pr-4'>{item.User.Email}</td>
+              <td className='pl-8 pr-4'>{item.User.Phone}</td>
               <td className='pl-8 pr-4'>{item.Seat.Status}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* <table>
-        <caption>User</caption>
-        <thead>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-        </thead>
-        <tbody>
-          {mapAdminData.map((item) => (
-            <tr key={item.User.UserId} className='bg-white border-b'>
-              <td className='pl-8 pr-4 py-4 font-medium text-gray-900 whitespace-nowrap'>
-                {item.User.UserId}
-              </td>
-              <td className='pl-8 pr-4'>{item.User.Name}</td>
-              <td className='pl-8 pr-4'>{item.User.Email}</td>
-              <td className='pl-8 pr-4'>{item.User.Phone}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
     </div>
   );
 }
