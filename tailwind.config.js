@@ -4,6 +4,7 @@ module.exports = {
     "./app/**/*.{js,jsx}",
     "./pages/**/*.{js,jsx}",
     "./components/**/*.{js,jsx}",
+    "./node_modules/flowbite-react/**/*.js",
   ],
   theme: {
     extend:{
@@ -11,7 +12,7 @@ module.exports = {
           'gmco-blue':{
             DEFAULT: '#8EBFD0',
             main:'#287D92',
-            secondary:'B8DEE9'
+            secondary:'#B8DEE9'
           },
           'gmco-yellow':{
             DEFAULT:'#F5DB91',
@@ -19,7 +20,7 @@ module.exports = {
           },
           'gmco-grey':{
             DEFAULT:'#2d2d2f',
-            secondary:'786b63'
+            secondary:'#786b63'
           },
           'gmco-white':{
             DEFAULT:'#f6f7f1'
@@ -31,5 +32,8 @@ module.exports = {
         }
       }
     },
-  plugins: [],
+  plugins: [
+    require("flowbite/plugin")
+  ],
+  important: true,
 };
