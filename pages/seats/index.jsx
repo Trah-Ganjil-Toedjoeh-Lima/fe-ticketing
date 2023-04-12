@@ -39,43 +39,50 @@ export default function Home() {
     { S: [7, 19, 19, 7] },
   ];
 
-  const m_deg_rot = [
-    "-translate-y-[11px]",
-    "-translate-y-[12px]",
-    "-translate-y-[13px]",
-    "-translate-y-[14px]",
-    "-translate-y-[15px]",
-    "-translate-y-[16px]",
-    "-translate-y-[17px]",
+  const deg_rot = [
+    "-translate-y-[20px]",
     "-translate-y-[18px]",
-    "-translate-y-[17px]",
-    "translate-y-[16px]",
-    "translate-y-[15px]",
-    "translate-y-[14px]",
-    "translate-y-[13px]",
-    "translate-y-[12px]",
-    "translate-y-[11px]",
-    "translate-y-[9px]",
+    "-translate-y-[16px]",
+    "-translate-y-[14px]",
+    "-translate-y-[12px]",
+    "-translate-y-[10px]",
+    "-translate-y-[8px]",
+    "-translate-y-[6px]",
+    "-translate-y-[4px]",
+    "-translate-y-[2px]",
+    "translate-y-[0px]",
+    "translate-y-[2px]",
+    "translate-y-[4px]",
+    "translate-y-[6px]",
     "translate-y-[8px]",
+    "translate-y-[10px]",
+    "translate-y-[12px]",
+    "translate-y-[14px]",
+    "translate-y-[16px]",
+    "translate-y-[18px]",
+    "translate-y-[20px]",
   ];
-  const lr_deg_rot = [
-    "-translate-y-[11px]",
-    "-translate-y-[12px]",
-    "-translate-y-[13px]",
-    "-translate-y-[14px]",
-    "-translate-y-[15px]",
-    "-translate-y-[16px]",
-    "-translate-y-[17px]",
-    "-translate-y-[18px]",
-    "-translate-y-[17px]",
-    "translate-y-[16px]",
-    "translate-y-[15px]",
-    "translate-y-[14px]",
-    "translate-y-[13px]",
-    "translate-y-[12px]",
-    "translate-y-[11px]",
-    "translate-y-[9px]",
-    "translate-y-[8px]",
+
+  const row_width = [
+    "w-[55%]",
+    "w-[65%]",
+    "w-[65%]",
+    "w-[70%]",
+    "w-[72.5%]",
+    "w-[75%]",
+    "w-[77.5%]",
+    "w-[80%]",
+    "w-[82.5%]",
+    "w-[82.5%]",
+    "w-[85%]",
+    "w-[87.5%]",
+    "w-[90%]",
+    "w-[90%]",
+    "w-[92.5%]",
+    "w-[95%]",
+    "w-[97.5%]",
+    "w-[100%]",
+    "w-[102.5%]",
   ];
 
   const axiosInstance = axios.create({
@@ -209,7 +216,7 @@ export default function Home() {
   }
 
   // display the data
-  function lr_mapper(array) {
+  function left_mapper(array) {
     // console.log(index);
     // console.log(array);
     let arr = [];
@@ -218,7 +225,7 @@ export default function Home() {
       if (array[i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] bg-slate-400 text-center ${lr_deg_rot[i]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i]}`}
           >
             {array[i].name}
           </div>
@@ -226,19 +233,21 @@ export default function Home() {
       }
       // If the data is empty, then display blackbox
       else {
-        arr.push(<div className={`w-5 h-5 bg-black ${lr_deg_rot[i]}`}></div>);
+        arr.push(
+          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+        );
       }
     }
     return arr;
   }
 
-  function m_mapper(array) {
+  function right_mapper(array) {
     let arr = [];
-    for (let i = 0; i < array.length; i++) {
+    for (let i = array.length; i > 0; i--) {
       if (array[i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] bg-slate-400 text-center ${m_deg_rot[i]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i]}`}
           >
             {array[i].name}
           </div>
@@ -246,7 +255,9 @@ export default function Home() {
       }
       // If the data is empty, then display blackbox
       else {
-        arr.push(<div className={`w-5 h-5 bg-black ${m_deg_rot[i]}`}></div>);
+        arr.push(
+          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+        );
       }
     }
     return arr;
@@ -267,8 +278,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-row h-screen">
-        <div className="w-1/5 border-r-4 h-full ml-7">
+      <div className="flex h-screen">
+        {/* Sementara Hidden */}
+        {/* Left Bar */}
+        <div className="hidden w-1/5 border-r-4 h-full ml-7">
           <img
             src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.jpg&w=1200&q=75"
             alt=""
@@ -292,58 +305,72 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-4/5 p-5">
-          <p className="text-[#2D2D2F] font-semibold text-xl">Lantai 1</p>
-          {/* {print(l_seatmap)} */}
 
-          <div className="flex flex-row gap-10">
-            {/* left */}
-            {/* row wise */}
-            <div className="flex flex-col gap-2">
-              {l_seatmap.map((seats) => (
-                // col wise
-                <div
-                  className={`flex flex-row gap-4 origin-top-right rotate-[10deg] justify-end`}
-                >
-                  {lr_mapper(seats)}
-                </div>
-              ))}
+        {/* SeatMap */}
+        <div className="p-4 w-full overflow-scroll">
+          <p className="text-gmco-grey flex justify-center font-semibold text-2xl">
+            Lantai 1
+          </p>
+
+          {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
+          <div className="flex w-full justify-center scale-[95%] pt-8">
+              {/* Left wing */}
+            <div className="flex translate-x-8">
+              {/* left */}
+              {/* row wise */}
+              <div className="flex flex-col rotate-[22deg] translate-x-8 gap-2">
+                {l_seatmap.map((seats) => (
+                  // col wise
+                  <div
+                    className={`flex flex-row gap-2 origin-top-right justify-end`}
+                  >
+                    {left_mapper(seats)}
+                  </div>
+                ))}
+              </div>
+
+              {/* middle left */}
+              {/* row wise */}
+              <div className="flex flex-col items-center gap-[0.45rem] rotate-[10deg] translate-y-36">
+                {ml_seatmap.map((seats, index) => (
+                  // col wise
+                  // prin)
+                  <div
+                    className={`flex gap-2 ${row_width[index]} justify-between`}
+                  >
+                    {left_mapper(seats)}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* middle left */}
-            {/* row wise */}
-            <div className="flex flex-col gap-2">
-              {ml_seatmap.map((seats) => (
-                // col wise
-                // prin)
-                <div className="flex flex-row gap-4 justify-center">
-                  {m_mapper(seats)}
-                </div>
-              ))}
-            </div>
+            {/* Right Wing */}
+            <div className="flex -translate-x-8">
+              {/* middle right */}
+              {/* row wise */}
+              <div className="flex flex-col items-center gap-[0.45rem] -rotate-[10deg] translate-y-36">
+                {mr_seatmap.map((seats, index) => (
+                  // col wise
+                  <div
+                    className={`flex gap-2 ${row_width[index]} justify-between`}
+                  >
+                    {right_mapper(seats)}
+                  </div>
+                ))}
+              </div>
 
-            {/* middle right */}
-            {/* row wise */}
-            <div className="flex flex-col gap-2">
-              {mr_seatmap.map((seats) => (
-                // col wise
-                <div className="flex flex-row gap-4 justify-center">
-                  {m_mapper(seats)}
-                </div>
-              ))}
-            </div>
-
-            {/* right */}
-            {/* row wise */}
-            <div className="flex flex-col gap-2">
-              {r_seatmap.map((seats, index) => (
-                // col wise
-                <div
-                  className={`flex flex-row gap-4 origin-top-left -rotate-[10deg]`}
-                >
-                  {lr_mapper(seats, index)}
-                </div>
-              ))}
+              {/* right */}
+              {/* row wise */}
+              <div className="flex flex-col -rotate-[22deg] -translate-x-8 gap-2">
+                {r_seatmap.map((seats) => (
+                  // col wise
+                  <div
+                    className={`flex flex-row gap-2 origin-top-right justify-start`}
+                  >
+                    {right_mapper(seats)}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
