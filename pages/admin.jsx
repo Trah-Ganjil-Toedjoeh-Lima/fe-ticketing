@@ -18,7 +18,7 @@ export default function Admin() {
       setAdminData(res.data.data);
       setAppConfig(res1.data.app_config.IsOpenGate);
     })();
-  }, [URL]);
+  }, []);
 
   const mapAdminData = adminData.map((item) => {
     // const { Seat, User } = item;
