@@ -40,12 +40,12 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gmco-grey min-h-screen">
+    <div className="bg-gmco-blue min-h-screen">
       <div className="flex flex-col mx-16">
         <div className="my-8 flex flex-col items-center">
           {isEditingName ? (
             <input
-              className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey font-bold text-3xl"
+              className="my-2 text-center text-gmco-grey bg-transparent font-bold text-3xl"
               type="text"
               value={name}
               onChange={(event) => handleInputChange(event, setName)}
@@ -56,7 +56,7 @@ export default function Profile() {
             />
           ) : (
             <h1
-              className="text-gray-700 dark:text-white font-bold text-3xl text-center"
+              className="text-gmco-grey font-bold text-3xl text-center"
               onClick={handleNameClick}
             >
               {name}
@@ -65,7 +65,7 @@ export default function Profile() {
 
           {isEditingEmail ? (
             <input
-              className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
+              className="my-2 text-center text-gmco-grey bg-transparent text-xl"
               type="text"
               value={email}
               onChange={(event) => handleInputChange(event, setEmail)}
@@ -78,7 +78,7 @@ export default function Profile() {
             />
           ) : (
             <p
-              className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
+              className="text-center text-gmco-grey text-xl"
               onClick={handleEmailClick}
             >
               {email}
@@ -87,7 +87,7 @@ export default function Profile() {
 
           {isEditingPhoneNum ? (
             <input
-              className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
+              className="my-2 text-center text-gmco-grey bg-transparent text-xl"
               type="text"
               value={phoneNum}
               onChange={(event) => handleInputChange(event, setPhoneNum)}
@@ -100,7 +100,7 @@ export default function Profile() {
             />
           ) : (
             <p
-              className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
+              className="text-center text-gmco-grey text-xl"
               onClick={handlePhoneNumClick}
             >
               {phoneNum}
@@ -109,7 +109,7 @@ export default function Profile() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <p className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-2xl font-medium text-start">
+          <p className="text-center text-gmco-grey text-2xl font-medium text-start">
             My Tickets
           </p>
           {/* This is the ticket */}
@@ -124,7 +124,9 @@ export default function Profile() {
 
             {/* Seat name and QR */}
             <div className="flex flex-row h-full items-center">
-              <h2 className="text-black font-bold text-4xl w-1/2">Seat A6</h2>
+              <h2 className="text-gmco-grey font-bold text-4xl w-1/2">
+                Seat A6
+              </h2>
               <div className="flex flex-row w-1/2 justify-end">
                 <Image
                   src="/qris-reinhart.png"
@@ -159,7 +161,9 @@ export default function Profile() {
 
             {/* Seat name and QR */}
             <div className="flex flex-row h-full items-center">
-              <h2 className="text-black font-bold text-4xl w-1/2">Seat A7</h2>
+              <h2 className="text-gmco-grey font-bold text-4xl w-1/2">
+                Seat A7
+              </h2>
               <div className="flex flex-row w-1/2 justify-end">
                 <Image
                   src="/qris-reinhart.png"
@@ -194,7 +198,9 @@ export default function Profile() {
 
             {/* Seat name and QR */}
             <div className="flex flex-row h-full items-center">
-              <h2 className="text-black font-bold text-4xl w-1/2">Seat A8</h2>
+              <h2 className="text-gmco-grey font-bold text-4xl w-1/2">
+                Seat A8
+              </h2>
               <div className="flex flex-row w-1/2 justify-end">
                 <Image
                   src="/qris-reinhart.png"
