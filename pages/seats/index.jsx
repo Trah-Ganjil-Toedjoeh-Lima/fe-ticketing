@@ -64,19 +64,19 @@ export default function Home() {
   ];
 
   const row_width = [
-    "w-[55%]",
+    "w-[57.5%]",
+    "w-[60%]",
+    "w-[62.5%]",
     "w-[65%]",
-    "w-[65%]",
+    "w-[67.5%]",
     "w-[70%]",
     "w-[72.5%]",
     "w-[75%]",
     "w-[77.5%]",
     "w-[80%]",
     "w-[82.5%]",
-    "w-[82.5%]",
     "w-[85%]",
     "w-[87.5%]",
-    "w-[90%]",
     "w-[90%]",
     "w-[92.5%]",
     "w-[95%]",
@@ -247,7 +247,7 @@ export default function Home() {
       if (array[i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i-1]}`}
           >
             {array[i].name}
           </div>
@@ -256,7 +256,7 @@ export default function Home() {
       // If the data is empty, then display blackbox
       else {
         arr.push(
-          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i-1]}`}></div>
         );
       }
     }
@@ -314,11 +314,11 @@ export default function Home() {
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
           <div className="flex w-full justify-center scale-[95%] pt-8">
-              {/* Left wing */}
-            <div className="flex translate-x-8">
+            {/* Left wing */}
+            <div className="flex translate-x-10">
               {/* left */}
               {/* row wise */}
-              <div className="flex flex-col rotate-[22deg] translate-x-8 gap-2">
+              <div className="flex flex-col rotate-[24deg] translate-x-12 gap-2">
                 {l_seatmap.map((seats) => (
                   // col wise
                   <div
@@ -331,7 +331,7 @@ export default function Home() {
 
               {/* middle left */}
               {/* row wise */}
-              <div className="flex flex-col items-center gap-[0.45rem] rotate-[10deg] translate-y-36">
+              <div className="flex flex-col items-center gap-[0.45rem] rotate-[12deg] translate-y-40">
                 {ml_seatmap.map((seats, index) => (
                   // col wise
                   // prin)
@@ -345,10 +345,10 @@ export default function Home() {
             </div>
 
             {/* Right Wing */}
-            <div className="flex -translate-x-8">
+            <div className="flex -translate-x-10">
               {/* middle right */}
               {/* row wise */}
-              <div className="flex flex-col items-center gap-[0.45rem] -rotate-[10deg] translate-y-36">
+              <div className="flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
                 {mr_seatmap.map((seats, index) => (
                   // col wise
                   <div
@@ -361,7 +361,7 @@ export default function Home() {
 
               {/* right */}
               {/* row wise */}
-              <div className="flex flex-col -rotate-[22deg] -translate-x-8 gap-2">
+              <div className="flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
                 {r_seatmap.map((seats) => (
                   // col wise
                   <div
