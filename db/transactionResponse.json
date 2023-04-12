@@ -1,0 +1,32 @@
+{
+  "message": "success",
+  "snap_request": {
+    "transaction_details": {
+      "order_id": "ad0bf4d3-b6b4-4006-8e8d-450a3a96f196",
+      "gross_amount": 330000
+    },
+    "item_details": [
+      {
+        "id": "1",
+        "name": "A10",
+        "price": 165000,
+        "quantity": 1
+      },
+      {
+        "id": "2",
+        "name": "A11",
+        "price": 165000,
+        "quantity": 1
+      }
+    ],
+    "customer_details": {
+      "first_name": "user1",
+      "email": "nismara.chandra@gmail.com",
+      "phone": "123456789"
+    }
+  },
+  "snap_response": {
+    "token": "e3894e0b-6be1-4154-b5f5-c82a074784df",
+    "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/e3894e0b-6be1-4154-b5f5-c82a074784df"
+  }
+}
