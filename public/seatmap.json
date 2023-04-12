@@ -192,6 +192,14 @@
       "status": "available",
       "row": "G",
       "column": 33
+    },
+    {
+      "seat_id": 7,
+      "name": "G40",
+      "price": 165000,
+      "status": "available",
+      "row": "G",
+      "column": 45
     }
   ],
   "message": "success"
