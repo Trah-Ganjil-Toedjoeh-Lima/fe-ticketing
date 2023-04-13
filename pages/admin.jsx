@@ -11,10 +11,14 @@ export default function Admin() {
 
   useEffect(() => {
     (async () => {
-      const res = await axiosInstance.get(`${URL}/adminSeatDetails`);
+      const res = await axiosInstance.get(
+        `http://localhost:3001/adminSeatDetails`
+      );
       setAdminData(res.data.data);
 
-      const res1 = await axiosInstance.get(`${URL}/appConfig`);
+      const res1 = await axiosInstance.get(
+        `http://localhost:3001/appConfig`
+      );
       setAppConfig(res1.data.app_config.IsOpenGate);
     })();
   }, [URL]);
