@@ -103,7 +103,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("./seatMap");
+        const res = await axiosInstance.get("api/v1/seat_map");
         seatMapping(res.data.data);
         // setSeatMap(res.data.data);
       } catch (err) {
@@ -196,8 +196,7 @@ export default function Home() {
 
     // for each major division, group the data into the coressponding row (row A, row B, etc)
     for (const entry of seatArr.entries()) {
-      console.log(entry);
-      let start = [0, 16, 33, 33];
+      console.log(entry)
       if (entry) {
         const datas = entry[1];
         const index = entry[0];
@@ -232,7 +231,7 @@ export default function Home() {
       if (array[i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${deg_rot[i]}`}
           >
             {array[i].name}
           </div>
@@ -254,7 +253,7 @@ export default function Home() {
       if (array[array.length - i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${
               deg_rot[i - 1]
             }`}
           >
@@ -326,16 +325,16 @@ export default function Home() {
           </p>
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
-          <div className="flex w-full justify-center scale-[95%] pt-8">
+          <div className=" flex w-full justify-center scale-[95%] pt-8">
             {/* Left wing */}
-            <div className="flex translate-x-10">
+            <div className="pointer-events-none flex translate-x-10">
               {/* left */}
               {/* row wise */}
               <div className="flex flex-col rotate-[24deg] translate-x-12 gap-2">
                 {l_seatmap.map((seats) => (
                   // col wise
                   <div
-                    className={`flex flex-row gap-2 origin-top-right justify-end`}
+                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-end`}
                   >
                     {left_mapper(seats)}
                   </div>
@@ -349,7 +348,7 @@ export default function Home() {
                   // col wise
                   // prin)
                   <div
-                    className={`flex gap-2 ${row_width[index]} justify-between`}
+                    className={`pointer-events-auto flex z-20 gap-2 ${row_width[index]} justify-between`}
                   >
                     {left_mapper(seats)}
                   </div>
@@ -358,14 +357,14 @@ export default function Home() {
             </div>
 
             {/* Right Wing */}
-            <div className="flex -translate-x-10">
+            <div className="pointer-events-none flex -translate-x-10">
               {/* middle right */}
               {/* row wise */}
-              <div className="flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
+              <div className="pointer-events-none flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
                 {mr_seatmap.map((seats, index) => (
                   // col wise
                   <div
-                    className={`flex gap-2 ${row_width[index]} justify-between`}
+                    className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                   >
                     {right_mapper(seats)}
                   </div>
@@ -374,11 +373,11 @@ export default function Home() {
 
               {/* right */}
               {/* row wise */}
-              <div className="flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
+              <div className="pointer-events-none flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
                 {r_seatmap.map((seats) => (
                   // col wise
                   <div
-                    className={`flex flex-row gap-2 origin-top-right justify-start`}
+                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-start`}
                   >
                     {right_mapper(seats)}
                   </div>
