@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-
+import Head from 'next/head'
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
+import withAuth from "@/atoms/authpage";
 
-export default function cart() {
+function cart() {
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
@@ -97,6 +98,9 @@ export default function cart() {
 
   return (
     <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
       <NavigationBar />
       <div className="bg-gmco-blue-main h-16" />
       <div className="container m-auto py-8">
@@ -166,3 +170,5 @@ export default function cart() {
     </>
   );
 }
+
+export default withAuth(cart);

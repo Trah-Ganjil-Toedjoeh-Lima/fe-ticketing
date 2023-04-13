@@ -24,6 +24,7 @@ export default function index() {
   //   });
   // }
 
+  
   async function loginSubmit(e) {
     e.preventDefault();
     try {
@@ -68,7 +69,7 @@ export default function index() {
     <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
       <div className=" relative bg-[url('/GMCO.jpg')] bg-cover bg-left-top flex flex-col items-center  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10">
         {/* leftside */}
-        <div className=" backdrop-filter flex flex-col text-white justify-center items-center w-full  p-4 md:w-1/2 md:p-10  ">
+        <div className=" backdrop-filter flex flex-col text-white justify-center items-center w-full  p-4 md:w-4/6 md:p-10  ">
           <h1 className="mb-3 text-4xl font-bold md:text-3xl"> GC GMCO </h1>
           <p className="mb-3 text-2xl font-bold md:text-xl">
             {" "}
