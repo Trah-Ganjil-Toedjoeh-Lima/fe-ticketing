@@ -12,7 +12,7 @@ export default function otp() {
   console.log(loginInput,"ini dari login");
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
-      <Card className=" flex  py-14 max-w-sm sm:pl-1 md:px-4 md:py-7 md:max-w-xl lg:px-6 items-center">
+      <Card className=" flex  py-4 max-w-sm sm:pl-1 md:px-4 md:py-7 md:max-w-xl lg:px-6 items-center">
         <EnvelopeOpenIcon className="w-16 h-16 mx-auto colo">
           {" "}
         </EnvelopeOpenIcon>
@@ -44,6 +44,12 @@ export default function otp() {
             }}
           />
         </div>
+        <button
+          type="submit"
+          class="w-full mt-6 bg-gmco-blue text-white text-base p-2 font font-semibold rounded-lg md:p-2 md:text-lg  hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
+        >
+          Submit
+        </button>
       </Card>
     </div>
   );
