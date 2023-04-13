@@ -28,7 +28,7 @@ export default function index() {
     try {
       console.log(JSON.stringify(loginInput));
       await axiosInstance
-        .post("/register_email", {
+        .post("/api/v1/user/register_email", {
           email: loginInput.email,
         })
         .then((res) => {
