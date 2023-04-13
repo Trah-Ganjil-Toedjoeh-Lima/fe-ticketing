@@ -13,6 +13,9 @@ const registerUser = require("./registerUser.json");
 const verifyOtp = require("./verifyOtp.json");
 const transactionDetail = require("./transactionDetail.json");
 const transactionResponse = require("./transactionResponse.json");
+const seatMap = require("./seatMap.json");
+
+
 
 
 module.exports = () => ({
@@ -21,5 +24,6 @@ module.exports = () => ({
   registerUser: registerUser,
   verifyOtp: verifyOtp,
   transactionDetail: transactionDetail,
-  transactionResponse: transactionResponse
+  transactionResponse: transactionResponse,
+  seatMap: seatMap
 });

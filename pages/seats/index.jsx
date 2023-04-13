@@ -1,17 +1,10 @@
 /* eslint-disable react/jsx-key */
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import { axiosInstance } from "@/atoms/config";
 
 export default function Home() {
-  const [seatmap, setSeatMap] = useState([]);
   const [l_seatmap, set_L_seatmap] = useState([]);
   const [ml_seatmap, set_ML_seatmap] = useState([]);
   const [mr_seatmap, set_MR_seatmap] = useState([]);
@@ -38,6 +31,28 @@ export default function Home() {
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
   ];
+
+  const start_mappers = {
+    A: [0, 1, 9, 0],
+    B: [1, 14, 23, 32],
+    C: [1, 16, 25, 34],
+    D: [1, 16, 26, 37],
+    E: [1, 17, 28, 37],
+    F: [1, 18, 30, 42],
+    G: [1, 18, 30, 42],
+    H: [1, 17, 30, 43],
+    I: [1, 16, 30, 44],
+    J: [1, 15, 29, 43],
+    K: [1, 14, 29, 44],
+    L: [1, 13, 28, 43],
+    M: [1, 12, 28, 44],
+    N: [1, 11, 27, 43],
+    O: [1, 11, 29, 46],
+    P: [1, 10, 28, 45],
+    Q: [1, 9, 27, 45],
+    R: [1, 8, 27, 46],
+    S: [1, 8, 27, 46],
+};
 
   const deg_rot = [
     "-translate-y-[20px]",
@@ -85,15 +100,11 @@ export default function Home() {
     "w-[102.5%]",
   ];
 
-  const axiosInstance = axios.create({
-    withCredentials: true,
-  });
-
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("seatmap.json");
-        setSeatMap(seatMapping(res.data.data));
+        const res = await axiosInstance.get("./seatMap");
+        seatMapping(res.data.data);
         // setSeatMap(res.data.data);
       } catch (err) {
         // catch here
@@ -168,7 +179,6 @@ export default function Home() {
       }
     }
 
-    // console.log(seatArr);
     // Initiate seatdict array
     for (const mapper of mappers) {
       let row = Object.keys(mapper);
@@ -183,24 +193,22 @@ export default function Home() {
         }
       }
     }
-    // console.log(seatDict);
 
     // for each major division, group the data into the coressponding row (row A, row B, etc)
     for (const entry of seatArr.entries()) {
-      // console.log(entry);
-      let start = [1, 11, 21, 31];
+      console.log(entry);
+      let start = [0, 16, 33, 33];
       if (entry) {
         const datas = entry[1];
         const index = entry[0];
         // seatDict[index] = new Array();
         for (const item of datas) {
-          seatDict[index][item.row][item.column - start[index]] = item;
+          seatDict[index][item.row][item.column - start_mappers[item.row][index]] = item
+          console.log(start_mappers[item.row][index])
         }
         arr[index] = Object.values(seatDict[index]);
       }
     }
-
-    console.log(seatDict);
 
     // make into different variable
     set_L_seatmap(arr[0]);
@@ -221,7 +229,6 @@ export default function Home() {
     // console.log(array);
     let arr = [];
     for (let i = 0; i < array.length; i++) {
-      console.log(i);
       if (array[i]) {
         arr.push(
           <div
@@ -244,24 +251,30 @@ export default function Home() {
   function right_mapper(array) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
-      if (array[i]) {
+      if (array[array.length - i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i-1]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${
+              deg_rot[i - 1]
+            }`}
           >
-            {array[i].name}
+            {array[array.length - i].name}
           </div>
         );
       }
       // If the data is empty, then display blackbox
       else {
         arr.push(
-          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i-1]}`}></div>
+          <div
+            className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
+          ></div>
         );
       }
     }
     return arr;
   }
+
+  // console.log(l_seatmap, ml_seatmap, mr_seatmap, r_seatmap)
 
   return (
     <>
