@@ -8,6 +8,7 @@ export default function index() {
   const router = useRouter();
   const [loginInput, setLoginInput] = useState({
     email: "",
+    otp: "",
   });
 
   function handleInput(e) {
@@ -32,25 +33,16 @@ export default function index() {
           email: loginInput.email,
         })
         .then((res) => {
-          console.log(res);
+          const otp = res.data.totp_token;
+          setLoginInput({ ...loginInput, otp: res.data.totp_token });
           if (res.status === 200) {
-            localStorage.setItem("auth_token", res.data.access_token);
-            Swal.fire({
-              html: `<b>${res.data.message}</b> tunggu...`,
-              toast: true,
-              width: 300,
-              icon: "success",
-              iconColor: "#16a34a",
-              showConfirmButton: false,
-              timer: 1500,
-              showClass: {
-                popup: "",
+            // localStorage.setItem("auth_token", res.data.access_token);
+            router.push({
+              pathname: "/auth/otp",
+              query: {
+                email: loginInput.email,
+                otp: res.data.totp_token,
               },
-            }).then(() => {
-              router.push({
-                pathname: "/auth/otp",
-                query: { loginInput: loginInput.email },
-              });
             });
           }
         });
