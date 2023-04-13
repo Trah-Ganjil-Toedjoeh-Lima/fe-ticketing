@@ -1,0 +1,22 @@
+{
+  "data": {
+    "seats": [
+      {
+        "name": "A10",
+        "price": 165000
+      },
+      {
+        "name": "A11",
+        "price": 165000
+      },
+      {
+        "name": "T11",
+        "price": 15000
+      }
+    ],
+    "user_email": "nismara.chandra@gmail.com",
+    "user_name": "user1",
+    "user_phone": "123456789"
+  },
+  "message": "success"
+}

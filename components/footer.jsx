@@ -1,20 +1,28 @@
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import {
+  FaFacebook,
+  FaGithub,
+  FaInstagram,
+  FaTwitter,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 export default function FooterBar() {
+  // Menu Lg 1 x (x) SM 1 x 2
   const menus = [
     {
       title: "About",
       submenu: [
-        { name: "FLowbite", route: "/" },
-        { name: "Tailwind CSS", route: "/" },
+        { name: "GMCO Event", route: "/" },
+        { name: "GMCO UGM", route: "/" },
+        { name: "UGM", route: "/" },
       ],
     },
     {
       title: "Follow us",
       submenu: [
-        { name: "Github", route: "/" },
-        { name: "Discord", route: "/" },
+        { name: "Instagram", route: "/" },
+        { name: "Twitter", route: "/" },
       ],
     },
     {
@@ -26,28 +34,37 @@ export default function FooterBar() {
     },
   ];
 
+  // Social Media Icon
+  const socials = [
+    { name: <FaGithub className="h-5 w-5" />, route: "/" },
+    { name: <FaWhatsapp className="h-5 w-5" />, route: "/" },
+    { name: <FaInstagram className="h-5 w-5" />, route: "/" },
+    { name: <FaTwitter className="h-5 w-5" />, route: "/" },
+    { name: <FaFacebook className="h-5 w-5" />, route: "/" },
+  ];
+
   return (
     <footer className="bg-gmco-grey text-gmco-white pt-10 pb-6 px-8 md:px-8 lg:px-48">
-      <div className="grid grid-cols-2 gap-8 mb-4 md:mb-24 md:grid-cols-5 lg:grid-cols-7 md:gap-2">
+      <div className="grid grid-cols-2 gap-8 mb-4 md:mb-16 md:grid-cols-5 lg:grid-cols-7 md:gap-2">
         <div className="col-span-2 lg:col-span-4 md:mr-24">
           <div className="flex items-center">
             <img
-              src="https://www.svgrepo.com/show/361653/vercel-logo.svg"
+              src="/logo_gmco.webp"
               className="mr-3 h-6 sm:h-9"
               alt="GMCO Event Logo"
             />
             <span href="#" className="text-xl font-bold">
-              My App
+              GMCO Event
             </span>
           </div>
         </div>
-        {menus.map((menu) => (
-          <div>
+        {menus.map((menu, index) => (
+          <div key={index}>
             <div className="text-xl font-bold mb-4">{menu.title}</div>
-            <ul className="space-y-2">
-              {menu.submenu.map((submenu) => (
-                <li>
-                  <Link href={submenu.route} className="hover:text-white">
+            <ul className="space-y-2 text-gmco-white/60">
+              {menu.submenu.map((submenu, index) => (
+                <li key={index}>
+                  <Link href={submenu.route} className="hover:text-gmco-white">
                     {submenu.name}
                   </Link>
                 </li>
@@ -63,20 +80,29 @@ export default function FooterBar() {
       {/* Bawah */}
       <div className="inline md:flex justify-between items-center">
         <div className="text-sm text-gray-500">
-          &copy; GMCO UGM courtesy by Trah Ganjil 75 {new Date().getFullYear()}
+          &copy;
+          <Link href="" className="hover:text-gmco-white font-bold">
+            GMCO UGM{" "}
+          </Link>
+          courtesy by
+          <Link href="" className="hover:text-gmco-white font-bold">
+            {" "}
+            Trah Ganjil 75{" "}
+          </Link>
+          {new Date().getFullYear()}
         </div>
 
         {/* to do : cari icon */}
         <div className="flex space-x-4 mt-2 md:m-0">
-          <Link href="#" className="hover:text-white">
-            <QuestionMarkCircleIcon className="h-6 w-6" />
-          </Link>
-          <Link href="#" className="hover:text-white">
-            <QuestionMarkCircleIcon className="h-6 w-6" />
-          </Link>
-          <Link href="#" className="hover:text-white">
-            <QuestionMarkCircleIcon className="h-6 w-6" />
-          </Link>
+          {socials.map((social, index) => (
+            <Link
+              key={index}
+              href="#"
+              className="text-gmco-white/50 hover:text-gmco-white"
+            >
+              {social.name}
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

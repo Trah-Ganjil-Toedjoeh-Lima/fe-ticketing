@@ -7,6 +7,7 @@ import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 
 export default function Home() {
+
   return (
     <>
       <NavigationBar />
@@ -28,7 +29,7 @@ export default function Home() {
             origin="left"
             delay={100}
             duration={2000}
-            distance="500px"
+            distance="250px"
           >
             <div className="relative flex items-center align-center h-[50vh] md:h-screen bg-right bg-cover z-10">
               <div className="text-left w-full pl-8 md:pl-20">
@@ -63,11 +64,12 @@ export default function Home() {
         </div>
 
         {/* Home Content 1 */}
-        <RevealWrapper origin="right" duration={1000} distance="500px">
-          <div
-            id="about"
-            className="grid grid-cols-1 md:grid-cols-2 container items-center justify-between mx-auto px-10 py-20"
-          >
+        <div
+          id="about"
+          className="grid grid-cols-1 md:grid-cols-2 container items-center justify-between mx-auto px-10 py-20"
+        >
+          {/* GMCO Image */}
+          <RevealWrapper origin="left" duration={1000} distance="100px">
             <div className="w-full">
               <div className="md:w-3/4">
                 <Image
@@ -79,37 +81,45 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="w-full">
-              <div className="text-center md:text-left py-12">
-                <div className="uppercase tracking-wide text-md md:text-xl font-bold text-red-400">
-                  About
-                </div>
-                <h1 className="text-gray-900 mt-2 mb-4 text-2xl md:text-4xl leading-tight font-semibold">
-                  GMCO Live from the Living Room
-                </h1>
-                <p className="text-gray-900 mb-4 text-md md:text-lg leading-normal">
-                  GMCO Live from the Living Room merupakan sebuah intimate orchestra concert yang dilaksanakan oleh Unit Kegiatan Mahasiswa Gadjah Mada Chamber Orchestra (GMCO UGM). Konser intim ini merupakan konser inovasi GMCO dengan nuansa santai layaknya suasana ruang keluarga, tetapi tetap mempertahankan esensi dan kualitas penampilan orkestra itu sendiri.
-                  <br />
-                  Selain penampilan dari para pemain GMCO, konser ini akan dimeriahkan oleh penampilan bintang tamu, penyanyi pria nasional, yaitu Sal Priadi. GMCO Live from the Living Room akan menjadi konser orkestra intim yang unik dan diminati banyak penikmat musik Yogyakarta.
-                </p>
-                <a
-                  className="text-gmco-white"
-                  href="https://gmco.ukm.ugm.ac.id/"
-                >
-                  <button className="py-2 px-4 md:py-3 md:px-6 bg-gmco-blue-main rounded-xl transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark duration-300">
-                    More About GMCO
-                  </button>
-                </a>
+          </RevealWrapper>
+
+          {/* Text */}
+          <RevealWrapper duration={1000} distance="0">
+          <div className="w-full">
+            <div className="text-center md:text-left py-12">
+              <div className="uppercase tracking-wide text-md md:text-xl font-bold text-red-400">
+                About
               </div>
+              <h1 className="text-gray-900 mt-2 mb-4 text-2xl md:text-4xl leading-tight font-semibold">
+                GMCO Live from the Living Room
+              </h1>
+              <p className="text-gray-900 mb-4 text-md md:text-lg leading-normal">
+                GMCO Live from the Living Room merupakan sebuah intimate
+                orchestra concert yang dilaksanakan oleh Unit Kegiatan Mahasiswa
+                Gadjah Mada Chamber Orchestra (GMCO UGM). Konser intim ini
+                merupakan konser inovasi GMCO dengan nuansa santai layaknya
+                suasana ruang keluarga, tetapi tetap mempertahankan esensi dan
+                kualitas penampilan orkestra itu sendiri.
+                <br />
+                Selain penampilan dari para pemain GMCO, konser ini akan
+                dimeriahkan oleh penampilan bintang tamu, penyanyi pria
+                nasional, yaitu Sal Priadi. GMCO Live from the Living Room akan
+                menjadi konser orkestra intim yang unik dan diminati banyak
+                penikmat musik Yogyakarta.
+              </p>
+              <a className="text-gmco-white" href="https://gmco.ukm.ugm.ac.id/">
+                <button className="py-2 px-4 md:py-3 md:px-6 bg-gmco-blue-main rounded-xl transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark duration-300">
+                  More About GMCO
+                </button>
+              </a>
             </div>
           </div>
-        </RevealWrapper>
+          </RevealWrapper>
+        </div>
 
         {/* Home Content 1 */}
       </div>
-      <RevealWrapper origin="left" duration={1000} distance="500px">
-        <FooterBar />
-      </RevealWrapper>
+      <FooterBar />
     </>
   );
 }
