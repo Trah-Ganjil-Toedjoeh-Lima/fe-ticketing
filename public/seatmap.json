@@ -195,11 +195,11 @@
     },
     {
       "seat_id": 7,
-      "name": "G40",
+      "name": "G44",
       "price": 165000,
       "status": "available",
       "row": "G",
-      "column": 45
+      "column": 44
     }
   ],
   "message": "success"
