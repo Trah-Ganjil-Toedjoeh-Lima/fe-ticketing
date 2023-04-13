@@ -84,7 +84,7 @@ export default function index() {
           </p>
         </div>
 
-        <div className="py-40 bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-50 flex flex-col items-center right-0 p-4 space-y-8 w-full md:w-1/3 md:h-1/2  ">
+        <div className="py-40 bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-50 flex flex-col items-center right-0 p-4 space-y-8 w-full md:w-5/12 md:h-1/2  ">
           <div className="flex flex-col items-center ">
             <h1 className="mb-3 text-xl font-bold"> Welcome to GC GMCO</h1>
             <p>Login to your account</p>
