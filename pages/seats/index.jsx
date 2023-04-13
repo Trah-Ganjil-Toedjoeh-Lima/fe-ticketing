@@ -1,17 +1,10 @@
 /* eslint-disable react/jsx-key */
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import { axiosInstance } from "@/atoms/config";
 
 export default function Home() {
-  const [seatmap, setSeatMap] = useState([]);
   const [l_seatmap, set_L_seatmap] = useState([]);
   const [ml_seatmap, set_ML_seatmap] = useState([]);
   const [mr_seatmap, set_MR_seatmap] = useState([]);
@@ -38,6 +31,28 @@ export default function Home() {
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
   ];
+
+  const start_mappers = {
+    A: [0, 1, 9, 0],
+    B: [1, 14, 23, 32],
+    C: [1, 16, 25, 34],
+    D: [1, 16, 26, 37],
+    E: [1, 17, 28, 37],
+    F: [1, 18, 30, 42],
+    G: [1, 18, 30, 42],
+    H: [1, 17, 30, 43],
+    I: [1, 16, 30, 44],
+    J: [1, 15, 29, 43],
+    K: [1, 14, 29, 44],
+    L: [1, 13, 28, 43],
+    M: [1, 12, 28, 44],
+    N: [1, 11, 27, 43],
+    O: [1, 11, 29, 46],
+    P: [1, 10, 28, 45],
+    Q: [1, 9, 27, 45],
+    R: [1, 8, 27, 46],
+    S: [1, 8, 27, 46],
+};
 
   const deg_rot = [
     "-translate-y-[20px]",
@@ -85,15 +100,11 @@ export default function Home() {
     "w-[102.5%]",
   ];
 
-  const axiosInstance = axios.create({
-    withCredentials: true,
-  });
-
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("seatmap.json");
-        setSeatMap(seatMapping(res.data.data));
+        const res = await axiosInstance.get("api/v1/seat_map");
+        seatMapping(res.data.data);
         // setSeatMap(res.data.data);
       } catch (err) {
         // catch here
@@ -168,7 +179,6 @@ export default function Home() {
       }
     }
 
-    // console.log(seatArr);
     // Initiate seatdict array
     for (const mapper of mappers) {
       let row = Object.keys(mapper);
@@ -183,24 +193,21 @@ export default function Home() {
         }
       }
     }
-    // console.log(seatDict);
 
     // for each major division, group the data into the coressponding row (row A, row B, etc)
     for (const entry of seatArr.entries()) {
-      // console.log(entry);
-      let start = [1, 11, 21, 31];
+      console.log(entry)
       if (entry) {
         const datas = entry[1];
         const index = entry[0];
         // seatDict[index] = new Array();
         for (const item of datas) {
-          seatDict[index][item.row][item.column - start[index]] = item;
+          seatDict[index][item.row][item.column - start_mappers[item.row][index]] = item
+          console.log(start_mappers[item.row][index])
         }
         arr[index] = Object.values(seatDict[index]);
       }
     }
-
-    console.log(seatDict);
 
     // make into different variable
     set_L_seatmap(arr[0]);
@@ -221,11 +228,10 @@ export default function Home() {
     // console.log(array);
     let arr = [];
     for (let i = 0; i < array.length; i++) {
-      console.log(i);
       if (array[i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${deg_rot[i]}`}
           >
             {array[i].name}
           </div>
@@ -244,24 +250,30 @@ export default function Home() {
   function right_mapper(array) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
-      if (array[i]) {
+      if (array[array.length - i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 text-center ${deg_rot[i-1]}`}
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${
+              deg_rot[i - 1]
+            }`}
           >
-            {array[i].name}
+            {array[array.length - i].name}
           </div>
         );
       }
       // If the data is empty, then display blackbox
       else {
         arr.push(
-          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i-1]}`}></div>
+          <div
+            className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
+          ></div>
         );
       }
     }
     return arr;
   }
+
+  // console.log(l_seatmap, ml_seatmap, mr_seatmap, r_seatmap)
 
   return (
     <>
@@ -313,16 +325,16 @@ export default function Home() {
           </p>
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
-          <div className="flex w-full justify-center scale-[95%] pt-8">
+          <div className=" flex w-full justify-center scale-[95%] pt-8">
             {/* Left wing */}
-            <div className="flex translate-x-10">
+            <div className="pointer-events-none flex translate-x-10">
               {/* left */}
               {/* row wise */}
               <div className="flex flex-col rotate-[24deg] translate-x-12 gap-2">
                 {l_seatmap.map((seats) => (
                   // col wise
                   <div
-                    className={`flex flex-row gap-2 origin-top-right justify-end`}
+                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-end`}
                   >
                     {left_mapper(seats)}
                   </div>
@@ -336,7 +348,7 @@ export default function Home() {
                   // col wise
                   // prin)
                   <div
-                    className={`flex gap-2 ${row_width[index]} justify-between`}
+                    className={`pointer-events-auto flex z-20 gap-2 ${row_width[index]} justify-between`}
                   >
                     {left_mapper(seats)}
                   </div>
@@ -345,14 +357,14 @@ export default function Home() {
             </div>
 
             {/* Right Wing */}
-            <div className="flex -translate-x-10">
+            <div className="pointer-events-none flex -translate-x-10">
               {/* middle right */}
               {/* row wise */}
-              <div className="flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
+              <div className="pointer-events-none flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
                 {mr_seatmap.map((seats, index) => (
                   // col wise
                   <div
-                    className={`flex gap-2 ${row_width[index]} justify-between`}
+                    className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                   >
                     {right_mapper(seats)}
                   </div>
@@ -361,11 +373,11 @@ export default function Home() {
 
               {/* right */}
               {/* row wise */}
-              <div className="flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
+              <div className="pointer-events-none flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
                 {r_seatmap.map((seats) => (
                   // col wise
                   <div
-                    className={`flex flex-row gap-2 origin-top-right justify-start`}
+                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-start`}
                   >
                     {right_mapper(seats)}
                   </div>

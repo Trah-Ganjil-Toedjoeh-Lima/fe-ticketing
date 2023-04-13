@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  
   withCredentials: true,
 });
 
@@ -16,7 +15,7 @@ export function midtransSetup() {
   // Optional: set script attribute, for example snap.js have data-client-key attribute
   // (change the value according to your client-key)
   const myMidtransClientKey = process.env.NEXT_MIDTRANS_CLIENT_KEY_SANDBOX;
-  scriptTag.setAttribute("data-client-key", "SB-Mid-client-pKhjdsW23b2bUqjV");
+  scriptTag.setAttribute("data-client-key", myMidtransClientKey);
 
   document.body.appendChild(scriptTag);
 
