@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Head from 'next/head'
+import Head from "next/head";
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
 import withAuth from "@/atoms/authpage";
 
-function cart() {
+function Cart() {
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
@@ -171,4 +171,4 @@ function cart() {
   );
 }
 
-export default withAuth(cart);
+export default withAuth(Cart);

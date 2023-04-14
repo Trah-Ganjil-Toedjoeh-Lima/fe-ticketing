@@ -13,29 +13,29 @@ export default function Profile() {
   const [email, setEmail] = useState("reinhart.siregar@gmail.com");
   const [phoneNum, setPhoneNum] = useState("085155438410");
 
-  const handleInputChange = (event, setStateFunction) => {
+  const HandleInputChange = (event, setStateFunction) => {
     setStateFunction(event.target.value);
   };
 
-  const handleInputKeyDown = (event, setIsEditing) => {
+  const HandleInputKeyDown = (event, setIsEditing) => {
     if (event.keyCode === 13) {
       setIsEditing(false);
     }
   };
 
-  const handleInputBlur = (setIsEditing) => {
+  const HandleInputBlur = (setIsEditing) => {
     setIsEditing(false);
   };
 
-  const handleNameClick = () => {
+  const HandleNameClick = () => {
     setIsEditingName(true);
   };
 
-  const handleEmailClick = () => {
+  const HandleEmailClick = () => {
     setIsEditingEmail(true);
   };
 
-  const handlePhoneNumClick = () => {
+  const HandlePhoneNumClick = () => {
     setIsEditingPhoneNum(true);
   };
 
@@ -48,16 +48,16 @@ export default function Profile() {
               className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey font-bold text-3xl"
               type="text"
               value={name}
-              onChange={(event) => handleInputChange(event, setName)}
-              onBlur={() => handleInputBlur(setIsEditingName)}
-              onKeyDown={(event) => handleInputKeyDown(event, setIsEditingName)}
+              onChange={(event) => HandleInputChange(event, setName)}
+              onBlur={() => HandleInputBlur(setIsEditingName)}
+              onKeyDown={(event) => HandleInputKeyDown(event, setIsEditingName)}
               disabled={!isEditingName}
               autoFocus
             />
           ) : (
             <h1
               className="text-gray-700 dark:text-white font-bold text-3xl text-center"
-              onClick={handleNameClick}
+              onClick={HandleNameClick}
             >
               {name}
             </h1>
@@ -68,10 +68,10 @@ export default function Profile() {
               className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
               type="text"
               value={email}
-              onChange={(event) => handleInputChange(event, setEmail)}
-              onBlur={() => handleInputBlur(setIsEditingEmail)}
+              onChange={(event) => HandleInputChange(event, setEmail)}
+              onBlur={() => HandleInputBlur(setIsEditingEmail)}
               onKeyDown={(event) =>
-                handleInputKeyDown(event, setIsEditingEmail)
+                HandleInputKeyDown(event, setIsEditingEmail)
               }
               disabled={!isEditingEmail}
               autoFocus
@@ -79,7 +79,7 @@ export default function Profile() {
           ) : (
             <p
               className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
-              onClick={handleEmailClick}
+              onClick={HandleEmailClick}
             >
               {email}
             </p>
@@ -90,10 +90,10 @@ export default function Profile() {
               className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
               type="text"
               value={phoneNum}
-              onChange={(event) => handleInputChange(event, setPhoneNum)}
-              onBlur={() => handleInputBlur(setIsEditingPhoneNum)}
+              onChange={(event) => HandleInputChange(event, setPhoneNum)}
+              onBlur={() => HandleInputBlur(setIsEditingPhoneNum)}
               onKeyDown={(event) =>
-                handleInputKeyDown(event, setIsEditingPhoneNum)
+                HandleInputKeyDown(event, setIsEditingPhoneNum)
               }
               disabled={!isEditingPhoneNum}
               autoFocus
@@ -101,7 +101,7 @@ export default function Profile() {
           ) : (
             <p
               className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
-              onClick={handlePhoneNumClick}
+              onClick={HandlePhoneNumClick}
             >
               {phoneNum}
             </p>
