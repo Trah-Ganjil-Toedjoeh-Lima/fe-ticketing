@@ -4,14 +4,14 @@ import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
-export default function index() {
+export default function Index() {
   const router = useRouter();
   const [loginInput, setLoginInput] = useState({
     email: "",
     otp: "",
   });
 
-  function handleInput(e) {
+  function HandleInput(e) {
     e.persist();
     setLoginInput({ ...loginInput, [e.target.id]: e.target.value });
   }
@@ -24,8 +24,7 @@ export default function index() {
   //   });
   // }
 
-  
-  async function loginSubmit(e) {
+  async function LoginSubmit(e) {
     e.preventDefault();
     try {
       console.log(JSON.stringify(loginInput));
@@ -73,7 +72,7 @@ export default function index() {
           <h1 className="mb-3 text-4xl font-bold md:text-3xl"> GC GMCO </h1>
           <p className="mb-3 text-2xl font-bold md:text-xl">
             {" "}
-            Anjangsana Symphony{" "}
+            Anjangsana Simfoni{" "}
           </p>
         </div>
 
@@ -85,14 +84,14 @@ export default function index() {
           <form
             action="#"
             className="flex flex-col items-center space-y-4"
-            onSubmit={loginSubmit}
+            onSubmit={LoginSubmit}
           >
             <div className="relative">
               <label class="mb-2 text-md">Email</label>
               <input
                 type="email"
                 placeholder="johndoe@mail.com"
-                onChange={(e) => handleInput(e)}
+                onChange={(e) => HandleInput(e)}
                 value={loginInput.email}
                 class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                 id="email"
