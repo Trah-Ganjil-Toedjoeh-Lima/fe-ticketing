@@ -1,66 +1,149 @@
 /* eslint-disable react/jsx-key */
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import { axiosInstance } from "@/atoms/config";
 
 export default function Home() {
-  const [seatmap, setSeatMap] = useState([]);
   const [l_seatmap, set_L_seatmap] = useState([]);
-  const [m_seatmap, set_M_seatmap] = useState([]);
+  const [ml_seatmap, set_ML_seatmap] = useState([]);
+  const [mr_seatmap, set_MR_seatmap] = useState([]);
   const [r_seatmap, set_R_seatmap] = useState([]);
+  const [userSeats, setUserSeats] = useState([]);
 
   const mappers = [
-    { A: [10, 10, 10] },
-    { B: [10, 10, 10] },
-    { C: [10, 10, 10] },
-    { D: [10, 10, 10] },
-    { E: [10, 10, 10] },
-    { F: [10, 10, 15] },
-    { G: [10, 10, 15] },
-    { H: [10, 10, 10] },
-    { I: [10, 10, 10] },
-    { J: [10, 10, 10] },
-    { K: [10, 10, 10] },
-    { L: [10, 10, 10] },
-    { M: [10, 10, 10] },
-    { N: [10, 10, 10] },
-    { O: [10, 10, 10] },
-    { P: [10, 10, 10] },
+    { A: [0, 8, 8, 0] },
+    { B: [13, 9, 9, 13] },
+    { C: [15, 9, 9, 13] },
+    { D: [15, 10, 11, 14] },
+    { E: [16, 11, 11, 16] },
+    { F: [17, 12, 12, 17] },
+    { G: [17, 12, 12, 17] },
+    { H: [16, 13, 13, 15] },
+    { I: [15, 14, 14, 13] },
+    { J: [14, 14, 14, 13] },
+    { K: [13, 15, 15, 13] },
+    { L: [12, 15, 15, 12] },
+    { M: [11, 16, 16, 11] },
+    { N: [10, 16, 16, 10] },
+    { O: [10, 18, 17, 9] },
+    { P: [9, 18, 17, 9] },
+    { Q: [8, 18, 18, 8] },
+    { R: [7, 19, 19, 7] },
+    { S: [7, 19, 19, 7] },
+    { T: [0, 0, 0, 7] },
   ];
 
-  const axiosInstance = axios.create({
-    withCredentials: true,
-  });
+  const start_mappers = {
+    A: [0, 1, 9, 0],
+    B: [1, 14, 23, 32],
+    C: [1, 16, 25, 34],
+    D: [1, 16, 26, 37],
+    E: [1, 17, 28, 39],
+    F: [1, 18, 30, 42],
+    G: [1, 18, 30, 42],
+    H: [1, 17, 30, 43],
+    I: [1, 16, 30, 44],
+    J: [1, 15, 29, 43],
+    K: [1, 14, 29, 44],
+    L: [1, 13, 28, 43],
+    M: [1, 12, 28, 44],
+    N: [1, 11, 27, 43],
+    O: [1, 11, 29, 46],
+    P: [1, 10, 28, 45],
+    Q: [1, 9, 27, 45],
+    R: [1, 8, 27, 46],
+    S: [1, 8, 27, 46],
+    T: [0, 0, 0, 1],
+  };
+
+  function circle(x, r) {
+    return;
+  }
+
+  const deg_rot = [
+    "-translate-y-[20px]",
+    "-translate-y-[18px]",
+    "-translate-y-[16px]",
+    "-translate-y-[14px]",
+    "-translate-y-[12px]",
+    "-translate-y-[10px]",
+    "-translate-y-[8px]",
+    "-translate-y-[6px]",
+    "-translate-y-[4px]",
+    "-translate-y-[2px]",
+    "translate-y-[0px]",
+    "translate-y-[2px]",
+    "translate-y-[4px]",
+    "translate-y-[6px]",
+    "translate-y-[8px]",
+    "translate-y-[10px]",
+    "translate-y-[12px]",
+    "translate-y-[14px]",
+    "translate-y-[16px]",
+    "translate-y-[18px]",
+    "translate-y-[20px]",
+  ];
+
+  const row_width = [
+    "w-[57.5%]",
+    "w-[60%]",
+    "w-[62.5%]",
+    "w-[65%]",
+    "w-[67.5%]",
+    "w-[70%]",
+    "w-[72.5%]",
+    "w-[75%]",
+    "w-[77.5%]",
+    "w-[80%]",
+    "w-[82.5%]",
+    "w-[85%]",
+    "w-[87.5%]",
+    "w-[90%]",
+    "w-[92.5%]",
+    "w-[95%]",
+    "w-[97.5%]",
+    "w-[100%]",
+    "w-[102.5%]",
+  ];
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("seatmap.json");
-        setSeatMap(seatMapping(res.data.data));
+        const res = await axiosInstance.get("/api/v1/seat_map");
+        seatMapping(res.data.data);
         // setSeatMap(res.data.data);
       } catch (err) {
-        // catch here
+        notifyError(err);
       }
     })();
   }, []);
+
+  async function postSeats(seatsArr) {
+    try {
+      await axiosInstance.post("/api/v1/seat_map", {
+        data: seatsArr,
+      });
+    } catch (err) {
+      notifyError(err);
+    }
+  }
 
   // Mapping the data
   function seatMapping(value) {
     let seatArr = [];
     let arr = [];
-    let seatDict = {};
+    let seatDict = {
+      0: [],
+      1: [],
+      2: [],
+      3: [],
+    };
 
     for (const mapper of mappers) {
       let row = Object.keys(mapper);
       let lengths = Object.values(mapper);
-
+      // console.log(lengths);
       // Divide into 3 major alligment = left, middle, and right area of seats
       for (const length of lengths) {
         value.map((item) => {
@@ -72,7 +155,7 @@ export default function Home() {
               seatArr[0] = [item];
             }
           }
-          // Middle
+          // Middle left
           else if (
             item.column > length[0] &&
             item.column <= length[0] + length[1] &&
@@ -84,7 +167,7 @@ export default function Home() {
               seatArr[1] = [item];
             }
           }
-          // Right
+          // Middle right
           else if (
             item.column > length[0] + length[1] &&
             item.column <= length[0] + length[1] + length[2] &&
@@ -96,81 +179,153 @@ export default function Home() {
               seatArr[2] = [item];
             }
           }
+
+          // Right
+          else if (
+            item.column > length[0] + length[1] + length[2] &&
+            item.column <= length[0] + length[1] + length[2] + length[3] &&
+            item.row == row
+          ) {
+            if (seatArr[3]) {
+              seatArr[3].push(item);
+            } else {
+              seatArr[3] = [item];
+            }
+          }
         });
+      }
+    }
+
+    // Initiate seatdict array
+    for (const mapper of mappers) {
+      let row = Object.keys(mapper);
+      let lengthsArr = Object.values(mapper);
+
+      // Divide into 3 major alligment = left, middle, and right area of seats
+      for (const lengths of lengthsArr) {
+        for (const length_ent of lengths.entries()) {
+          let index = length_ent[0];
+          let length = length_ent[1];
+          seatDict[index][row] = new Array(length);
+        }
       }
     }
 
     // for each major division, group the data into the coressponding row (row A, row B, etc)
     for (const entry of seatArr.entries()) {
-      let start = [1, 11, 20];
+      // console.log(entry)
       if (entry) {
         const datas = entry[1];
         const index = entry[0];
-        seatDict[index] = new Array();
         for (const item of datas) {
-          if (seatDict[index][item.row]) {
-            seatDict[index][item.row][item.column - start[index]] = item;
-          } else {
-            seatDict[index][item.row] = new Array();
-            seatDict[index][item.row][item.column - start[index]] = item;
-          }
+          seatDict[index][item.row][
+            item.column - start_mappers[item.row][index]
+          ] = item;
+          // console.log(start_mappers[item.row][index])
         }
         arr[index] = Object.values(seatDict[index]);
       }
     }
 
-    console.log(seatDict);
-
     // make into different variable
     set_L_seatmap(arr[0]);
-    set_M_seatmap(arr[1]);
-    set_R_seatmap(arr[2]);
+    set_ML_seatmap(arr[1]);
+    set_MR_seatmap(arr[2]);
+    set_R_seatmap(arr[3]);
 
     return arr;
   }
 
-  function print(halo) {
-    console.log(halo);
+  function onSeatPick(array, arrayUser) {
+    arrayUser.includes(array.seat_id)
+      ? setUserSeats(userSeats.filter((item) => item !== array.seat_id))
+      : setUserSeats([...userSeats, array.seat_id]);
   }
 
   // display the data
-  function mapper(array) {
-    console.log(array[0]);
+  function left_mapper(array, arrayUser) {
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
-        arr.push(<div className="">{array[i].name}</div>);
+        arr.push(
+          <div
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${deg_rot[i]}`}
+            onClick={() => onSeatPick(array[i], arrayUser)}
+          >
+            {array[i].name}
+          </div>
+        );
       }
       // If the data is empty, then display blackbox
       else {
-        arr.push(<div className="h-3 w-3 bg-black"></div>);
+        arr.push(
+          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+        );
       }
     }
     return arr;
   }
 
+  function right_mapper(array, arrayUser) {
+    let arr = [];
+    for (let i = array.length; i > 0; i--) {
+      if (array[array.length - i]) {
+        arr.push(
+          <div
+            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${
+              deg_rot[i - 1]
+            }`}
+            onClick={() => onSeatPick(array[array.length - i], arrayUser)}
+          >
+            {array[array.length - i].name}
+          </div>
+        );
+      }
+      // If the data is empty, then display blackbox
+      else {
+        arr.push(
+          <div
+            className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
+          ></div>
+        );
+      }
+    }
+    return arr;
+  }
+
+  function cek(halo) {
+    console.log(halo);
+  }
+
+  // console.log(l_seatmap, ml_seatmap, mr_seatmap, r_seatmap)
+
   return (
     <>
       <NavigationBar />
-      <div className="h-40 bg-[#287D92] border-b-4 border-[#F6F7F1]">
+      <div className="h-40 bg-gmco-blue-main">
         <div className="p-7">
-          <p className="text-[#F6F7F1] text-2xl font-semibold">
+          <p className="text-gmco-white text-2xl font-semibold">
             Season 3 • Concert
           </p>
-          <p className="text-[#F6F7F1] text-5xl font-bold">GMCO best concert</p>
-          <p className="text-[#F6F7F1] text-base font-bold mt-3">
+          <p className="text-gmco-white text-5xl font-bold">
+            GMCO best concert
+          </p>
+          <p className="text-gmco-white text-base font-bold mt-3">
             Yogyakarta, Gawk Gawk
           </p>
         </div>
       </div>
 
-      <div className="flex flex-row h-screen">
-        <div className="w-1/4 border-r-4 h-full ml-7">
+      <div className="grid grid-cols-5 h-screen">
+        {/* Sementara Hidden */}
+        {/* Left Bar */}
+        <div className="col-span-1 border-r-4">
           <img
+            className="pl-6 bg-gmco-blue"
             src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.jpg&w=1200&q=75"
             alt=""
           />
-          <div className="text-[#2D2D2F] font-semibold">
+          <div className="text-gmco-grey font-semibold pl-6">
             <p className="text-sm my-3">Season • 2022/2023</p>
             <p className="text-2xl mb-3 border-b-2">GMCGO - Trah Ganjil</p>
             <div className="flex flex-col gap-5">
@@ -189,51 +344,80 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-3/4 p-5">
-          <p className="text-[#2D2D2F] font-semibold text-xl">Lantai 1</p>
-          {/* {print(l_seatmap)} */}
 
-          <div className="flex flex-row gap-10">
-            {/* row wise */}
-            <div className="flex flex-col gap-2">
-              {l_seatmap.map((seats) => (
-                // col wise
-                <div className="flex flex-row gap-4">{mapper(seats)}</div>
-              ))}
+        {/* SeatMap */}
+        <div className="col-span-4 p-4 overflow-x-scroll overflow-auto">
+          <a
+            onClick={() => cek(userSeats)}
+            className="text-gmco-grey flex justify-center font-semibold text-2xl"
+          >
+            Lantai 1
+          </a>
+
+          {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
+          <div className="flex justify-center scale-[75%] pt-8">
+            {/* Left wing */}
+            <div className="pointer-events-none flex translate-x-10">
+              {/* left */}
+              {/* row wise */}
+              <div className="flex flex-col rotate-[24deg] translate-x-12 gap-2">
+                {l_seatmap.map((seats) => (
+                  // col wise
+                  <div
+                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-end`}
+                  >
+                    {left_mapper(seats, userSeats)}
+                  </div>
+                ))}
+              </div>
+
+              {/* middle left */}
+              {/* row wise */}
+              <div className="flex flex-col items-center gap-[0.45rem] rotate-[12deg] translate-y-40">
+                {ml_seatmap.map((seats, index) => (
+                  // col wise
+                  // prin)
+                  <div
+                    className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
+                  >
+                    {left_mapper(seats, userSeats)}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* row wise */}
-            <div className="flex flex-col gap-2">
-              {m_seatmap.map((seats) => (
-                // col wise
-                <div className="flex flex-row gap-4">{mapper(seats)}</div>
-              ))}
-            </div>
-            {/* row wise
-            <div className="flex flex-col gap-2">
-              {m_seatmap.map((seats) => (
-                // col wise
-                <div className="flex flex-row gap-4">
-                  {seats.map((seat) => (
-                    // TODO - BUAT BUTTON INPUT
-                    <div className="">{seat.name}</div>
-                  ))}
-                </div>
-              ))}
-            </div> */}
-            <div className="flex flex-col gap-2">
-              {r_seatmap.map((seats) => (
-                <div className="flex flex-row gap-4">
-                  {seats.map((seat) => (
-                    <div className="">{seat.name}</div>
-                  ))}
-                </div>
-              ))}
+            {/* Right Wing */}
+            <div className="pointer-events-none flex -translate-x-10">
+              {/* middle right */}
+              {/* row wise */}
+              <div className="pointer-events-none flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
+                {mr_seatmap.map((seats, index) => (
+                  // col wise
+                  <div
+                    className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
+                  >
+                    {right_mapper(seats, userSeats)}
+                  </div>
+                ))}
+              </div>
+
+              {/* right */}
+              {/* row wise */}
+              <div className="pointer-events-none flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
+                {r_seatmap.map((seats) => (
+                  // col wise
+                  <div
+                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-start`}
+                  >
+                    {right_mapper(seats, userSeats)}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <FooterBar/>
+      <FooterBar />
     </>
   );
 }

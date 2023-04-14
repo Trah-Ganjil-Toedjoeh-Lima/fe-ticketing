@@ -58,12 +58,12 @@ export default function FooterBar() {
             </span>
           </div>
         </div>
-        {menus.map((menu) => (
-          <div>
+        {menus.map((menu, index) => (
+          <div key={index}>
             <div className="text-xl font-bold mb-4">{menu.title}</div>
             <ul className="space-y-2 text-gmco-white/60">
-              {menu.submenu.map((submenu) => (
-                <li>
+              {menu.submenu.map((submenu, index) => (
+                <li key={index}>
                   <Link href={submenu.route} className="hover:text-gmco-white">
                     {submenu.name}
                   </Link>
@@ -81,16 +81,25 @@ export default function FooterBar() {
       <div className="inline md:flex justify-between items-center">
         <div className="text-sm text-gray-500">
           &copy;
-          <Link href="" className="hover:text-gmco-white font-bold">GMCO UGM </Link>
+          <Link href="" className="hover:text-gmco-white font-bold">
+            GMCO UGM{" "}
+          </Link>
           courtesy by
-          <Link href="" className="hover:text-gmco-white font-bold"> Trah Ganjil 75 </Link>
+          <Link href="" className="hover:text-gmco-white font-bold">
+            {" "}
+            Trah Ganjil 75{" "}
+          </Link>
           {new Date().getFullYear()}
         </div>
 
         {/* to do : cari icon */}
         <div className="flex space-x-4 mt-2 md:m-0">
-          {socials.map((social) => (
-            <Link href="#" className="text-gmco-white/50 hover:text-gmco-white">
+          {socials.map((social, index) => (
+            <Link
+              key={index}
+              href="#"
+              className="text-gmco-white/50 hover:text-gmco-white"
+            >
               {social.name}
             </Link>
           ))}
