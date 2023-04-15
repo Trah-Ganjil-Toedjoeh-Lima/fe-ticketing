@@ -1,27 +1,20 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
-import { useRouter } from "next/router";
-import withAuth from "@/atoms/authpage";
+import { notifyError } from "@/components/notify";
 
 export default function Cart() {
+  const [orderTotal, setOrderTotal] = useState(0);
+  const router = useRouter();
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
     user_name: "user_name",
     user_phone: "user_phone",
   });
-  const [orderTotal, setOrderTotal] = useState(0);
-  const router = useRouter();
-
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        if (!localStorage.getItem("auth_token")) {
-          router.push("/auth");
-        }
-      }
-    }, []);
 
   useEffect(() => {
     (async () => {
@@ -31,13 +24,17 @@ export default function Cart() {
         ]);
         setSeatBoughts(res.data.data);
       } catch (err) {
-        console.log(err);
+        notifyError(err)
       }
     })();
   }, []);
 
   useEffect(() => {
-    midtransSetup();
+    if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
+      router.push("/auth");
+    } else {
+      midtransSetup();
+    }
   }, []);
 
   useEffect(() => {
@@ -51,10 +48,12 @@ export default function Cart() {
 
   async function handleCheckout() {
     try {
-      const res = await axiosInstance.get("/transactionResponse");
+      const res = await axiosInstance.post("/api/v1/checkout");
+      console.log(res.data)
       openMidtransWindow(res.data.snap_response.token);
     } catch (err) {
-      console.log(err);
+      // notifyError(err);
+      console.log(err)
     }
   }
 

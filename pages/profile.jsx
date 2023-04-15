@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import Link from "next/link";
-import styles from "@/styles/Home.module.css";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import FooterBar from "@/components/footer";
+import NavigationBar from "@/components/navbar";
 
 export default function Profile() {
   const [isEditingName, setIsEditingName] = useState(false);
@@ -52,6 +51,8 @@ export default function Profile() {
 
 
   return (
+    <>
+    <NavigationBar/>
     <div className="bg-gray-100 dark:bg-gmco-grey min-h-screen">
       <div className="flex flex-col mx-16">
         <div className="my-8 flex flex-col items-center">
@@ -231,5 +232,16 @@ export default function Profile() {
         </div>
       </div>
     </div>
+    <FooterBar/>
+    </>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const { req } = ctx;
+  let baseURL = "";
+  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+  }
+  return { props: {} };
 }

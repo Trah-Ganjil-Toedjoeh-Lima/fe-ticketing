@@ -1,6 +1,8 @@
 import React from "react";
 import Head from "next/head";
 import "@/styles/globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -8,6 +10,7 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Grand Concert GMCO</title>
       </Head>
+      <ToastContainer />
       <Component {...pageProps} />
     </>
   );
