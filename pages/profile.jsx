@@ -221,3 +221,12 @@ export default function Profile() {
     </div>
   );
 }
+
+export async function getServerSideProps(ctx) {
+  const { req } = ctx;
+  let baseURL = "";
+  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+  }
+  return { props: {} };
+}
