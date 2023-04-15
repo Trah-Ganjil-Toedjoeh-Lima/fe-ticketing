@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import OTPInput from "react-otp-input";
 import { Card } from "flowbite-react";
@@ -16,7 +15,7 @@ export default function OtpPage() {
     otp: otp,
   });
 
-  async function loginSubmit(e) {
+  async function LoginSubmit(e) {
     e.preventDefault();
     if (otp.length == 6) {
       try {
@@ -30,7 +29,7 @@ export default function OtpPage() {
             console.log(res);
             if (res.status === 200) {
               console.log(res.data.token.AccessToken);
-              localStorage.setItem("auth_token", res.data.token.AccessToken);
+              localStorage.setItem("auth_token", `Bearer ${res.data.token.AccessToken}`);
               Swal.fire({
                 html: `<b>${res.data.message}</b> tunggu...`,
                 toast: true,
@@ -44,7 +43,7 @@ export default function OtpPage() {
                 },
               }).then(() => {
                 router.push({
-                  pathname: "/profile",
+                  pathname: "/",
                 });
               });
             }
@@ -93,7 +92,7 @@ export default function OtpPage() {
         <button
           type="submit"
           class="w-full mt-6 bg-gmco-blue text-white text-base p-2 font font-semibold rounded-lg md:p-2 md:text-lg  hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
-          onClick={loginSubmit}
+          onClick={LoginSubmit}
         >
           Submit
         </button>

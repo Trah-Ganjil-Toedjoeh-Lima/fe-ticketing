@@ -4,7 +4,7 @@ import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
-export default function Index() {
+export default function Auth() {
   const router = useRouter();
   const [loginInput, setLoginInput] = useState({
     email: "",
@@ -66,7 +66,7 @@ export default function Index() {
 
   return (
     <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
-      <div className=" relative bg-[url('/GMCO.jpg')] bg-cover bg-left-top flex flex-col items-center  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10">
+      <div className=" relative bg-[url('/GMCO.JPG')] bg-cover bg-left-top flex flex-col items-center  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10">
         {/* leftside */}
         <div className=" backdrop-filter flex flex-col text-white justify-center items-center w-full  p-4 md:w-4/6 md:p-10  ">
           <h1 className="mb-3 text-4xl font-bold md:text-3xl"> GC GMCO </h1>

@@ -3,8 +3,13 @@ import { useState, useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 import { axiosInstance } from "@/atoms/config";
+import { notifyError } from "@/components/notify";
 
-export default function Home() {
+export default function Seats() {
+  console.log(
+    typeof window !== "undefined" && localStorage.getItem("auth_token")
+  );
+
   const [l_seatmap, set_L_seatmap] = useState([]);
   const [ml_seatmap, set_ML_seatmap] = useState([]);
   const [mr_seatmap, set_MR_seatmap] = useState([]);
@@ -249,7 +254,7 @@ export default function Home() {
       if (array[i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${deg_rot[i]}`}
+            className={`h-5 w-5 rounded-sm bg-slate-400 text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${deg_rot[i]}`}
             onClick={() => onSeatPick(array[i], arrayUser)}
           >
             {array[i].name}
@@ -259,7 +264,7 @@ export default function Home() {
       // If the data is empty, then display blackbox
       else {
         arr.push(
-          <div className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+          <div className={`h-5 w-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
         );
       }
     }
@@ -272,7 +277,7 @@ export default function Home() {
       if (array[array.length - i]) {
         arr.push(
           <div
-            className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${
+            className={`h-5 w-5 rounded-sm bg-slate-400 text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
               deg_rot[i - 1]
             }`}
             onClick={() => onSeatPick(array[array.length - i], arrayUser)}
@@ -285,7 +290,7 @@ export default function Home() {
       else {
         arr.push(
           <div
-            className={`w-5 h-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
+            className={`h-5 w-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
           ></div>
         );
       }
@@ -304,67 +309,74 @@ export default function Home() {
       <NavigationBar />
       <div className="h-40 bg-gmco-blue-main">
         <div className="p-7">
-          <p className="text-gmco-white text-2xl font-semibold">
+          <p className="text-2xl font-semibold text-gmco-white">
             Season 3 • Concert
           </p>
-          <p className="text-gmco-white text-5xl font-bold">
+          <p className="text-5xl font-bold text-gmco-white">
             GMCO best concert
           </p>
-          <p className="text-gmco-white text-base font-bold mt-3">
+          <p className="mt-3 text-base font-bold text-gmco-white">
             Yogyakarta, Gawk Gawk
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-5 h-screen">
+      <div className="grid h-screen grid-cols-5">
         {/* Sementara Hidden */}
         {/* Left Bar */}
         <div className="col-span-1 border-r-4">
           <img
-            className="pl-6 bg-gmco-blue"
+            className="bg-gmco-blue pl-6"
             src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.jpg&w=1200&q=75"
             alt=""
           />
-          <div className="text-gmco-grey font-semibold pl-6">
-            <p className="text-sm my-3">Season • 2022/2023</p>
-            <p className="text-2xl mb-3 border-b-2">GMCGO - Trah Ganjil</p>
+          <div className="pl-6 font-semibold text-gmco-grey">
+            <p className="my-3 text-sm">Season • 2022/2023</p>
+            <p className="mb-3 border-b-2 text-2xl">GMCGO - Trah Ganjil</p>
             <div className="flex flex-col gap-5">
-              <div className="flex flex-row gap-2 content-center">
-                <div className="h-3 w-3 rounded-md bg-red-600 self-center"></div>
+              <div className="flex flex-row content-center gap-2">
+                <div className="h-3 w-3 self-center rounded-md bg-red-600"></div>
                 <p>Kursi Sudah Dibeli</p>
               </div>
-              <div className="flex flex-row gap-2 content-center">
-                <div className="h-3 w-3 rounded-md bg-green-600 self-center"></div>
+              <div className="flex flex-row content-center gap-2">
+                <div className="h-3 w-3 self-center rounded-md bg-green-600"></div>
                 <p>Bisa Dibeli</p>
               </div>
-              <div className="flex flex-row gap-2 content-center">
-                <div className="h-3 w-3 rounded-md bg-yellow-600 self-center"></div>
+              <div className="flex flex-row content-center gap-2">
+                <div className="h-3 w-3 self-center rounded-md bg-yellow-600"></div>
                 <p>Dibayar Dulu</p>
+              </div>
+              <div>
+                {userSeats.map((userSeat) => (
+                  <span>{userSeat}</span>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
         {/* SeatMap */}
-        <div className="col-span-4 p-4 overflow-x-scroll overflow-auto">
+        <div className="col-span-4 overflow-auto overflow-x-scroll p-4">
           <a
-            onClick={() => cek(userSeats)}
-            className="text-gmco-grey flex justify-center font-semibold text-2xl"
+            onClick={() => {
+              cek(userSeats), postSeats(userSeats);
+            }}
+            className="flex justify-center text-2xl font-semibold text-gmco-grey"
           >
             Lantai 1
           </a>
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
-          <div className="flex justify-center scale-[75%] pt-8">
+          <div className="flex scale-[75%] justify-center pt-8">
             {/* Left wing */}
             <div className="pointer-events-none flex translate-x-10">
               {/* left */}
               {/* row wise */}
-              <div className="flex flex-col rotate-[24deg] translate-x-12 gap-2">
+              <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2">
                 {l_seatmap.map((seats) => (
                   // col wise
                   <div
-                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-end`}
+                    className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                   >
                     {left_mapper(seats, userSeats)}
                   </div>
@@ -373,7 +385,7 @@ export default function Home() {
 
               {/* middle left */}
               {/* row wise */}
-              <div className="flex flex-col items-center gap-[0.45rem] rotate-[12deg] translate-y-40">
+              <div className="flex translate-y-40 rotate-[12deg] flex-col items-center gap-[0.45rem]">
                 {ml_seatmap.map((seats, index) => (
                   // col wise
                   // prin)
@@ -390,7 +402,7 @@ export default function Home() {
             <div className="pointer-events-none flex -translate-x-10">
               {/* middle right */}
               {/* row wise */}
-              <div className="pointer-events-none flex flex-col items-center gap-[0.45rem] -rotate-[12deg] translate-y-40">
+              <div className="pointer-events-none flex translate-y-40 -rotate-[12deg] flex-col items-center gap-[0.45rem]">
                 {mr_seatmap.map((seats, index) => (
                   // col wise
                   <div
@@ -403,11 +415,11 @@ export default function Home() {
 
               {/* right */}
               {/* row wise */}
-              <div className="pointer-events-none flex flex-col -rotate-[24deg] -translate-x-12 gap-2">
+              <div className="pointer-events-none flex -translate-x-12 -rotate-[24deg] flex-col gap-2">
                 {r_seatmap.map((seats) => (
                   // col wise
                   <div
-                    className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-start`}
+                    className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                   >
                     {right_mapper(seats, userSeats)}
                   </div>
