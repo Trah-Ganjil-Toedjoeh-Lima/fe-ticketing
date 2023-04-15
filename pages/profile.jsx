@@ -18,31 +18,41 @@ export default function Profile() {
   const [phoneNum, setPhoneNum] = useState("");
   const tickets = [6, 7, 8, 9, 10, 11, 12];
 
-  const handleInputChange = (event, setStateFunction) => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("auth_token")) {
+        router.push("/auth");
+      }
+    }
+  }, []);
+
+  const HandleInputChange = (event, setStateFunction) => {
     setStateFunction(event.target.value);
   };
 
-  const handleInputKeyDown = (event, setIsEditing) => {
+  const HandleInputKeyDown = (event, setIsEditing) => {
     if (event.keyCode === 13) {
       setIsEditing(false);
     }
   };
 
-  const handleInputBlur = (setIsEditing) => {
+  const HandleInputBlur = (setIsEditing) => {
     setIsEditing(false);
   };
 
-  const handleNameClick = () => {
+  const HandleNameClick = () => {
     setIsEditingName(true);
   };
 
-  const handleEmailClick = () => {
+  const HandleEmailClick = () => {
     setIsEditingEmail(true);
   };
 
-  const handlePhoneNumClick = () => {
+  const HandlePhoneNumClick = () => {
     setIsEditingPhoneNum(true);
   };
+  
+
 
   return (
     <>
@@ -200,4 +210,13 @@ export default function Profile() {
       <FooterBar />
     </>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const { req } = ctx;
+  let baseURL = "";
+  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+  }
+  return { props: {} };
 }

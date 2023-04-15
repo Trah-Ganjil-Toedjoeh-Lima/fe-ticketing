@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 
-function notifyError(message) {
-  toast.error(message, {
+const notifyError = (message) => {
+  toast.error(message.response.data.error, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: false,
@@ -13,10 +13,10 @@ function notifyError(message) {
   });
 }
 
-function notifySucces(message) {
-  toast.error(message, {
+const notifySucces = (message) => {
+  toast.success(message, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: false,
@@ -26,31 +26,4 @@ function notifySucces(message) {
   });
 }
 
-function scheduleError(message) {
-  const err = message.response.data.messages.join("\n");
-  toast.error(err, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-}
-
-function notifyErrorMessage(message) {
-  toast.error(message, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-}
-
-export { notifyError, notifySucces, scheduleError, notifyErrorMessage };
+export { notifyError, notifySucces };

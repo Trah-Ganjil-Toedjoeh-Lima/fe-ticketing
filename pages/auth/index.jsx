@@ -4,14 +4,14 @@ import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
-export default function index() {
+export default function Auth() {
   const router = useRouter();
   const [loginInput, setLoginInput] = useState({
     email: "",
     otp: "",
   });
 
-  function handleInput(e) {
+  function HandleInput(e) {
     e.persist();
     setLoginInput({ ...loginInput, [e.target.id]: e.target.value });
   }
@@ -24,8 +24,7 @@ export default function index() {
   //   });
   // }
 
-  
-  async function loginSubmit(e) {
+  async function LoginSubmit(e) {
     e.preventDefault();
     try {
       console.log(JSON.stringify(loginInput));
@@ -67,17 +66,26 @@ export default function index() {
 
   return (
     <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
-      <div className=" relative bg-[url('/GMCO.jpg')] bg-cover bg-left-top flex flex-col items-center  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10">
+      <div className=" relative bg-[url('/GMCO.jpg')] bg-cover flex flex-col  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10 ">
         {/* leftside */}
-        <div className=" backdrop-filter flex flex-col text-white justify-center items-center w-full  p-4 md:w-4/6 md:p-10  ">
-          <h1 className="mb-3 text-4xl font-bold md:text-3xl"> GC GMCO </h1>
-          <p className="mb-3 text-2xl font-bold md:text-xl">
+        <div className=" backdrop-filter flex flex-col  text-white w-full place mt-14 ml-3 p-4 h-3/6 md:w-7/12 md:p-10 md:items-start md:mt-0 ">
+          <h1 className="mb-3 text-4xl font-bold md:text-5xl">
             {" "}
-            Anjangsana Symphony{" "}
+            Grand Concert{" "}
+          </h1>
+          <p className="mb-3 text-2xl font-base md:text-3xl">Vol.10</p>
+          <p className=" text-2xl font-base md:text-2xl">
+            {" "}
+            Anjangsana Simfoni{" "}
           </p>
         </div>
+        <img
+          src="/logo_gmco.webp"
+          alt=""
+          className="absolute w-32 top-3 left-5 md:top-3/4 md:w-52 md:left-9"
+        />
 
-        <div className="py-40 bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-50 flex flex-col items-center right-0 p-4 space-y-8 w-full md:w-5/12 md:h-1/2  ">
+        <div className="py-32 bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-50 flex flex-col items-center right-0 p-4 space-y-8 w-full mt-7 md:w-5/12 md:mt-0 md:py-40 ">
           <div className="flex flex-col items-center ">
             <h1 className="mb-3 text-xl font-bold"> Welcome to GC GMCO</h1>
             <p>Login to your account</p>
@@ -85,14 +93,14 @@ export default function index() {
           <form
             action="#"
             className="flex flex-col items-center space-y-4"
-            onSubmit={loginSubmit}
+            onSubmit={LoginSubmit}
           >
             <div className="relative">
               <label class="mb-2 text-md">Email</label>
               <input
                 type="email"
                 placeholder="johndoe@mail.com"
-                onChange={(e) => handleInput(e)}
+                onChange={(e) => HandleInput(e)}
                 value={loginInput.email}
                 class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                 id="email"
