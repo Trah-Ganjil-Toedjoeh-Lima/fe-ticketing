@@ -7,6 +7,9 @@ module.exports = {
     "./node_modules/flowbite-react/**/*.js",
   ],
   theme: {
+    // fontFamily:{
+    //   'sans':[]
+    // }, 
     extend:{
         colors:{
           'gmco-blue':{
