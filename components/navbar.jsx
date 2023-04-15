@@ -82,7 +82,7 @@ export default function NavigationBar() {
                 name@flowbite.com
               </p>
             </Dropdown.Header>
-            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Item><Link href="profile">Profile</Link></Dropdown.Item>
             <Dropdown.Item>Sign out</Dropdown.Item>
           </Dropdown>
 

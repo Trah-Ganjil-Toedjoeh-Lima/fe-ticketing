@@ -4,113 +4,15 @@ import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 import { axiosInstance } from "@/atoms/config";
 import { notifyError } from "@/components/notify";
+import { mappers, start_mappers, deg_rot, row_width } from "@/atoms/seatConfig";
 
 export default function Seats() {
-  console.log(
-    typeof window !== "undefined" && localStorage.getItem("auth_token")
-  );
-
   const [l_seatmap, set_L_seatmap] = useState([]);
   const [ml_seatmap, set_ML_seatmap] = useState([]);
   const [mr_seatmap, set_MR_seatmap] = useState([]);
   const [r_seatmap, set_R_seatmap] = useState([]);
   const [userSeats, setUserSeats] = useState([]);
-
-  const mappers = [
-    { A: [0, 8, 8, 0] },
-    { B: [13, 9, 9, 13] },
-    { C: [15, 9, 9, 13] },
-    { D: [15, 10, 11, 14] },
-    { E: [16, 11, 11, 16] },
-    { F: [17, 12, 12, 17] },
-    { G: [17, 12, 12, 17] },
-    { H: [16, 13, 13, 15] },
-    { I: [15, 14, 14, 13] },
-    { J: [14, 14, 14, 13] },
-    { K: [13, 15, 15, 13] },
-    { L: [12, 15, 15, 12] },
-    { M: [11, 16, 16, 11] },
-    { N: [10, 16, 16, 10] },
-    { O: [10, 18, 17, 9] },
-    { P: [9, 18, 17, 9] },
-    { Q: [8, 18, 18, 8] },
-    { R: [7, 19, 19, 7] },
-    { S: [7, 19, 19, 7] },
-    { T: [0, 0, 0, 7] },
-  ];
-
-  const start_mappers = {
-    A: [0, 1, 9, 0],
-    B: [1, 14, 23, 32],
-    C: [1, 16, 25, 34],
-    D: [1, 16, 26, 37],
-    E: [1, 17, 28, 39],
-    F: [1, 18, 30, 42],
-    G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
-    K: [1, 14, 29, 44],
-    L: [1, 13, 28, 43],
-    M: [1, 12, 28, 44],
-    N: [1, 11, 27, 43],
-    O: [1, 11, 29, 46],
-    P: [1, 10, 28, 45],
-    Q: [1, 9, 27, 45],
-    R: [1, 8, 27, 46],
-    S: [1, 8, 27, 46],
-    T: [0, 0, 0, 1],
-  };
-
-  function circle(x, r) {
-    return;
-  }
-
-  const deg_rot = [
-    "-translate-y-[20px]",
-    "-translate-y-[18px]",
-    "-translate-y-[16px]",
-    "-translate-y-[14px]",
-    "-translate-y-[12px]",
-    "-translate-y-[10px]",
-    "-translate-y-[8px]",
-    "-translate-y-[6px]",
-    "-translate-y-[4px]",
-    "-translate-y-[2px]",
-    "translate-y-[0px]",
-    "translate-y-[2px]",
-    "translate-y-[4px]",
-    "translate-y-[6px]",
-    "translate-y-[8px]",
-    "translate-y-[10px]",
-    "translate-y-[12px]",
-    "translate-y-[14px]",
-    "translate-y-[16px]",
-    "translate-y-[18px]",
-    "translate-y-[20px]",
-  ];
-
-  const row_width = [
-    "w-[57.5%]",
-    "w-[60%]",
-    "w-[62.5%]",
-    "w-[65%]",
-    "w-[67.5%]",
-    "w-[70%]",
-    "w-[72.5%]",
-    "w-[75%]",
-    "w-[77.5%]",
-    "w-[80%]",
-    "w-[82.5%]",
-    "w-[85%]",
-    "w-[87.5%]",
-    "w-[90%]",
-    "w-[92.5%]",
-    "w-[95%]",
-    "w-[97.5%]",
-    "w-[100%]",
-    "w-[102.5%]",
-  ];
+  const [userSeatsPick, setUserSeatsPick] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -122,7 +24,11 @@ export default function Seats() {
         notifyError(err);
       }
     })();
-  }, []);
+  }, [mappers, start_mappers, deg_rot, row_width]);
+
+  function circle(x, r) {
+    return;
+  }
 
   async function postSeats(seatsArr) {
     try {
@@ -147,23 +53,29 @@ export default function Seats() {
 
     for (const mapper of mappers) {
       let row = Object.keys(mapper);
-      let lengths = Object.values(mapper);
-      // console.log(lengths);
-      // Divide into 3 major alligment = left, middle, and right area of seats
-      for (const length of lengths) {
-        value.map((item) => {
-          // Left
-          if (item.column >= 0 && item.column <= length[0] && item.row == row) {
+      let lengthsArr = Object.values(mapper);
+
+      for (const lengths of lengthsArr) {
+        for (const length of lengths.entries()) {
+          let index = length[0];
+          let value = length[1];
+          seatDict[index][row] = new Array(value);
+        }
+
+        value.forEach((item) => {
+          if (
+            item.column >= 0 &&
+            item.column <= lengths[0] &&
+            item.row == row
+          ) {
             if (seatArr[0]) {
               seatArr[0].push(item);
             } else {
               seatArr[0] = [item];
             }
-          }
-          // Middle left
-          else if (
-            item.column > length[0] &&
-            item.column <= length[0] + length[1] &&
+          } else if (
+            item.column > lengths[0] &&
+            item.column <= lengths[0] + lengths[1] &&
             item.row == row
           ) {
             if (seatArr[1]) {
@@ -171,11 +83,9 @@ export default function Seats() {
             } else {
               seatArr[1] = [item];
             }
-          }
-          // Middle right
-          else if (
-            item.column > length[0] + length[1] &&
-            item.column <= length[0] + length[1] + length[2] &&
+          } else if (
+            item.column > lengths[0] + lengths[1] &&
+            item.column <= lengths[0] + lengths[1] + lengths[2] &&
             item.row == row
           ) {
             if (seatArr[2]) {
@@ -183,12 +93,9 @@ export default function Seats() {
             } else {
               seatArr[2] = [item];
             }
-          }
-
-          // Right
-          else if (
-            item.column > length[0] + length[1] + length[2] &&
-            item.column <= length[0] + length[1] + length[2] + length[3] &&
+          } else if (
+            item.column > lengths[0] + lengths[1] + lengths[2] &&
+            item.column <= lengths[0] + lengths[1] + lengths[2] + lengths[3] &&
             item.row == row
           ) {
             if (seatArr[3]) {
@@ -198,21 +105,6 @@ export default function Seats() {
             }
           }
         });
-      }
-    }
-
-    // Initiate seatdict array
-    for (const mapper of mappers) {
-      let row = Object.keys(mapper);
-      let lengthsArr = Object.values(mapper);
-
-      // Divide into 3 major alligment = left, middle, and right area of seats
-      for (const lengths of lengthsArr) {
-        for (const length_ent of lengths.entries()) {
-          let index = length_ent[0];
-          let length = length_ent[1];
-          seatDict[index][row] = new Array(length);
-        }
       }
     }
 
@@ -243,8 +135,10 @@ export default function Seats() {
 
   function onSeatPick(array, arrayUser) {
     arrayUser.includes(array.seat_id)
-      ? setUserSeats(userSeats.filter((item) => item !== array.seat_id))
-      : setUserSeats([...userSeats, array.seat_id]);
+      ? (setUserSeats(userSeats.filter((item) => item !== array.seat_id)),
+        setUserSeatsPick(userSeatsPick.filter((item) => item !== array.name)))
+      : (setUserSeats([...userSeats, array.seat_id]),
+        setUserSeatsPick([...userSeatsPick, array.name]));
   }
 
   // display the data
@@ -347,9 +241,16 @@ export default function Seats() {
                 <p>Dibayar Dulu</p>
               </div>
               <div>
-                {userSeats.map((userSeat) => (
-                  <span>{userSeat}</span>
+                <p>Untuk Lihat Lihat</p>
+                <p>Kursi Dipilih</p>
+                {"["}
+                {userSeatsPick.map((userSeat) => (
+                  <span>
+                    {userSeat}
+                    {","}{" "}
+                  </span>
                 ))}
+                {"]"}
               </div>
             </div>
           </div>
@@ -433,3 +334,74 @@ export default function Seats() {
     </>
   );
 }
+
+// for (const mapper of mappers) {
+//   let row = Object.keys(mapper);
+//   let lengths = Object.values(mapper);
+//   // console.log(lengths);
+//   // Divide into 3 major alligment = left, middle, and right area of seats
+//   for (const length of lengths) {
+//     value.map((item) => {
+//       // Left
+//       if (item.column >= 0 && item.column <= length[0] && item.row == row) {
+//         if (seatArr[0]) {
+//           seatArr[0].push(item);
+//         } else {
+//           seatArr[0] = [item];
+//         }
+//       }
+//       // Middle left
+//       else if (
+//         item.column > length[0] &&
+//         item.column <= length[0] + length[1] &&
+//         item.row == row
+//       ) {
+//         if (seatArr[1]) {
+//           seatArr[1].push(item);
+//         } else {
+//           seatArr[1] = [item];
+//         }
+//       }
+//       // Middle right
+//       else if (
+//         item.column > length[0] + length[1] &&
+//         item.column <= length[0] + length[1] + length[2] &&
+//         item.row == row
+//       ) {
+//         if (seatArr[2]) {
+//           seatArr[2].push(item);
+//         } else {
+//           seatArr[2] = [item];
+//         }
+//       }
+
+//       // Right
+//       else if (
+//         item.column > length[0] + length[1] + length[2] &&
+//         item.column <= length[0] + length[1] + length[2] + length[3] &&
+//         item.row == row
+//       ) {
+//         if (seatArr[3]) {
+//           seatArr[3].push(item);
+//         } else {
+//           seatArr[3] = [item];
+//         }
+//       }
+//     });
+//   }
+// }
+
+// // Initiate seatdict array
+// for (const mapper of mappers) {
+//   let row = Object.keys(mapper);
+//   let lengthsArr = Object.values(mapper);
+
+//   // Divide into 3 major alligment = left, middle, and right area of seats
+//   for (const lengths of lengthsArr) {
+//     for (const length_ent of lengths.entries()) {
+//       let index = length_ent[0];
+//       let length = length_ent[1];
+//       seatDict[index][row] = new Array(length);
+//     }
+//   }
+// }
