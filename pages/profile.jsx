@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import styles from "@/styles/Home.module.css";
+import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 
@@ -12,6 +13,15 @@ export default function Profile() {
   const [name, setName] = useState("Reinhart Timothy");
   const [email, setEmail] = useState("reinhart.siregar@gmail.com");
   const [phoneNum, setPhoneNum] = useState("085155438410");
+  const router = useRouter()
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("auth_token")) {
+        router.push("/auth");
+      }
+    }
+  }, []);
 
   const HandleInputChange = (event, setStateFunction) => {
     setStateFunction(event.target.value);
@@ -38,6 +48,8 @@ export default function Profile() {
   const HandlePhoneNumClick = () => {
     setIsEditingPhoneNum(true);
   };
+  
+
 
   return (
     <div className="bg-gray-100 dark:bg-gmco-grey min-h-screen">
