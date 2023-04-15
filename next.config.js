@@ -3,8 +3,8 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: 'https://dev.gmco-event.com/api/:path*',
+        source: '/api/v1/:path*',
+        destination: 'https://dev.gmco-event.com/api/v1/:path*',
       },
     ]
   },
