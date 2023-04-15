@@ -44,7 +44,7 @@ export default function OtpPage() {
                 },
               }).then(() => {
                 router.push({
-                  pathname: "/profile",
+                  pathname: "/",
                 });
               });
             }

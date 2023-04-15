@@ -3,9 +3,10 @@ import Head from "next/head";
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
+import { useRouter } from "next/router";
 import withAuth from "@/atoms/authpage";
 
-function Cart() {
+export default function Cart() {
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
@@ -13,6 +14,15 @@ function Cart() {
     user_phone: "user_phone",
   });
   const [orderTotal, setOrderTotal] = useState(0);
+  const router = useRouter();
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        if (!localStorage.getItem("auth_token")) {
+          router.push("/auth");
+        }
+      }
+    }, []);
 
   useEffect(() => {
     (async () => {
@@ -171,4 +181,3 @@ function Cart() {
   );
 }
 
-export default withAuth(Cart);
