@@ -13,7 +13,7 @@ export default function Home() {
   const mappers = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
-    { C: [13, 9, 9, 13] },
+    { C: [15, 9, 9, 13] },
     { D: [15, 10, 11, 14] },
     { E: [16, 11, 11, 14] },
     { F: [17, 12, 12, 17] },
@@ -196,14 +196,14 @@ export default function Home() {
 
     // for each major division, group the data into the coressponding row (row A, row B, etc)
     for (const entry of seatArr.entries()) {
-      console.log(entry)
+      // console.log(entry)
       if (entry) {
         const datas = entry[1];
         const index = entry[0];
         // seatDict[index] = new Array();
         for (const item of datas) {
           seatDict[index][item.row][item.column - start_mappers[item.row][index]] = item
-          console.log(start_mappers[item.row][index])
+          // console.log(start_mappers[item.row][index])
         }
         arr[index] = Object.values(seatDict[index]);
       }

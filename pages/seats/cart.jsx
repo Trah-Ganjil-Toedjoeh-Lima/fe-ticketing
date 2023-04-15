@@ -6,22 +6,40 @@ import { axiosInstance, midtransSetup } from "@/atoms/config";
 
 export default function cart() {
   const [seatBoughts, setSeatBoughts] = useState({
-    seats: [],
-    user_email: "user.email",
-    user_name: "user_name",
-    user_phone: "user_phone",
+    seats: [
+      {
+        name: "A10",
+        price: 165000,
+      },
+      {
+        name: "A11",
+        price: 165000,
+      },
+      {
+        name: "G41",
+        price: 15000,
+      },
+    ],
+    user_email: "nismara.chandra@gmail.com",
+    user_name: "user1",
+    user_phone: "123456789",
   });
   const [orderTotal, setOrderTotal] = useState(0);
 
-  useEffect(() => {
-    (async () => {
-      const [res] = await Promise.all([
-        axiosInstance.get("/transactionDetail"),
-      ]);
+  // seats: [],
+  // user_email: "user.email",
+  // user_name: "user_name",
+  // user_phone: "user_phone",
 
-      setSeatBoughts(res.data.data);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const [res] = await Promise.all([
+  //       axiosInstance.get("/api/v1/checkout")
+  //     ]);
+
+  //     setSeatBoughts(res.data.data);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     midtransSetup();
@@ -39,7 +57,6 @@ export default function cart() {
   async function handleCheckout() {
     try {
       const res = await axiosInstance.get("/transactionResponse");
-      console.log(res.data.snap_response.token);
       openMidtransWindow(res.data.snap_response.token);
     } catch (err) {
       console.log(err);
@@ -78,86 +95,69 @@ export default function cart() {
     return `Rp${idrMoney}`;
   }
 
-  useEffect(() => {
-    const snapSrcUrl = "https://app.midtrans.com/snap/snap.js";
-    // const myMidtransClientKey = "SB-Mid-client-pKhjdsW23b2bUqjV"
-    const myMidtransClientKey = "Mid-client-FwFVpZnrPBHcdiMY";
-
-    const script = document.createElement("script");
-    script.src = snapSrcUrl;
-    script.setAttribute("data-client-key", myMidtransClientKey);
-    script.async = true;
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  });
-
   return (
     <>
       <NavigationBar />
-      <div className="bg-gmco-blue-main h-16" />
-      <div className="container m-auto py-8">
-        <h2 className="text-xl font-bold text-gray-900">Kursi Dipesan</h2>
-        <div className="grid grid-cols-4 gap-10 min-h-screen overflow-hidden py-6">
-          <div className="col-span-3 overflow-y-auto">
-            {/* Display List */}
-            <ul role="list" className="-my-6 divide-y divide-gray-200">
-              {/* Item - nanti di map */}
-              {seatBoughts.seats.map((seatBought, index) => (
-                <li key={index} className="flex py-6 w-full">
-                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                    {seatBought.price > 100000 ? (
-                      <img
-                        src="/chair.jpg"
-                        alt="Kursi Bagus Enak Diduduki"
-                        className="h-full w-full object-cover object-center"
-                      />
-                    ) : (
-                      <img
-                        src="/chair-hijau.jpg"
-                        alt="Kursi Hijau Sangat Kuat"
-                        className="h-full w-full object-cover object-center"
-                      />
-                    )}
-                  </div>
+      <div className="bg-[url('/gmco-cart.JPG')] bg-cover backdrop-blur">
+        <div className="backdrop-blur">
+          <div className="container m-auto px-6 pt-24 pb-8 md:min-h-screen">
+            <h2 className="text-xl font-bold text-gmco-white">Keranjang - ({seatBoughts.seats.length} item)</h2>
+            <div className="grid gap-10 overflow-hidden md:grid-cols-5 md:py-6">
+              <div className="md:col-span-3">
+                {/* Display List */}
+                <ul role="list" className="divide-y divide-gray-200 md:-my-6">
+                  {/* Item - nanti di map */}
+                  {seatBoughts.seats.map((seatBought, index) => (
+                    <li key={index} className="flex w-full py-6">
+                      <div className="hidden md:inline h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                        {seatBought.price > 100000 ? (
+                          <img
+                            src="/chair.jpg"
+                            alt="Kursi Bagus Enak Diduduki"
+                            className="h-full w-full object-cover object-center"
+                          />
+                        ) : (
+                          <img
+                            src="/chair-hijau.jpg"
+                            alt="Kursi Hijau Sangat Kuat"
+                            className="h-full w-full object-cover object-center"
+                          />
+                        )}
+                      </div>
 
-                  <div className="ml-4 w-full flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between text-base font-medium text-gray-900">
-                        <h3>
-                          Kursi <b>{seatBought.name}</b>
+                      <div className="ml-4 flex w-full items-center justify-between text-gmco-white">
+                        <h3 className="text-xl font-extrabold">
+                          {seatBought.name}
                         </h3>
+                        <p className="bg-gmco-yellow rounded-md p-2 text-gmco-grey">
+                          Kategori - Lantai {seatBought.name[0] > "S" ? 2 : 1}
+                        </p>
+                        <p className="bg-gmco-white rounded-md py-1 px-3 text-gmco-grey">1</p>
                         <p>{formatNumber(seatBought.price)}</p>
                       </div>
-                      <p></p>
-                      <p className="mt-1 text-sm text-gray-500">
-                        Kategori - Lantai {seatBought.name[0] > "S" ? 2 : 1}
-                      </p>
-                    </div>
-                    <p className="text-gray-500">Jumlah 1</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          {/* Bagian Checkout */}
-          <div className="col-span-1 border-gray-200">
-            <div className="flex justify-between text-base font-medium text-gray-900">
-              <p>Subtotal</p>
-              <p>{formatNumber(orderTotal)}</p>
-            </div>
-            <p className="mt-0.5 text-sm text-gray-500">Pajak sudah termasuk</p>
-            <div className="mt-6">
-              <button
-                onClick={() => handleCheckout()}
-                className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-              >
-                Checkout
-              </button>
+              {/* Bagian Checkout */}
+              <div className="border-2 rounded-2xl p-6 border-gray-200 md:col-span-2">
+                <div className="flex justify-between text-base font-medium text-gmco-white">
+                  <p>Subtotal</p>
+                  <p>{formatNumber(orderTotal)}</p>
+                </div>
+                <p className="mt-0.5 text-sm text-gray-500">
+                  Pajak sudah termasuk
+                </p>
+                <div className="mt-6 flex justify-center md:justify-start">
+                  <button
+                    onClick={() => handleCheckout()}
+                    className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  >
+                    Checkout
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
