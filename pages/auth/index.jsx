@@ -4,7 +4,7 @@ import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
-export default function Index() {
+export default function Auth() {
   const router = useRouter();
   const [loginInput, setLoginInput] = useState({
     email: "",

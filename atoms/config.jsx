@@ -2,6 +2,11 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({
   withCredentials: true,
+  headers: {
+    // if localStorage is not defined, it wont throw error
+    Authorization:
+      typeof window !== "undefined" && localStorage.getItem("auth_token"),
+  },
 });
 
 export function midtransSetup() {
