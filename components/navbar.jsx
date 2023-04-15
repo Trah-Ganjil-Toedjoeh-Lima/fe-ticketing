@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { FaShoppingCart } from "react-icons/fa";
 
 export default function NavigationBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function NavigationBar() {
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
+    { name: <FaShoppingCart className="scale-x-[-1] h-6 w-6"/>, route: "/seats/cart" },
   ];
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export default function NavigationBar() {
 
   return (
     <nav
-      className={`fixed z-10 py-3 transition ease-in-out duration-300 w-full ${
+      className={`fixed z-10 w-full py-3 transition duration-300 ease-in-out ${
         scrollPosition > 0 || isOpen
           ? "bg-gmco-white text-black"
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
@@ -49,13 +51,13 @@ export default function NavigationBar() {
         </Link>
         <div className="flex w-max">
           {/* Route when MD*/}
-          <div className="hidden mr-2 md:flex md:items-center md:w-auto">
-            <div className="text-lg flex space-x-2">
+          <div className="mr-2 hidden md:flex md:w-auto md:items-center">
+            <div className="flex items-center space-x-2 text-lg">
               {routes.map((route, index) => (
                 <Link
                   key={index}
                   href={route.route}
-                  className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
+                  className="rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
                 >
                   {route.name}
                 </Link>
@@ -85,10 +87,10 @@ export default function NavigationBar() {
           </Dropdown>
 
           {/* Hamburger Button */}
-          <div className="flex items-center ml-2 md:m-0 md:hidden">
+          <div className="ml-2 flex items-center md:m-0 md:hidden">
             <button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition duration-300 ease-in-out"
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-800 transition duration-300 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none"
               aria-label="Toggle navigation"
               onClick={() => setIsOpen(!isOpen)}
             >
@@ -106,14 +108,14 @@ export default function NavigationBar() {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } md:hidden transition duration-300 ease-in-out`}
+        } transition duration-300 ease-in-out md:hidden`}
       >
         <div className="px-2 pt-2">
           {routes.map((route, index) => (
             <Link
               key={index}
               href={route.route}
-              className="font-semibold p-2 px-6 rounded-md hover:bg-gray-700/10 transition duration-150 ease-in-out"
+              className="rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
             >
               <li>{route.name}</li>
             </Link>
