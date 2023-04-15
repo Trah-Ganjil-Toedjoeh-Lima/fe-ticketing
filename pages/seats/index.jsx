@@ -9,17 +9,18 @@ export default function Home() {
   const [ml_seatmap, set_ML_seatmap] = useState([]);
   const [mr_seatmap, set_MR_seatmap] = useState([]);
   const [r_seatmap, set_R_seatmap] = useState([]);
+  const [userSeats, setUserSeats] = useState([]);
 
   const mappers = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
     { C: [15, 9, 9, 13] },
     { D: [15, 10, 11, 14] },
-    { E: [16, 11, 11, 14] },
+    { E: [16, 11, 11, 16] },
     { F: [17, 12, 12, 17] },
     { G: [17, 12, 12, 17] },
     { H: [16, 13, 13, 15] },
-    { I: [15, 14, 14, 14] },
+    { I: [15, 14, 14, 13] },
     { J: [14, 14, 14, 13] },
     { K: [13, 15, 15, 13] },
     { L: [12, 15, 15, 12] },
@@ -30,6 +31,7 @@ export default function Home() {
     { Q: [8, 18, 18, 8] },
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
+    { T: [0, 0, 0, 7] },
   ];
 
   const start_mappers = {
@@ -37,7 +39,7 @@ export default function Home() {
     B: [1, 14, 23, 32],
     C: [1, 16, 25, 34],
     D: [1, 16, 26, 37],
-    E: [1, 17, 28, 37],
+    E: [1, 17, 28, 39],
     F: [1, 18, 30, 42],
     G: [1, 18, 30, 42],
     H: [1, 17, 30, 43],
@@ -52,7 +54,12 @@ export default function Home() {
     Q: [1, 9, 27, 45],
     R: [1, 8, 27, 46],
     S: [1, 8, 27, 46],
-};
+    T: [0, 0, 0, 1],
+  };
+
+  function circle(x, r) {
+    return;
+  }
 
   const deg_rot = [
     "-translate-y-[20px]",
@@ -103,14 +110,24 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("api/v1/seat_map");
+        const res = await axiosInstance.get("/api/v1/seat_map");
         seatMapping(res.data.data);
         // setSeatMap(res.data.data);
       } catch (err) {
-        // catch here
+        notifyError(err);
       }
     })();
   }, []);
+
+  async function postSeats(seatsArr) {
+    try {
+      await axiosInstance.post("/api/v1/seat_map", {
+        data: seatsArr,
+      });
+    } catch (err) {
+      notifyError(err);
+    }
+  }
 
   // Mapping the data
   function seatMapping(value) {
@@ -200,7 +217,6 @@ export default function Home() {
       if (entry) {
         const datas = entry[1];
         const index = entry[0];
-        // seatDict[index] = new Array();
         for (const item of datas) {
           seatDict[index][item.row][item.column - start_mappers[item.row][index]] = item
           // console.log(start_mappers[item.row][index])
@@ -218,20 +234,21 @@ export default function Home() {
     return arr;
   }
 
-  function print(halo) {
-    console.log(halo);
+  function onSeatPick(array, arrayUser) {
+    arrayUser.includes(array.seat_id)
+      ? setUserSeats(userSeats.filter((item) => item !== array.seat_id))
+      : setUserSeats([...userSeats, array.seat_id]);
   }
 
   // display the data
-  function left_mapper(array) {
-    // console.log(index);
-    // console.log(array);
+  function left_mapper(array, arrayUser) {
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
         arr.push(
           <div
             className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${deg_rot[i]}`}
+            onClick={() => onSeatPick(array[i], arrayUser)}
           >
             {array[i].name}
           </div>
@@ -247,7 +264,7 @@ export default function Home() {
     return arr;
   }
 
-  function right_mapper(array) {
+  function right_mapper(array, arrayUser) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
       if (array[array.length - i]) {
@@ -256,6 +273,7 @@ export default function Home() {
             className={`w-5 h-5 text-[0.7rem] rounded-sm bg-slate-400 hover:scale-150 hover:bg-gmco-orange-secondarydark duration-300 text-center ${
               deg_rot[i - 1]
             }`}
+            onClick={() => onSeatPick(array[array.length - i], arrayUser)}
           >
             {array[array.length - i].name}
           </div>
@@ -273,32 +291,39 @@ export default function Home() {
     return arr;
   }
 
+  function cek(halo) {
+    console.log(halo);
+  }
+
   // console.log(l_seatmap, ml_seatmap, mr_seatmap, r_seatmap)
 
   return (
     <>
       <NavigationBar />
-      <div className="h-40 bg-[#287D92] border-b-4 border-[#F6F7F1]">
+      <div className="h-40 bg-gmco-blue-main">
         <div className="p-7">
-          <p className="text-[#F6F7F1] text-2xl font-semibold">
+          <p className="text-gmco-white text-2xl font-semibold">
             Season 3 • Concert
           </p>
-          <p className="text-[#F6F7F1] text-5xl font-bold">GMCO best concert</p>
-          <p className="text-[#F6F7F1] text-base font-bold mt-3">
+          <p className="text-gmco-white text-5xl font-bold">
+            GMCO best concert
+          </p>
+          <p className="text-gmco-white text-base font-bold mt-3">
             Yogyakarta, Gawk Gawk
           </p>
         </div>
       </div>
 
-      <div className="flex h-screen">
+      <div className="grid grid-cols-5 h-screen">
         {/* Sementara Hidden */}
         {/* Left Bar */}
-        <div className="hidden w-1/5 border-r-4 h-full ml-7">
+        <div className="col-span-1 border-r-4">
           <img
+            className="pl-6 bg-gmco-blue"
             src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.jpg&w=1200&q=75"
             alt=""
           />
-          <div className="text-[#2D2D2F] font-semibold">
+          <div className="text-gmco-grey font-semibold pl-6">
             <p className="text-sm my-3">Season • 2022/2023</p>
             <p className="text-2xl mb-3 border-b-2">GMCGO - Trah Ganjil</p>
             <div className="flex flex-col gap-5">
@@ -319,13 +344,16 @@ export default function Home() {
         </div>
 
         {/* SeatMap */}
-        <div className="p-4 w-full overflow-scroll">
-          <p className="text-gmco-grey flex justify-center font-semibold text-2xl">
+        <div className="col-span-4 p-4 overflow-x-scroll overflow-auto">
+          <a
+            onClick={() => cek(userSeats)}
+            className="text-gmco-grey flex justify-center font-semibold text-2xl"
+          >
             Lantai 1
-          </p>
+          </a>
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
-          <div className=" flex w-full justify-center scale-[95%] pt-8">
+          <div className="flex justify-center scale-[75%] pt-8">
             {/* Left wing */}
             <div className="pointer-events-none flex translate-x-10">
               {/* left */}
@@ -336,7 +364,7 @@ export default function Home() {
                   <div
                     className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-end`}
                   >
-                    {left_mapper(seats)}
+                    {left_mapper(seats, userSeats)}
                   </div>
                 ))}
               </div>
@@ -348,9 +376,9 @@ export default function Home() {
                   // col wise
                   // prin)
                   <div
-                    className={`pointer-events-auto flex z-20 gap-2 ${row_width[index]} justify-between`}
+                    className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                   >
-                    {left_mapper(seats)}
+                    {left_mapper(seats, userSeats)}
                   </div>
                 ))}
               </div>
@@ -366,7 +394,7 @@ export default function Home() {
                   <div
                     className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                   >
-                    {right_mapper(seats)}
+                    {right_mapper(seats, userSeats)}
                   </div>
                 ))}
               </div>
@@ -379,7 +407,7 @@ export default function Home() {
                   <div
                     className={`pointer-events-auto flex flex-row gap-2 origin-top-right justify-start`}
                   >
-                    {right_mapper(seats)}
+                    {right_mapper(seats, userSeats)}
                   </div>
                 ))}
               </div>
