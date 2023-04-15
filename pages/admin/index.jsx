@@ -4,17 +4,34 @@ import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 
 export default function Admin() {
-  const { asPath, pathname } = useRouter();
   const [adminData, setAdminData] = useState([]);
   const [appConfig, setAppConfig] = useState([]);
+
+  const [isAdmin, setIsAdmin] = useState([])
+
+  const router = useRouter();
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("auth_token"));
+    }
+    if (!token) {
+      router.push("/auth");
+    }
+  }, []);
+  
+  useEffect(() => {
+    
+  })
 
   useEffect(() => {
     (async () => {
       const [res, res1] = await Promise.all([
-        axiosInstance.get("/adminSeatDetails"),
-        axiosInstance.get("/appConfig")
+        axiosInstance.get("/INSERT URL HERE"),
+        axiosInstance.get("/INSERT URL HERE"),
       ]);
-  
+
       setAdminData(res.data.data);
       setAppConfig(res1.data.app_config.IsOpenGate);
     })();

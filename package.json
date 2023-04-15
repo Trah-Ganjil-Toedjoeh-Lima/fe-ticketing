@@ -17,6 +17,7 @@
     "flowbite-react": "^0.4.3",
     "json-server": "^0.17.3",
     "next": "13.2.4",
+    "next-auth": "^4.22.0",
     "next-reveal": "^1.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
