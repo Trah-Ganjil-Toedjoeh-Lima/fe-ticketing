@@ -18,6 +18,7 @@ export default function Seats() {
     (async () => {
       try {
         const res = await axiosInstance.get("/api/v1/seat_map");
+        console.log(res.data.data)
         seatMapping(res.data.data);
         // setSeatMap(res.data.data);
       } catch (err) {
