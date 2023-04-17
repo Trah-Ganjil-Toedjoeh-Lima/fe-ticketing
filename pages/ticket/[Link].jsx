@@ -30,7 +30,18 @@ export default function Ticket() {
   const { Link } = router.query;
 
   return (
-    <div className="mx-auto my-10 flex flex-row items-start rounded-xl border bg-[url('/E-Ticket.svg')] px-4 py-4 text-center "></div>
+    <section className="block min-h-screen items-center justify-center bg-slate-950 p-4 md:flex">
+      <img
+        src="/E-Ticket.svg"
+        className=" object-cover grid grid-cols-6 "
+      >
+        <div className="col-span-2">
+
+          <img src="" alt="" />
+        </div>
+
+      </img>
+    </section>
   );
 }
 
