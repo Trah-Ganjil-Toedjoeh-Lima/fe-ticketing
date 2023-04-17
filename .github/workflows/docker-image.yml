@@ -27,4 +27,4 @@ jobs:
     - name: Checkout Source Code
       uses: actions/checkout@v3
     - name: Deploy Docker Compose
-      run: docker compose up -d
+      run: export DOCKER_TAG=$(git rev-parse --short HEAD) && docker compose up -d
