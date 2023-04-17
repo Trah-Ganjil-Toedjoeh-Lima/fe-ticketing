@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Inter, Rubik } from "next/font/google";
 import Link from "next/link";
-import styles from "@/styles/Home.module.css";
 
 import { useEffect, useRef } from "react";
 import { useState } from "react";
@@ -62,12 +61,12 @@ useEffect(() => {
   return (
     <>
       {/* HEADER */}
-
+      <NavigationBar />
       <div className="min-h-screen w-screen bg-gmco-white">
         <div className="relative w-screen overflow-hidden">
           <img
             className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
-            src="GMCO_10.png"
+            src="/GMCO_10.webp"
           ></img>
           <div className="absolute left-0 top-0 flex h-full w-full flex-col py-16 lg:flex-row">
             <div className="flex h-full w-1/5 items-center px-16">
@@ -161,17 +160,21 @@ useEffect(() => {
                     <p>Open Gate 18.00 WIB</p>
                   </div>
                   <div className="overflow-hidden">
-                    <Image src="/qris-reinhart.png" width={100} height={100} />
+                    <Image src="/qris-reinhart.webp" width={100} height={100} />
                   </div>
 
                   {/* Nama Konser */}
                   <div className="flex w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4">
                     <div className="mx-2 overflow-hidden">
-                      <Image src="/violin-picture.png" width={80} height={80} />
+                      <Image
+                        src="/violin-picture.webp"
+                        width={80}
+                        height={80}
+                      />
                     </div>
 
                     <div className="flex w-full flex-col text-start sm:text-end">
-                      <h1 className="font-inter text-sm font-bold font-semibold text-white sm:text-lg lg:text-2xl">
+                      <h1 className="font-inter text-sm font-bold text-white sm:text-lg lg:text-2xl">
                         Grand Concert Vol.10
                       </h1>
                       <p className="font-inter text-sm font-light text-white lg:text-lg">
