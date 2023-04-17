@@ -9,6 +9,6 @@ module.exports = {
     ]
   },
   output: 'standalone',
-  reactStrictMode: true,
+  reactStrictMode: false,
 }
   

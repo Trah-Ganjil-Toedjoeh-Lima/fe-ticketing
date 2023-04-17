@@ -129,7 +129,7 @@ export default function Profile() {
           <div className="bg-white grid grid-col rounded-lg p-4">
             {/*Header: Event name */}
             <div className="flex flex-row">
-              <Image src="/violin-picture.png" width={20} height={20} />
+              <Image src="/violin-picture.webp" width={20} height={20} />
               <p className="text-gray-700 mx-2">Grand Concert GMCO 2023</p>
             </div>
 
@@ -140,7 +140,7 @@ export default function Profile() {
               <h2 className="text-black font-bold text-4xl w-1/2">Seat A6</h2>
               <div className="flex flex-row w-1/2 justify-end">
                 <Image
-                  src="/qris-reinhart.png"
+                  src="/qris-reinhart.webp"
                   width={100}
                   height={100}
                 ></Image>
@@ -164,7 +164,7 @@ export default function Profile() {
           <div className="bg-white grid grid-col rounded-lg p-4">
             {/*Header: Event name */}
             <div className="flex flex-row">
-              <Image src="/violin-picture.png" width={20} height={20} />
+              <Image src="/violin-picture.webp" width={20} height={20} />
               <p className="text-gray-700 mx-2">Grand Concert GMCO 2023</p>
             </div>
 
@@ -175,7 +175,7 @@ export default function Profile() {
               <h2 className="text-black font-bold text-4xl w-1/2">Seat A7</h2>
               <div className="flex flex-row w-1/2 justify-end">
                 <Image
-                  src="/qris-reinhart.png"
+                  src="/qris-reinhart.webp"
                   width={100}
                   height={100}
                 ></Image>
@@ -199,7 +199,7 @@ export default function Profile() {
           <div className="bg-white grid grid-col rounded-lg p-4 ">
             {/*Header: Event name */}
             <div className="flex flex-row">
-              <Image src="/violin-picture.png" width={20} height={20} />
+              <Image src="/violin-picture.webp" width={20} height={20} />
               <p className="text-gray-700 mx-2">Grand Concert GMCO 2023</p>
             </div>
 
@@ -210,7 +210,7 @@ export default function Profile() {
               <h2 className="text-black font-bold text-4xl w-1/2">Seat A8</h2>
               <div className="flex flex-row w-1/2 justify-end">
                 <Image
-                  src="/qris-reinhart.png"
+                  src="/qris-reinhart.webp"
                   width={100}
                   height={100}
                 ></Image>
