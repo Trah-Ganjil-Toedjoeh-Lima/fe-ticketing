@@ -106,10 +106,18 @@ export default function Seats() {
 
   const priceColor = {
     120000: "opacity-100",
-    170000: "opacity-80",
-    145000: "opacity-60",
-    85000: "opacity-40",
-    60000: "opacity-20",
+    170000: "opacity-90",
+    145000: "opacity-75",
+    85000: "opacity-60",
+    60000: "opacity-40",
+  };
+
+  const statusColor = {
+    available: "bg-[#5C9E82]",
+    reserved_by_me: "bg-[#F5DB91]",
+    purchased_by_me: "bg-[#5C9E82]",
+    reserved: "bg-[#C0925E]",
+    purchased: "bg-[#7E7E7E]",
   };
 
   useEffect(() => {
@@ -231,71 +239,114 @@ export default function Seats() {
     return arr;
   }
 
+  // Seat Clicking Behavior
+  // arrayUser.includes(array.seat_id)
+  //   ? (setUserSeats(userSeats.filter((item) => item !== array.seat_id)),
+  //     setUserSeatsPick(
+  //       userSeatsPick.filter((item) => item.name !== array.name)
+  //     ))
+  //   : arrayUser.length < 5
+  //   ? (setUserSeats([...userSeats, array.seat_id]),
+  //     setUserSeatsPick([...userSeatsPick, array]))
+  //   : notifyError({
+  //       response: { data: { error: "Maksimum pembelian kursi adalah 5" } },
+  //     });
   function onSeatPick(array, arrayUser) {
-    arrayUser.length < 5
-      ? arrayUser.includes(array.seat_id)
-        ? (setUserSeats(userSeats.filter((item) => item !== array.seat_id)),
-          setUserSeatsPick(
-            userSeatsPick.filter((item) => item.name !== array.name)
-          ))
-        : (setUserSeats([...userSeats, array.seat_id]),
-          setUserSeatsPick([...userSeatsPick, array]))
-      : console.log("maks array reached");
+    if (arrayUser.includes(array.seat_id)) {
+      setUserSeats(userSeats.filter((item) => item !== array.seat_id));
+      setUserSeatsPick(
+        userSeatsPick.filter((item) => item.name !== array.name)
+      );
+    } else if (userSeats.length < 5) {
+      setUserSeats([...userSeats, array.seat_id]);
+      setUserSeatsPick([...userSeatsPick, array]);
+    } else {
+      notifyError({
+        response: { data: { error: "Maksimum pembelian kursi adalah 5" } },
+      });
+    }
   }
 
-  // display the data
   function left_mapper(array, arrayUser) {
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
+        if (array[i].status === "available") {
+          const isSelected = userSeats.includes(array[i].seat_id);
+          arr.push(
+            <div
+              className={`h-6 w-6 rounded-sm ${statusColor[array[i].status]} ${
+                priceColor[array[i].price]
+              } cursor-pointer text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
+                deg_rot[i]
+              } ${isSelected ? "border-2 border-red-500" : ""}`}
+              onClick={() => {
+                onSeatPick(array[i], arrayUser);
+                array[i].isSelected = isSelected;
+              }}
+            >
+              {array[i].name}
+            </div>
+          );
+        } else {
+          arr.push(
+            <div
+              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+                statusColor[array[i].status]
+              }  text-center text-[0.7rem] ${deg_rot[i]}`}
+            >
+              {array[i].name}
+            </div>
+          );
+        }
+      } else {
         arr.push(
-          <div
-            className={`h-5 w-5 rounded-sm bg-slate-400 text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${deg_rot[i]}`}
-            onClick={() => onSeatPick(array[i], arrayUser)}
-          >
-            {array[i].name}
-          </div>
-        );
-      }
-      // If the data is empty, then display blackbox
-      else {
-        arr.push(
-          <div className={`h-5 w-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+          <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i]}`}></div>
         );
       }
     }
     return arr;
   }
 
-  function right_mapper(array, arrayUser, color) {
-    let arr = [];
-    for (let i = array.length; i > 0; i--) {
-      if (array[array.length - i]) {
+  function right_mapper(array, arrayUser) {
+  let arr = [];
+  for (let i = array.length; i > 0; i--) {
+    if (array[array.length - i]) {
+      if (array[array.length - i].status == "available") {
+        const isSelected = arrayUser.includes(array[array.length - i].seat_id);
         arr.push(
           <div
-            // TODOOOOOOOOOOOOOOOOOOOOOOOOOO
-            className={`h-5 w-5 rounded-sm bg-[#5C9E82] ${
-              color[array[array.length - i].price]
-            } text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
+            className={`h-6 w-6 rounded-sm ${
+              statusColor[array[array.length - i].status]
+            } ${
+              priceColor[array[array.length - i].price]
+            } cursor-pointer text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
               deg_rot[i - 1]
-            }`}
+            } ${isSelected ? "border-2 border-red-500" : ""}`}
             onClick={() => onSeatPick(array[array.length - i], arrayUser)}
           >
             {array[array.length - i].name}
           </div>
         );
-      }
-      // If the data is empty, then display blackbox
-      else {
+      } else {
         arr.push(
           <div
-            className={`h-5 w-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
-          ></div>
+            className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              statusColor[array[array.length - i].status]
+            }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
+          >
+            {array[array.length - i].name}
+          </div>
         );
       }
+    } else {
+      arr.push(
+        <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i - 1]}`}></div>
+      );
     }
-    return arr;
   }
+  return arr;
+}
 
   function hideSideBar(isOpen) {
     isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
@@ -327,6 +378,7 @@ export default function Seats() {
       <div className="grid h-screen grid-cols-5 ">
         {/* Sementara Hidden */}
         {/* Left Bar */}
+
         <div
           className={`${
             sideBarOpen ? "inline" : "hidden"
@@ -459,18 +511,6 @@ export default function Seats() {
                   <div className="h-4 w-4 self-center rounded-md bg-[#F5DB91]"></div>
                   <p>Kursi Dipilih Oleh Saya</p>
                 </div>
-                {/* <div>
-                  <p>Untuk Lihat Lihat</p>
-                  <p>Kursi Dipilih</p>
-                  {"["}
-                  {userSeatsPick.map((userSeat) => (
-                    <span>
-                      {userSeat.name}
-                      {","}{" "}
-                    </span>
-                  ))}
-                  {"]"}
-                </div> */}
               </div>
             </div>
           </div>
@@ -541,7 +581,7 @@ export default function Seats() {
                   <div
                     className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                   >
-                    {right_mapper(seats, userSeats, priceColor)}
+                    {right_mapper(seats, userSeats)}
                   </div>
                 ))}
               </div>
@@ -554,7 +594,7 @@ export default function Seats() {
                   <div
                     className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                   >
-                    {right_mapper(seats, userSeats, priceColor)}
+                    {right_mapper(seats, userSeats)}
                   </div>
                 ))}
               </div>
