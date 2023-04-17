@@ -34,6 +34,7 @@ export default function Auth() {
           email: loginInput.email,
         })
         .then((res) => {
+          console.log(res)
           const otp = res.data.totp_token;
           setLoginInput({ ...loginInput, otp: res.data.totp_token });
           if (res.status === 200) {

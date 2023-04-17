@@ -7,6 +7,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { axiosInstance } from "@/atoms/config";
 
 export default function NavigationBar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [logedUser, setLogedUser] = useState({
@@ -18,7 +19,7 @@ export default function NavigationBar() {
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
-    { name: "Seat", route: "/seats" },
+    { name: "Seat", route: "/seats" },    
     {
       name: <FaShoppingCart className="h-6 w-6 scale-x-[-1]" />,
       route: "/seats/cart",
@@ -46,6 +47,52 @@ export default function NavigationBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  function logoutCheck(e) {
+    Swal.fire({
+      html: `Anda yakin ingin keluar?`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#000000",
+      showCancelButton: true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#991b1b",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#16a34a",
+      showClass: {
+        popup: "",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutSubmit(e);
+      }
+    });
+  }
+
+    
+async function logoutSubmit(e) {
+  e.preventDefault();
+
+  await axiosInstance.post('api/v1/user/logout').then((res) => {
+    if (res.data.message == 'success') {
+      localStorage.removeItem("auth_token");
+      Swal.fire({
+        html: `<b>${res.data.message}</b> tunggu...`,
+        toast: true,
+        width: 350,
+        icon: "success",
+        iconColor: "#16a34a",
+        showConfirmButton: false,
+        timer: 1500,
+        showClass: {
+          popup: "",
+        },
+      }).then(() => {
+        router.push('/auth');
+      });
+    }
+  });
+}
 
   return (
     <nav
@@ -104,7 +151,10 @@ export default function NavigationBar() {
               <Dropdown.Item>
                 <Link href="/profile">Profile</Link>
               </Dropdown.Item>
-              <Dropdown.Item>Sign out</Dropdown.Item>
+              <Dropdown.Item>
+                <a onClick={logoutCheck}>Log Out</a>
+                
+              </Dropdown.Item>
             </Dropdown>
           )}
 
