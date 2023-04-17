@@ -34,7 +34,7 @@ export default function NavigationBar() {
   useEffect(() => {
     (async () => {
       try {
-        const [res] = await Promise.all([axiosInstance.get("api/v1/user")]);
+        const [res] = await Promise.all([axiosInstance.get("api/v1/user/profile")]);
         console.log(res.data);
         setLogedUser(res.data.data);
       } catch {}
