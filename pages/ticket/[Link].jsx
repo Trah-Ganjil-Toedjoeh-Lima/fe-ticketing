@@ -1,6 +1,8 @@
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
+
 
 
 export async function getServerSideProps({ params }) {
@@ -30,17 +32,25 @@ export default function Ticket() {
   const { Link } = router.query;
 
   return (
-    <section className="block min-h-screen items-center justify-center bg-slate-950 p-4 md:flex">
-      <img
-        src="/E-Ticket.svg"
-        className=" object-cover grid grid-cols-6 "
-      >
+    <section className="min-h-screen items-center justify-center bg-slate-950 p-4">
+      <div className="grid h-[50vh] grid-cols-8 justify-center bg-[url('/E-ticket.svg')] bg-contain bg-no-repeat p-4 md:h-screen">
         <div className="col-span-2">
-
-          <img src="" alt="" />
+          <Image
+            src="/logo-anjangsana.webp"
+            className="h-[30vw] w-auto pl-2 md:ml-10 md:h-[30vh] xl:-ml-20 xl:h-[55vh]"
+            width={1000}
+            height={1000}
+          />
         </div>
-
-      </img>
+        <div className="col-span-4">
+          <div className="row-span-1">
+            <h1 className="mb-3 text-4xl font-bold md:text-5xl">
+              {" "}
+              Grand Concert{" "}
+            </h1>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
