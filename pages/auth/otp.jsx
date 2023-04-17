@@ -29,7 +29,10 @@ export default function OtpPage() {
             console.log(res);
             if (res.status === 200) {
               console.log(res.data.token.AccessToken);
-              localStorage.setItem("auth_token", `Bearer ${res.data.token.AccessToken}`);
+              localStorage.setItem(
+                "auth_token",
+                `Bearer ${res.data.token.AccessToken}`
+              );
               Swal.fire({
                 html: `<b>${res.data.message}</b> tunggu...`,
                 toast: true,
@@ -56,18 +59,18 @@ export default function OtpPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <Card className=" flex  py-4 max-w-sm sm:pl-1 md:px-4 md:py-7 md:max-w-xl lg:px-6 items-center">
-        <EnvelopeOpenIcon className="w-16 h-16 mx-auto colo">
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <Card className=" flex  max-w-sm items-center py-4 sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6">
+        <EnvelopeOpenIcon className="mx-auto h-16 w-16">
           {" "}
         </EnvelopeOpenIcon>
-        <div class="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">
+        <div class="self-center text-xl font-medium uppercase text-gray-800 sm:text-2xl">
           Masukkan Kode Verifikasi
         </div>
-        <div class="font-normal text-sm text-center sm:text-base  text-gray-800 ">
+        <div class="text-center text-sm font-normal text-gray-800  sm:text-base ">
           Kode verifikasi telah dikirimkan melalui email terdaftar
         </div>
-        <div className="mx-auto items-center object-center mt-9">
+        <div className="mx-auto mt-9 items-center object-center">
           <OTPInput
             value={otp}
             onChange={setOtp}
@@ -91,7 +94,7 @@ export default function OtpPage() {
         </div>
         <button
           type="submit"
-          class="w-full mt-6 bg-gmco-blue text-white text-base p-2 font font-semibold rounded-lg md:p-2 md:text-lg  hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
+          class="font type mt-6 w-full rounded-lg bg-gmco-blue p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
           onClick={LoginSubmit}
         >
           Submit
