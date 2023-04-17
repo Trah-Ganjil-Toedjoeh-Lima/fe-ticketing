@@ -11,20 +11,18 @@ export default function Admin() {
 
   const router = useRouter();
 
-  function handleSwitch() {
+  async function handleSwitch() {
     const postURL = appConfig
       ? "api/v1/admin/close_the_gate"
       : "api/v1/admin/open_the_gate";
 
-    axiosInstance
-      .post(postURL)
-      .then((res) => {
-        console.log(res);
-        setAppConfig(!appConfig);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    try {
+      const res = await axiosInstance.post(postURL);
+      console.log(res);
+      setAppConfig(!appConfig);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   useEffect(() => {
