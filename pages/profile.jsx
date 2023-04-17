@@ -181,7 +181,7 @@ useEffect(() => {
                         Grand Concert Vol.10
                       </h1>
                       <p className='font-inter text-sm font-light text-white lg:text-lg'>
-                        `'Anjangsana Simfoni'`
+                        Anjangsana Simfoni
                       </p>
                     </div>
                   </div>
