@@ -87,8 +87,7 @@ export default function Auth() {
 
         <div className="py-32 bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-50 flex flex-col items-center right-0 p-4 space-y-8 w-full mt-7 md:w-5/12 md:mt-0 md:py-40 ">
           <div className="flex flex-col items-center ">
-            <h1 className="mb-3 text-xl font-bold"> Welcome to GC GMCO</h1>
-            <p>Login to your account</p>
+            <h1 className="mb-3 text-4xl font-bold text-gmco-white">Selamat Datang</h1>
           </div>
           <form
             action="#"
@@ -96,19 +95,21 @@ export default function Auth() {
             onSubmit={LoginSubmit}
           >
             <div className="relative">
-              <label class="mb-2 text-md">Email</label>
+              <label class="mb-2 text-md text-gmco-white">Masukkan email anda</label>
               <input
                 type="email"
-                placeholder="johndoe@mail.com"
+                placeholder="Email"
                 onChange={(e) => HandleInput(e)}
                 value={loginInput.email}
-                class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                class="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
                 id="email"
               />
             </div>
+            <label class="text-sm md:text-base text-gmco-white text-center">Anda akan dikirimkan kode OTP melalui email.<br/> Pastikan email yang anda gunakan valid</label>
+            <label class="text-md"></label>
             <button
               type="submit"
-              class="w-full bg-gmco-blue text-white p-2 rounded-lg mb-6 hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
+              class="w-full bg-gmco-orange-secondarylight text-white p-2 rounded-full mb-6 border-white hover:bg-gmco-yellow-secondary hover:text-gmco-white"
             >
               Sign in
             </button>
