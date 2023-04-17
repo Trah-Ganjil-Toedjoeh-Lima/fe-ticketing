@@ -104,8 +104,8 @@ export default function Seats() {
   useEffect(() => {
     (async () => {
       try {
-        // const res = await axiosInstance.get("/api/v1/seat_map");
-        const res = await axiosInstance.get("seatmap.json");
+        const res = await axiosInstance.get("/api/v1/seat_map");
+        // const res = await axiosInstance.get("seatmap.json");
         seatMapping(res.data.data);
       } catch (err) {
         notifyError(err);
