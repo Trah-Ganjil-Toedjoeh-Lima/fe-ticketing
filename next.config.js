@@ -4,7 +4,7 @@ module.exports = {
     return [
       {
         source: '/api/v1/:path*',
-        destination: 'https://dev.gmco-event.com/api/v1/:path*',
+        destination: 'https://dev-api.gmco-event.com/v1/:path*',
       },
     ]
   },

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
@@ -33,6 +34,7 @@ export default function Auth() {
           email: loginInput.email,
         })
         .then((res) => {
+          console.log(res)
           const otp = res.data.totp_token;
           setLoginInput({ ...loginInput, otp: res.data.totp_token });
           if (res.status === 200) {
@@ -51,7 +53,7 @@ export default function Auth() {
     }
   }
 
-  if (process.browser) {
+  if (typeof window !== "undefined") {
     const btn = document.getElementById("login");
     if (btn) {
       // Not called
@@ -65,53 +67,70 @@ export default function Auth() {
   }
 
   return (
-    <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
-      <div className=" relative bg-[url('/GMCO.webp')] bg-cover flex flex-col  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10 ">
+    <section className='block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex'>
+      <div className=" relative flex w-full max-w-screen-lg flex-col  overflow-hidden rounded-lg bg-[url('/GMCO.webp')] bg-cover shadow-lg md:m-10 md:flex-row ">
         {/* leftside */}
-        <div className=" backdrop-filter flex flex-col  text-white w-full place mt-14 ml-3 p-4 h-3/6 md:w-7/12 md:p-10 md:items-start md:mt-0 ">
-          <h1 className="mb-3 text-4xl font-bold md:text-5xl">
+        <div className=' place ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 '>
+          <h1 className='mb-3 text-4xl font-bold md:text-5xl'>
             {" "}
             Grand Concert{" "}
           </h1>
-          <p className="mb-3 text-2xl font-base md:text-3xl">Vol.10</p>
-          <p className=" text-2xl font-base md:text-2xl">
+          <p className='font-base mb-3 text-2xl md:text-3xl'>Vol.10</p>
+          <p className=' font-base text-2xl md:text-2xl'>
             {" "}
             Anjangsana Simfoni{" "}
           </p>
         </div>
         <img
-          src="/logo_gmco.webp"
-          alt=""
-          className="absolute w-32 top-3 left-5 md:top-3/4 md:w-52 md:left-9"
+          src='/logo_gmco.webp'
+          alt=''
+          className='absolute left-5 top-3 w-32 md:left-9 md:top-3/4 md:w-52'
         />
 
-        <div className="py-32 bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-50 flex flex-col items-center right-0 p-4 space-y-8 w-full mt-7 md:w-5/12 md:mt-0 md:py-40 ">
-          <div className="flex flex-col items-center ">
-            <h1 className="mb-3 text-xl font-bold"> Welcome to GC GMCO</h1>
-            <p>Login to your account</p>
+        <div className='right-0 mt-7 flex w-full flex-col items-center space-y-8 bg-gray-400 bg-opacity-50 p-4 py-32 backdrop-blur-sm backdrop-filter md:mt-0 md:w-5/12 md:py-40 '>
+          <div className='-mt-7 flex flex-col items-center'>
+            <h1 className='mb-3 text-4xl font-bold text-gmco-white'>
+              Selamat Datang
+            </h1>
           </div>
           <form
-            action="#"
-            className="flex flex-col items-center space-y-4"
+            action='#'
+            className='flex flex-col items-center space-y-4'
             onSubmit={LoginSubmit}
           >
-            <div className="relative">
-              <label class="mb-2 text-md">Email</label>
-              <input
-                type="email"
-                placeholder="johndoe@mail.com"
-                onChange={(e) => HandleInput(e)}
-                value={loginInput.email}
-                class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                id="email"
-              />
+            <div className='w-full'>
+              <label class=' pl-2 text-base text-gmco-white'>
+                Masukkan email anda
+              </label>
+              <div className='relative flex w-full items-stretch'>
+                <div className=' flex'></div>
+                <input
+                  type='email'
+                  placeholder='Email'
+                  onChange={(e) => HandleInput(e)}
+                  value={loginInput.email}
+                  class='mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  id='email'
+                />
+                <EnvelopeIcon className='absolute right-4 top-4 h-7 w-7 stroke-slate-400'>
+                  {" "}
+                </EnvelopeIcon>
+              </div>
             </div>
+            <label class='my-2 text-center text-sm text-gmco-white'>
+              Anda akan dikirimkan kode OTP melalui email.
+              <br /> Pastikan email yang anda gunakan valid
+            </label>
+
             <button
-              type="submit"
-              class="w-full bg-gmco-blue text-white p-2 rounded-lg mb-6 hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
+              type='submit'
+              class='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
-              Sign in
+              LOG IN / REGISTER
             </button>
+            <label class='pt-3 text-center text-xs text-gmco-white'>
+              Gadjah Mada Chamber Orchestra
+            </label>
           </form>
         </div>
       </div>

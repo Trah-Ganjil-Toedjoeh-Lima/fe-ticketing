@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
 import { axiosInstance } from "@/atoms/config";
 
 export default function NavigationBar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [logedUser, setLogedUser] = useState({
@@ -18,9 +19,14 @@ export default function NavigationBar() {
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
-    { name: "Seat", route: "/seats" },
+    { name: "Seat", route: "/seats" },    
     {
-      name: <FaShoppingCart className="h-6 w-6 scale-x-[-1]" />,
+      name: (
+        <>
+          <FaShoppingCart className="hidden scale-x-[-1] md:inline md:h-6 md:w-6" />
+          <p className="md:hidden">Shopping Cart</p>
+        </>
+      ),
       route: "/seats/cart",
     },
   ];
@@ -28,7 +34,8 @@ export default function NavigationBar() {
   useEffect(() => {
     (async () => {
       try {
-        const [res] = await Promise.all([axiosInstance.get("/api/v1/user")]);
+        const [res] = await Promise.all([axiosInstance.get("api/v1/user")]);
+        console.log(res.data);
         setLogedUser(res.data.data);
       } catch {}
     })();
@@ -46,6 +53,52 @@ export default function NavigationBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  function logoutCheck(e) {
+    Swal.fire({
+      html: `Anda yakin ingin keluar?`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#000000",
+      showCancelButton: true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#991b1b",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#16a34a",
+      showClass: {
+        popup: "",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutSubmit(e);
+      }
+    });
+  }
+
+    
+async function logoutSubmit(e) {
+  e.preventDefault();
+
+  await axiosInstance.post('api/v1/user/logout').then((res) => {
+    if (res.data.message == 'success') {
+      localStorage.removeItem("auth_token");
+      Swal.fire({
+        html: `<b>${res.data.message}</b> tunggu...`,
+        toast: true,
+        width: 350,
+        icon: "success",
+        iconColor: "#16a34a",
+        showConfirmButton: false,
+        timer: 1500,
+        showClass: {
+          popup: "",
+        },
+      }).then(() => {
+        router.push('/auth');
+      });
+    }
+  });
+}
 
   return (
     <nav
@@ -68,7 +121,11 @@ export default function NavigationBar() {
                 <Link
                   key={index}
                   href={route.route}
-                  className="rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
+                  className={`rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out ${
+                    scrollPosition > 0
+                      ? "hover:bg-gray-700/10 "
+                      : "hover:bg-gmco-white/10"
+                  }`}
                 >
                   {route.name}
                 </Link>
@@ -80,7 +137,11 @@ export default function NavigationBar() {
           {logedUser.Email === "" ? (
             <Link
               href="/auth"
-              className="flex items-center px-4 text-xl font-bold"
+              className={`flex items-center rounded-md px-4 py-2 text-xl font-bold duration-150 ease-in-out hover:bg-gray-700/10 ${
+                scrollPosition > 0
+                  ? "hover:bg-gray-700/10 "
+                  : "hover:bg-gmco-white/10"
+              }`}
             >
               Login
             </Link>
@@ -104,7 +165,10 @@ export default function NavigationBar() {
               <Dropdown.Item>
                 <Link href="/profile">Profile</Link>
               </Dropdown.Item>
-              <Dropdown.Item>Sign out</Dropdown.Item>
+              <Dropdown.Item>
+                <a onClick={logoutCheck}>Log Out</a>
+                
+              </Dropdown.Item>
             </Dropdown>
           )}
 
@@ -117,9 +181,13 @@ export default function NavigationBar() {
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <XMarkIcon className="h-5 w-5" />
+                <XMarkIcon className="h-6 w-6" />
               ) : (
-                <Bars3Icon className="h-5 w-5" />
+                <Bars3Icon
+                  className={`${
+                    scrollPosition > 0 ? "text-gmco-grey" : " text-gmco-white"
+                  } h-6 w-6`}
+                />
               )}
             </button>
           </div>
@@ -130,17 +198,16 @@ export default function NavigationBar() {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } transition duration-300 ease-in-out md:hidden`}
+        } transition duration-300 ease-in-out`}
       >
         <div className="px-2 pt-2">
           {routes.map((route, index) => (
-            <Link
+            <div
               key={index}
-              href={route.route}
-              className="rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
+              className="w-full rounded-md p-2 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
             >
-              <li>{route.name}</li>
-            </Link>
+              <Link href={route.route}>{route.name}</Link>
+            </div>
           ))}
         </div>
       </div>
