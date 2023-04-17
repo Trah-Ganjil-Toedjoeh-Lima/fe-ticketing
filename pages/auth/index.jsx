@@ -66,7 +66,7 @@ export default function Auth() {
 
   return (
     <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
-      <div className=" relative bg-[url('/GMCO.jpg')] bg-cover flex flex-col  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10 ">
+      <div className=" relative bg-[url('/GMCO.webp')] bg-cover flex flex-col  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10 ">
         {/* leftside */}
         <div className=" backdrop-filter flex flex-col  text-white w-full place mt-14 ml-3 p-4 h-3/6 md:w-7/12 md:p-10 md:items-start md:mt-0 ">
           <h1 className="mb-3 text-4xl font-bold md:text-5xl">
@@ -118,7 +118,7 @@ export default function Auth() {
       {/* right side */}
       {/* <div class=" md:w-1/3 lg:w-1/4">
           <img
-            src="/herotemp.jpg"
+            src="/herotemp.webp"
             alt=""
             className="w-full h-full hidden lg:rounded-r-2xl md:block object-cover"
           />

@@ -93,8 +93,8 @@ export default function Cart() {
     <>
       <NavigationBar />
       <div className="h-max bg-gmco-blue-main md:min-h-screen">
-        <div className="h-max bg-[url('/gmco-cart.JPG')] bg-cover backdrop-blur">
-          <div className="backdrop-blur">
+        <div className="h-max bg-[url('/gmco-cart.webp')] bg-cover bg-center backdrop-blur">
+          <div className="backdrop-blur-sm">
             <div className="container m-auto px-6 pb-8 pt-24 md:px-1">
               <h2 className="w-max border-b-2 text-2xl font-bold text-gmco-white">
                 Keranjang - ({seatBoughts.seats.length} item)
@@ -125,13 +125,13 @@ export default function Cart() {
                           <div className="hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 md:inline">
                             {seatBought.price > 100000 ? (
                               <img
-                                src="/chair.jpg"
+                                src="/chair.webp"
                                 alt="Kursi Bagus Enak Diduduki"
                                 className="h-full w-full object-cover object-center"
                               />
                             ) : (
                               <img
-                                src="/chair-hijau.jpg"
+                                src="/chair-hijau.webp"
                                 alt="Kursi Hijau Sangat Kuat"
                                 className="h-full w-full object-cover object-center"
                               />
@@ -172,7 +172,7 @@ export default function Cart() {
             </div>
 
             {/* Bagian Checkout */}
-            <div className="h-min rounded-2xl border-2 bg-gmco-white/80 p-6 md:col-span-2">
+            <div className="h-min rounded-2xl bg-gmco-white/70 p-6 md:col-span-2">
               <div className="flex justify-between text-base font-medium text-gmco-grey">
                 <p>Subtotal</p>
                 <p>{formatNumber(orderTotal)}</p>

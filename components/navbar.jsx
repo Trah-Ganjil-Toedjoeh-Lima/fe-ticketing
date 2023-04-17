@@ -27,10 +27,10 @@ export default function NavigationBar() {
 
   useEffect(() => {
     (async () => {
-      const [res] = await Promise.all([axiosInstance.get("/api/v1/user")]);
-      console.log(res.data.data);
-
-      setLogedUser(res.data.data);
+      try {
+        const [res] = await Promise.all([axiosInstance.get("/api/v1/user")]);
+        setLogedUser(res.data.data);
+      } catch {}
     })();
   }, []);
 
@@ -46,8 +46,6 @@ export default function NavigationBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  console.log(logedUser.Email === "");
 
   return (
     <nav
@@ -94,7 +92,7 @@ export default function NavigationBar() {
                 <Avatar
                   rounded={true}
                   alt="User settings"
-                  img="https://cdn-icons-png.flaticon.com/512/4313/4313258.png"
+                  img="/violin-picture.webp"
                 />
               }
             >
