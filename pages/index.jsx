@@ -2,14 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { RevealWrapper } from "next-reveal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
-import withAuth from "@/atoms/authpage";
 
 export default function Home() {
   const router = useRouter();
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -85,7 +83,7 @@ export default function Home() {
               <div className="md:w-3/4">
                 <Image
                   src="/logo_gmco.webp"
-                  alt="logo gmco.jpg"
+                  alt="logo gmco.webp"
                   className="mx-auto h-auto w-full"
                   width={500}
                   height={500}

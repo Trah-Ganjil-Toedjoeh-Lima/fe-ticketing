@@ -4,7 +4,6 @@ import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 import { axiosInstance } from "@/atoms/config";
 import { notifyError } from "@/components/notify";
-import { mappers, start_mappers, deg_rot, row_width } from "@/atoms/seatConfig";
 
 export default function Seats() {
   const [l_seatmap, set_L_seatmap] = useState([]);
@@ -13,18 +12,106 @@ export default function Seats() {
   const [r_seatmap, set_R_seatmap] = useState([]);
   const [userSeats, setUserSeats] = useState([]);
   const [userSeatsPick, setUserSeatsPick] = useState([]);
+  const mappers = [
+    { A: [0, 8, 8, 0] },
+    { B: [13, 9, 9, 13] },
+    { C: [15, 9, 9, 13] },
+    { D: [15, 10, 11, 14] },
+    { E: [16, 11, 11, 16] },
+    { F: [17, 12, 12, 17] },
+    { G: [17, 12, 12, 17] },
+    { H: [16, 13, 13, 15] },
+    { I: [15, 14, 14, 13] },
+    { J: [14, 14, 14, 13] },
+    { K: [13, 15, 15, 13] },
+    { L: [12, 15, 15, 12] },
+    { M: [11, 16, 16, 11] },
+    { N: [10, 16, 16, 10] },
+    { O: [10, 18, 17, 9] },
+    { P: [9, 18, 17, 9] },
+    { Q: [8, 18, 18, 8] },
+    { R: [7, 19, 19, 7] },
+    { S: [7, 19, 19, 7] },
+    { T: [0, 0, 0, 7] },
+  ];
+  const start_mappers = {
+    A: [0, 1, 9, 0],
+    B: [1, 14, 23, 32],
+    C: [1, 16, 25, 34],
+    D: [1, 16, 26, 37],
+    E: [1, 17, 28, 39],
+    F: [1, 18, 30, 42],
+    G: [1, 18, 30, 42],
+    H: [1, 17, 30, 43],
+    I: [1, 16, 30, 44],
+    J: [1, 15, 29, 43],
+    K: [1, 14, 29, 44],
+    L: [1, 13, 28, 43],
+    M: [1, 12, 28, 44],
+    N: [1, 11, 27, 43],
+    O: [1, 11, 29, 46],
+    P: [1, 10, 28, 45],
+    Q: [1, 9, 27, 45],
+    R: [1, 8, 27, 46],
+    S: [1, 8, 27, 46],
+    T: [0, 0, 0, 1],
+  };
+  const deg_rot = [
+    "-translate-y-[20px]",
+    "-translate-y-[18px]",
+    "-translate-y-[16px]",
+    "-translate-y-[14px]",
+    "-translate-y-[12px]",
+    "-translate-y-[10px]",
+    "-translate-y-[8px]",
+    "-translate-y-[6px]",
+    "-translate-y-[4px]",
+    "-translate-y-[2px]",
+    "translate-y-[0px]",
+    "translate-y-[2px]",
+    "translate-y-[4px]",
+    "translate-y-[6px]",
+    "translate-y-[8px]",
+    "translate-y-[10px]",
+    "translate-y-[12px]",
+    "translate-y-[14px]",
+    "translate-y-[16px]",
+    "translate-y-[18px]",
+    "translate-y-[20px]",
+  ];
+  const row_width = [
+    "w-[57.5%]",
+    "w-[60%]",
+    "w-[62.5%]",
+    "w-[65%]",
+    "w-[67.5%]",
+    "w-[70%]",
+    "w-[72.5%]",
+    "w-[75%]",
+    "w-[77.5%]",
+    "w-[80%]",
+    "w-[82.5%]",
+    "w-[85%]",
+    "w-[87.5%]",
+    "w-[90%]",
+    "w-[92.5%]",
+    "w-[95%]",
+    "w-[97.5%]",
+    "w-[100%]",
+    "w-[102.5%]",
+  ];
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("/api/v1/seat_map");
+        // const res = await axiosInstance.get("/api/v1/seat_map");
+        const res = await axiosInstance.get("seatmap.json");
         seatMapping(res.data.data);
-        // setSeatMap(res.data.data);
       } catch (err) {
         notifyError(err);
       }
     })();
-  }, [mappers, start_mappers, deg_rot, row_width]);
+  }, []);
 
   function circle(x, r) {
     return;
@@ -221,7 +308,7 @@ export default function Seats() {
         <div className="col-span-1 border-r-4">
           <img
             className="bg-gmco-blue pl-6"
-            src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.jpg&w=1200&q=75"
+            src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.webp&w=1200&q=75"
             alt=""
           />
           <div className="pl-6 font-semibold text-gmco-grey">

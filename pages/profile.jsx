@@ -154,29 +154,20 @@ useEffect(() => {
                 </div>
 
                 {/* Waktu dan Tempat */}
-                <div className="flex w-full justify-end items-center">
+                <div className="flex w-full items-center justify-end">
                   <div className="flex h-full flex-col justify-center gap-2 text-end text-xs sm:text-sm lg:text-base">
                     <p>Auditorium Driyarkara</p>
                     <p>Sabtu, 27 Mei 2023</p>
                     <p>Open Gate 18.00 WIB</p>
                   </div>
                   <div className="overflow-hidden">
-                    <Image
-                      src="/qris-reinhart.png"
-                      width={100}
-                      height={100}
-                    />
+                    <Image src="/qris-reinhart.png" width={100} height={100} />
                   </div>
 
                   {/* Nama Konser */}
                   <div className="flex w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4">
-                    <div className="overflow-hidden mx-2">
-                      <Image
-                        src="/violin-picture.png"
-                        width={80}
-                        height={80}
-                        
-                      />
+                    <div className="mx-2 overflow-hidden">
+                      <Image src="/violin-picture.png" width={80} height={80} />
                     </div>
 
                     <div className="flex w-full flex-col text-start sm:text-end">

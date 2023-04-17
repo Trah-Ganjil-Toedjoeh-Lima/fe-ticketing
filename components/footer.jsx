@@ -1,10 +1,11 @@
 import Link from "next/link";
 import {
   FaFacebook,
-  FaGithub,
   FaInstagram,
+  FaTiktok,
   FaTwitter,
   FaWhatsapp,
+  FaYoutube,
 } from "react-icons/fa";
 
 export default function FooterBar() {
@@ -14,15 +15,16 @@ export default function FooterBar() {
       title: "About",
       submenu: [
         { name: "GMCO Event", route: "/" },
-        { name: "GMCO UGM", route: "/" },
-        { name: "UGM", route: "/" },
+        { name: "GMCO UGM", route: "https://gmco.ukm.ugm.ac.id/" },
+        { name: "UGM", route: "https://www.ugm.ac.id/" },
       ],
     },
     {
       title: "Follow us",
       submenu: [
-        { name: "Instagram", route: "/" },
-        { name: "Twitter", route: "/" },
+        { name: "Instagram", route: "https://www.instagram.com/gmco_ugm/" },
+        { name: "Twitter", route: "https://twitter.com/GMCO_UGM?s=08" },
+        { name: "Youtube", route: "https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA" },
       ],
     },
     {
@@ -36,11 +38,12 @@ export default function FooterBar() {
 
   // Social Media Icon
   const socials = [
-    { name: <FaGithub className="h-5 w-5" />, route: "/" },
+    { name: <FaTiktok className="h-5 w-5" />, route: "/" },
     { name: <FaWhatsapp className="h-5 w-5" />, route: "/" },
-    { name: <FaInstagram className="h-5 w-5" />, route: "/" },
-    { name: <FaTwitter className="h-5 w-5" />, route: "/" },
-    { name: <FaFacebook className="h-5 w-5" />, route: "/" },
+    { name: <FaInstagram className="h-5 w-5" />, route: "https://www.instagram.com/gmco_ugm/" },
+    { name: <FaTwitter className="h-5 w-5" />, route: "https://twitter.com/GMCO_UGM?s=08" },
+    { name: <FaFacebook className="h-5 w-5" />, route: "/https://www.facebook.com/people/Gadjah-Mada-Chamber-Orchestra/100067509763569/" },
+    { name: <FaYoutube className="h-5 w-5" />, route: "/https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA" },
   ];
 
   return (

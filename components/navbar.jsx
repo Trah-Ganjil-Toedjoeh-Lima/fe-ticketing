@@ -4,17 +4,35 @@ import { useState, useEffect } from "react";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
+import { axiosInstance } from "@/atoms/config";
 
 export default function NavigationBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  const [logedUser, setLogedUser] = useState({
+    Email: "",
+    Name: "",
+    Phone: "",
+    UserId: 0,
+  });
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
-    { name: <FaShoppingCart className="scale-x-[-1] h-6 w-6"/>, route: "/seats/cart" },
+    {
+      name: <FaShoppingCart className="h-6 w-6 scale-x-[-1]" />,
+      route: "/seats/cart",
+    },
   ];
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const [res] = await Promise.all([axiosInstance.get("/api/v1/user")]);
+        setLogedUser(res.data.data);
+      } catch {}
+    })();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,15 +57,8 @@ export default function NavigationBar() {
     >
       <div className="flex justify-between px-4 md:px-8 lg:px-48">
         {/* Logo & Nama */}
-        <Link href="/" className="flex items-center">
-          <img
-            src="/logo_gmco.webp"
-            className="mr-3 h-6 sm:h-9"
-            alt="GMCO Event Logo"
-          />
-          <span href="#" className="text-lg font-bold">
-            GMCO Event
-          </span>
+        <Link href="/" className="flex items-center text-2xl font-bold">
+          GC #10
         </Link>
         <div className="flex w-max">
           {/* Route when MD*/}
@@ -66,25 +77,36 @@ export default function NavigationBar() {
           </div>
 
           {/* Profile */}
-          <Dropdown
-            arrowIcon={false}
-            inline={true}
-            label={
-              <Avatar
-                rounded={true}
-                alt="User settings"
-                img="https://cdn-icons-png.flaticon.com/512/4313/4313258.png"
-              />
-            }
-          >
-            <Dropdown.Header>
-              <p className="block truncate text-sm font-medium">
-                name@flowbite.com
-              </p>
-            </Dropdown.Header>
-            <Dropdown.Item><Link href="profile">Profile</Link></Dropdown.Item>
-            <Dropdown.Item>Sign out</Dropdown.Item>
-          </Dropdown>
+          {logedUser.Email === "" ? (
+            <Link
+              href="/auth"
+              className="flex items-center px-4 text-xl font-bold"
+            >
+              Login
+            </Link>
+          ) : (
+            <Dropdown
+              arrowIcon={false}
+              inline={true}
+              label={
+                <Avatar
+                  rounded={true}
+                  alt="User settings"
+                  img="/violin-picture.webp"
+                />
+              }
+            >
+              <Dropdown.Header>
+                <p className="block truncate text-sm font-medium">
+                  {logedUser.Email}
+                </p>
+              </Dropdown.Header>
+              <Dropdown.Item>
+                <Link href="/profile">Profile</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>Sign out</Dropdown.Item>
+            </Dropdown>
+          )}
 
           {/* Hamburger Button */}
           <div className="ml-2 flex items-center md:m-0 md:hidden">
