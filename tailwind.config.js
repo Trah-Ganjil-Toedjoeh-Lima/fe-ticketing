@@ -10,6 +10,8 @@ module.exports = {
     fontFamily: {
       sans: ["Metropolis", "ui-sans-serif", "system-ui"],
       serif: ["Garamond Premiere Pro", "ui-serif"],
+      rubik: ["Rubik"],
+      inter: ["Inter"],
     },
     extend: {
       colors: {

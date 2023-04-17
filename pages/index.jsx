@@ -1,35 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { RevealWrapper } from "next-reveal";
-import { useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!localStorage.getItem("auth_token")) {
-        router.push("/auth");
-      }
-    }
-  }, []);
-
   return (
     <>
       <NavigationBar />
       <div className="bg-gmco-white">
         {/* Hero Section */}
-        <div className="relative h-[50vh] w-screen overflow-hidden md:h-screen">
+        <div className="relative h-[50vh] w-screen overflow-hidden bg-gmco-grey md:h-screen">
           <video
             preload="auto"
             playsInline
             autoPlay
             muted
             loop
-            className="absolute h-full w-full scale-[2.15] bg-clip-content object-cover py-24 md:scale-125 md:py-20"
+            className="absolute h-full w-full scale-[2.15] bg-clip-content object-cover py-24 opacity-40 md:scale-125 md:py-20"
           >
             <source src="/video-gmco.mp4" type="video/mp4" />
           </video>
@@ -40,33 +28,36 @@ export default function Home() {
             duration={2000}
             distance="250px"
           >
-            <div className="align-center relative z-10 flex h-[50vh] items-center bg-cover bg-right md:h-screen">
-              <div className="w-full pl-8 text-left md:pl-20">
-                <p className="text-white md:text-5xl">
-                  WHAT ARE YOU WAITING FOR?
-                </p>
-                <h2 className="mb-6 text-2xl font-bold text-white md:text-7xl">
-                  GMCO Event:
-                  <br />
-                  Indonesian Pop Now and Then
-                </h2>
-                <div className="flex w-max items-center gap-4 rounded-xl bg-white/50 px-4 py-2 md:px-6 md:py-4">
-                  <p className="text-sm font-medium text-gray-900 md:px-4 md:py-2 md:text-lg">
-                    Saturday
+            <div className="relative z-10 flex h-[50vh] items-center justify-center bg-cover md:h-screen">
+              <div className="flex h-max w-max flex-wrap items-center justify-center">
+                <Image
+                  src="/logo-anjangsana.webp"
+                  alt="logo anjangsana"
+                  className="mt-auto h-[30vw] w-auto md:-ml-8 md:h-[35vh] xl:-ml-20 xl:h-[55vh]"
+                  width={1000}
+                  height={1000}
+                />
+                <div className="w-max text-left">
+                  <h2 className="text-3xl font-bold text-white drop-shadow md:text-5xl xl:text-8xl ">
+                    GRAND CONCERT
+                  </h2>
+                  <p className="mb-2 font-normal text-white drop-shadow md:mb-6 md:text-4xl xl:mb-16 xl:text-6xl">
+                    Vol. 10
                   </p>
-                  <p className="text-sm font-medium text-gray-900 md:px-4 md:py-2 md:text-lg">
-                    12/11/2022
+                  <p className="font-normal text-white drop-shadow md:text-2xl">
+                    Sabtu, <b>27</b> Mei 2023 Saturday @ <b>18.00 WIB</b>
+                    <br />
+                    Auditorium Driyarkara
                   </p>
-                  <p className="text-sm font-medium text-gray-900 md:px-4 md:py-2 md:text-lg">
-                    Auditorium MM FEB UGM
-                  </p>
-                  <button className="delay-15 hidden rounded-xl bg-gmco-blue-main font-semibold transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:inline md:px-4 md:py-2">
-                    <Link href="/"> Buy Ticket Now! </Link>
-                  </button>
                 </div>
-                <button className="delay-15 mt-2 rounded-xl bg-gmco-blue-main px-4 py-1.5 text-sm font-semibold transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:hidden">
-                  <Link href="/"> Buy Ticket Now! </Link>
-                </button>
+                <div className="mt-4 flex w-full justify-center md:mt-1 lg:-mt-10">
+                  <Link
+                    href="/seats"
+                    className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-4 md:text-2xl"
+                  >
+                    Buy Ticket Now!
+                  </Link>
+                </div>
               </div>
             </div>
           </RevealWrapper>
