@@ -13,7 +13,12 @@ export async function getServerSideProps({ params }) {
   const { Link } = params;
 
   try {
-    const res = await axiosInstance.get(`http://localhost:3000/api/v1/seat/${Link}`);
+    const res = await axiosInstance.get(
+      `http://localhost:3000/api/v1/seat/${Link}`
+    );
+    // const res = await axiosInstance.get(
+    //   "/api/v1/seat/6c46de49-d51d-4ace-a996-d657dcb8917a"
+    // );
     console.log(res.data);
     const ticket = res.data;
 
