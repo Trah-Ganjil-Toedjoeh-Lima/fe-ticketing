@@ -3,20 +3,36 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { notifyError } from "../../components/notify";
+import { notifyError, notifySucces } from "../../components/notify";
 
 export default function AdminLogin() {
   const router = useRouter();
 
+  const [isAdmin, setIsAdmin] = useState();
   useEffect(() => {
+    const checkAdminLogin = async () => {
+      try {
+        const checkRes = await axiosInstance.get("/api/v1/admin/seats");
+      } catch (err) {
+        if (err.response.status === 401 || 401) {
+          router.push("/admin/error");
+        } else {
+          console.error(err);
+          router.push("/admin/error");
+        }
+      }
+      setIsAdmin(true);
+    };
+
     // Check if admin is logged in
     if (typeof window !== "undefined") {
-      // If so, redirect to /admin
+      // If not, redirect to /admin/login
       if (localStorage.getItem("auth_token")) {
+        checkAdminLogin();
         router.push("/admin");
       }
     }
-  }, []);
+  }, [router]);
 
   const [loginInput, setLoginInput] = useState({
     name: "",
@@ -47,10 +63,11 @@ export default function AdminLogin() {
               `Bearer ${res.data.token.AccessToken}`
             );
             router.push("/admin");
+            notifySucces();
           }
         });
     } catch (err) {
-      notifyError(err);
+      console.log(err);
     }
   }
 

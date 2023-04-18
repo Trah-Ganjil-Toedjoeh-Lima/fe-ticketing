@@ -7,44 +7,8 @@ export default function Admin() {
   const [adminData, setAdminData] = useState([]);
   const [appConfig, setAppConfig] = useState(false);
   const [qrScanMode, setQrScanMode] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    // Check if admin is logged in
-    if (typeof window !== "undefined") {
-      // If not, redirect to /admin/login
-      if (localStorage.getItem("auth_token")) {
-        setIsLoggedIn(true);
-      } else {
-        router.push("/admin/login");
-      }
-    }
-  }, [router]);
-
-  useEffect(() => {
-    async function getAdminData() {
-      //Try-catch block on promised GET requests to back-end
-      try {
-        if (isLoggedIn) {
-          const [seatsRes, configRes] = await Promise.all([
-            axiosInstance.get("/api/v1/admin/seats"),
-            axiosInstance.get("/api/v1/admin/get_app_config"),
-          ]);
-
-          setAdminData(seatsRes.data.data);
-          setAppConfig(configRes.data.app_config.IsOpenGate);
-          setQrScanMode(configRes.data.app_config.QrScanBehaviour);
-
-          console.log(isLoggedIn);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    getAdminData();
-  }, [isLoggedIn]);
 
   async function handleGate() {
     const postURL = appConfig
@@ -59,6 +23,53 @@ export default function Admin() {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    const checkAdminLogin = async () => {
+      try {
+        const checkRes = await axiosInstance.get("/api/v1/admin/seats");
+      } catch (err) {
+        if (err.response.status === 400 || 401) {
+          router.push("/admin/login");
+        } else {
+          console.error(err);
+        }
+      }
+      setIsAdmin(true);
+    };
+
+    // Check if admin is logged in
+    if (typeof window !== "undefined") {
+      // If not, redirect to /admin/login
+      if (!localStorage.getItem("auth_token")) {
+        router.push("/admin/login");
+      } else {
+        checkAdminLogin();
+      }
+    }
+  }, [router]);
+
+  useEffect(() => {
+    async function getAdminData() {
+      //Try-catch block on promised GET requests to back-end
+      try {
+        const [seatsRes, configRes] = await Promise.all([
+          axiosInstance.get("/api/v1/admin/seats"),
+          axiosInstance.get("/api/v1/admin/get_app_config"),
+        ]);
+
+        setAdminData(seatsRes.data.data);
+        setAppConfig(configRes.data.app_config.IsOpenGate);
+        setQrScanMode(configRes.data.app_config.QrScanBehaviour);
+
+        console.log(qrScanMode);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getAdminData();
+  }, [axiosInstance, appConfig, qrScanMode]);
 
   async function updateQrScanState(newState) {
     const patchURL = "/api/v1/admin/qr_scan_behaviour";
@@ -240,7 +251,7 @@ export default function Admin() {
                     className='border-b bg-white hover:bg-gray-50'
                   >
                     <td className='whitespace-nowrap py-4 pl-8 pr-4 font-medium text-gray-900'>
-                      {item.Seat.SeatId}
+                      {item.TransactionId}
                     </td>
                     <th
                       scope='row'
