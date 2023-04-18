@@ -8,13 +8,10 @@ export async function getServerSideProps({ params }) {
 
   try {
     const res = await axiosInstance.get(
-      `http://localhost:3000/v1/seat/${Link}`
+      `http://localhost:3000/api/v1/seat/${Link}`
     );
-    // const res = await axiosInstance.get(
-    //   "/api/v1/seat/6c46de49-d51d-4ace-a996-d657dcb8917a"
-    // );
     console.log(res.data);
-    const ticket = res.data;
+    const ticket = res.data.data;
 
     return { props: { ticket } };
   } catch (err) {
@@ -26,6 +23,9 @@ export async function getServerSideProps({ params }) {
 export default function Ticket() {
   const router = useRouter();
   const { Link } = router.query;
+
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [ticketResponse, setTicketResponse] = useState({});
   const [ticketData, setTicketData] = useState({
     seat_category: "seat_category",
     seat_name: "seat_name",
@@ -37,17 +37,40 @@ export default function Ticket() {
   useEffect(() => {
     const fetchTicketData = async () => {
       try {
-        const res = await axiosInstance.get(`/api/v1/seat/${Link}`);
-        console.log(res.data.data);
-        setTicketData(res.data.data);
+        const res = await axiosInstance.get(`/api/v1/admin/seat/${Link}`);
+        // console.log(res.data.data);
+        setTicketResponse(res.data.data);
+        setIsAdmin(true);
       } catch (err) {
-        console.error(err);
+        if (err.response && err.response.status === 400) {
+          console.log(err.response.data);
+          setIsAdmin(false);
+
+          try {
+            const res = await axiosInstance.get(`/api/v1/seat/${Link}`);
+            // console.log(res.data.data);
+            setTicketData(res.data.data);
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          console.error(err);
+        }
       }
-    };
+    }; // end of fetchTicketData
+
     fetchTicketData();
   }, [Link]);
 
-  console.log(ticketData, "ini dah diset");
+  // console.log(ticketResponse, "ini dah diset");
+
+  if (isAdmin) {
+    ticketData.seat_category = ticketResponse.Seat.Category;
+    ticketData.seat_name = ticketResponse.Seat.Name;
+    ticketData.user_email = ticketResponse.User.Email;
+    ticketData.user_name = ticketResponse.User.Name;
+    ticketData.user_phone = ticketResponse.User.Phone;
+  }
 
   return (
     <section className='flex min-h-screen w-full items-center justify-center bg-slate-950 p-3'>
@@ -100,6 +123,7 @@ export default function Ticket() {
             </div>
           </div>
         </div>
+
         <div className='col-span-2 pt-5 md:pt-10'>
           <div className='relative flex flex-col items-center '>
             <span className='text-5xl font-bold text-gmco-yellow md:text-8xl lg:text-9xl '>
