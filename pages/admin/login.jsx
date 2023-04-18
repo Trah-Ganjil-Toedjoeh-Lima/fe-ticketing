@@ -87,7 +87,7 @@ export default function AdminLogin() {
             onSubmit={loginSubmit}
           >
             <div className='relative'>
-              <label class=' pl-2 text-base text-gmco-white'>
+              <label className=' pl-2 text-base text-gmco-white'>
                 Masukkan email, nama, dan nomor telepon admin.
               </label>
               <div className='relative flex flex-col items-center justify-center'>
@@ -96,7 +96,7 @@ export default function AdminLogin() {
                   placeholder='Email'
                   onChange={(e) => handleInput(e)}
                   value={loginInput.email}
-                  class='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  className='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
                   id='email'
                 />
                 <EnvelopeIcon className='absolute right-8 top-3.5 h-7 w-7 stroke-slate-400'>
@@ -107,7 +107,7 @@ export default function AdminLogin() {
                   placeholder='Name'
                   onChange={(e) => handleInput(e)}
                   value={loginInput.name}
-                  class='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  className='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
                   id='name'
                 />
                 <input
@@ -115,22 +115,22 @@ export default function AdminLogin() {
                   placeholder='Phone'
                   onChange={(e) => handleInput(e)}
                   value={loginInput.phone}
-                  class='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  className='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
                   id='phone'
                 />
               </div>
             </div>
-            <label class='my-2 text-center text-sm text-gmco-white'>
+            <label className='my-2 text-center text-sm text-gmco-white'>
               Khusus untuk administrator.
             </label>
 
             <button
               type='submit'
-              class='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
+              className='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
               LOG IN
             </button>
-            <label class='pt-3 text-center text-xs text-gmco-white'>
+            <label className='pt-3 text-center text-xs text-gmco-white'>
               Gadjah Mada Chamber Orchestra
             </label>
           </form>

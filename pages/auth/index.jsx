@@ -109,7 +109,7 @@ export default function Auth() {
             onSubmit={LoginSubmit}
           >
             <div className='w-full'>
-              <label class=' pl-2 text-base text-gmco-white'>
+              <label className=' pl-2 text-base text-gmco-white'>
                 Masukkan email anda
               </label>
               <div className="relative flex w-full items-stretch">
@@ -119,7 +119,7 @@ export default function Auth() {
                   placeholder="Email"
                   onChange={(e) => HandleInput(e)}
                   value={loginInput.email}
-                  class="mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500"
+                  className="mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500"
                   id="email"
                 />
                 <EnvelopeIcon className="absolute right-4 top-4 h-7 w-7 stroke-slate-400">
@@ -127,32 +127,32 @@ export default function Auth() {
                 </EnvelopeIcon>
               </div>
             </div>
-            <label class="my-2 text-center text-sm text-gmco-white">
+            <label className="my-2 text-center text-sm text-gmco-white">
               Anda akan dikirimkan kode OTP melalui email.
               <br /> Pastikan email yang anda gunakan valid
             </label>
 
             <button
               type='submit'
-              class='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
+              className='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
               LOG IN / REGISTER
             </button>
-            <label class='pt-3 text-center text-xs text-gmco-white'>
+            <label className='pt-3 text-center text-xs text-gmco-white'>
               Gadjah Mada Chamber Orchestra
             </label>
           </form>
         </div>
       </div>
       {/* right side */}
-      {/* <div class=" md:w-1/3 lg:w-1/4">
+      {/* <div className=" md:w-1/3 lg:w-1/4">
           <img
             src="/herotemp.webp"
             alt=""
             className="w-full h-full hidden lg:rounded-r-2xl md:block object-cover"
           />
-          <div class="absolute hidden top-5 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
-            <span class="text-white text-xl">Welcome to GC GMCO</span>
+          <div className="absolute hidden top-5 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
+            <span className="text-white text-xl">Welcome to GC GMCO</span>
           </div>
         </div> */}
     </section>

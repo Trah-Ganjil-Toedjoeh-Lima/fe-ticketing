@@ -64,10 +64,10 @@ export default function OtpPage() {
         <EnvelopeOpenIcon className="mx-auto h-16 w-16">
           {" "}
         </EnvelopeOpenIcon>
-        <div class="self-center text-xl font-medium uppercase text-gray-800 sm:text-2xl">
+        <div className="self-center text-xl font-medium uppercase text-gray-800 sm:text-2xl">
           Masukkan Kode Verifikasi
         </div>
-        <div class="text-center text-sm font-normal text-gray-800  sm:text-base ">
+        <div className="text-center text-sm font-normal text-gray-800  sm:text-base ">
           Kode verifikasi telah dikirimkan melalui email terdaftar
         </div>
         <div className="mx-auto mt-9 items-center object-center">
@@ -94,7 +94,7 @@ export default function OtpPage() {
         </div>
         <button
           type="submit"
-          class="font type mt-6 w-full rounded-lg bg-gmco-blue p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+          className="font type mt-6 w-full rounded-lg bg-gmco-blue p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
           onClick={LoginSubmit}
         >
           Submit

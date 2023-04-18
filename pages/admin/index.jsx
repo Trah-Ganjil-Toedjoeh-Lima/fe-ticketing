@@ -1,25 +1,23 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
-import { ToggleSwitch } from "flowbite-react";
+import { Checkbox, ToggleSwitch } from "flowbite-react";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
-  const [appConfig, setAppConfig] = useState([]);
-  const [qrScan, setQrScan] = useState([]);
-
+  const [appConfig, setAppConfig] = useState(false);
+  const [qrScanMode, setQrScanMode] = useState("");
   const router = useRouter();
 
-  async function handleSwitch() {
+  async function handleGate() {
     const postURL = appConfig
       ? "/v1/admin/close_the_gate"
       : "/v1/admin/open_the_gate";
 
     try {
       const res = await axiosInstance.post(postURL);
-      console.log(res);
       setAppConfig(!appConfig);
+      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -33,35 +31,149 @@ export default function Admin() {
         router.push("/admin/login");
       }
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
-    (async () => {
-      const [res, res1] = await Promise.all([
-        axiosInstance.get("/v1/admin/seats"),
-        axiosInstance.get("/v1/admin/get_app_config"),
-      ]);
+    async function getAdminData() {
+      //Try-catch block on promised GET requests to back-end
+      try {
+        const [seatsRes, configRes] = await Promise.all([
+          axiosInstance.get("/v1/admin/seats"),
+          axiosInstance.get("/v1/admin/get_app_config"),
+        ]);
 
-      setAdminData(res.data.data);
-      setAppConfig(res1.data.app_config.IsOpenGate);
-      setQrScan(res1.data.app_config.QrScanBehaviour);
+        setAdminData(seatsRes.data.data);
+        setAppConfig(configRes.data.app_config.IsOpenGate);
+        setQrScanMode(configRes.data.app_config.QrScanBehaviour);
 
-      console.log(appConfig);
-      console.log(qrScan);
-    })();
-  }, [appConfig, qrScan]);
+        console.log(qrScanMode);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  const mapAdminData = adminData.map((item) => {
-    // const { Seat, User } = item;
-    // return Seat;
-    return item;
-  });
+    getAdminData();
+  }, [axiosInstance, appConfig, qrScanMode]);
+
+  async function updateQrScanState(newState) {
+    const patchURL = "/v1/admin/qr_scan_behaviour";
+    try {
+      const res = await axiosInstance.patch(patchURL, {
+        qr_scan_behaviour: newState,
+      });
+      setQrScanMode(newState);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div>
       <div>
-        Open Gate
-        <ToggleSwitch onClick={handleSwitch} checked={appConfig} />
+        <h3 className='mb-5 text-lg font-medium text-gray-900 dark:text-white'>
+          Open Gate:
+        </h3>
+        <label className='relative inline-flex cursor-pointer items-center'>
+          <input
+            type='checkbox'
+            onChange={() => handleGate()}
+            checked={appConfig}
+            value=''
+            className='peer sr-only'
+          />
+          <div className="peer h-7 w-14 rounded-full bg-gray-200 after:absolute after:left-[4px] after:top-0.5 after:h-6 after:w-6 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+          {appConfig ? (
+            <span className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>
+              Gate is open
+            </span>
+          ) : (
+            <span className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>
+              Gate is closed.
+            </span>
+          )}
+        </label>
+      </div>
+      <div>
+        <h3 className='mb-5 text-lg font-medium text-gray-900 dark:text-white'>
+          Pilih Mode Scan QR:
+        </h3>
+        <ul className='grid w-full gap-6 md:grid-cols-3'>
+          <li>
+            <input
+              type='checkbox'
+              onChange={(e) =>
+                updateQrScanState(e.target.checked ? "default" : "")
+              }
+              checked={qrScanMode === "default"}
+              id='default-option'
+              value=''
+              className='peer hidden'
+              required=''
+            />
+            <label
+              htmlFor='default-option'
+              className='inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-5 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-blue-600 peer-checked:text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:peer-checked:text-gray-300'
+            >
+              <div className='block'>
+                <div className='w-full text-lg font-semibold'>Default</div>
+                <div className='w-full text-sm'>
+                  Mode default scan QR, sebelum dilakukan penukaran tiket.
+                </div>
+              </div>
+            </label>
+          </li>
+          <li>
+            <input
+              type='checkbox'
+              onChange={(e) =>
+                updateQrScanState(e.target.checked ? "Penukaran" : "")
+              }
+              checked={qrScanMode === "Penukaran"}
+              id='penukaran-option'
+              value=''
+              className='peer hidden'
+            />
+            <label
+              htmlFor='penukaran-option'
+              className='inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-5 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-blue-600 peer-checked:text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:peer-checked:text-gray-300'
+            >
+              <div className='block'>
+                <div className='w-full text-lg font-semibold'>
+                  Penukaran Tiket
+                </div>
+                <div className='w-full text-sm'>
+                  Mode penukaran digunakan saat masa penukaran tiket.
+                </div>
+              </div>
+            </label>
+          </li>
+          <li>
+            <input
+              type='checkbox'
+              onChange={(e) =>
+                updateQrScanState(e.target.checked ? "Datang" : "")
+              }
+              checked={qrScanMode === "Datang"}
+              id='datang-option'
+              value=''
+              className='peer hidden'
+            />
+            <label
+              htmlFor='datang-option'
+              className='inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-5 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-blue-600 peer-checked:text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:peer-checked:text-gray-300'
+            >
+              <div className='block'>
+                <div className='w-full text-lg font-semibold'>
+                  Presensi Kedatangan
+                </div>
+                <div className='w-full text-sm'>
+                  Mode presensi digunakan untuk mengecek kedatangan penonton.
+                </div>
+              </div>
+            </label>
+          </li>
+        </ul>
       </div>
       <table>
         <caption>Seats</caption>
@@ -69,27 +181,31 @@ export default function Admin() {
           <tr>
             <th>ID</th>
             <th>Seat</th>
+            <th>Category</th>
             <th>Price</th>
             <th>Link</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Transaction</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {mapAdminData.map((item) => (
-            <tr key={item.Seat.SeatId} className='border-b bg-white'>
+          {adminData.map((item, index) => (
+            <tr key={index} className='border-b bg-white'>
               <td className='whitespace-nowrap py-4 pl-8 pr-4 font-medium text-gray-900'>
                 {item.Seat.SeatId}
               </td>
               <td className='pl-8 pr-4'>{item.Seat.Name}</td>
+              <td className='pl-8 pr-4'>{item.Seat.Category}</td>
               <td className='pl-8 pr-4'>{item.Seat.Price}</td>
               <td className='pl-8 pr-4'>{item.Seat.Link}</td>
               <td className='pl-8 pr-4'>{item.User.Name}</td>
               <td className='pl-8 pr-4'>{item.User.Email}</td>
               <td className='pl-8 pr-4'>{item.User.Phone}</td>
               <td className='pl-8 pr-4'>{item.Seat.Status}</td>
+              <td className='pl-8 pr-4'>{item.Seat.PostSaleStatus}</td>
             </tr>
           ))}
         </tbody>
