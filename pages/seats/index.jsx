@@ -457,17 +457,15 @@ export default function Seats() {
         </div>
       </div>
 
-      <div className="grid min-h-max w-full grid-cols-5 ">
+      <div className="h-a flex w-full">
         {/* Left Bar */}
         <div
-          className={`${
-            sideBarOpen ? "inline" : "hidden"
-          } col-span-1 border-r-2`}
+          className={`${sideBarOpen ? "inline" : "hidden"} w-1/5 border-r-2`}
         >
           {/* Minimize Button */}
           <div className="mt-3 flex w-full justify-end pr-2">
             <button
-              className=" rounded-lg bg-[#C76734] p-2 text-lg text-white"
+              className="rounded-lg bg-[#C76734] p-2 text-lg text-white"
               onClick={() => {
                 hideSideBar(sideBarOpen);
               }}
@@ -605,7 +603,7 @@ export default function Seats() {
           </div>
 
           {/* Keterangan Kursi */}
-          <div className="my-3 bg-[#8EBFD0] p-5 ">
+          <div className="my-3 bg-gmco-blue p-5 ">
             <div className=" text-gmco-grey">
               <p className="pb-3 text-3xl font-semibold">Keterangan</p>
               <div className="flex flex-col gap-2">
@@ -632,12 +630,12 @@ export default function Seats() {
 
         <div
           className={`${
-            sideBarOpen ? "col-span-4" : "col-span-full"
-          } h-screen justify-start overflow-x-scroll p-3`}
+            sideBarOpen ? "w-4/5" : "w-full"
+          } h-screen justify-start overflow-x-scroll`}
         >
-          <div className="flex min-h-[3rem]">
+          <div className="absolute flex flex-col justify-between z-20 h-full">
             <button
-              className={`rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white ${
+              className={`h-max rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
@@ -646,17 +644,25 @@ export default function Seats() {
             >
               Show Details &gt;
             </button>
+            <button
+              className={`h-max rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white `}
+              onClick={() => {
+                hideSideBar(sideBarOpen);
+              }}
+            >
+              ++
+            </button>
           </div>
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
 
-          {/* Floor1 */}
-          <div className="flex h-max w-max origin-left scale-[65%] flex-col items-center justify-center">
-            <div className="flex w-2/5 items-center justify-center bg-gmco-grey text-gmco-white">
+          <div className="flex h-full w-max origin-top-left scale-[95%] flex-col items-center justify-start p-6">
+            <div className="flex w-2/5 items-center justify-center bg-gmco-grey py-8 text-gmco-white">
               Panggung
             </div>
+            {/* Floor1 */}
             <div
-              className={`flex w-max pt-8 ${
+              className={`flex h-max w-max pt-8 ${
                 curFloor === 1 ? "inline" : "hidden"
               }`}
             >
@@ -677,7 +683,7 @@ export default function Seats() {
 
                 {/* middle left */}
                 {/* row wise */}
-                <div className="flex translate-y-40 rotate-[12deg] flex-col items-center gap-[0.45rem]">
+                <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem]">
                   {ml_seatmap.map((seats, index) => (
                     // col wise
                     // prin)
@@ -694,7 +700,7 @@ export default function Seats() {
               <div className="pointer-events-none flex -translate-x-10">
                 {/* middle right */}
                 {/* row wise */}
-                <div className="pointer-events-none flex translate-y-40 -rotate-[12deg] flex-col items-center gap-[0.45rem]">
+                <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem]">
                   {mr_seatmap.map((seats, index) => (
                     // col wise
                     <div
@@ -707,7 +713,7 @@ export default function Seats() {
 
                 {/* right */}
                 {/* row wise */}
-                <div className="pointer-events-none flex -translate-x-12 -rotate-[24deg] flex-col gap-2">
+                <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2">
                   {r_seatmap.map((seats) => (
                     // col wise
                     <div
@@ -719,15 +725,16 @@ export default function Seats() {
                 </div>
               </div>
             </div>
+
             {/* Floor2 */}
             <div
-              className={`flex h-4/5 w-max scale-[100%] items-end justify-center gap-6 ${
+              className={`flex h-full w-max scale-[100%] items-end justify-center gap-6 px-16 ${
                 curFloor === 2 ? "inline" : "hidden"
               }`}
             >
               {/* left */}
               {/* row wise */}
-              <div className="flex flex-col gap-2">
+              <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2">
                 {l_seatmap_2.map((seats) => (
                   // col wise
                   <div
@@ -739,7 +746,7 @@ export default function Seats() {
               </div>
               {/* middle left */}
               {/* row wise */}
-              <div className="flex flex-col gap-2">
+              <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2">
                 {ml_seatmap_2.map((seats) => (
                   // col wise
                   <div
@@ -763,7 +770,7 @@ export default function Seats() {
               </div>
               {/* middle right */}
               {/* row wise */}
-              <div className="flex flex-col gap-2">
+              <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2">
                 {mr_seatmap_2.map((seats) => (
                   // col wise
                   <div
@@ -775,7 +782,7 @@ export default function Seats() {
               </div>
               {/* right */}
               {/* row wise */}
-              <div className="flex flex-col gap-2">
+              <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2">
                 {r_seatmap_2.map((seats) => (
                   // col wise
                   <div
