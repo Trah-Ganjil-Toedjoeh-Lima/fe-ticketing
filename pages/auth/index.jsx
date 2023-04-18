@@ -4,6 +4,7 @@ import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
+import Image from "next/image";
 
 export default function Auth() {
   const router = useRouter();
@@ -67,11 +68,20 @@ export default function Auth() {
   }
 
   return (
-    <section className='block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex'>
-      <div className=" relative flex w-full max-w-screen-lg flex-col  overflow-hidden rounded-lg bg-[url('/GMCO.webp')] bg-cover shadow-lg md:m-10 md:flex-row ">
+    <section className="block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
+      <div className=" relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row ">
         {/* leftside */}
-        <div className=' place ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 '>
-          <h1 className='mb-3 text-4xl font-bold md:text-5xl'>
+        <div className="absolute bg-gmco-grey ">
+          <Image
+            src="/GMCO.webp"
+            alt="bg gmco concert"
+            className="object-cover opacity-50"
+            width={2000}
+            height={2000}
+          />
+        </div>
+        <div className="relative place ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 ">
+          <h1 className="mb-3 text-4xl font-bold md:text-5xl">
             {" "}
             Grand Concert{" "}
           </h1>
@@ -82,9 +92,9 @@ export default function Auth() {
           </p>
         </div>
         <img
-          src='/logo_gmco.webp'
-          alt=''
-          className='absolute left-5 top-3 w-32 md:left-9 md:top-3/4 md:w-52'
+          src="/logo_gmco.webp"
+          alt="logo"
+          className="absolute left-5 top-3 w-32 md:left-9 md:top-3/4 md:w-52"
         />
 
         <div className='right-0 mt-7 flex w-full flex-col items-center space-y-8 bg-gray-400 bg-opacity-50 p-4 py-32 backdrop-blur-sm backdrop-filter md:mt-0 md:w-5/12 md:py-40 '>
@@ -99,50 +109,50 @@ export default function Auth() {
             onSubmit={LoginSubmit}
           >
             <div className='w-full'>
-              <label class=' pl-2 text-base text-gmco-white'>
+              <label className=' pl-2 text-base text-gmco-white'>
                 Masukkan email anda
               </label>
-              <div className='relative flex w-full items-stretch'>
-                <div className=' flex'></div>
+              <div className="relative flex w-full items-stretch">
+                <div className=" flex"></div>
                 <input
-                  type='email'
-                  placeholder='Email'
+                  type="email"
+                  placeholder="Email"
                   onChange={(e) => HandleInput(e)}
                   value={loginInput.email}
-                  class='mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
-                  id='email'
+                  className="mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500"
+                  id="email"
                 />
-                <EnvelopeIcon className='absolute right-4 top-4 h-7 w-7 stroke-slate-400'>
+                <EnvelopeIcon className="absolute right-4 top-4 h-7 w-7 stroke-slate-400">
                   {" "}
                 </EnvelopeIcon>
               </div>
             </div>
-            <label class='my-2 text-center text-sm text-gmco-white'>
+            <label className="my-2 text-center text-sm text-gmco-white">
               Anda akan dikirimkan kode OTP melalui email.
               <br /> Pastikan email yang anda gunakan valid
             </label>
 
             <button
               type='submit'
-              class='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
+              className='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
               LOG IN / REGISTER
             </button>
-            <label class='pt-3 text-center text-xs text-gmco-white'>
+            <label className='pt-3 text-center text-xs text-gmco-white'>
               Gadjah Mada Chamber Orchestra
             </label>
           </form>
         </div>
       </div>
       {/* right side */}
-      {/* <div class=" md:w-1/3 lg:w-1/4">
+      {/* <div className=" md:w-1/3 lg:w-1/4">
           <img
             src="/herotemp.webp"
             alt=""
             className="w-full h-full hidden lg:rounded-r-2xl md:block object-cover"
           />
-          <div class="absolute hidden top-5 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
-            <span class="text-white text-xl">Welcome to GC GMCO</span>
+          <div className="absolute hidden top-5 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
+            <span className="text-white text-xl">Welcome to GC GMCO</span>
           </div>
         </div> */}
     </section>

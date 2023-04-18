@@ -105,11 +105,11 @@ export default function Seats() {
   ];
 
   const priceColor = {
-    120000: "opacity-100",
-    170000: "opacity-90",
-    145000: "opacity-75",
-    85000: "opacity-60",
-    60000: "opacity-40",
+    120000: "bg-opacity-100",
+    170000: "bg-opacity-60",
+    145000: "bg-opacity-40",
+    85000: "bg-opacity-20",
+    60000: "bg-opacity-0",
   };
 
   const statusColor = {
@@ -275,17 +275,23 @@ export default function Seats() {
           const isSelected = userSeats.includes(array[i].seat_id);
           arr.push(
             <div
-              className={`h-6 w-6 rounded-sm ${statusColor[array[i].status]} ${
-                priceColor[array[i].price]
-              } cursor-pointer text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
-                deg_rot[i]
-              } ${isSelected ? "border-2 border-red-500" : ""}`}
-              onClick={() => {
-                onSeatPick(array[i], arrayUser);
-                array[i].isSelected = isSelected;
-              }}
+              className={`bg-gmco-yellow duration-300 hover:scale-150 ${deg_rot[i]}`}
             >
-              {array[i].name}
+              <div
+                className={`h-6 w-6 rounded-sm ${
+                  statusColor[array[i].status]
+                } ${
+                  priceColor[array[i].price]
+                } cursor-pointer text-center text-[0.7rem] ${
+                  isSelected ? "border-2 border-red-500" : ""
+                }`}
+                onClick={() => {
+                  onSeatPick(array[i], arrayUser);
+                  array[i].isSelected = isSelected;
+                }}
+              >
+                {array[i].name}
+              </div>
             </div>
           );
         } else {
@@ -309,44 +315,54 @@ export default function Seats() {
   }
 
   function right_mapper(array, arrayUser) {
-  let arr = [];
-  for (let i = array.length; i > 0; i--) {
-    if (array[array.length - i]) {
-      if (array[array.length - i].status == "available") {
-        const isSelected = arrayUser.includes(array[array.length - i].seat_id);
-        arr.push(
-          <div
-            className={`h-6 w-6 rounded-sm ${
-              statusColor[array[array.length - i].status]
-            } ${
-              priceColor[array[array.length - i].price]
-            } cursor-pointer text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
-              deg_rot[i - 1]
-            } ${isSelected ? "border-2 border-red-500" : ""}`}
-            onClick={() => onSeatPick(array[array.length - i], arrayUser)}
-          >
-            {array[array.length - i].name}
-          </div>
-        );
+    let arr = [];
+    for (let i = array.length; i > 0; i--) {
+      if (array[array.length - i]) {
+        if (array[array.length - i].status == "available") {
+          const isSelected = arrayUser.includes(
+            array[array.length - i].seat_id
+          );
+          arr.push(
+            <div
+              className={`bg-gmco-yellow duration-300 hover:scale-150 ${
+                deg_rot[i-1]
+              }`}
+            >
+              <div
+                className={`h-6 w-6 rounded-sm ${
+                  statusColor[array[array.length - i].status]
+                } ${
+                  priceColor[array[array.length - i].price]
+                } cursor-pointer text-center text-[0.7rem]  ${
+                  isSelected ? "border-2 border-red-500" : ""
+                }`}
+                onClick={() => onSeatPick(array[array.length - i], arrayUser)}
+              >
+                {array[array.length - i].name}
+              </div>
+            </div>
+          );
+        } else {
+          arr.push(
+            <div
+              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+                statusColor[array[array.length - i].status]
+              }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
+            >
+              {array[array.length - i].name}
+            </div>
+          );
+        }
       } else {
         arr.push(
           <div
-            className={`h-6 w-6 cursor-not-allowed rounded-sm ${
-              statusColor[array[array.length - i].status]
-            }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
-          >
-            {array[array.length - i].name}
-          </div>
+            className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i - 1]}`}
+          ></div>
         );
       }
-    } else {
-      arr.push(
-        <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i - 1]}`}></div>
-      );
     }
+    return arr;
   }
-  return arr;
-}
 
   function hideSideBar(isOpen) {
     isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
@@ -492,7 +508,7 @@ export default function Seats() {
           </div>
           {/* Keterangan Kursi */}
           <div className="my-3 bg-[#8EBFD0] p-5 ">
-            <div className=" text-gmco-grey text-white">
+            <div className=" text-gmco-grey">
               <p className="pb-3 text-3xl font-semibold">Keterangan</p>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row content-center gap-2">

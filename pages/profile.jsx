@@ -73,7 +73,7 @@ useEffect(() => {
               <h1 className='font-rubik text-5xl font-light text-white'>
                 PROFIL
               </h1>
-              <hr class='my-8 h-px border-0 bg-gmco-grey' />
+              <hr className='my-8 h-px border-0 bg-gmco-grey' />
             </div>
 
             <div className='flex w-4/5 flex-col items-start px-16 lg:items-end'>
@@ -134,17 +134,14 @@ useEffect(() => {
           </div>
 
           {/* List of Tickets */}
-          <div className='flex w-full flex-col gap-4 px-8 py-8 lg:w-2/3'>
-            <p className='text-center text-2xl font-medium text-gmco-grey'>
+          <div className="flex w-full flex-col gap-4 px-8 py-8 lg:w-2/3">
+            <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{tickets.length}&#41;
             </p>
             {/* TICKET */}
 
             {tickets.map((ticket, index) => (
-              <div
-                key={index}
-                className='flex h-full w-full flex-row rounded-lg bg-white p-4'
-              >
+              <div key={index} className="flex h-full w-full flex-row rounded-lg bg-white p-4">
                 {/* Kursi dan Tipe */}
                 <div className='flex w-1/5 flex-col justify-center text-center'>
                   <h1 className='font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl'>
@@ -180,7 +177,7 @@ useEffect(() => {
                       <h1 className='font-inter text-sm font-bold text-white sm:text-lg lg:text-2xl'>
                         Grand Concert Vol.10
                       </h1>
-                      <p className='font-inter text-sm font-light text-white lg:text-lg'>
+                      <p className="font-inter text-sm font-light text-white lg:text-lg">
                         Anjangsana Simfoni
                       </p>
                     </div>
