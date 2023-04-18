@@ -34,7 +34,7 @@ export default function AdminLogin() {
     try {
       console.log(JSON.stringify(loginInput));
       await axiosInstance
-        .post("/api/v1/user/login", {
+        .post("/v1/user/login", {
           name: loginInput.name,
           email: loginInput.email,
           phone: loginInput.phone,
