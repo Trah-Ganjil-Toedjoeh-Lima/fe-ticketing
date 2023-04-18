@@ -11,7 +11,7 @@ export async function getServerSideProps({ params }) {
       `http://localhost:3000/v1/seat/${Link}`
     );
     // const res = await axiosInstance.get(
-    //   "/v1/seat/6c46de49-d51d-4ace-a996-d657dcb8917a"
+    //   "/api/v1/seat/6c46de49-d51d-4ace-a996-d657dcb8917a"
     // );
     console.log(res.data);
     const ticket = res.data;

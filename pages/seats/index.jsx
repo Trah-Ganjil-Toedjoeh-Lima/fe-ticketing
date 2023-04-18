@@ -123,7 +123,7 @@ export default function Seats() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axiosInstance.get("/v1/seat_map");
+        const res = await axiosInstance.get("/api/v1/seat_map");
         // const res = await axiosInstance.get("seatmap.json");
         seatMapping(res.data.data);
       } catch (err) {
@@ -138,7 +138,7 @@ export default function Seats() {
 
   async function postSeats(seatsArr) {
     try {
-      await axiosInstance.post("/v1/seat_map", {
+      await axiosInstance.post("/api/v1/seat_map", {
         data: seatsArr,
       });
     } catch (err) {
