@@ -13,6 +13,7 @@ export default function Seats() {
   const [userSeats, setUserSeats] = useState([]);
   const [userSeatsPick, setUserSeatsPick] = useState([]);
   const [sideBarOpen, setSideBarOpen] = useState(true);
+  const [seatHighlight, setSeatHighlight] = useState([]);
 
   const mappers = [
     { A: [0, 8, 8, 0] },
@@ -105,15 +106,23 @@ export default function Seats() {
   ];
 
   const priceColor = {
-    120000: "bg-opacity-100",
-    170000: "bg-opacity-60",
-    145000: "bg-opacity-40",
+    170000: "bg-opacity-100",
+    145000: "bg-opacity-60",
+    120000: "bg-opacity-40",
     85000: "bg-opacity-20",
     60000: "bg-opacity-0",
   };
 
+  const priceCategory = {
+    170000: "Radiant Rp170K",
+    145000: "Immortal Rp145K",
+    120000: "Ascendant Rp120K",
+    85000: "Diamond Rp85K",
+    60000: "Platinum Rp60K",
+  };
+
   const statusColor = {
-    available: "bg-[#5C9E82]",
+    available: "bg-[#8EBFD0]",
     reserved_by_me: "bg-[#F5DB91]",
     purchased_by_me: "bg-[#5C9E82]",
     reserved: "bg-[#C0925E]",
@@ -273,6 +282,7 @@ export default function Seats() {
       if (array[i]) {
         if (array[i].status === "available") {
           const isSelected = userSeats.includes(array[i].seat_id);
+          const isHighlight = seatHighlight.includes(array[i].price);
           arr.push(
             <div
               className={`bg-gmco-yellow duration-300 hover:scale-150 ${deg_rot[i]}`}
@@ -280,14 +290,14 @@ export default function Seats() {
               <div
                 className={`h-6 w-6 rounded-sm ${
                   statusColor[array[i].status]
-                } ${
-                  priceColor[array[i].price]
-                } cursor-pointer text-center text-[0.7rem] ${
-                  isSelected ? "border-2 border-red-500" : ""
+                }  cursor-pointer text-center text-[0.7rem]
+                  ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
+                  isSelected
+                    ? "scale-150 border-2 border-red-500 bg-opacity-50"
+                    : ""
                 }`}
                 onClick={() => {
                   onSeatPick(array[i], arrayUser);
-                  array[i].isSelected = isSelected;
                 }}
               >
                 {array[i].name}
@@ -317,28 +327,30 @@ export default function Seats() {
   function right_mapper(array, arrayUser) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
-      if (array[array.length - i]) {
-        if (array[array.length - i].status == "available") {
-          const isSelected = arrayUser.includes(
-            array[array.length - i].seat_id
-          );
+      let index = array.length - i;
+      if (array[index]) {
+        if (array[index].status == "available") {
+          const isSelected = arrayUser.includes(array[index].seat_id);
+          const isHighlight = seatHighlight.includes(array[index].price);
           arr.push(
             <div
               className={`bg-gmco-yellow duration-300 hover:scale-150 ${
-                deg_rot[i-1]
+                deg_rot[i - 1]
               }`}
             >
               <div
                 className={`h-6 w-6 rounded-sm ${
-                  statusColor[array[array.length - i].status]
+                  statusColor[array[index].status]
+                }  cursor-pointer text-center text-[0.7rem] ${
+                  isHighlight ? "bg-gmco-orange-secondarylight" : ""
                 } ${
-                  priceColor[array[array.length - i].price]
-                } cursor-pointer text-center text-[0.7rem]  ${
-                  isSelected ? "border-2 border-red-500" : ""
+                  isSelected
+                    ? "scale-150 border-2 border-red-500 bg-opacity-50"
+                    : ""
                 }`}
-                onClick={() => onSeatPick(array[array.length - i], arrayUser)}
+                onClick={() => onSeatPick(array[index], arrayUser)}
               >
-                {array[array.length - i].name}
+                {array[index].name}
               </div>
             </div>
           );
@@ -346,10 +358,10 @@ export default function Seats() {
           arr.push(
             <div
               className={`h-6 w-6 cursor-not-allowed rounded-sm ${
-                statusColor[array[array.length - i].status]
+                statusColor[array[index].status]
               }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
             >
-              {array[array.length - i].name}
+              {array[index].name}
             </div>
           );
         }
@@ -371,6 +383,8 @@ export default function Seats() {
   function cek(halo) {
     console.log(halo);
   }
+
+  function priceHighlight() {}
 
   // Display
   // =================================
@@ -426,86 +440,38 @@ export default function Seats() {
           {/* Kategori Kursi */}
           <div className="my-3 bg-[#287D92] p-5 py-9 text-white">
             <div className="pb-3 text-3xl font-semibold">Kategori</div>
-            <div className="flex flex-col text-xl">
-              <div className="flex flex-row">
-                <div className="basis-1/2">Radiant</div>
-                <div className="basis-1/2">
-                  {userSeatsPick.map((item) =>
-                    item.price == 120000 ? (
-                      <span>
-                        {item.name}
-                        {","}{" "}
-                      </span>
-                    ) : (
-                      <></>
-                    )
-                  )}
+            <div className="flex flex-col gap-3 text-xl">
+              {Object.entries(priceCategory).map((namePrice) => (
+                <div className="flex flex-row">
+                  <>
+                    <div
+                      className="basis-1/2 cursor-pointer rounded-md border-2 border-gmco-white bg-[#287D92]  p-2 text-left hover:scale-110"
+                      onClick={() => {
+                        seatHighlight.includes(namePrice[0])
+                          ? setSeatHighlight([])
+                          : setSeatHighlight(namePrice[0]);
+                      }}
+                    >
+                      {namePrice[1]}
+                    </div>
+                    <div className="flex basis-1/2 flex-wrap justify-end text-xl">
+                      {userSeatsPick.map((item) =>
+                        item.price == namePrice[0] ? (
+                          <span className="self-center pl-2">
+                            {item.name}
+                            {","}{" "}
+                          </span>
+                        ) : (
+                          <></>
+                        )
+                      )}
+                    </div>
+                  </>
                 </div>
-              </div>
-
-              <div className="flex flex-row">
-                <div className="basis-1/2">Immortal</div>
-                <div className="basis-1/2">
-                  {userSeatsPick.map((item) =>
-                    item.price == 170000 ? (
-                      <span>
-                        {item.name}
-                        {","}{" "}
-                      </span>
-                    ) : (
-                      <></>
-                    )
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-row">
-                <div className="basis-1/2">Ascendant</div>
-                <div className="basis-1/2">
-                  {userSeatsPick.map((item) =>
-                    item.price == 145000 ? (
-                      <span>
-                        {item.name}
-                        {","}{" "}
-                      </span>
-                    ) : (
-                      <></>
-                    )
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-row">
-                <div className="basis-1/2">Diamond</div>
-                <div className="basis-1/2">
-                  {userSeatsPick.map((item) =>
-                    item.price == 85000 ? (
-                      <span>
-                        {item.name}
-                        {","}{" "}
-                      </span>
-                    ) : (
-                      <></>
-                    )
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-row">
-                <div className="basis-1/2">Platinum</div>
-                <div className="basis-1/2">
-                  {userSeatsPick.map((item) =>
-                    item.price == 60000 ? (
-                      <span>
-                        {item.name}
-                        {","}{" "}
-                      </span>
-                    ) : (
-                      <></>
-                    )
-                  )}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
+
           {/* Keterangan Kursi */}
           <div className="my-3 bg-[#8EBFD0] p-5 ">
             <div className=" text-gmco-grey">
@@ -531,15 +497,6 @@ export default function Seats() {
             </div>
           </div>
         </div>
-
-        {/* SeatMap
-        {sideBarOpen ? <></> : (<div className="mt-3 flex w-full justify-end">
-            <button className=" rounded-lg bg-[#C76734] p-2 text-lg text-white" onClick={() => {
-              hideSideBar(sideBarOpen);
-            }}>
-              Hide Details {sideBarOpen ? <span>&gt;</span> : <span>&lt;</span>}
-            </button>
-          </div>)} */}
 
         <div
           className={`${
