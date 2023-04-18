@@ -12,6 +12,8 @@ export default function Seats() {
   const [r_seatmap, set_R_seatmap] = useState([]);
   const [userSeats, setUserSeats] = useState([]);
   const [userSeatsPick, setUserSeatsPick] = useState([]);
+  const [sideBarOpen, setSideBarOpen] = useState(true);
+
   const mappers = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
@@ -79,6 +81,7 @@ export default function Seats() {
     "translate-y-[18px]",
     "translate-y-[20px]",
   ];
+
   const row_width = [
     "w-[57.5%]",
     "w-[60%]",
@@ -100,6 +103,22 @@ export default function Seats() {
     "w-[100%]",
     "w-[102.5%]",
   ];
+
+  const priceColor = {
+    120000: "opacity-100",
+    170000: "opacity-90",
+    145000: "opacity-75",
+    85000: "opacity-60",
+    60000: "opacity-40",
+  };
+
+  const statusColor = {
+    available: "bg-[#5C9E82]",
+    reserved_by_me: "bg-[#F5DB91]",
+    purchased_by_me: "bg-[#5C9E82]",
+    reserved: "bg-[#C0925E]",
+    purchased: "bg-[#7E7E7E]",
+  };
 
   useEffect(() => {
     (async () => {
@@ -220,32 +239,69 @@ export default function Seats() {
     return arr;
   }
 
+  // Seat Clicking Behavior
+  // arrayUser.includes(array.seat_id)
+  //   ? (setUserSeats(userSeats.filter((item) => item !== array.seat_id)),
+  //     setUserSeatsPick(
+  //       userSeatsPick.filter((item) => item.name !== array.name)
+  //     ))
+  //   : arrayUser.length < 5
+  //   ? (setUserSeats([...userSeats, array.seat_id]),
+  //     setUserSeatsPick([...userSeatsPick, array]))
+  //   : notifyError({
+  //       response: { data: { error: "Maksimum pembelian kursi adalah 5" } },
+  //     });
   function onSeatPick(array, arrayUser) {
-    arrayUser.includes(array.seat_id)
-      ? (setUserSeats(userSeats.filter((item) => item !== array.seat_id)),
-        setUserSeatsPick(userSeatsPick.filter((item) => item !== array.name)))
-      : (setUserSeats([...userSeats, array.seat_id]),
-        setUserSeatsPick([...userSeatsPick, array.name]));
+    if (arrayUser.includes(array.seat_id)) {
+      setUserSeats(userSeats.filter((item) => item !== array.seat_id));
+      setUserSeatsPick(
+        userSeatsPick.filter((item) => item.name !== array.name)
+      );
+    } else if (userSeats.length < 5) {
+      setUserSeats([...userSeats, array.seat_id]);
+      setUserSeatsPick([...userSeatsPick, array]);
+    } else {
+      notifyError({
+        response: { data: { error: "Maksimum pembelian kursi adalah 5" } },
+      });
+    }
   }
 
-  // display the data
   function left_mapper(array, arrayUser) {
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
+        if (array[i].status === "available") {
+          const isSelected = userSeats.includes(array[i].seat_id);
+          arr.push(
+            <div
+              className={`h-6 w-6 rounded-sm ${statusColor[array[i].status]} ${
+                priceColor[array[i].price]
+              } cursor-pointer text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
+                deg_rot[i]
+              } ${isSelected ? "border-2 border-red-500" : ""}`}
+              onClick={() => {
+                onSeatPick(array[i], arrayUser);
+                array[i].isSelected = isSelected;
+              }}
+            >
+              {array[i].name}
+            </div>
+          );
+        } else {
+          arr.push(
+            <div
+              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+                statusColor[array[i].status]
+              }  text-center text-[0.7rem] ${deg_rot[i]}`}
+            >
+              {array[i].name}
+            </div>
+          );
+        }
+      } else {
         arr.push(
-          <div
-            className={`h-5 w-5 rounded-sm bg-slate-400 text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${deg_rot[i]}`}
-            onClick={() => onSeatPick(array[i], arrayUser)}
-          >
-            {array[i].name}
-          </div>
-        );
-      }
-      // If the data is empty, then display blackbox
-      else {
-        arr.push(
-          <div className={`h-5 w-5 rounded-sm bg-black ${deg_rot[i]}`}></div>
+          <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i]}`}></div>
         );
       }
     }
@@ -253,38 +309,55 @@ export default function Seats() {
   }
 
   function right_mapper(array, arrayUser) {
-    let arr = [];
-    for (let i = array.length; i > 0; i--) {
-      if (array[array.length - i]) {
+  let arr = [];
+  for (let i = array.length; i > 0; i--) {
+    if (array[array.length - i]) {
+      if (array[array.length - i].status == "available") {
+        const isSelected = arrayUser.includes(array[array.length - i].seat_id);
         arr.push(
           <div
-            className={`h-5 w-5 rounded-sm bg-slate-400 text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
+            className={`h-6 w-6 rounded-sm ${
+              statusColor[array[array.length - i].status]
+            } ${
+              priceColor[array[array.length - i].price]
+            } cursor-pointer text-center text-[0.7rem] duration-300 hover:scale-150 hover:bg-gmco-orange-secondarydark ${
               deg_rot[i - 1]
-            }`}
+            } ${isSelected ? "border-2 border-red-500" : ""}`}
             onClick={() => onSeatPick(array[array.length - i], arrayUser)}
           >
             {array[array.length - i].name}
           </div>
         );
-      }
-      // If the data is empty, then display blackbox
-      else {
+      } else {
         arr.push(
           <div
-            className={`h-5 w-5 rounded-sm bg-black ${deg_rot[i - 1]}`}
-          ></div>
+            className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              statusColor[array[array.length - i].status]
+            }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
+          >
+            {array[array.length - i].name}
+          </div>
         );
       }
+    } else {
+      arr.push(
+        <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i - 1]}`}></div>
+      );
     }
-    return arr;
+  }
+  return arr;
+}
+
+  function hideSideBar(isOpen) {
+    isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
   }
 
   function cek(halo) {
     console.log(halo);
   }
 
-  // console.log(l_seatmap, ml_seatmap, mr_seatmap, r_seatmap)
-
+  // Display
+  // =================================
   return (
     <>
       <NavigationBar />
@@ -302,49 +375,161 @@ export default function Seats() {
         </div>
       </div>
 
-      <div className="grid h-screen grid-cols-5">
+      <div className="grid h-screen grid-cols-5 ">
         {/* Sementara Hidden */}
         {/* Left Bar */}
-        <div className="col-span-1 border-r-4">
-          <img
-            className="bg-gmco-blue pl-6"
-            src="https://www.sso.org.sg/_next/image?url=https%3A%2F%2Fweb-assets.sso.org.sg%2Fimages%2FWinds-Above-The-Sea-1920x1080.webp&w=1200&q=75"
-            alt=""
-          />
-          <div className="pl-6 font-semibold text-gmco-grey">
-            <p className="my-3 text-sm">Season • 2022/2023</p>
-            <p className="mb-3 border-b-2 text-2xl">GMCGO - Trah Ganjil</p>
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-row content-center gap-2">
-                <div className="h-3 w-3 self-center rounded-md bg-red-600"></div>
-                <p>Kursi Sudah Dibeli</p>
+
+        <div
+          className={`${
+            sideBarOpen ? "inline" : "hidden"
+          } col-span-1 border-r-4`}
+        >
+          {/* Minimize Button */}
+          <div className="mt-3 flex w-full justify-end">
+            <button
+              className=" rounded-lg bg-[#C76734] p-2 text-lg text-white"
+              onClick={() => {
+                hideSideBar(sideBarOpen);
+              }}
+            >
+              Hide Details {sideBarOpen ? <span>&gt;</span> : <span>&lt;</span>}
+            </button>
+          </div>
+          {/* Jumlah Kursi */}
+          <div className="my-3 flex flex-row gap-2 bg-[#F5DB91] p-5 py-9">
+            <div
+              className="flex basis-1/2 text-3xl font-semibold
+            "
+            >
+              Jumlah Kursi
+            </div>
+            <div className="basis-1/2 self-center text-2xl">
+              {userSeatsPick.length} kursi
+            </div>
+          </div>
+          {/* Kategori Kursi */}
+          <div className="my-3 bg-[#287D92] p-5 py-9 text-white">
+            <div className="pb-3 text-3xl font-semibold">Kategori</div>
+            <div className="flex flex-col text-xl">
+              <div className="flex flex-row">
+                <div className="basis-1/2">Radiant</div>
+                <div className="basis-1/2">
+                  {userSeatsPick.map((item) =>
+                    item.price == 120000 ? (
+                      <span>
+                        {item.name}
+                        {","}{" "}
+                      </span>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </div>
               </div>
-              <div className="flex flex-row content-center gap-2">
-                <div className="h-3 w-3 self-center rounded-md bg-green-600"></div>
-                <p>Bisa Dibeli</p>
+
+              <div className="flex flex-row">
+                <div className="basis-1/2">Immortal</div>
+                <div className="basis-1/2">
+                  {userSeatsPick.map((item) =>
+                    item.price == 170000 ? (
+                      <span>
+                        {item.name}
+                        {","}{" "}
+                      </span>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </div>
               </div>
-              <div className="flex flex-row content-center gap-2">
-                <div className="h-3 w-3 self-center rounded-md bg-yellow-600"></div>
-                <p>Dibayar Dulu</p>
+
+              <div className="flex flex-row">
+                <div className="basis-1/2">Ascendant</div>
+                <div className="basis-1/2">
+                  {userSeatsPick.map((item) =>
+                    item.price == 145000 ? (
+                      <span>
+                        {item.name}
+                        {","}{" "}
+                      </span>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </div>
               </div>
-              <div>
-                <p>Untuk Lihat Lihat</p>
-                <p>Kursi Dipilih</p>
-                {"["}
-                {userSeatsPick.map((userSeat) => (
-                  <span>
-                    {userSeat}
-                    {","}{" "}
-                  </span>
-                ))}
-                {"]"}
+              <div className="flex flex-row">
+                <div className="basis-1/2">Diamond</div>
+                <div className="basis-1/2">
+                  {userSeatsPick.map((item) =>
+                    item.price == 85000 ? (
+                      <span>
+                        {item.name}
+                        {","}{" "}
+                      </span>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-row">
+                <div className="basis-1/2">Platinum</div>
+                <div className="basis-1/2">
+                  {userSeatsPick.map((item) =>
+                    item.price == 60000 ? (
+                      <span>
+                        {item.name}
+                        {","}{" "}
+                      </span>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Keterangan Kursi */}
+          <div className="my-3 bg-[#8EBFD0] p-5 ">
+            <div className=" text-gmco-grey text-white">
+              <p className="pb-3 text-3xl font-semibold">Keterangan</p>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-row content-center gap-2">
+                  <div className="h-4 w-4 self-center rounded-md bg-[#5C9E82]"></div>
+                  <p>Kursi Kosong</p>
+                </div>
+                <div className="flex flex-row content-center gap-2">
+                  <div className="h-4 w-4 self-center rounded-md bg-[#B8DEE9]"></div>
+                  <p>Kursi Terbeli Oleh Saya</p>
+                </div>
+                <div className="flex flex-row content-center gap-2">
+                  <div className="h-4 w-4 self-center rounded-md bg-[#C0925E]"></div>
+                  <p>Kursi Dipesan</p>
+                </div>
+                <div className="flex flex-row content-center gap-2">
+                  <div className="h-4 w-4 self-center rounded-md bg-[#F5DB91]"></div>
+                  <p>Kursi Dipilih Oleh Saya</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* SeatMap */}
-        <div className="col-span-4 overflow-auto overflow-x-scroll p-4">
+        {/* SeatMap
+        {sideBarOpen ? <></> : (<div className="mt-3 flex w-full justify-end">
+            <button className=" rounded-lg bg-[#C76734] p-2 text-lg text-white" onClick={() => {
+              hideSideBar(sideBarOpen);
+            }}>
+              Hide Details {sideBarOpen ? <span>&gt;</span> : <span>&lt;</span>}
+            </button>
+          </div>)} */}
+
+        <div
+          className={`${
+            sideBarOpen ? "col-span-4" : "col-span-full"
+          } overflow-auto overflow-x-scroll p-4`}
+        >
           <a
             onClick={() => {
               cek(userSeats), postSeats(userSeats);
@@ -421,74 +606,3 @@ export default function Seats() {
     </>
   );
 }
-
-// for (const mapper of mappers) {
-//   let row = Object.keys(mapper);
-//   let lengths = Object.values(mapper);
-//   // console.log(lengths);
-//   // Divide into 3 major alligment = left, middle, and right area of seats
-//   for (const length of lengths) {
-//     value.map((item) => {
-//       // Left
-//       if (item.column >= 0 && item.column <= length[0] && item.row == row) {
-//         if (seatArr[0]) {
-//           seatArr[0].push(item);
-//         } else {
-//           seatArr[0] = [item];
-//         }
-//       }
-//       // Middle left
-//       else if (
-//         item.column > length[0] &&
-//         item.column <= length[0] + length[1] &&
-//         item.row == row
-//       ) {
-//         if (seatArr[1]) {
-//           seatArr[1].push(item);
-//         } else {
-//           seatArr[1] = [item];
-//         }
-//       }
-//       // Middle right
-//       else if (
-//         item.column > length[0] + length[1] &&
-//         item.column <= length[0] + length[1] + length[2] &&
-//         item.row == row
-//       ) {
-//         if (seatArr[2]) {
-//           seatArr[2].push(item);
-//         } else {
-//           seatArr[2] = [item];
-//         }
-//       }
-
-//       // Right
-//       else if (
-//         item.column > length[0] + length[1] + length[2] &&
-//         item.column <= length[0] + length[1] + length[2] + length[3] &&
-//         item.row == row
-//       ) {
-//         if (seatArr[3]) {
-//           seatArr[3].push(item);
-//         } else {
-//           seatArr[3] = [item];
-//         }
-//       }
-//     });
-//   }
-// }
-
-// // Initiate seatdict array
-// for (const mapper of mappers) {
-//   let row = Object.keys(mapper);
-//   let lengthsArr = Object.values(mapper);
-
-//   // Divide into 3 major alligment = left, middle, and right area of seats
-//   for (const lengths of lengthsArr) {
-//     for (const length_ent of lengths.entries()) {
-//       let index = length_ent[0];
-//       let length = length_ent[1];
-//       seatDict[index][row] = new Array(length);
-//     }
-//   }
-// }

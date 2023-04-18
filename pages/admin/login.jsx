@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { notifyError } from "../../components/notify";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -53,57 +55,87 @@ export default function AdminLogin() {
   }
 
   return (
-    <div>
-      <div className='right-0 flex w-full flex-col items-center space-y-8 bg-gray-300 bg-opacity-50 p-4 py-40 backdrop-blur-sm backdrop-filter md:h-1/2 md:w-5/12  '>
-        <div className='flex flex-col items-center '>
-          <h1 className='mb-3 text-xl font-bold'>
+    <section className='block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex'>
+      <div className="relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-[url('/Micon-Cropped.webp')] bg-cover shadow-lg md:m-10 md:flex-row ">
+        {/* leftside */}
+        <div className='place ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10'>
+          <h1 className='mb-3 text-4xl font-bold md:text-5xl'>
             {" "}
-            Grand Concert Vol. 10 Anjangsana Simfoni
+            Grand Concert{" "}
           </h1>
-          <p>Login Admin</p>
+          <p className='font-base mb-3 text-2xl md:text-3xl'>Vol. 10</p>
+          <p className=' font-base text-2xl md:text-2xl'>
+            {" "}
+            Anjangsana Simfoni{" "}
+          </p>
         </div>
-        <form
-          action='#'
-          className='flex flex-col items-center space-y-4'
-          onSubmit={loginSubmit}
-        >
-          <div className='relative'>
-            <label class='text-md mb-2'>Name</label>
-            <input
-              type='name'
-              placeholder='Ngademin Siapa?'
-              onChange={(e) => handleInput(e)}
-              value={loginInput.name}
-              class='w-full rounded-md border border-gray-300 p-2 placeholder:font-light placeholder:text-gray-500'
-              id='name'
-            />
-            <label class='text-md mb-2'>Email</label>
-            <input
-              type='email'
-              placeholder='johndoe@mail.com'
-              onChange={(e) => handleInput(e)}
-              value={loginInput.email}
-              class='w-full rounded-md border border-gray-300 p-2 placeholder:font-light placeholder:text-gray-500'
-              id='email'
-            />
-            <label class='text-md mb-2'>Phone</label>
-            <input
-              type='phone'
-              placeholder='1-800-273-8255'
-              onChange={(e) => handleInput(e)}
-              value={loginInput.phone}
-              class='w-full rounded-md border border-gray-300 p-2 placeholder:font-light placeholder:text-gray-500'
-              id='phone'
-            />
+        <img
+          src='/logo_gmco.webp'
+          alt=''
+          className='absolute left-5 top-3 w-32 md:left-9 md:top-3/4 md:w-52'
+        />
+
+        <div className='right-0 mt-7 flex w-full flex-col items-center space-y-8 bg-gray-400 bg-opacity-50 p-4 py-32 backdrop-blur-sm backdrop-filter md:mt-0 md:w-5/12 md:py-40 '>
+          <div className='-mt-7 flex flex-col items-center'>
+            <h1 className='mb-3 text-4xl font-bold text-gmco-white'>
+              Login Admin
+            </h1>
           </div>
-          <button
-            type='submit'
-            class='type mb-6 w-full rounded-lg bg-gmco-blue p-2 text-white hover:border hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white'
+          <form
+            action='#'
+            className='flex flex-col items-center space-y-4'
+            onSubmit={loginSubmit}
           >
-            Sign in
-          </button>
-        </form>
+            <div className='relative'>
+              <label class=' pl-2 text-base text-gmco-white'>
+                Masukkan email, nama, dan nomor telepon admin.
+              </label>
+              <div className='relative flex flex-col items-center justify-center'>
+                <input
+                  type='email'
+                  placeholder='Email'
+                  onChange={(e) => handleInput(e)}
+                  value={loginInput.email}
+                  class='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  id='email'
+                />
+                <EnvelopeIcon className='absolute right-8 top-3.5 h-7 w-7 stroke-slate-400'>
+                  {" "}
+                </EnvelopeIcon>
+                <input
+                  type='text'
+                  placeholder='Name'
+                  onChange={(e) => handleInput(e)}
+                  value={loginInput.name}
+                  class='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  id='name'
+                />
+                <input
+                  type='number'
+                  placeholder='Phone'
+                  onChange={(e) => handleInput(e)}
+                  value={loginInput.phone}
+                  class='mt-2 w-11/12 rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
+                  id='phone'
+                />
+              </div>
+            </div>
+            <label class='my-2 text-center text-sm text-gmco-white'>
+              Khusus untuk administrator.
+            </label>
+
+            <button
+              type='submit'
+              class='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
+            >
+              LOG IN
+            </button>
+            <label class='pt-3 text-center text-xs text-gmco-white'>
+              Gadjah Mada Chamber Orchestra
+            </label>
+          </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

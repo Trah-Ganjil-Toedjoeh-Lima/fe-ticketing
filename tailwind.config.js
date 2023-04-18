@@ -7,6 +7,12 @@ module.exports = {
     "./node_modules/flowbite-react/**/*.js",
   ],
   theme: {
+    fontFamily: {
+      sans: ["Metropolis", "ui-sans-serif", "system-ui"],
+      serif: ["Garamond Premiere Pro", "ui-serif"],
+      rubik: ["Rubik"],
+      inter: ["Inter"],
+    },
     extend: {
       colors: {
         "gmco-blue": {
@@ -29,11 +35,6 @@ module.exports = {
           secondarydark: "#7c311e",
           secondarylight: "#c76734",
         },
-      },
-
-      fontFamily: {
-        rubik: ["Rubik"],
-        inter: ["Inter"]
       },
     },
   },
