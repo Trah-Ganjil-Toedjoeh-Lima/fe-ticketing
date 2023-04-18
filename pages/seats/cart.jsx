@@ -27,7 +27,7 @@ export default function Cart() {
           router.push("/auth");
         }
         const [res] = await Promise.all([
-          axiosInstance.get("/v1/checkout"),
+          axiosInstance.get("/api/v1/checkout"),
         ]);
         setSeatBoughts(res.data.data);
       } catch (err) {
@@ -47,7 +47,7 @@ export default function Cart() {
 
   async function handleCheckout() {
     try {
-      const res = await axiosInstance.post("/v1/checkout");
+      const res = await axiosInstance.post("/api/v1/checkout");
       console.log(res.data.midtrans_client_key);
       midtransSetup(res.data.snap_response.token).then(
         openMidtransWindow(res.data.snap_response.token)

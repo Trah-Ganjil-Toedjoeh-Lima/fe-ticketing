@@ -35,7 +35,7 @@ export default function NavigationBar() {
     (async () => {
       try {
         const [res] = await Promise.all([
-          axiosInstance.get("/v1/user/profile"),
+          axiosInstance.get("/api/v1/user/profile"),
         ]);
         setLogedUser(res.data.data);
       } catch {}
@@ -79,7 +79,7 @@ export default function NavigationBar() {
   async function logoutSubmit(e) {
     e.preventDefault();
 
-    await axiosInstance.post("v1/user/logout").then((res) => {
+    await axiosInstance.post("/api/v1/user/logout").then((res) => {
       if (res.data.message == "success") {
         localStorage.removeItem("auth_token");
         Swal.fire({

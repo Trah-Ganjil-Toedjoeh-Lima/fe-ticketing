@@ -31,7 +31,7 @@ export default function Auth() {
     try {
       console.log(JSON.stringify(loginInput));
       await axiosInstance
-        .post("/v1/user/register_email", {
+        .post("/api/v1/user/register_email", {
           email: loginInput.email,
         })
         .then((res) => {
