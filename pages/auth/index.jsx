@@ -4,6 +4,7 @@ import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { notifyError } from "../../components/notify";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
+import Image from "next/image";
 
 export default function Auth() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function Auth() {
     try {
       console.log(JSON.stringify(loginInput));
       await axiosInstance
-        .post("/api/v1/user/register_email", {
+        .post("/v1/user/register_email", {
           email: loginInput.email,
         })
         .then((res) => {
@@ -66,10 +67,19 @@ export default function Auth() {
   }
 
   return (
-    <section className="bg-gmco-grey min-h-screen block items-center justify-center p-4 md:flex">
-      <div className=" relative bg-[url('/GMCO.webp')] bg-cover flex flex-col  max-w-screen-lg overflow-hidden rounded-lg shadow-lg w-full md:flex-row md:m-10 ">
+    <section className="block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
+      <div className=" relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row ">
         {/* leftside */}
-        <div className=" place ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 ">
+        <div className="absolute bg-gmco-grey ">
+          <Image
+            src="/GMCO.webp"
+            alt="bg gmco concert"
+            className="object-cover opacity-50"
+            width={2000}
+            height={2000}
+          />
+        </div>
+        <div className="relative place ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 ">
           <h1 className="mb-3 text-4xl font-bold md:text-5xl">
             {" "}
             Grand Concert{" "}
@@ -82,7 +92,7 @@ export default function Auth() {
         </div>
         <img
           src="/logo_gmco.webp"
-          alt=""
+          alt="logo"
           className="absolute left-5 top-3 w-32 md:left-9 md:top-3/4 md:w-52"
         />
 
@@ -103,19 +113,20 @@ export default function Auth() {
               </label>
               <div className="relative flex w-full items-stretch">
                 <div className=" flex"></div>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => HandleInput(e)}
-                    value={loginInput.email}
-                    class="mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500"
-                    id="email"
-                  />
-                  <EnvelopeIcon className="absolute h-7 w-7 right-4 top-4 stroke-slate-400"> </EnvelopeIcon>
-
+                <input
+                  type="email"
+                  placeholder="Email"
+                  onChange={(e) => HandleInput(e)}
+                  value={loginInput.email}
+                  class="mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500"
+                  id="email"
+                />
+                <EnvelopeIcon className="absolute right-4 top-4 h-7 w-7 stroke-slate-400">
+                  {" "}
+                </EnvelopeIcon>
               </div>
             </div>
-            <label class="text-center text-sm text-gmco-white my-2">
+            <label class="my-2 text-center text-sm text-gmco-white">
               Anda akan dikirimkan kode OTP melalui email.
               <br /> Pastikan email yang anda gunakan valid
             </label>

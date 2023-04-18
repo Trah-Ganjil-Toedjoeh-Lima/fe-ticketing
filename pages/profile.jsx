@@ -135,13 +135,13 @@ useEffect(() => {
 
           {/* List of Tickets */}
           <div className="flex w-full flex-col gap-4 px-8 py-8 lg:w-2/3">
-            <p className="text-center text-start text-2xl font-medium text-gmco-grey">
+            <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{tickets.length}&#41;
             </p>
             {/* TICKET */}
 
-            {tickets.map((ticket) => (
-              <div className="flex h-full w-full flex-row rounded-lg bg-white p-4">
+            {tickets.map((ticket, index) => (
+              <div key={index} className="flex h-full w-full flex-row rounded-lg bg-white p-4">
                 {/* Kursi dan Tipe */}
                 <div className="flex w-1/5 flex-col justify-center text-center">
                   <h1 className="font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl">
@@ -178,7 +178,7 @@ useEffect(() => {
                         Grand Concert Vol.10
                       </h1>
                       <p className="font-inter text-sm font-light text-white lg:text-lg">
-                        'Anjangsana Simfoni'
+                        Anjangsana Simfoni
                       </p>
                     </div>
                   </div>

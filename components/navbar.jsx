@@ -33,8 +33,7 @@ export default function NavigationBar() {
   useEffect(() => {
     (async () => {
       try {
-        const [res] = await Promise.all([axiosInstance.get("api/v1/user")]);
-        console.log(res.data);
+        const [res] = await Promise.all([axiosInstance.get("/v1/user/profile")]);
         setLogedUser(res.data.data);
       } catch {}
     })();
@@ -55,7 +54,7 @@ export default function NavigationBar() {
 
   return (
     <nav
-      className={`fixed z-10 w-full py-3 transition duration-300 ease-in-out ${
+      className={`fixed z-50 w-full py-3 transition duration-300 ease-in-out ${
         scrollPosition > 0 || isOpen
           ? "bg-gmco-white text-black"
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"

@@ -45,7 +45,7 @@ export default function Home() {
                     Vol. 10
                   </p>
                   <p className="font-normal text-white drop-shadow md:text-2xl">
-                    Sabtu, <b>27</b> Mei 2023 Saturday @ <b>18.00 WIB</b>
+                    Sabtu, <b>27</b> Mei 2023 @ <b>18.00 WIB</b>
                     <br />
                     Auditorium Driyarkara
                   </p>
@@ -87,11 +87,11 @@ export default function Home() {
           <RevealWrapper duration={1000} distance="0">
             <div className="w-full">
               <div className="py-12 text-center md:text-left">
-                <div className="text-md font-bold uppercase tracking-wide text-red-400 md:text-xl">
+                <div className="text-md font-bold uppercase tracking-wide text-gmco-orange-secondarylight md:text-xl">
                   About
                 </div>
                 <h1 className="mb-4 mt-2 text-2xl font-semibold leading-tight text-gray-900 md:text-4xl">
-                  GMCO Live from the Living Room
+                  Grand Concert #10
                 </h1>
                 <p className="text-md mb-4 leading-normal text-gray-900 md:text-lg">
                   GMCO Live from the Living Room merupakan sebuah intimate
@@ -111,7 +111,7 @@ export default function Home() {
                   className="text-gmco-white"
                   href="https://gmco.ukm.ugm.ac.id/"
                 >
-                  <button className="delay-15 rounded-xl bg-gmco-blue-main px-4 py-2 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:px-6 md:py-3">
+                  <button className="delay-15 rounded-md bg-gmco-blue-main px-4 py-2 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:px-6 md:py-3">
                     More About GMCO
                   </button>
                 </a>

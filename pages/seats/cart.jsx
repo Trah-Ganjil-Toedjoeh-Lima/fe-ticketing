@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -19,22 +20,20 @@ export default function Cart() {
   useEffect(() => {
     (async () => {
       try {
+        if (
+          typeof window !== "undefined" &&
+          !localStorage.getItem("auth_token")
+        ) {
+          router.push("/auth");
+        }
         const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/checkout"),
+          axiosInstance.get("/v1/checkout"),
         ]);
         setSeatBoughts(res.data.data);
       } catch (err) {
         notifyError(err);
       }
     })();
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
-      router.push("/auth");
-    } else {
-      midtransSetup();
-    }
   }, []);
 
   useEffect(() => {
@@ -48,9 +47,11 @@ export default function Cart() {
 
   async function handleCheckout() {
     try {
-      const res = await axiosInstance.post("/api/v1/checkout");
-      console.log(res.data);
-      openMidtransWindow(res.data.snap_response.token);
+      const res = await axiosInstance.post("/v1/checkout");
+      console.log(res.data.midtrans_client_key);
+      midtransSetup(res.data.snap_response.token).then(
+        openMidtransWindow(res.data.snap_response.token)
+      );
     } catch (err) {
       // notifyError(err);
       console.log(err);
@@ -93,17 +94,24 @@ export default function Cart() {
     <>
       <NavigationBar />
       <div className="h-max bg-gmco-blue-main md:min-h-screen">
-        <div className="h-max bg-[url('/gmco-cart.webp')] bg-cover bg-center backdrop-blur">
-          <div className="backdrop-blur-sm">
-            <div className="container m-auto px-6 pb-8 pt-24 md:px-1">
-              <h2 className="w-max border-b-2 text-2xl font-bold text-gmco-white">
-                Keranjang - ({seatBoughts.seats.length} item)
-              </h2>
-            </div>
+        <div className="relative h-max">
+          <div className="absolute w-full bg-gmco-grey ">
+            <Image
+              src="/gmco-cart.webp"
+              alt="bg gmco concert"
+              className="h-40 object-cover opacity-50"
+              width={2000}
+              height={2000}
+            />
+          </div>
+          <div className="container relative z-10 m-auto px-6 pb-8 pt-24 md:px-1">
+            <h2 className="w-max border-b-2 text-2xl font-bold text-gmco-white">
+              Keranjang - ({seatBoughts.seats.length} item)
+            </h2>
           </div>
         </div>
 
-        <div className="container m-auto px-6 pb-8 md:px-1">
+        <div className="container relative m-auto px-6 pb-8 md:px-1">
           <div className="grid gap-10 overflow-hidden py-6 md:grid-cols-5">
             <div className="h-max md:col-span-3 ">
               {/* Display List */}
