@@ -8,7 +8,7 @@ export default function Error() {
       </Head>
       <div>
         <h1>Oops! Something went wrong.</h1>
-        <p>We're sorry, but an unexpected error occurred.</p>
+        <p>Sorry, but an unexpected error occurred.</p>
       </div>
     </>
   );
