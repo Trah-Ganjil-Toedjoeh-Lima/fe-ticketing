@@ -5,11 +5,12 @@ import Image from "next/image";
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
-import { notifyError } from "@/components/notify";
+import { notifyError, notifySucces, notifyErrorMessage, notifyInfo, notifyWarning } from "@/components/notify";
 
 export default function Cart() {
   const [orderTotal, setOrderTotal] = useState(0);
   const router = useRouter();
+  const [update, setUpdate] = useState();
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
@@ -17,24 +18,24 @@ export default function Cart() {
     user_phone: "user_phone",
   });
 
+  function rerender() {
+    setUpdate(`update ${Math.random()}`);
+  }
+
   useEffect(() => {
     (async () => {
       try {
-        if (
-          typeof window !== "undefined" &&
-          !localStorage.getItem("auth_token")
-        ) {
+        if (typeof window?.localStorage?.getItem !== "function") {
           router.push("/auth");
         }
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/checkout"),
-        ]);
+        const [res] = await Promise.all([axiosInstance.get("/api/v1/checkout")]);
         setSeatBoughts(res.data.data);
+        midtransSetup(res.data.midtrans_client_key);
       } catch (err) {
         notifyError(err);
       }
     })();
-  }, []);
+  }, [update]);
 
   useEffect(() => {
     const seats = seatBoughts.seats;
@@ -48,13 +49,9 @@ export default function Cart() {
   async function handleCheckout() {
     try {
       const res = await axiosInstance.post("/api/v1/checkout");
-      console.log(res.data.midtrans_client_key);
-      midtransSetup(res.data.snap_response.token).then(
-        openMidtransWindow(res.data.snap_response.token)
-      );
+      openMidtransWindow(res.data.snap_response.token);
     } catch (err) {
-      // notifyError(err);
-      console.log(err);
+      notifyError(err);
     }
   }
 
@@ -62,22 +59,20 @@ export default function Cart() {
     window.snap.pay(token, {
       onSuccess: function (result) {
         /* You may add your own implementation here */
-        alert("payment success!");
-        console.log(result);
+        notifySucces("payment success!");
+        rerender()
       },
       onPending: function (result) {
         /* You may add your own implementation here */
-        alert("wating your payment!");
-        console.log(result);
+        notifyInfo("wating your payment!");
       },
       onError: function (result) {
         /* You may add your own implementation here */
-        alert("payment failed!");
-        console.log(result);
+        notifyErrorMessage("payment failed!");
       },
       onClose: function () {
         /* You may add your own implementation here */
-        alert("you closed the popup without finishing the payment");
+        notifyWarning("you closed the popup without finishing the payment");
       },
     });
   }
