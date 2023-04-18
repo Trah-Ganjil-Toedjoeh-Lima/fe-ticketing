@@ -6,64 +6,48 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 
+import { notifyError } from "@/components/notify";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 
 export default function Profile() {
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
-  const [isEditingPhoneNum, setIsEditingPhoneNum] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const tickets = [6, 7, 8, 9, 10, 11, 12];
   const router = useRouter();
   const [token, setToken] = useState("");
+  const [userData, setUserData] = useState([]);
 
-  {
-    /*
-useEffect(() => {
+  useEffect(() => {
     if (typeof window !== "undefined") {
       if (!localStorage.getItem("auth_token")) {
         router.push("/auth");
       }
     }
   }, []);
-*/
-  }
 
-  const handleInputChange = (event, setStateFunction) => {
-    setStateFunction(event.target.value);
-  };
-
-  const handleInputKeyDown = (event, setIsEditing) => {
-    if (event.keyCode === 13) {
-      setIsEditing(false);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("/api/v1/user/");
+        setData(response.data);
+        console.log("DATA BERHASIL DIAMBIL");
+        console.log(userData);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  };
 
-  const handleInputBlur = (setIsEditing) => {
-    setIsEditing(false);
-  };
-
-  const handleNameClick = () => {
-    setIsEditingName(true);
-  };
-
-  const handleEmailClick = () => {
-    setIsEditingEmail(true);
-  };
-
-  const handlePhoneNumClick = () => {
-    setIsEditingPhoneNum(true);
-  };
+    fetchData();
+  }, []);
 
   return (
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className='min-h-screen w-screen bg-gmco-white'>
-        <div className='relative w-screen overflow-hidden'>
+      <div className="min-h-screen w-screen bg-gmco-white">
+        <div className="relative w-screen overflow-hidden">
           <img
             className='h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 '
             src='/GMCO_10.webp'
@@ -76,12 +60,12 @@ useEffect(() => {
               <hr class='my-8 h-px border-0 bg-gmco-grey' />
             </div>
 
-            <div className='flex w-4/5 flex-col items-start px-16 lg:items-end'>
-              <h1 className='mt-8 font-rubik text-xl font-semibold text-[#F5DB91]'>
-                Reinhart Timothy
+            <div className="flex w-4/5 flex-col items-start px-16 lg:items-end">
+              <h1 className="mt-8 font-rubik text-xl font-semibold text-[#F5DB91]">
+                {userData.Name}
               </h1>
-              <p className='font-rubik font-normal text-[#F5DB91]'>
-                reinhart.siregar@gmail.com
+              <p className="font-rubik font-normal text-[#F5DB91]">
+                {userData.Email}
               </p>
               <p className='font-rubik font-normal text-[#F5DB91]'>
                 1-800-273-8255
@@ -93,45 +77,50 @@ useEffect(() => {
         {/* CONTENT */}
         <div className='flex w-full flex-col divide-x lg:flex-row'>
           {/* EDIT IDENTITY */}
-          <div className='relative flex w-full flex-col items-start bg-[#C0925E] px-8 py-8 lg:w-1/3'>
+          <form
+            action="/api/v1/user"
+            method="patch"
+            className="relative flex w-full flex-col items-start bg-[#C0925E] px-8 py-8 lg:w-1/3"
+          >
             {/* Name */}
-            <p className='font-rubik text-white'>Nama</p>
-
+            <label for="nama" className="font-rubik text-white">
+              Nama
+            </label>
             <input
-              className='mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue'
-              type='text'
-              value={name}
-              onChange={(event) => handleInputChange(event, setName)}
-              placeholder='Masukkan Nama Anda'
+              className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
+              type="text"
+              placeholder="Masukkan Nama Anda"
             />
 
             {/*Email*/}
-            <div className='flex flex-row'>
-              <p className='font-rubik text-white'>Email</p>
-              <p className='text-red-700'>*</p>
-            </div>
+            <label for="email" className="font-rubik text-white">
+              Email<span className="text-red-500">*</span>
+            </label>
             <input
-              className='mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue'
-              type='text'
-              value={email}
-              onChange={(event) => handleInputChange(event, setEmail)}
-              placeholder='Masukkan Email Anda'
+              className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
+              type="email"
+              placeholder="Masukkan Email Anda"
+              required
             />
 
             {/* Phone Number */}
 
-            <p className='font-rubik text-white'>Nomor WhatsApp</p>
+            <label type="whatsapp" className="font-rubik text-white">
+              Nomor WhatsApp<span className="text-red-500">*</span>
+            </label>
             <input
-              className='mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue'
-              type='text'
-              value={phoneNum}
-              onChange={(event) => handleInputChange(event, setPhoneNum)}
-              placeholder='Masukkan Nomor WhatsApp Anda'
+              className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
+              type="number"
+              placeholder="Masukkan Nomor WhatsApp Anda"
+              required
             />
-            <button className='mt-12 w-full rounded-lg bg-[#932F2F] p-2 text-center font-inter text-lg font-semibold text-white'>
+            <button
+              type="submit"
+              className="mt-12 w-full rounded-lg bg-[#932F2F] p-2 text-center font-inter text-lg font-semibold text-white"
+            >
               PERBARUI PROFIL
             </button>
-          </div>
+          </form>
 
           {/* List of Tickets */}
           <div className="flex w-full flex-col gap-4 px-8 py-8 lg:w-2/3">
