@@ -49,7 +49,7 @@ export default function Error() {
           </div>
           <div>
             <p className="text-base text-gray-50">
-              If you're not an admin, you can go back home.
+              If you are not an admin, you can go back home.
             </p>
           </div>
           <div>
