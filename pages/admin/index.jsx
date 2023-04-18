@@ -175,41 +175,70 @@ export default function Admin() {
           </li>
         </ul>
       </div>
-      <table>
-        <caption>Seats</caption>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Seat</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Link</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Transaction</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {adminData.map((item, index) => (
-            <tr key={index} className='border-b bg-white'>
-              <td className='whitespace-nowrap py-4 pl-8 pr-4 font-medium text-gray-900'>
-                {item.Seat.SeatId}
-              </td>
-              <td className='pl-8 pr-4'>{item.Seat.Name}</td>
-              <td className='pl-8 pr-4'>{item.Seat.Category}</td>
-              <td className='pl-8 pr-4'>{item.Seat.Price}</td>
-              <td className='pl-8 pr-4'>{item.Seat.Link}</td>
-              <td className='pl-8 pr-4'>{item.User.Name}</td>
-              <td className='pl-8 pr-4'>{item.User.Email}</td>
-              <td className='pl-8 pr-4'>{item.User.Phone}</td>
-              <td className='pl-8 pr-4'>{item.Seat.Status}</td>
-              <td className='pl-8 pr-4'>{item.Seat.PostSaleStatus}</td>
+      <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
+        <table className='w-full text-left text-sm text-gray-500'>
+          <caption class='bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white'>
+            Data Transaksi Kursi
+          </caption>
+          <thead className='bg-gray-50 text-xs uppercase text-gray-700'>
+            <tr className='border-b bg-white hover:bg-gray-50'>
+              <th scope='col' className='px-6 py-3'>
+                ID
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Seat
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Category
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Price
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Link
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Name
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Email
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Phone
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Transaction
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Status
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {adminData.map((item, index) => (
+              <tr key={index} className='border-b bg-white hover:bg-gray-50'>
+                <td className='whitespace-nowrap py-4 pl-8 pr-4 font-medium text-gray-900'>
+                  {item.Seat.SeatId}
+                </td>
+                <th
+                  scope='row'
+                  class='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
+                >
+                  {item.Seat.Name}
+                </th>
+                <td className='px-6 py-4'>{item.Seat.Category}</td>
+                <td className='px-6 py-4'>{item.Seat.Price}</td>
+                <td className='px-6 py-4'>{item.Seat.Link}</td>
+                <td className='px-6 py-4'>{item.User.Name}</td>
+                <td className='px-6 py-4'>{item.User.Email}</td>
+                <td className='px-6 py-4'>{item.User.Phone}</td>
+                <td className='px-6 py-4'>{item.Seat.Status}</td>
+                <td className='px-6 py-4'>{item.Seat.PostSaleStatus}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
