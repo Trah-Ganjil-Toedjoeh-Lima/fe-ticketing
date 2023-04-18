@@ -7,7 +7,44 @@ export default function Admin() {
   const [adminData, setAdminData] = useState([]);
   const [appConfig, setAppConfig] = useState(false);
   const [qrScanMode, setQrScanMode] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if admin is logged in
+    if (typeof window !== "undefined") {
+      // If not, redirect to /admin/login
+      if (localStorage.getItem("auth_token")) {
+        setIsLoggedIn(true);
+      } else {
+        router.push("/admin/login");
+      }
+    }
+  }, [router]);
+
+  useEffect(() => {
+    async function getAdminData() {
+      //Try-catch block on promised GET requests to back-end
+      try {
+        if (isLoggedIn) {
+          const [seatsRes, configRes] = await Promise.all([
+            axiosInstance.get("/api/v1/admin/seats"),
+            axiosInstance.get("/api/v1/admin/get_app_config"),
+          ]);
+
+          setAdminData(seatsRes.data.data);
+          setAppConfig(configRes.data.app_config.IsOpenGate);
+          setQrScanMode(configRes.data.app_config.QrScanBehaviour);
+
+          console.log(isLoggedIn);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getAdminData();
+  }, [isLoggedIn]);
 
   async function handleGate() {
     const postURL = appConfig
@@ -22,38 +59,6 @@ export default function Admin() {
       console.error(err);
     }
   }
-
-  useEffect(() => {
-    // Check if admin is logged in
-    if (typeof window !== "undefined") {
-      // If not, redirect to /admin/login
-      if (!localStorage.getItem("auth_token")) {
-        router.push("/admin/login");
-      }
-    }
-  }, [router]);
-
-  useEffect(() => {
-    async function getAdminData() {
-      //Try-catch block on promised GET requests to back-end
-      try {
-        const [seatsRes, configRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/seats"),
-          axiosInstance.get("/api/v1/admin/get_app_config"),
-        ]);
-
-        setAdminData(seatsRes.data.data);
-        setAppConfig(configRes.data.app_config.IsOpenGate);
-        setQrScanMode(configRes.data.app_config.QrScanBehaviour);
-
-        console.log(qrScanMode);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    getAdminData();
-  }, [axiosInstance, appConfig, qrScanMode]);
 
   async function updateQrScanState(newState) {
     const patchURL = "/api/v1/admin/qr_scan_behaviour";
@@ -191,7 +196,7 @@ export default function Admin() {
 
           <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
             <table className='w-full text-left text-sm text-gray-500'>
-              <caption class='bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white'>
+              <caption className='bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white'>
                 Data Transaksi Kursi
               </caption>
               <thead className='bg-gray-50 text-xs uppercase text-gray-700'>
@@ -239,7 +244,7 @@ export default function Admin() {
                     </td>
                     <th
                       scope='row'
-                      class='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
+                      className='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
                     >
                       {item.Seat.Name}
                     </th>
