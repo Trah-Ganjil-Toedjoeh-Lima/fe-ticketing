@@ -508,7 +508,7 @@ export default function Seats() {
           </div>
           {/* Keterangan Kursi */}
           <div className="my-3 bg-[#8EBFD0] p-5 ">
-            <div className=" text-gmco-grey text-white">
+            <div className=" text-gmco-grey">
               <p className="pb-3 text-3xl font-semibold">Keterangan</p>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row content-center gap-2">
