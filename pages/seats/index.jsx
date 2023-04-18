@@ -23,6 +23,7 @@ export default function Seats() {
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [curFloor, setCurFloor] = useState(1);
   const [seatHighlight, setSeatHighlight] = useState([]);
+  const [scaleN, setScaleN] = useState(8);
 
   const mappersFloor1 = [
     { A: [0, 8, 8, 0] },
@@ -111,6 +112,7 @@ export default function Seats() {
     "translate-y-[18px]",
     "translate-y-[20px]",
   ];
+
   const row_width = [
     "w-[57.5%]",
     "w-[60%]",
@@ -132,6 +134,7 @@ export default function Seats() {
     "w-[100%]",
     "w-[102.5%]",
   ];
+
   const priceColor = {
     170000: "bg-opacity-100",
     145000: "bg-opacity-60",
@@ -155,6 +158,28 @@ export default function Seats() {
     reserved: "bg-[#C0925E]",
     purchased: "bg-[#7E7E7E]",
   };
+
+  const scaleFactor = [
+    "scale-[10%]",
+    "scale-[20%]",
+    "scale-[30%]",
+    "scale-[40%]",
+    "scale-[50%]",
+    "scale-[60%]",
+    "scale-[70%]",
+    "scale-[80%]",
+    "scale-[90%]",
+    "scale-[100%]",
+    "scale-[120%]",
+    "scale-[130%]",
+    "scale-[140%]",
+    "scale-[150%]",
+    "scale-[160%]",
+    "scale-[170%]",
+    "scale-[180%]",
+    "scale-[190%]",
+    "scale-[200%]",
+  ];
 
   useEffect(() => {
     (async () => {
@@ -594,11 +619,11 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "w-4/5" : "w-full"
-          } h-screen justify-start overflow-x-scroll`}
+          } min-h-screen justify-start overflow-x-scroll`}
         >
-          <div className="absolute flex flex-col justify-between z-20 h-full">
+          <div className="absolute z-20 flex h-full flex-col justify-between">
             <button
-              className={`h-max rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white ${
+              className={`m-3 h-max rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
@@ -607,19 +632,31 @@ export default function Seats() {
             >
               Show Details &gt;
             </button>
-            <button
-              className={`h-max rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white `}
-              onClick={() => {
-                hideSideBar(sideBarOpen);
-              }}
-            >
-              ++
-            </button>
+            <div className="absolute bottom-0 m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
+              <button
+                className={`h-max px-4 py-2 duration-300 hover:scale-150`}
+                onClick={() => {
+                  setScaleN(Math.min(scaleN + 1, 18));
+                }}
+              >
+                +
+              </button>
+              <button
+                className={`h-max px-4 py-2 duration-300 hover:scale-150`}
+                onClick={() => {
+                  setScaleN(Math.max(scaleN - 1, 0));
+                }}
+              >
+                -
+              </button>
+            </div>
           </div>
 
           {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
 
-          <div className="flex h-full w-max origin-top-left scale-[95%] flex-col items-center justify-start p-6">
+          <div
+            className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
+          >
             <div className="flex w-2/5 items-center justify-center bg-gmco-grey py-8 text-gmco-white">
               Panggung
             </div>
