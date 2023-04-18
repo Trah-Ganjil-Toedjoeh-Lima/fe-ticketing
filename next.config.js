@@ -3,7 +3,7 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/v1/:path*',
+        source: '/api/v1/:path*',
         destination: 'https://dev-api.gmco-event.com/v1/:path*',
       },
     ]

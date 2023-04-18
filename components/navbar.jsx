@@ -5,6 +5,7 @@ import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
 import { axiosInstance } from "@/atoms/config";
+import Swal from "sweetalert2";
 
 export default function NavigationBar() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function NavigationBar() {
   useEffect(() => {
     (async () => {
       try {
-        const [res] = await Promise.all([axiosInstance.get("/v1/user/profile")]);
+        const [res] = await Promise.all([axiosInstance.get("/api/v1/user/profile")]);
         setLogedUser(res.data.data);
       } catch {}
     })();
@@ -78,7 +79,7 @@ export default function NavigationBar() {
 async function logoutSubmit(e) {
   e.preventDefault();
 
-  await axiosInstance.post('api/v1/user/logout').then((res) => {
+  await axiosInstance.post('/api/v1/user/logout').then((res) => {
     if (res.data.message == 'success') {
       localStorage.removeItem("auth_token");
       Swal.fire({

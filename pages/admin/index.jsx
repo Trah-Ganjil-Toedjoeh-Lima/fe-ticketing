@@ -13,8 +13,8 @@ export default function Admin() {
 
   async function handleSwitch() {
     const postURL = appConfig
-      ? "/v1/admin/close_the_gate"
-      : "/v1/admin/open_the_gate";
+      ? "/api/v1/admin/close_the_gate"
+      : "/api/v1/admin/open_the_gate";
 
     try {
       const res = await axiosInstance.post(postURL);
@@ -38,8 +38,8 @@ export default function Admin() {
   useEffect(() => {
     (async () => {
       const [res, res1] = await Promise.all([
-        axiosInstance.get("/v1/admin/seats"),
-        axiosInstance.get("/v1/admin/get_app_config"),
+        axiosInstance.get("/api/v1/admin/seats"),
+        axiosInstance.get("/api/v1/admin/get_app_config"),
       ]);
 
       setAdminData(res.data.data);

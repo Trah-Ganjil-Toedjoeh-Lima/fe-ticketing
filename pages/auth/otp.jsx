@@ -21,7 +21,7 @@ export default function OtpPage() {
       try {
         console.log(JSON.stringify(loginInput));
         await axiosInstance
-          .post("/v1/user/otp", {
+          .post("/api/v1/user/otp", {
             email: loginInput.email,
             otp: otp,
           })
