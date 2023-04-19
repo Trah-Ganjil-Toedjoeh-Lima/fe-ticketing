@@ -10,25 +10,20 @@ export default function OtpPage() {
   const router = useRouter();
   const loginInput = router.query;
   const [otp, setOtp] = useState("");
-  const [otpSubmit, setOtpSubmit] = useState({
-    email: loginInput.email,
-    otp: otp,
-  });
 
   async function LoginSubmit(e) {
     e.preventDefault();
+
     if (otp.length == 6) {
       try {
-        console.log(JSON.stringify(loginInput));
         await axiosInstance
           .post("/api/v1/user/otp", {
             email: loginInput.email,
             otp: otp,
           })
+
           .then((res) => {
-            console.log(res);
             if (res.status === 200) {
-              console.log(res.data.token.AccessToken);
               localStorage.setItem(
                 "auth_token",
                 `Bearer ${res.data.token.AccessToken}`
@@ -51,13 +46,13 @@ export default function OtpPage() {
               });
             }
           });
+
       } catch (err) {
-        // notifyError(err);
-        console.log(err);
+        notifyError(err);
       }
     }
   }
-
+ 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Card className=" flex  max-w-sm items-center py-4 sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6">
