@@ -5,17 +5,28 @@ import Image from "next/image";
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
-import { notifyError } from "@/components/notify";
+import {
+  notifyError,
+  notifySucces,
+  notifyErrorMessage,
+  notifyInfo,
+  notifyWarning,
+} from "@/components/notify";
 
 export default function Cart() {
   const [orderTotal, setOrderTotal] = useState(0);
   const router = useRouter();
+  const [update, setUpdate] = useState();
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
     user_name: "user_name",
     user_phone: "user_phone",
   });
+
+  function rerender() {
+    setUpdate(`update ${Math.random()}`);
+  }
 
   useEffect(() => {
     (async () => {
@@ -30,11 +41,12 @@ export default function Cart() {
           axiosInstance.get("/api/v1/checkout"),
         ]);
         setSeatBoughts(res.data.data);
+        midtransSetup(res.data.midtrans_client_key);
       } catch (err) {
         notifyError(err);
       }
     })();
-  }, []);
+  }, [update]);
 
   useEffect(() => {
     const seats = seatBoughts.seats;
@@ -48,13 +60,9 @@ export default function Cart() {
   async function handleCheckout() {
     try {
       const res = await axiosInstance.post("/api/v1/checkout");
-      console.log(res.data.midtrans_client_key);
-      midtransSetup(res.data.snap_response.token).then(
-        openMidtransWindow(res.data.snap_response.token)
-      );
+      openMidtransWindow(res.data.snap_response.token);
     } catch (err) {
-      // notifyError(err);
-      console.log(err);
+      notifyError(err);
     }
   }
 
@@ -62,22 +70,20 @@ export default function Cart() {
     window.snap.pay(token, {
       onSuccess: function (result) {
         /* You may add your own implementation here */
-        alert("payment success!");
-        console.log(result);
+        notifySucces("payment success!");
+        rerender();
       },
       onPending: function (result) {
         /* You may add your own implementation here */
-        alert("wating your payment!");
-        console.log(result);
+        notifyInfo("wating your payment!");
       },
       onError: function (result) {
         /* You may add your own implementation here */
-        alert("payment failed!");
-        console.log(result);
+        notifyErrorMessage("payment failed!");
       },
       onClose: function () {
         /* You may add your own implementation here */
-        alert("you closed the popup without finishing the payment");
+        notifyWarning("you closed the popup without finishing the payment");
       },
     });
   }
@@ -132,16 +138,20 @@ export default function Cart() {
                         <div className="flex items-center">
                           <div className="hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 md:inline">
                             {seatBought.price > 100000 ? (
-                              <img
+                              <Image
                                 src="/chair.webp"
                                 alt="Kursi Bagus Enak Diduduki"
                                 className="h-full w-full object-cover object-center"
+                                width={1000}
+                                height={1000}
                               />
                             ) : (
-                              <img
+                              <Image
                                 src="/chair-hijau.webp"
                                 alt="Kursi Hijau Sangat Kuat"
                                 className="h-full w-full object-cover object-center"
+                                width={1000}
+                                height={1000}
                               />
                             )}
                           </div>

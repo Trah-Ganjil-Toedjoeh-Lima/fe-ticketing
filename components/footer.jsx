@@ -7,6 +7,7 @@ import {
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
+import Image from "next/image";
 
 export default function FooterBar() {
   // Menu Lg 1 x (x) SM 1 x 2
@@ -67,13 +68,16 @@ export default function FooterBar() {
       <div className="mb-4 grid grid-cols-2 gap-8 md:mb-16 md:grid-cols-5 md:gap-2 lg:grid-cols-7">
         <div className="col-span-2 md:mr-24 lg:col-span-4">
           <div className="flex items-center">
-            <img
+            <Image
               src="/logo-anjangsana.webp"
-              className="mr-3 h-12 md:h-20"
-              alt="GMCO Event Logo"
+              alt="logo gmco"
+              className="mr-3 h-12 md:h-20 w-max"
+              width={1000}
+              height={1000}
             />
             <span href="#" className="text-xl font-bold">
-              Grand Concert #10 <br/> <span className="text-base font-medium">Anjangsana Simfoni</span>
+              Grand Concert #10 <br />{" "}
+              <span className="text-base font-medium">Anjangsana Simfoni</span>
             </span>
           </div>
         </div>

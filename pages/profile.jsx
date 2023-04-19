@@ -64,10 +64,13 @@ useEffect(() => {
       <NavigationBar />
       <div className="min-h-screen w-screen bg-gmco-white">
         <div className="relative w-screen overflow-hidden">
-          <img
-            className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
+          <Image
             src="/GMCO_10.webp"
-          ></img>
+            alt="foto gmco"
+            className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
+            width={1000}
+            height={1000}
+          />
           <div className="absolute left-0 top-0 flex h-full w-full flex-col py-16 lg:flex-row">
             <div className="flex h-full w-1/5 items-center px-16">
               <h1 className="font-rubik text-5xl font-light text-white">
