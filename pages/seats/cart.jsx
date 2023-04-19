@@ -132,16 +132,20 @@ export default function Cart() {
                         <div className="flex items-center">
                           <div className="hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 md:inline">
                             {seatBought.price > 100000 ? (
-                              <img
+                              <Image
                                 src="/chair.webp"
                                 alt="Kursi Bagus Enak Diduduki"
                                 className="h-full w-full object-cover object-center"
+                                width={1000}
+                                height={1000}
                               />
                             ) : (
-                              <img
+                              <Image
                                 src="/chair-hijau.webp"
                                 alt="Kursi Hijau Sangat Kuat"
                                 className="h-full w-full object-cover object-center"
+                                width={1000}
+                                height={1000}
                               />
                             )}
                           </div>

@@ -101,10 +101,12 @@ export default function AdminLogin() {
             Anjangsana Simfoni{" "}
           </p>
         </div>
-        <img
+        <Image
           src="/logo-anjangsana.webp"
           alt="logo gmco"
           className="absolute left-5 top-3 w-32 md:left-9 md:top-[450px] md:w-52"
+          width={1000}
+          height={1000}
         />
 
         <div className="right-0 mt-7 flex w-full flex-col items-center space-y-8 bg-gray-400 bg-opacity-50 p-4 py-32 backdrop-blur-sm backdrop-filter md:mt-0 md:w-5/12 md:py-40 ">
