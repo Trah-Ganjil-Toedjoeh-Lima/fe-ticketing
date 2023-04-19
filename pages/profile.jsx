@@ -27,7 +27,7 @@ export default function Profile() {
         if (!localStorage.getItem("auth_token")) {
           router.push("/auth");
         }
-        useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
+        // useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
       }
     }, []);
 
