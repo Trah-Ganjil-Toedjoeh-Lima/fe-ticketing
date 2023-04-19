@@ -61,7 +61,7 @@ export default function NavigationBar() {
     };
   }, []);
 
-  function logoutCheck(e) {
+  function logoutCheck() {
     Swal.fire({
       html: `Anda yakin ingin keluar?`,
       toast: false,
@@ -77,13 +77,12 @@ export default function NavigationBar() {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        logoutSubmit(e);
+        logoutSubmit();
       }
     });
   }
 
-  async function logoutSubmit(e) {
-    e.preventDefault();
+  async function logoutSubmit() {
 
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
       if (res.data.message == "success") {

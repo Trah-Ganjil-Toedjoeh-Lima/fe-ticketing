@@ -1,12 +1,13 @@
 import { useState } from "react";
+
+import Swal from "sweetalert2";
 import OTPInput from "react-otp-input";
 import { Card } from "flowbite-react";
-import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { axiosInstance } from "@/atoms/config";
-import { notifyError } from "../../components/notify";
-import Swal from "sweetalert2";
+
 import { notifyError } from "@/components/notify";
+import { axiosInstance } from "@/atoms/config";
+import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 
 export default function OtpPage() {
   const router = useRouter();

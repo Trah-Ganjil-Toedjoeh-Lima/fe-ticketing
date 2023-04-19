@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
+import Swal from "sweetalert2";
+import { TrashIcon } from "@heroicons/react/24/solid";
+
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
@@ -12,22 +15,16 @@ import {
   notifyInfo,
   notifyWarning,
 } from "@/components/notify";
-import { TrashIcon } from "@heroicons/react/24/solid";
 
 export default function Cart() {
   const [orderTotal, setOrderTotal] = useState(0);
   const router = useRouter();
-  const [update, setUpdate] = useState();
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
     user_name: "user_name",
     user_phone: "user_phone",
   });
-
-  function rerender() {
-    setUpdate(`update ${Math.random()}`);
-  }
 
   useEffect(() => {
     (async () => {
@@ -47,7 +44,7 @@ export default function Cart() {
         notifyError(err);
       }
     })();
-  }, [update]);
+  }, []);
 
   useEffect(() => {
     const seats = seatBoughts.seats;
@@ -57,6 +54,7 @@ export default function Cart() {
     }
     setOrderTotal(priceSum);
   }, [seatBoughts]);
+
 
   async function handleCheckout() {
     try {
@@ -69,10 +67,9 @@ export default function Cart() {
 
   function openMidtransWindow(token) {
     window.snap.pay(token, {
-      onSuccess: function (result) {
+      onSuccess: function () {
         /* You may add your own implementation here */
         notifySucces("payment success!");
-        rerender();
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
@@ -80,11 +77,11 @@ export default function Cart() {
           user_phone: "user_phone",
         });
       },
-      onPending: function (result) {
+      onPending: function () {
         /* You may add your own implementation here */
         notifyInfo("wating your payment!");
       },
-      onError: function (result) {
+      onError: function () {
         /* You may add your own implementation here */
         notifyErrorMessage("payment failed!");
       },
@@ -93,6 +90,42 @@ export default function Cart() {
         notifyWarning("you closed the popup without finishing the payment");
       },
     });
+  }
+
+  function canselCheck() {
+    Swal.fire({
+      html: `Anda yakin ingin menghapus transaksi?`,
+      toast: true,
+      icon: "warning",
+      iconColor: "#991b1b",
+      showCancelButton: true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#991b1b",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#16a34a",
+      showClass: {
+        popup: "",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleCancel();
+      }
+    });
+  }
+
+  async function handleCancel() {
+    try {
+      await axiosInstance.delete("/api/v1/checkout").then(() =>
+        setSeatBoughts({
+          seats: [],
+          user_email: "user.email",
+          user_name: "user_name",
+          user_phone: "user_phone",
+        })
+      );
+    } catch (err) {
+      notifyError(err);
+    }
   }
 
   function formatNumber(number) {
@@ -203,7 +236,7 @@ export default function Cart() {
                 <div className="flex items-center justify-between">
                   <p className="text-lg">Batalkan Transaksi</p>
                   <button
-                    onClick={() => handleCheckout()}
+                    onClick={() => canselCheck()}
                     className="flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 hover:text-gmco-grey"
                   >
                     <TrashIcon className="w- h-5" />

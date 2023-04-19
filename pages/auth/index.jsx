@@ -1,10 +1,11 @@
-import React from "react";
-import { useState } from "react";
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { notifyError } from "../../components/notify";
-import { useRouter } from "next/router";
-import { axiosInstance } from "@/atoms/config";
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
+
+import { notifyError } from "@/components/notify";
+import { axiosInstance } from "@/atoms/config";
 
 export default function Auth() {
   const router = useRouter();
