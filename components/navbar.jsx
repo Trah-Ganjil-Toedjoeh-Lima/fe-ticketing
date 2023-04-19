@@ -1,20 +1,52 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
+import { axiosInstance } from "@/atoms/config";
+import Swal from "sweetalert2";
+import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
 export default function NavigationBar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  const [logedUser, setLogedUser] = useState({
+    Email: "",
+    Name: "",
+    Phone: "",
+    UserId: 0,
+  });
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
-    { name: <FaShoppingCart className="scale-x-[-1] h-6 w-6"/>, route: "/seats/cart" },
+    {
+      name: (
+        <>
+          <FaShoppingCart className="hidden scale-x-[-1] md:inline md:h-6 md:w-6" />
+          <p className="md:hidden">Shopping Cart</p>
+        </>
+      ),
+      route: "/seats/cart",
+    },
   ];
+
+  // if (typeof window !== "undefined") {
+  //   useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
+  // }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const [res] = await Promise.all([
+          axiosInstance.get("/api/v1/user/profile"),
+        ]);
+        setLogedUser(res.data.data);
+      } catch {}
+    })();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,9 +61,52 @@ export default function NavigationBar() {
     };
   }, []);
 
+  function logoutCheck() {
+    Swal.fire({
+      html: `Anda yakin ingin keluar?`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#000000",
+      showCancelButton: true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#991b1b",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#16a34a",
+      showClass: {
+        popup: "",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutSubmit();
+      }
+    });
+  }
+
+  async function logoutSubmit() {
+    await axiosInstance.post("/api/v1/user/logout").then((res) => {
+      if (res.data.message == "success") {
+        localStorage.removeItem("auth_token");
+        Swal.fire({
+          html: `<b>${res.data.message}</b> tunggu...`,
+          toast: true,
+          width: 350,
+          icon: "success",
+          iconColor: "#16a34a",
+          showConfirmButton: false,
+          timer: 1500,
+          showClass: {
+            popup: "",
+          },
+        }).then(() => {
+          router.push("/auth");
+        });
+      }
+    });
+  }
+
   return (
     <nav
-      className={`fixed z-10 w-full py-3 transition duration-300 ease-in-out ${
+      className={`fixed z-50 w-full py-3 transition duration-300 ease-in-out ${
         scrollPosition > 0 || isOpen
           ? "bg-gmco-white text-black"
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
@@ -39,15 +114,8 @@ export default function NavigationBar() {
     >
       <div className="flex justify-between px-4 md:px-8 lg:px-48">
         {/* Logo & Nama */}
-        <Link href="/" className="flex items-center">
-          <img
-            src="/logo_gmco.webp"
-            className="mr-3 h-6 sm:h-9"
-            alt="GMCO Event Logo"
-          />
-          <span href="#" className="text-lg font-bold">
-            GMCO Event
-          </span>
+        <Link href="/" className="flex items-center text-2xl font-bold">
+          GC #10
         </Link>
         <div className="flex w-max">
           {/* Route when MD*/}
@@ -57,7 +125,11 @@ export default function NavigationBar() {
                 <Link
                   key={index}
                   href={route.route}
-                  className="rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
+                  className={`rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out ${
+                    scrollPosition > 0
+                      ? "hover:bg-gray-700/10 "
+                      : "hover:bg-gmco-white/10"
+                  }`}
                 >
                   {route.name}
                 </Link>
@@ -66,25 +138,40 @@ export default function NavigationBar() {
           </div>
 
           {/* Profile */}
-          <Dropdown
-            arrowIcon={false}
-            inline={true}
-            label={
-              <Avatar
-                rounded={true}
-                alt="User settings"
-                img="https://cdn-icons-png.flaticon.com/512/4313/4313258.png"
-              />
-            }
-          >
-            <Dropdown.Header>
-              <p className="block truncate text-sm font-medium">
-                name@flowbite.com
-              </p>
-            </Dropdown.Header>
-            <Dropdown.Item>Profile</Dropdown.Item>
-            <Dropdown.Item>Sign out</Dropdown.Item>
-          </Dropdown>
+          {logedUser.Email === "" ? (
+            <Link
+              href="/auth"
+              className={`flex items-center rounded-md px-4 py-2 text-xl font-bold duration-150 ease-in-out hover:bg-gray-700/10 ${
+                scrollPosition > 0
+                  ? "hover:bg-gray-700/10 "
+                  : "hover:bg-gmco-white/10"
+              }`}
+            >
+              Login
+            </Link>
+          ) : (
+            <Dropdown
+              arrowIcon={false}
+              inline={true}
+              label={
+                <Avatar
+                  rounded={true}
+                  alt="User settings"
+                  img="/violin-picture.webp"
+                />
+              }
+            >
+              <Dropdown.Header>
+                <p className="block truncate text-sm font-medium">
+                  {logedUser.Email}
+                </p>
+              </Dropdown.Header>
+              <Link href="/profile">
+                <Dropdown.Item>Profile</Dropdown.Item>
+              </Link>
+              <Dropdown.Item onClick={logoutCheck}>Log Out</Dropdown.Item>
+            </Dropdown>
+          )}
 
           {/* Hamburger Button */}
           <div className="ml-2 flex items-center md:m-0 md:hidden">
@@ -95,9 +182,13 @@ export default function NavigationBar() {
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <XMarkIcon className="h-5 w-5" />
+                <XMarkIcon className="h-6 w-6" />
               ) : (
-                <Bars3Icon className="h-5 w-5" />
+                <Bars3Icon
+                  className={`${
+                    scrollPosition > 0 ? "text-gmco-grey" : " text-gmco-white"
+                  } h-6 w-6`}
+                />
               )}
             </button>
           </div>
@@ -108,17 +199,16 @@ export default function NavigationBar() {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } transition duration-300 ease-in-out md:hidden`}
+        } transition duration-300 ease-in-out`}
       >
         <div className="px-2 pt-2">
           {routes.map((route, index) => (
-            <Link
+            <div
               key={index}
-              href={route.route}
-              className="rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
+              className="w-full rounded-md p-2 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
             >
-              <li>{route.name}</li>
-            </Link>
+              <Link href={route.route}>{route.name}</Link>
+            </div>
           ))}
         </div>
       </div>

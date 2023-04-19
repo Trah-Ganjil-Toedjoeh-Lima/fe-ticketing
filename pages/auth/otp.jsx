@@ -1,35 +1,36 @@
 import { useState } from "react";
+
+import Swal from "sweetalert2";
 import OTPInput from "react-otp-input";
 import { Card } from "flowbite-react";
-import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
+
+import { notifyError } from "@/components/notify";
 import { axiosInstance } from "@/atoms/config";
-import Swal from "sweetalert2";
+import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 
 export default function OtpPage() {
   const router = useRouter();
   const loginInput = router.query;
   const [otp, setOtp] = useState("");
-  const [otpSubmit, setOtpSubmit] = useState({
-    email: loginInput.email,
-    otp: otp,
-  });
 
   async function LoginSubmit(e) {
     e.preventDefault();
+
     if (otp.length == 6) {
       try {
-        console.log(JSON.stringify(loginInput));
         await axiosInstance
           .post("/api/v1/user/otp", {
             email: loginInput.email,
             otp: otp,
           })
+
           .then((res) => {
-            console.log(res);
             if (res.status === 200) {
-              console.log(res.data.token.AccessToken);
-              localStorage.setItem("auth_token", `Bearer ${res.data.token.AccessToken}`);
+              localStorage.setItem(
+                "auth_token",
+                `Bearer ${res.data.token.AccessToken}`
+              );
               Swal.fire({
                 html: `<b>${res.data.message}</b> tunggu...`,
                 toast: true,
@@ -49,25 +50,22 @@ export default function OtpPage() {
             }
           });
       } catch (err) {
-        // notifyError(err);
-        console.log(err);
+        notifyError(err);
       }
     }
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <Card className=" flex  py-4 max-w-sm sm:pl-1 md:px-4 md:py-7 md:max-w-xl lg:px-6 items-center">
-        <EnvelopeOpenIcon className="w-16 h-16 mx-auto colo">
-          {" "}
-        </EnvelopeOpenIcon>
-        <div class="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
+      <Card className=" flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 ">
+        <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white"/>
+        <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
           Masukkan Kode Verifikasi
         </div>
-        <div class="font-normal text-sm text-center sm:text-base  text-gray-800 ">
-          Kode verifikasi telah dikirimkan melalui email terdaftar
+        <div className="text-md text-center font-thin text-gmco-white  sm:text-base ">
+          kode verifikasi telah dikirimkan melalui email terdaftar
         </div>
-        <div className="mx-auto items-center object-center mt-9">
+        <div className="mx-auto mt-9 items-center object-center  ">
           <OTPInput
             value={otp}
             onChange={setOtp}
@@ -83,15 +81,15 @@ export default function OtpPage() {
               fontSize: "20px",
               height: "2.5em",
               textAlign: "center",
-              backgroundColor: "black",
-              color: "white",
-              border: "1px solid lightskyblue",
+              backgroundColor: "white",
+              color: "black",
+              border: "1px solid white",
             }}
           />
         </div>
         <button
           type="submit"
-          class="w-full mt-6 bg-gmco-blue text-white text-base p-2 font font-semibold rounded-lg md:p-2 md:text-lg  hover:bg-gmco-yellow-secondary hover:text-gmco-white hover:border hover:border-gray-300 type"
+          className="font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
           onClick={LoginSubmit}
         >
           Submit

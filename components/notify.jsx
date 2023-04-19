@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 
-function notifyError(message) {
-  toast.error(message, {
+const notifyError = (message) => {
+  toast.error(message.response.data.error, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: false,
@@ -13,10 +13,10 @@ function notifyError(message) {
   });
 }
 
-function notifySucces(message) {
+const notifyErrorMessage = (message) => {
   toast.error(message, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: false,
@@ -26,31 +26,43 @@ function notifySucces(message) {
   });
 }
 
-function scheduleError(message) {
-  const err = message.response.data.messages.join("\n");
-  toast.error(err, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
+const notifySucces = (message) => {
+  toast.success(message, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: true,
     closeOnClick: true,
-    pauseOnHover: true,
+    pauseOnHover: false,
     draggable: true,
     progress: undefined,
-    theme: "light",
+    theme: "dark",
   });
 }
 
-function notifyErrorMessage(message) {
-  toast.error(message, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
+const notifyInfo = (message) => {
+  toast.info(message, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: true,
     closeOnClick: true,
-    pauseOnHover: true,
+    pauseOnHover: false,
     draggable: true,
     progress: undefined,
-    theme: "light",
+    theme: "dark",
   });
 }
 
-export { notifyError, notifySucces, scheduleError, notifyErrorMessage };
+const notifyWarning = (message) => {
+  toast.warn(message, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+}
+
+export { notifyError, notifySucces, notifyErrorMessage, notifyInfo, notifyWarning };

@@ -1,235 +1,308 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import Link from "next/link";
-import styles from "@/styles/Home.module.css";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+
+import { useEffect } from "react";
 import { useState } from "react";
 
-export default function Profile() {
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
-  const [isEditingPhoneNum, setIsEditingPhoneNum] = useState(false);
-  const [name, setName] = useState("Reinhart Timothy");
-  const [email, setEmail] = useState("reinhart.siregar@gmail.com");
-  const [phoneNum, setPhoneNum] = useState("085155438410");
-  const router = useRouter()
+import { axiosInstance, midtransSetup } from "@/atoms/config";
+import NavigationBar from "@/components/navbar";
+import FooterBar from "@/components/footer";
+import { notifyError, notifyErrorMessage } from "@/components/notify";
 
+export default function Profile() {
+  const router = useRouter();
+  const [userData, setUserData] = useState({
+    UserId: "",
+    Name: "",
+    Email: "",
+    Phone: "",
+  });
+  const [formUserData, setFormUserData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  const [seatsBought, setSeatsBought] = useState({
+    Name: "",
+    Email: "",
+    Phone: "",
+    Seat: [],
+  });
+
+  // ini gk bisa dijadiin 1 karena kalo ticket ga ada chandra ngasihnya 404 jadi error ya harus dipihsa -weka
+  // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
+  // misal gini
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!localStorage.getItem("auth_token")) {
+    (async () => {
+      if (
+        typeof window !== "undefined" &&
+        !localStorage.getItem("auth_token")
+      ) {
         router.push("/auth");
       }
-    }
+      try {
+        const [userRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/profile"),
+        ]);
+        console.log(userRes);
+        setUserData(userRes.data.data);
+      } catch (err) {
+        notifyError(err);
+        console.log(err);
+      }
+    })();
   }, []);
 
-  const HandleInputChange = (event, setStateFunction) => {
-    setStateFunction(event.target.value);
-  };
+  useEffect(() => {
+    (async () => {
+      try {
+        const [ticketRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/tickets"),
+        ]);
+        setSeatsBought(ticketRes.data.data);
+      } catch (err) {
+        notifyError(err);
+        console.log(err);
+      }
+    })();
+  }, []);
 
-  const HandleInputKeyDown = (event, setIsEditing) => {
-    if (event.keyCode === 13) {
-      setIsEditing(false);
+  useEffect(() => {
+    setFormUserData({
+      name: userData.Name,
+      email: userData.Email,
+      phone: userData.Phone,
+    });
+  }, [userData]);
+
+  // console.log(formUserData);
+
+  function mapCategory(price) {
+    const categories = {
+      60000: "Platinum",
+      85000: "Diamond",
+      120000: "Ascendant",
+      145000: "Immortal",
+      default: "Radiant",
+    };
+
+    return categories[price] || categories.default;
+  }
+
+  function handleFormChange(e) {
+    const { name, value } = e.target;
+    setFormUserData({ ...formUserData, [name]: value });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axiosInstance.patch("api/v1/user/profile", formUserData);
+      const resGet = await Promise.all([
+        axiosInstance.get("api/v1/user/profile"),
+      ]);
+      setUserData(resGet.data.data);
+    } catch (err) {
+      notifyErrorMessage(err);
     }
   };
 
-  const HandleInputBlur = (setIsEditing) => {
-    setIsEditing(false);
-  };
+  Object.keys(userData).map((key) => {
+    console.log(userData[key]);
+  });
 
-  const HandleNameClick = () => {
-    setIsEditingName(true);
-  };
-
-  const HandleEmailClick = () => {
-    setIsEditingEmail(true);
-  };
-
-  const HandlePhoneNumClick = () => {
-    setIsEditingPhoneNum(true);
-  };
-  
-
-
+  // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
-    <div className="bg-gray-100 dark:bg-gmco-grey min-h-screen">
-      <div className="flex flex-col mx-16">
-        <div className="my-8 flex flex-col items-center">
-          {isEditingName ? (
-            <input
-              className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey font-bold text-3xl"
-              type="text"
-              value={name}
-              onChange={(event) => HandleInputChange(event, setName)}
-              onBlur={() => HandleInputBlur(setIsEditingName)}
-              onKeyDown={(event) => HandleInputKeyDown(event, setIsEditingName)}
-              disabled={!isEditingName}
-              autoFocus
-            />
-          ) : (
-            <h1
-              className="text-gray-700 dark:text-white font-bold text-3xl text-center"
-              onClick={HandleNameClick}
-            >
-              {name}
-            </h1>
-          )}
+    <>
+      {/* HEADER */}
+      <NavigationBar />
+      <div className="w-screen bg-gmco-yellow-secondary">
+        {/*This is the header */}
+        <div className="relative w-full overflow-hidden ">
+        <div className="absolute h-64 w-full overflow-hidden bg-gmco-grey">
+          <Image
+            src="/GMCO_10.webp"
+            alt="background gmco"
+            className="w-full scale-105 object-cover object-top opacity-50"
+            width={3000}
+            height={3000}
+          />
+          </div>
+          <div className="container relative m-auto flex items-center h-full flex-col pb-8 pt-24 lg:flex-row">
+            <div className="flex h-full w-1/5">
+              <h1 className="font-rubik text-5xl font-light text-white">
+                PROFIL
+              </h1>
+            </div>
 
-          {isEditingEmail ? (
-            <input
-              className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
-              type="text"
-              value={email}
-              onChange={(event) => HandleInputChange(event, setEmail)}
-              onBlur={() => HandleInputBlur(setIsEditingEmail)}
-              onKeyDown={(event) =>
-                HandleInputKeyDown(event, setIsEditingEmail)
-              }
-              disabled={!isEditingEmail}
-              autoFocus
-            />
-          ) : (
-            <p
-              className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
-              onClick={HandleEmailClick}
-            >
-              {email}
-            </p>
-          )}
-
-          {isEditingPhoneNum ? (
-            <input
-              className="my-2 text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
-              type="text"
-              value={phoneNum}
-              onChange={(event) => HandleInputChange(event, setPhoneNum)}
-              onBlur={() => HandleInputBlur(setIsEditingPhoneNum)}
-              onKeyDown={(event) =>
-                HandleInputKeyDown(event, setIsEditingPhoneNum)
-              }
-              disabled={!isEditingPhoneNum}
-              autoFocus
-            />
-          ) : (
-            <p
-              className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-xl"
-              onClick={HandlePhoneNumClick}
-            >
-              {phoneNum}
-            </p>
-          )}
+            <div className="flex w-4/5 flex-col items-start lg:items-end">
+              {/* aku agak bingung kok gk keluar hasilnya */}
+              {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
+              {/* awal => {} harusnya => () */}
+              {/* kutambah kalo id gk ditampilin ya */}
+              {Object.keys(userData).map((key) => (
+                <p
+                  key={key}
+                  className={`font-sans text-gmco-yellow ${
+                    key === "Name"
+                      ? "text-2xl font-semibold" :
+                      key === "UserId" ? "hidden"
+                      : "font-normal"
+                  }`}
+                >
+                  {userData[key]}
+                </p>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <p className="text-center text-gmco-grey dark:text-white dark:bg-gmco-grey text-2xl font-medium">
-            My Tickets
-          </p>
-          {/* This is the ticket */}
-          <div className="bg-white grid grid-col rounded-lg p-4">
-            {/*Header: Event name */}
-            <div className="flex flex-row">
-              <Image src="/violin-picture.png" width={20} height={20} />
-              <p className="text-gray-700 mx-2">Grand Concert GMCO 2023</p>
-            </div>
+        {/* CONTENT */}
+        <div className="container m-auto flex flex-col lg:flex-row ">
+          {/* EDIT IDENTITY */}
+          <form
+            onSubmit={handleSubmit}
+            className="grid-col w-full items-start bg-gmco-yellow-secondary pl-2 pr-12 py-8 lg:w-1/3"
+          >
+            {/* Name */}
+            <label htmlFor="nama" className="font-rubik text-white">
+              Nama
+            </label>
+            <input
+              className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
+              type="text"
+              pattern=".{3,}"
+              placeholder="Masukkan Nama Anda"
+              name="name" // update the name property
+              value={formUserData.name}
+              onChange={handleFormChange}
+              title="Name needs to be 3 characters or more"
+            />
 
-            <hr class="h-px my-2 bg-gray-300 border-0"></hr>
+            {/*Email*/}
+            <label htmlFor="email" className="font-rubik text-white">
+              Email<span className="text-red-500">*</span>
+            </label>
+            <input
+              className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
+              type="text"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              placeholder="Masukkan Email Anda"
+              name="email"
+              value={formUserData.email}
+              onChange={handleFormChange}
+              title="Please enter a valid email address!"
+            />
 
-            {/* Seat name and QR */}
-            <div className="flex flex-row h-full items-center">
-              <h2 className="text-black font-bold text-4xl w-1/2">Seat A6</h2>
-              <div className="flex flex-row w-1/2 justify-end">
-                <Image
-                  src="/qris-reinhart.png"
-                  width={100}
-                  height={100}
-                ></Image>
+            {/* Phone Number */}
+            <label type="whatsapp" className="font-rubik text-white">
+              Nomor WhatsApp<span className="text-red-500">*</span>
+            </label>
+            <input
+              className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
+              type="text"
+              pattern="(^\+62|62|08)(\d{8,12}$)"
+              placeholder="Masukkan Nomor WhatsApp Anda"
+              name="phone"
+              value={formUserData.phone}
+              onChange={handleFormChange}
+              title="Please enter a valid phone number!"
+            />
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="mt-12 w-full rounded-lg bg-gmco-orange-secondarydark p-2 text-center font-inter text-lg font-semibold text-white hover:scale-110 duration-300"
+            >
+              PERBARUI PROFIL
+            </button>
+          </form>
+
+          {/* List of Tickets */}
+          <div className="grid-col grid w-full gap-4 bg-gmco-white py-8 pl-8 pr-12 lg:w-2/3">
+            <p className="text-start text-2xl font-medium text-gmco-grey">
+              Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
+            </p>
+            {/* TICKET */}
+            {seatsBought.Seat.map((seat, index) => (
+              <div
+                key={index}
+                className="flex h-fit w-full flex-row border-4 border-gmco-yellow rounded-lg bg-white p-4"
+              >
+                {/* Kursi dan Tipe */}
+                <div className="flex w-1/5 flex-col justify-center text-center">
+                  <h1 className="font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl">
+                    Seat {seat.name}
+                  </h1>
+                  <p
+                    className={
+                      `w-full rounded-lg text-center text-sm font-normal text-gmco-white lg:text-base ` +
+                      ({
+                        Platinum: "bg-gmco-blue",
+                        Diamond: "bg-violet-700",
+                        Ascendant: "bg-emerald-700",
+                        Immortal: "bg-rose-400",
+                        Radiant: "bg-rose-800",
+                      }[mapCategory(seat.price)] || "bg-rose-800")
+                    }
+                  >
+                    {mapCategory(seat.price)}
+                  </p>
+                </div>
+
+                {/* Waktu dan Tempat */}
+                <div className="flex w-full items-center justify-end">
+                  <div className="flex h-full flex-col justify-center gap-2 text-end text-xs sm:text-sm lg:text-base">
+                    <p>Auditorium Driyarkara</p>
+                    <p>Sabtu, 27 Mei 2023</p>
+                    <p>Open Gate 18.00 WIB</p>
+                  </div>
+                  <div className="overflow-hidden">
+                    <Image
+                      src="/qris-reinhart.webp"
+                      alt="qris pls send money"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+
+                  {/* Nama Konser */}
+                  <div className="flex w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4">
+                    <div className="mx-2 overflow-hidden">
+                      <Image
+                        src="/logo-anjangsana.webp"
+                        alt="Logo GC gawk"
+                        width={80}
+                        height={80}
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-col text-start sm:text-end">
+                      <h1 className="font-inter text-sm font-bold text-white sm:text-lg lg:text-2xl">
+                        Grand Concert Vol.10
+                      </h1>
+                      <p className="font-inter text-sm font-light text-white lg:text-lg">
+                        Anjangsana Simfoni
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            {/* Footer */}
-            <div className="flex flex-col mt-2">
-              {/*Location, Date, Time*/}
-              <p className="text-gray-700">
-                Auditorium Driyarkara | Sabtu, 27 Mei 2023 | Open Gate 17:00 WIB
-              </p>
-
-              {/*valid for 1 person */}
-              <div className="bg-green-400 bg-opacity-25 w-fit">
-                <p className="text-green-700 font-medium">Valid for 1 person</p>
-              </div>
-            </div>
-          </div>
-
-          {/* This is the ticket */}
-          <div className="bg-white grid grid-col rounded-lg p-4">
-            {/*Header: Event name */}
-            <div className="flex flex-row">
-              <Image src="/violin-picture.png" width={20} height={20} />
-              <p className="text-gray-700 mx-2">Grand Concert GMCO 2023</p>
-            </div>
-
-            <hr class="h-px my-2 bg-gray-300 border-0"></hr>
-
-            {/* Seat name and QR */}
-            <div className="flex flex-row h-full items-center">
-              <h2 className="text-black font-bold text-4xl w-1/2">Seat A7</h2>
-              <div className="flex flex-row w-1/2 justify-end">
-                <Image
-                  src="/qris-reinhart.png"
-                  width={100}
-                  height={100}
-                ></Image>
-              </div>
-            </div>
-            {/* Footer */}
-            <div className="flex flex-col mt-2">
-              {/*Location, Date, Time*/}
-              <p className="text-gray-700">
-                Auditorium Driyarkara | Sabtu, 27 Mei 2023 | Open Gate 17:00 WIB
-              </p>
-
-              {/*valid for 1 person */}
-              <div className="bg-green-400 bg-opacity-25 w-fit">
-                <p className="text-green-700 font-medium">Valid for 1 person</p>
-              </div>
-            </div>
-          </div>
-
-          {/* This is the ticket */}
-          <div className="bg-white grid grid-col rounded-lg p-4 ">
-            {/*Header: Event name */}
-            <div className="flex flex-row">
-              <Image src="/violin-picture.png" width={20} height={20} />
-              <p className="text-gray-700 mx-2">Grand Concert GMCO 2023</p>
-            </div>
-
-            <hr class="h-px my-2 bg-gray-300 border-0"></hr>
-
-            {/* Seat name and QR */}
-            <div className="flex flex-row h-full items-center">
-              <h2 className="text-black font-bold text-4xl w-1/2">Seat A8</h2>
-              <div className="flex flex-row w-1/2 justify-end">
-                <Image
-                  src="/qris-reinhart.png"
-                  width={100}
-                  height={100}
-                ></Image>
-              </div>
-            </div>
-            {/* Footer */}
-            <div className="flex flex-col mt-2">
-              {/*Location, Date, Time*/}
-              <p className="text-gray-700">
-                Auditorium Driyarkara | Sabtu, 27 Mei 2023 | Open Gate 17:00 WIB
-              </p>
-
-              {/*valid for 1 person */}
-              <div className="bg-green-400 bg-opacity-25 w-fit">
-                <p className="text-green-700 font-medium">Valid for 1 person</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+
+      <FooterBar />
+    </>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const { req } = ctx;
+  let baseURL = "";
+  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+  }
+  return { props: {} };
 }

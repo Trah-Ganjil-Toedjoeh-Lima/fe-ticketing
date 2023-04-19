@@ -1,11 +1,13 @@
 import Link from "next/link";
 import {
   FaFacebook,
-  FaGithub,
   FaInstagram,
+  FaTiktok,
   FaTwitter,
   FaWhatsapp,
+  FaYoutube,
 } from "react-icons/fa";
+import Image from "next/image";
 
 export default function FooterBar() {
   // Menu Lg 1 x (x) SM 1 x 2
@@ -13,16 +15,20 @@ export default function FooterBar() {
     {
       title: "About",
       submenu: [
-        { name: "GMCO Event", route: "/" },
-        { name: "GMCO UGM", route: "/" },
-        { name: "UGM", route: "/" },
+        { name: "Grand Concert #10", route: "/" },
+        { name: "GMCO UGM", route: "https://gmco.ukm.ugm.ac.id/" },
+        { name: "UGM", route: "https://www.ugm.ac.id/" },
       ],
     },
     {
       title: "Follow us",
       submenu: [
-        { name: "Instagram", route: "/" },
-        { name: "Twitter", route: "/" },
+        { name: "Instagram", route: "https://www.instagram.com/gmco_ugm/" },
+        { name: "Twitter", route: "https://twitter.com/GMCO_UGM?s=08" },
+        {
+          name: "Youtube",
+          route: "https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA",
+        },
       ],
     },
     {
@@ -36,31 +42,48 @@ export default function FooterBar() {
 
   // Social Media Icon
   const socials = [
-    { name: <FaGithub className="h-5 w-5" />, route: "/" },
+    { name: <FaTiktok className="h-5 w-5" />, route: "/" },
     { name: <FaWhatsapp className="h-5 w-5" />, route: "/" },
-    { name: <FaInstagram className="h-5 w-5" />, route: "/" },
-    { name: <FaTwitter className="h-5 w-5" />, route: "/" },
-    { name: <FaFacebook className="h-5 w-5" />, route: "/" },
+    {
+      name: <FaInstagram className="h-5 w-5" />,
+      route: "https://www.instagram.com/gmco_ugm/",
+    },
+    {
+      name: <FaTwitter className="h-5 w-5" />,
+      route: "https://twitter.com/GMCO_UGM?s=08",
+    },
+    {
+      name: <FaFacebook className="h-5 w-5" />,
+      route:
+        "/https://www.facebook.com/people/Gadjah-Mada-Chamber-Orchestra/100067509763569/",
+    },
+    {
+      name: <FaYoutube className="h-5 w-5" />,
+      route: "/https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA",
+    },
   ];
 
   return (
-    <footer className="bg-gmco-grey text-gmco-white pt-10 pb-6 px-8 md:px-8 lg:px-48">
-      <div className="grid grid-cols-2 gap-8 mb-4 md:mb-16 md:grid-cols-5 lg:grid-cols-7 md:gap-2">
-        <div className="col-span-2 lg:col-span-4 md:mr-24">
+    <footer className="bg-gmco-grey px-8 pb-6 pt-10 text-gmco-white md:px-8 lg:px-48">
+      <div className="mb-4 grid grid-cols-2 gap-8 md:mb-16 md:grid-cols-5 md:gap-2 lg:grid-cols-7">
+        <div className="col-span-2 md:mr-24 lg:col-span-4">
           <div className="flex items-center">
-            <img
-              src="/logo_gmco.webp"
-              className="mr-3 h-6 sm:h-9"
-              alt="GMCO Event Logo"
+            <Image
+              src="/logo-anjangsana.webp"
+              alt="logo gmco"
+              className="mr-3 h-12 md:h-20 w-max"
+              width={1000}
+              height={1000}
             />
             <span href="#" className="text-xl font-bold">
-              GMCO Event
+              Grand Concert #10 <br />{" "}
+              <span className="text-base font-medium">Anjangsana Simfoni</span>
             </span>
           </div>
         </div>
         {menus.map((menu, index) => (
           <div key={index}>
-            <div className="text-xl font-bold mb-4">{menu.title}</div>
+            <div className="mb-4 text-xl font-bold">{menu.title}</div>
             <ul className="space-y-2 text-gmco-white/60">
               {menu.submenu.map((submenu, index) => (
                 <li key={index}>
@@ -75,17 +98,17 @@ export default function FooterBar() {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-300 my-6 "></div>
+      <div className="my-6 border-t border-gray-300 "></div>
 
       {/* Bawah */}
-      <div className="inline md:flex justify-between items-center">
+      <div className="inline items-center justify-between md:flex">
         <div className="text-sm text-gray-500">
           &copy;
-          <Link href="" className="hover:text-gmco-white font-bold">
+          <Link href="" className="font-bold hover:text-gmco-white">
             GMCO UGM{" "}
           </Link>
           courtesy by
-          <Link href="" className="hover:text-gmco-white font-bold">
+          <Link href="" className="font-bold hover:text-gmco-white">
             {" "}
             Trah Ganjil 75{" "}
           </Link>
@@ -93,7 +116,7 @@ export default function FooterBar() {
         </div>
 
         {/* to do : cari icon */}
-        <div className="flex space-x-4 mt-2 md:m-0">
+        <div className="mt-2 flex space-x-4 md:m-0">
           {socials.map((social, index) => (
             <Link
               key={index}
