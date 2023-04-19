@@ -166,9 +166,9 @@ export default function NavigationBar() {
                   {logedUser.Email}
                 </p>
               </Dropdown.Header>
-              <Dropdown.Item>
-                <Link href="/profile">Profile</Link>
-              </Dropdown.Item>
+              <Link href="/profile">
+                <Dropdown.Item>Profile</Dropdown.Item>
+              </Link>
               <Dropdown.Item onClick={logoutCheck}>Log Out</Dropdown.Item>
             </Dropdown>
           )}

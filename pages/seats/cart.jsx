@@ -57,7 +57,6 @@ export default function Cart() {
     setOrderTotal(priceSum);
   }, [seatBoughts]);
 
-
   async function handleCheckout() {
     try {
       const res = await axiosInstance.post("/api/v1/checkout");
@@ -141,15 +140,21 @@ export default function Cart() {
   return (
     <>
       <NavigationBar />
-      <div className="h-max bg-gmco-blue-main md:min-h-screen">
-        <div className="h-max bg-[url('/gmco-cart.webp')] bg-cover bg-center backdrop-blur">
-          <div className="backdrop-blur-sm">
-            <div className="container m-auto px-6 pb-8 pt-24 md:px-1">
-              <h2 className="w-max border-b-2 text-2xl font-bold text-gmco-white">
-                Keranjang - ({seatBoughts.seats.length} item)
-              </h2>
-            </div>
-          </div>
+      <div className="realtive overflow-hidden bg-gmco-blue-main md:min-h-screen">
+        <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
+          <Image
+            src="/gmco-cart.webp"
+            className="w-full h-full object-cover object-center opacity-50"
+            alt="bg gmco concert"
+            width={3000}
+            height={3000}
+          />
+        </div>
+
+        <div className="container relative m-auto px-6 pb-12 pt-28 md:px-1 ">
+          <h2 className="w-max border-b-2 text-2xl font-bold text-gmco-white">
+            Keranjang - ({seatBoughts.seats.length} item)
+          </h2>
         </div>
 
         <div className="container m-auto px-6 pb-8 md:px-1">

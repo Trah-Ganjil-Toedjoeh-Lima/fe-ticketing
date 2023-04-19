@@ -231,7 +231,7 @@ export default function Seats() {
         })
         .then(() => {
           notifySucces("Pesanan Ditambahkan, Mengalihkan...");
-          setTimeout(function() {
+          setTimeout(function () {
             router.push({
               pathname: "/seats/cart",
             });
@@ -546,8 +546,17 @@ export default function Seats() {
   return (
     <>
       <NavigationBar />
-      <div className="h-max bg-gmco-blue-main">
-        <div className="p-7 pt-16">
+      <div className="relative h-max bg-gmco-blue-main">
+        <div className="absolute h-52 w-1/2 overflow-hidden bg-gmco-grey">
+          <Image
+            src="/gmco-cart.webp"
+            className="h-full w-full object-cover object-center opacity-50"
+            alt="bg gmco concert"
+            width={3000}
+            height={3000}
+          />
+        </div> 
+        <div className="p-7 pt-16 relative">
           <p className="text-xl font-semibold text-gmco-white md:text-2xl">
             Anjangsana Simfoni
           </p>

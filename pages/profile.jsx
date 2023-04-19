@@ -117,16 +117,18 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="w-scree bg-gmco-yellow-secondary">
+      <div className="w-screen bg-gmco-yellow-secondary">
         {/*This is the header */}
         <div className="relative w-full overflow-hidden ">
+        <div className="absolute h-64 w-full overflow-hidden bg-gmco-grey">
           <Image
             src="/GMCO_10.webp"
             alt="background gmco"
-            className="absolute h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
-            width={1000}
-            height={1000}
+            className="w-full scale-105 object-cover object-top opacity-50"
+            width={3000}
+            height={3000}
           />
+          </div>
           <div className="container relative m-auto flex items-center h-full flex-col pb-8 pt-24 lg:flex-row">
             <div className="flex h-full w-1/5">
               <h1 className="font-rubik text-5xl font-light text-white">
@@ -161,7 +163,7 @@ export default function Profile() {
           {/* EDIT IDENTITY */}
           <form
             onSubmit={handleSubmit}
-            className="grid-col w-full items-start bg-gmco-yellow-secondary px-12 py-8 lg:w-1/3"
+            className="grid-col w-full items-start bg-gmco-yellow-secondary pl-2 pr-12 py-8 lg:w-1/3"
           >
             {/* Name */}
             <label htmlFor="nama" className="font-rubik text-white">
@@ -210,7 +212,7 @@ export default function Profile() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="mt-12 w-full rounded-lg bg-[#932F2F] p-2 text-center font-inter text-lg font-semibold text-white"
+              className="mt-12 w-full rounded-lg bg-gmco-orange-secondarydark p-2 text-center font-inter text-lg font-semibold text-white hover:scale-110 duration-300"
             >
               PERBARUI PROFIL
             </button>
@@ -225,7 +227,7 @@ export default function Profile() {
             {seatsBought.Seat.map((seat, index) => (
               <div
                 key={index}
-                className="flex h-fit w-full flex-row rounded-lg bg-white p-4"
+                className="flex h-fit w-full flex-row border-4 border-gmco-yellow rounded-lg bg-white p-4"
               >
                 {/* Kursi dan Tipe */}
                 <div className="flex w-1/5 flex-col justify-center text-center">
