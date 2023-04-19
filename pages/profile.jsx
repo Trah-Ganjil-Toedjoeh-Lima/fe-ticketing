@@ -1,20 +1,16 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Inter, Rubik } from "next/font/google";
-import Link from "next/link";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 import { axiosInstance, midtransSetup } from "@/atoms/config";
-import { notifyError } from "@/components/notify";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
+import { notifyError, notifyErrorMessage } from "@/components/notify";
 
 export default function Profile() {
-  const tickets = [6, 7, 8, 9, 10, 11, 12];
   const router = useRouter();
-  const [token, setToken] = useState("");
   const [userData, setUserData] = useState({
     UserId: "",
     Name: "",
@@ -27,23 +23,36 @@ export default function Profile() {
     phone: "",
   });
 
+  const [seatsBought, setSeatsBought] = useState({
+    Name: "",
+    Email: "",
+    Phone: "",
+    Seat: [],
+  });
+
   useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      !localStorage.getItem("auth_token")
+    ) {
+      router.push("/auth");
+    }
+
     (async () => {
       try {
-        if (
-          typeof window !== "undefined" &&
-          !localStorage.getItem("auth_token")
-        ) {
-          router.push("/auth");
-        }
-        const [res] = await Promise.all([axiosInstance.get("v1/user/profile")]);
-        setUserData(res.data.data);
+        const [userRes, ticketRes] = await Promise.all([
+          axiosInstance.get("api/v1/user/profile"),
+          axiosInstance.get("api/v1/user/tickets"),
+        ]);
+        setUserData(userRes.data.data);
+        setSeatsBought(ticketRes.data.data);
       } catch (err) {
-        notifyError(err);
-        console.log(err.toString());
+        notifyErrorMessage(err);
+        console.log(err);
       }
     })();
-  }, []);
+
+  }, [router]);
 
   useEffect(() => {
     setFormUserData({
@@ -51,26 +60,39 @@ export default function Profile() {
       email: userData.Email,
       phone: userData.Phone,
     });
+
   }, [userData]);
 
-  function handleFormChange(event) {
-    const { name, value } = event.target;
+  function mapCategory(price) {
+    const categories = {
+      60000: "Platinum",
+      85000: "Diamond",
+      120000: "Ascendant",
+      145000: "Immortal",
+      default: "Radiant"
+    };
+
+    return categories[price] || categories.default;
+  }
+
+  function handleFormChange(e) {
+    const { name, value } = e.target;
     setFormUserData({ ...formUserData, [name]: value });
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const res_patch = await axiosInstance.patch(
-        "v1/user/profile",
+      const resPatch = await axiosInstance.patch(
+        "api/v1/user/profile",
         formUserData
       );
-      const [res_get] = await Promise.all([
-        axiosInstance.get("v1/user/profile"),
+      const [resGet] = await Promise.all([
+        axiosInstance.get("api/v1/user/profile"),
       ]);
-      setUserData(res_get.data.data);
+      setUserData(resGet.data.data);
     } catch (err) {
-      notifyError(err);
+      notifyErrorMessage(err);
     }
   };
 
@@ -78,7 +100,8 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="min-h-screen w-screen bg-gmco-white">
+      <div className="w-screen bg-gmco-white">
+        {/*This is the header */}
         <div className="relative w-screen overflow-hidden">
           <img
             className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
@@ -92,28 +115,26 @@ export default function Profile() {
             </div>
 
             <div className="flex w-4/5 flex-col items-start lg:items-end">
-              <h1 className="mt-8 font-rubik text-xl font-semibold text-[#F5DB91]">
-                {userData.Name}
-              </h1>
-              <p className="font-rubik font-normal text-[#F5DB91]">
-                {userData.Email}
-              </p>
-              <p className="font-rubik font-normal text-[#F5DB91]">
-                {userData.Phone}
-              </p>
+              {Object.keys(userData).map((key) => {
+                <p key={key}
+                  className={`font-sans text-gmco-yellow ${key === "Name" ? "mt-8 text-xl font-semibold" : "font-normal"}`}
+                >
+                  {userData[key]}
+                </p>
+              })}
             </div>
           </div>
         </div>
 
         {/* CONTENT */}
-        <div className="flex w-full flex-col divide-x lg:flex-row">
+        <div className="flex w-full flex-col lg:flex-row">
           {/* EDIT IDENTITY */}
           <form
             onSubmit={handleSubmit}
-            className="relative flex w-full flex-col items-start bg-[#C0925E] px-12 py-8 lg:w-1/3"
+            className="grid-col w-full items-start bg-gmco-yellow-secondary px-12 py-8 lg:w-1/3"
           >
             {/* Name */}
-            <label for="nama" className="font-rubik text-white">
+            <label htmlFor="nama" className="font-rubik text-white">
               Nama
             </label>
             <input
@@ -128,7 +149,7 @@ export default function Profile() {
             />
 
             {/*Email*/}
-            <label for="email" className="font-rubik text-white">
+            <label htmlFor="email" className="font-rubik text-white">
               Email<span className="text-red-500">*</span>
             </label>
             <input
@@ -143,13 +164,12 @@ export default function Profile() {
             />
 
             {/* Phone Number */}
-
             <label type="whatsapp" className="font-rubik text-white">
               Nomor WhatsApp<span className="text-red-500">*</span>
             </label>
             <input
               className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
-              type="number"
+              type="text"
               pattern="(^\+62|62|08)(\d{8,12}$)"
               placeholder="Masukkan Nomor WhatsApp Anda"
               name="phone"
@@ -157,7 +177,7 @@ export default function Profile() {
               onChange={handleFormChange}
               title="Please enter a valid phone number!"
             />
-
+            {/* Submit Button */}
             <button
               type="submit"
               className="mt-12 w-full rounded-lg bg-[#932F2F] p-2 text-center font-inter text-lg font-semibold text-white"
@@ -167,24 +187,34 @@ export default function Profile() {
           </form>
 
           {/* List of Tickets */}
-          <div className="flex w-full flex-col gap-4 py-8 pl-8 pr-12 lg:w-2/3">
+          <div className="grid-col grid w-full gap-4 py-8 pl-8 pr-12 lg:w-2/3">
             <p className="text-start text-2xl font-medium text-gmco-grey">
-              Pembelian Saya &#40;{tickets.length}&#41;
+              Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
             {/* TICKET */}
-
-            {tickets.map((ticket, index) => (
+            {seatsBought.Seat.map((seat, index) => (
               <div
                 key={index}
-                className="flex h-full w-full flex-row rounded-lg bg-white p-4"
+                className="flex h-fit w-full flex-row rounded-lg bg-white p-4"
               >
                 {/* Kursi dan Tipe */}
                 <div className="flex w-1/5 flex-col justify-center text-center">
                   <h1 className="font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl">
-                    Seat A{ticket}
+                    Seat {seat.name}
                   </h1>
-                  <p className="w-full rounded-lg bg-[#F5DB91] text-center text-sm font-normal text-gmco-grey lg:text-base">
-                    RADIANT
+                  <p
+                    className={
+                      `w-full rounded-lg text-center text-sm font-normal text-gmco-white lg:text-base ` +
+                      ({
+                        Platinum: "bg-gmco-blue",
+                        Diamond: "bg-violet-700",
+                        Ascendant: "bg-emerald-700",
+                        Immortal: "bg-rose-400",
+                        Radiant: "bg-rose-800",
+                      }[mapCategory(seat.price)] || "bg-rose-800")
+                    }
+                  >
+                    {mapCategory(seat.price)}
                   </p>
                 </div>
 
@@ -196,7 +226,12 @@ export default function Profile() {
                     <p>Open Gate 18.00 WIB</p>
                   </div>
                   <div className="overflow-hidden">
-                    <Image src="/qris-reinhart.webp" width={100} height={100} />
+                    <Image
+                      src="/qris-reinhart.webp"
+                      alt="qris pls send money"
+                      width={100}
+                      height={100}
+                    />
                   </div>
 
                   {/* Nama Konser */}
@@ -204,6 +239,7 @@ export default function Profile() {
                     <div className="mx-2 overflow-hidden">
                       <Image
                         src="/logo-anjangsana.webp"
+                        alt="Logo GC gawk"
                         width={80}
                         height={80}
                       />
