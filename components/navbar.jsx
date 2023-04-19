@@ -33,9 +33,9 @@ export default function NavigationBar() {
     },
   ];
 
-  if (typeof window !== "undefined") {
-    useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
-  }
+  // if (typeof window !== "undefined") {
+  //   useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
+  // }
 
   useEffect(() => {
     (async () => {

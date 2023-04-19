@@ -4,6 +4,7 @@ import { Card } from "flowbite-react";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
+import { notifyError } from "../../components/notify";
 import Swal from "sweetalert2";
 
 export default function OtpPage() {
