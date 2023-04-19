@@ -57,7 +57,7 @@ export default function Profile() {
               <h1 className='font-rubik text-5xl font-light text-white'>
                 PROFIL
               </h1>
-              <hr class='my-8 h-px border-0 bg-gmco-grey' />
+              <hr className='my-8 h-px border-0 bg-gmco-grey' />
             </div>
 
             <div className="flex w-4/5 flex-col items-start px-16 lg:items-end">
