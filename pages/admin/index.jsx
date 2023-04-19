@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 import NavBarAdmin from "@/components/navbaradmin";
-import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
   const [appConfig, setAppConfig] = useState(false);
   const [qrScanMode, setQrScanMode] = useState("");
   const router = useRouter();
-  
+
   async function handleGate() {
     const postURL = appConfig
       ? "/api/v1/admin/close_the_gate"
@@ -55,7 +54,7 @@ export default function Admin() {
     if (typeof window !== "undefined") {
       notAdminHandler();
     }
-  }, [router]);
+  }, [router.pathname]);
 
   useEffect(() => {
     async function getAdminData() {
@@ -87,10 +86,6 @@ export default function Admin() {
     } catch (err) {
       console.error(err);
     }
-  }
-
-  if (typeof window !== "undefined") {
-    useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
   }
 
   return (

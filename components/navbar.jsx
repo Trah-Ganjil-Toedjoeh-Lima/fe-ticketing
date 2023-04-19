@@ -83,7 +83,6 @@ export default function NavigationBar() {
   }
 
   async function logoutSubmit() {
-
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
       if (res.data.message == "success") {
         localStorage.removeItem("auth_token");

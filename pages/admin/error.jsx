@@ -32,11 +32,11 @@ export default function Error() {
             Error: Unauthorized
           </div>
           <div>
-            <p className="text-base text-gray-50">
+            <label className="text-base text-gray-50">
               Oops! Your account is not authorized to access this route.
               <br/> Please log out, then log in as an admin.<br/>
               <p className="italic">Only click if you are an admin!</p>
-            </p>
+            </label>
           </div>
           <div>
             <button
@@ -48,9 +48,9 @@ export default function Error() {
             </button>
           </div>
           <div>
-            <p className="text-base text-gray-50">
+            <label className="text-base text-gray-50">
               If you are not an admin, you can go back home.
-            </p>
+            </label>
           </div>
           <div>
             <button
