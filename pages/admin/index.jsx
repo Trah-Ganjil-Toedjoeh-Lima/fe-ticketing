@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 import NavBarAdmin from "@/components/navbaradmin";
+import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
@@ -86,6 +87,10 @@ export default function Admin() {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  if (typeof window !== "undefined") {
+    useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
   }
 
   return (

@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
 import { axiosInstance } from "@/atoms/config";
 import Swal from "sweetalert2";
+import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
 export default function NavigationBar() {
   const router = useRouter();
@@ -31,6 +32,10 @@ export default function NavigationBar() {
       route: "/seats/cart",
     },
   ];
+
+  if (typeof window !== "undefined") {
+    useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
+  }
 
   useEffect(() => {
     (async () => {

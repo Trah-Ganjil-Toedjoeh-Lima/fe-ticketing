@@ -18,15 +18,16 @@ export default function Profile() {
   const [phoneNum, setPhoneNum] = useState("");
   const tickets = [6, 7, 8, 9, 10, 11, 12];
   const router = useRouter();
-  const [token, setToken] = useState("");
+  
 
-  useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
+  
 
   useEffect(() => {
       if (typeof window !== "undefined") {
         if (!localStorage.getItem("auth_token")) {
           router.push("/auth");
         }
+        useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
       }
     }, []);
 
