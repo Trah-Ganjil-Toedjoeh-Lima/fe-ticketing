@@ -40,6 +40,7 @@ export default function Ticket() {
     const fetchTicketData = async () => {
       try {
         const res = await axiosInstance.get(`/api/v1/seat/${Link}`);
+        if(res.da)
         console.log(res.data.data);
         setTicketData(res.data.data);
       } catch (err) {
