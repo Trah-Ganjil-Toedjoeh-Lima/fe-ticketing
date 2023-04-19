@@ -75,7 +75,7 @@ export default function Auth() {
           <Image
             src="/GMCO.webp"
             alt="bg gmco concert"
-            className="object-cover opacity-50"
+            className="object-full opacity-50 "
             width={1000}
             height={1000}
           />

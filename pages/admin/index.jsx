@@ -8,7 +8,7 @@ export default function Admin() {
   const [appConfig, setAppConfig] = useState(false);
   const [qrScanMode, setQrScanMode] = useState("");
   const router = useRouter();
-
+  
   async function handleGate() {
     const postURL = appConfig
       ? "/api/v1/admin/close_the_gate"

@@ -20,17 +20,16 @@ export default function Profile() {
   const router = useRouter();
   const [token, setToken] = useState("");
 
-  {
-    /*
-useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!localStorage.getItem("auth_token")) {
-        router.push("/auth");
+  useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
+
+  useEffect(() => {
+      if (typeof window !== "undefined") {
+        if (!localStorage.getItem("auth_token")) {
+          router.push("/auth");
+        }
       }
-    }
-  }, []);
-*/
-  }
+    }, []);
+
 
   const handleInputChange = (event, setStateFunction) => {
     setStateFunction(event.target.value);
