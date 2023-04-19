@@ -31,7 +31,10 @@ export default function Cart() {
   useEffect(() => {
     (async () => {
       try {
-        if (!localStorage.getItem("auth_token")) {
+        if (
+          typeof window !== "undefined" &&
+          !localStorage.getItem("auth_token")
+        ) {
           router.push("/auth");
         }
         const [res] = await Promise.all([
