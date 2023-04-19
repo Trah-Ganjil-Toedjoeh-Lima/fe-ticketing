@@ -31,10 +31,7 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      !localStorage.getItem("auth_token")
-    ) {
+    if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
       router.push("/auth");
     }
 
@@ -51,7 +48,6 @@ export default function Profile() {
         console.log(err);
       }
     })();
-
   }, [router]);
 
   useEffect(() => {
@@ -60,7 +56,6 @@ export default function Profile() {
       email: userData.Email,
       phone: userData.Phone,
     });
-
   }, [userData]);
 
   function mapCategory(price) {
@@ -69,7 +64,7 @@ export default function Profile() {
       85000: "Diamond",
       120000: "Ascendant",
       145000: "Immortal",
-      default: "Radiant"
+      default: "Radiant",
     };
 
     return categories[price] || categories.default;
@@ -103,10 +98,13 @@ export default function Profile() {
       <div className="w-screen bg-gmco-white">
         {/*This is the header */}
         <div className="relative w-screen overflow-hidden">
-          <img
-            className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
+          <Image
             src="/GMCO_10.webp"
-          ></img>
+            alt="background gmco"
+            className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
+            width={1000}
+            height={1000}
+          />
           <div className="absolute left-0 top-0 flex h-full w-full flex-col px-12 py-16 lg:flex-row">
             <div className="flex h-full w-1/5 items-center">
               <h1 className="font-rubik text-5xl font-light text-white">
@@ -116,11 +114,16 @@ export default function Profile() {
 
             <div className="flex w-4/5 flex-col items-start lg:items-end">
               {Object.keys(userData).map((key) => {
-                <p key={key}
-                  className={`font-sans text-gmco-yellow ${key === "Name" ? "mt-8 text-xl font-semibold" : "font-normal"}`}
+                <p
+                  key={key}
+                  className={`font-sans text-gmco-yellow ${
+                    key === "Name"
+                      ? "mt-8 text-xl font-semibold"
+                      : "font-normal"
+                  }`}
                 >
                   {userData[key]}
-                </p>
+                </p>;
               })}
             </div>
           </div>
