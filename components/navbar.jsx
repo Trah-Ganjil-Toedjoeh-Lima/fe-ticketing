@@ -5,6 +5,7 @@ import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
 import { axiosInstance } from "@/atoms/config";
+import Swal from "sweetalert2";
 
 export default function NavigationBar() {
   const router = useRouter();
