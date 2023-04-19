@@ -35,9 +35,7 @@ export default function NavigationBar() {
   useEffect(() => {
     (async () => {
       try {
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/user/profile"),
-        ]);
+        const [res] = await Promise.all([axiosInstance.get("/api/v1/user/profile")]);
         setLogedUser(res.data.data);
       } catch {}
     })();
@@ -80,26 +78,26 @@ export default function NavigationBar() {
   async function logoutSubmit(e) {
     e.preventDefault();
 
-    await axiosInstance.post("/api/v1/user/logout").then((res) => {
-      if (res.data.message == "success") {
-        localStorage.removeItem("auth_token");
-        Swal.fire({
-          html: `<b>${res.data.message}</b> tunggu...`,
-          toast: true,
-          width: 350,
-          icon: "success",
-          iconColor: "#16a34a",
-          showConfirmButton: false,
-          timer: 1500,
-          showClass: {
-            popup: "",
-          },
-        }).then(() => {
-          router.push("/auth");
-        });
-      }
-    });
-  }
+  await axiosInstance.post('/api/v1/user/logout').then((res) => {
+    if (res.data.message == 'success') {
+      localStorage.removeItem("auth_token");
+      Swal.fire({
+        html: `<b>${res.data.message}</b> tunggu...`,
+        toast: true,
+        width: 350,
+        icon: "success",
+        iconColor: "#16a34a",
+        showConfirmButton: false,
+        timer: 1500,
+        showClass: {
+          popup: "",
+        },
+      }).then(() => {
+        router.push('/auth');
+      });
+    }
+  });
+}
 
   return (
     <nav
