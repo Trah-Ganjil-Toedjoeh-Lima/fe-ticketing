@@ -44,14 +44,14 @@ export default function Auth() {
               // "/auth/otp"
               {
                 pathname: "/auth/otp",
-                query: {
-                  email: loginInput.email,
-                },
-              }
+                query: { email: loginInput.email },
+              },
+              "/auth/otp"
             );
           }
         });
     } catch (err) {
+      // notifyError();
       console.log(err);
     }
   }

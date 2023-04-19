@@ -8,37 +8,27 @@ const axiosInstance = axios.create({
   },
 });
 
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("auth_token");
-//     if (token) {
-//       config.headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+axiosInstance.interceptors.request.use(
+  (config) => {
+    config.headers.Authorization = localStorage.getItem("auth_token")
+      ? `${localStorage.getItem("auth_token")}`
+      : "";
+    return config;
+  },
+  (error) => {
+    console.log(`Request error: ${error}`);
+    return Promise.reject(error);
+  }
+);
 
-// axiosInstance.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response) {
-//       console.log(`Response error: ${error.response.data}`);
-//       console.log(`Status: ${error.response.status}`);
-//     } else if (error.request) {
-//       console.log(`Request error: ${error.request}`);
-//     } else {
-//       console.log(`Error message: ${error.message}`);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-export default axiosInstance;
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export function midtransSetup(myMidtransClientKey, callback) {
   // You can also change below url value to any script url you wish to load,

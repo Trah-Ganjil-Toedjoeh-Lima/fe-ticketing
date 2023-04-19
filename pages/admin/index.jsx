@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
-import NavigationBar from "@/components/navbar";
+import NavBarAdmin from "@/components/navbaradmin";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
@@ -28,7 +28,6 @@ export default function Admin() {
     async function checkIfAdmin() {
       try {
         const res = await axiosInstance.get("/api/v1/admin/seats"); //admin-only endpoint
-        console.log(res.status);
       } catch (err) {
         // Only goes here when the status isn't 200 OK
         if (err.response.status !== 200) {
@@ -69,8 +68,6 @@ export default function Admin() {
         setAdminData(seatsRes.data.data);
         setAppConfig(configRes.data.app_config.IsOpenGate);
         setQrScanMode(configRes.data.app_config.QrScanBehaviour);
-
-        console.log(qrScanMode);
       } catch (error) {
         console.error(error);
       }
@@ -86,7 +83,6 @@ export default function Admin() {
         qr_scan_behaviour: newState,
       });
       setQrScanMode(newState);
-      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -94,7 +90,7 @@ export default function Admin() {
 
   return (
     <>
-      <NavigationBar />
+      <NavBarAdmin />
       {/* OUTERMOST div */}
       <div className='h-max bg-gmco-white md:min-h-screen '>
         {/* HEADER div */}
