@@ -73,6 +73,12 @@ export default function Cart() {
         /* You may add your own implementation here */
         notifySucces("payment success!");
         rerender();
+        setSeatBoughts({
+          seats: [],
+          user_email: "user.email",
+          user_name: "user_name",
+          user_phone: "user_phone",
+        });
       },
       onPending: function (result) {
         /* You may add your own implementation here */
@@ -125,7 +131,7 @@ export default function Cart() {
               <table className="w-full table-auto border-separate border-spacing-y-4 divide-gray-200 text-gmco-white">
                 {/* Item - nanti di map */}
                 <thead>
-                  <tr className="text-center font-semibold text-lg md:text-xl">
+                  <tr className="text-center text-lg font-semibold md:text-xl">
                     <td className="text-start">No. Kursi</td>
                     <td>Kategori</td>
                     <td>Jumlah</td>
@@ -156,7 +162,7 @@ export default function Cart() {
                               />
                             )}
                           </div> */}
-                          <h3 className="text-md md:text-xl font-extrabold">
+                          <h3 className="text-md font-extrabold md:text-xl">
                             Kursi {seatBought.name}
                           </h3>
                         </div>
@@ -183,7 +189,6 @@ export default function Cart() {
                         <div className="flex justify-center">
                           {formatNumber(seatBought.price)}
                         </div>
-                        
                       </td>
                     </tr>
                   ))}
