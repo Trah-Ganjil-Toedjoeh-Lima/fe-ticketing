@@ -8,12 +8,27 @@ export const axiosInstance = axios.create({
   },
 });
 
-axiosInstance.interceptors.request.use(function (config) {
-  config.headers.Authorization = localStorage.getItem("auth_token")
-    ? `${localStorage.getItem("auth_token")}`
-    : "";
-  return config;
-});
+axiosInstance.interceptors.request.use(
+  (config) => {
+    config.headers.Authorization = localStorage.getItem("auth_token")
+      ? `${localStorage.getItem("auth_token")}`
+      : "";
+    return config;
+  },
+  (error) => {
+    console.log(`Request error: ${error}`);
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export function midtransSetup(myMidtransClientKey, callback) {
   // You can also change below url value to any script url you wish to load,
