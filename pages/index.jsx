@@ -3,8 +3,10 @@ import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
+import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
 export default function Home() {
+  
   return (
     <>
       <NavigationBar />
