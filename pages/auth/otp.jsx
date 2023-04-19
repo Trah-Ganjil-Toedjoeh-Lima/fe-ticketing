@@ -5,6 +5,7 @@ import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
 import Swal from "sweetalert2";
+import { notifyError } from "@/components/notify";
 
 export default function OtpPage() {
   const router = useRouter();
@@ -46,19 +47,16 @@ export default function OtpPage() {
               });
             }
           });
-
       } catch (err) {
         notifyError(err);
       }
     }
   }
- 
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Card className=" flex  max-w-sm items-center py-4 sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6">
-        <EnvelopeOpenIcon className="mx-auto h-16 w-16">
-          {" "}
-        </EnvelopeOpenIcon>
+        <EnvelopeOpenIcon className="mx-auto h-16 w-16"> </EnvelopeOpenIcon>
         <div className="self-center text-xl font-medium uppercase text-gray-800 sm:text-2xl">
           Masukkan Kode Verifikasi
         </div>
