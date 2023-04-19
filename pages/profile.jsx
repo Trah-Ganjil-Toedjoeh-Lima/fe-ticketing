@@ -1,21 +1,16 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Inter, Rubik } from "next/font/google";
-import Link from "next/link";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 import { axiosInstance, midtransSetup } from "@/atoms/config";
-import { notifyError } from "@/components/notify";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
-import { notifyErrorMessage } from "@/components/notify";
+import { notifyError, notifyErrorMessage } from "@/components/notify";
 
 export default function Profile() {
-  const tickets = [6, 7, 8, 9, 10, 11, 12];
   const router = useRouter();
-  const [token, setToken] = useState("");
   const [userData, setUserData] = useState({
     UserId: "",
     Name: "",
@@ -36,26 +31,28 @@ export default function Profile() {
   });
 
   useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      !localStorage.getItem("auth_token")
+    ) {
+      router.push("/auth");
+    }
+
     (async () => {
       try {
-        if (
-          typeof window !== "undefined" &&
-          !localStorage.getItem("auth_token")
-        ) {
-          router.push("/auth");
-          console.log("Login dulu!!!");
-        }
-        const [res] = await Promise.all([
+        const [userRes, ticketRes] = await Promise.all([
           axiosInstance.get("api/v1/user/profile"),
+          axiosInstance.get("api/v1/user/tickets"),
         ]);
-        setUserData(res.data.data);
+        setUserData(userRes.data.data);
+        setSeatsBought(ticketRes.data.data);
       } catch (err) {
-        router.push("/auth");
-        notifyError(err);
-        console.log(err.toString());
+        notifyErrorMessage(err);
+        console.log(err);
       }
     })();
-  }, []);
+
+  }, [router]);
 
   useEffect(() => {
     setFormUserData({
@@ -63,66 +60,39 @@ export default function Profile() {
       email: userData.Email,
       phone: userData.Phone,
     });
+
   }, [userData]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [res] = await Promise.all([
-          axiosInstance.get("api/v1/user/tickets"),
-        ]);
-        setSeatsBought(res.data.data);
-        console.log(seatsBought.Seat[0]);
-      } catch (err) {
-        notifyErrorMessage(err);
-        console.log(err.toString());
-      }
-    })();
-  }, []);
-
   function mapCategory(price) {
-    let category;
-    switch (price) {
-      case 60000:
-        category = "Platinum";
-        break;
-      case 85000:
-        category = "Diamond";
-        break;
-      case 120000:
-        category = "Ascendant";
-        break;
-      case 145000:
-        category = "Immortal";
-        break;
-      default:
-        category = "Radiant";
-    }
-    return category;
+    const categories = {
+      60000: "Platinum",
+      85000: "Diamond",
+      120000: "Ascendant",
+      145000: "Immortal",
+      default: "Radiant"
+    };
+
+    return categories[price] || categories.default;
   }
 
-  function categoryColor(category) {
-    let color;
-  }
-
-  function handleFormChange(event) {
-    const { name, value } = event.target;
+  function handleFormChange(e) {
+    const { name, value } = e.target;
     setFormUserData({ ...formUserData, [name]: value });
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const res_patch = await axiosInstance.patch(
+      const resPatch = await axiosInstance.patch(
         "api/v1/user/profile",
         formUserData
       );
-      const [res_get] = await Promise.all([
+      const [resGet] = await Promise.all([
         axiosInstance.get("api/v1/user/profile"),
       ]);
-      setUserData(res_get.data.data);
+      setUserData(resGet.data.data);
     } catch (err) {
-      notifyError(err);
+      notifyErrorMessage(err);
     }
   };
 
@@ -145,15 +115,13 @@ export default function Profile() {
             </div>
 
             <div className="flex w-4/5 flex-col items-start lg:items-end">
-              <h1 className="mt-8 font-rubik text-xl font-semibold text-[#F5DB91]">
-                {userData.Name}
-              </h1>
-              <p className="font-rubik font-normal text-[#F5DB91]">
-                {userData.Email}
-              </p>
-              <p className="font-rubik font-normal text-[#F5DB91]">
-                {userData.Phone}
-              </p>
+              {Object.keys(userData).map((key) => {
+                <p key={key}
+                  className={`font-sans text-gmco-yellow ${key === "Name" ? "mt-8 text-xl font-semibold" : "font-normal"}`}
+                >
+                  {userData[key]}
+                </p>
+              })}
             </div>
           </div>
         </div>
@@ -163,7 +131,7 @@ export default function Profile() {
           {/* EDIT IDENTITY */}
           <form
             onSubmit={handleSubmit}
-            className="grid-col w-full items-start bg-[#C0925E] px-12 py-8 lg:w-1/3"
+            className="grid-col w-full items-start bg-gmco-yellow-secondary px-12 py-8 lg:w-1/3"
           >
             {/* Name */}
             <label htmlFor="nama" className="font-rubik text-white">
@@ -234,47 +202,20 @@ export default function Profile() {
                   <h1 className="font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
-                  {mapCategory(seat.price) === "Platinum" ? (
-                    <p
-                      className={
-                        "w-full rounded-lg bg-gmco-blue text-center text-sm font-normal text-gmco-grey lg:text-base"
-                      }
-                    >
-                      {mapCategory(seat.price)}
-                    </p>
-                  ) : mapCategory(seat.price) === "Diamond" ? (
-                    <p
-                      className={
-                        "w-full rounded-lg bg-violet-700 text-center text-sm font-normal text-gmco-white lg:text-base"
-                      }
-                    >
-                      {mapCategory(seat.price)}
-                    </p>
-                  ) : mapCategory(seat.price) === "Ascendant" ? (
-                    <p
-                      className={
-                        "w-full rounded-lg bg-emerald-700 text-center text-sm font-normal text-gmco-white lg:text-base"
-                      }
-                    >
-                      {mapCategory(seat.price)}
-                    </p>
-                  ) : mapCategory(seat.price) === "Immortal" ? (
-                    <p
-                      className={
-                        "w-full rounded-lg bg-rose-400 text-center text-sm font-normal text-gmco-grey lg:text-base"
-                      }
-                    >
-                      {mapCategory(seat.price)}
-                    </p>
-                  ) : (
-                    <p
-                      className={
-                        "w-full rounded-lg bg-rose-800 text-center text-sm font-normal text-gmco-grey lg:text-base"
-                      }
-                    >
-                      {mapCategory(seat.price)}
-                    </p>
-                  )}
+                  <p
+                    className={
+                      `w-full rounded-lg text-center text-sm font-normal text-gmco-white lg:text-base ` +
+                      ({
+                        Platinum: "bg-gmco-blue",
+                        Diamond: "bg-violet-700",
+                        Ascendant: "bg-emerald-700",
+                        Immortal: "bg-rose-400",
+                        Radiant: "bg-rose-800",
+                      }[mapCategory(seat.price)] || "bg-rose-800")
+                    }
+                  >
+                    {mapCategory(seat.price)}
+                  </p>
                 </div>
 
                 {/* Waktu dan Tempat */}
