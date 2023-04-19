@@ -30,25 +30,43 @@ export default function Profile() {
     Seat: [],
   });
 
+  // ini gk bisa dijadiin 1 karena kalo ticket ga ada chandra ngasihnya 404 jadi error ya harus dipihsa -weka
+  // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
+  // misal gini
   useEffect(() => {
-    if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
-      router.push("/auth");
-    }
-
     (async () => {
+      if (
+        typeof window !== "undefined" &&
+        !localStorage.getItem("auth_token")
+      ) {
+        router.push("/auth");
+      }
       try {
-        const [userRes, ticketRes] = await Promise.all([
-          axiosInstance.get("api/v1/user/profile"),
-          axiosInstance.get("api/v1/user/tickets"),
+        const [userRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/profile"),
         ]);
+        console.log(userRes);
         setUserData(userRes.data.data);
-        setSeatsBought(ticketRes.data.data);
       } catch (err) {
-        notifyErrorMessage(err);
+        notifyError(err);
         console.log(err);
       }
     })();
-  }, [router]);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const [ticketRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/tickets"),
+        ]);
+        setSeatsBought(ticketRes.data.data);
+      } catch (err) {
+        notifyError(err);
+        console.log(err);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     setFormUserData({
@@ -57,6 +75,8 @@ export default function Profile() {
       phone: userData.Phone,
     });
   }, [userData]);
+
+  // console.log(formUserData);
 
   function mapCategory(price) {
     const categories = {
@@ -78,11 +98,8 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const resPatch = await axiosInstance.patch(
-        "api/v1/user/profile",
-        formUserData
-      );
-      const [resGet] = await Promise.all([
+      await axiosInstance.patch("api/v1/user/profile", formUserData);
+      const resGet = await Promise.all([
         axiosInstance.get("api/v1/user/profile"),
       ]);
       setUserData(resGet.data.data);
@@ -91,46 +108,56 @@ export default function Profile() {
     }
   };
 
+  Object.keys(userData).map((key) => {
+    console.log(userData[key]);
+  });
+
+  // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="w-screen bg-gmco-white">
+      <div className="w-scree bg-gmco-yellow-secondary">
         {/*This is the header */}
-        <div className="relative w-screen overflow-hidden">
+        <div className="relative w-full overflow-hidden ">
           <Image
             src="/GMCO_10.webp"
             alt="background gmco"
-            className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
+            className="absolute h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
             width={1000}
             height={1000}
           />
-          <div className="absolute left-0 top-0 flex h-full w-full flex-col px-12 py-16 lg:flex-row">
-            <div className="flex h-full w-1/5 items-center">
+          <div className="container relative m-auto flex items-center h-full flex-col pb-8 pt-24 lg:flex-row">
+            <div className="flex h-full w-1/5">
               <h1 className="font-rubik text-5xl font-light text-white">
                 PROFIL
               </h1>
             </div>
 
             <div className="flex w-4/5 flex-col items-start lg:items-end">
-              {Object.keys(userData).map((key) => {
+              {/* aku agak bingung kok gk keluar hasilnya */}
+              {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
+              {/* awal => {} harusnya => () */}
+              {/* kutambah kalo id gk ditampilin ya */}
+              {Object.keys(userData).map((key) => (
                 <p
                   key={key}
                   className={`font-sans text-gmco-yellow ${
                     key === "Name"
-                      ? "mt-8 text-xl font-semibold"
+                      ? "text-2xl font-semibold" :
+                      key === "UserId" ? "hidden"
                       : "font-normal"
                   }`}
                 >
                   {userData[key]}
-                </p>;
-              })}
+                </p>
+              ))}
             </div>
           </div>
         </div>
 
         {/* CONTENT */}
-        <div className="flex w-full flex-col lg:flex-row">
+        <div className="container m-auto flex flex-col lg:flex-row ">
           {/* EDIT IDENTITY */}
           <form
             onSubmit={handleSubmit}
@@ -190,7 +217,7 @@ export default function Profile() {
           </form>
 
           {/* List of Tickets */}
-          <div className="grid-col grid w-full gap-4 py-8 pl-8 pr-12 lg:w-2/3">
+          <div className="grid-col grid w-full gap-4 bg-gmco-white py-8 pl-8 pr-12 lg:w-2/3">
             <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
