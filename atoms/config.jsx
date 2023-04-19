@@ -4,7 +4,7 @@ export const axiosInstance = axios.create({
   withCredentials: true,
   headers: {
     Authorization:
-      typeof window !== "undefined" && localStorage.getItem("auth_token"),
+      localStorage.getItem("auth_token"),
   },
 });
 

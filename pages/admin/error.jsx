@@ -34,7 +34,7 @@ export default function Error() {
           <div>
             <p className="text-base text-gray-50">
               Oops! Your account is not authorized to access this route.
-              <br></br> Please log out, then log in as an admin.<br></br>
+              <br/> Please log out, then log in as an admin.<br/>
               <p className="italic">Only click if you are an admin!</p>
             </p>
           </div>

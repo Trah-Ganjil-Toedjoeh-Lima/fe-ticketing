@@ -5,7 +5,13 @@ import Image from "next/image";
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance, midtransSetup } from "@/atoms/config";
-import { notifyError, notifySucces, notifyErrorMessage, notifyInfo, notifyWarning } from "@/components/notify";
+import {
+  notifyError,
+  notifySucces,
+  notifyErrorMessage,
+  notifyInfo,
+  notifyWarning,
+} from "@/components/notify";
 
 export default function Cart() {
   const [orderTotal, setOrderTotal] = useState(0);
@@ -25,10 +31,12 @@ export default function Cart() {
   useEffect(() => {
     (async () => {
       try {
-        if (typeof window?.localStorage?.getItem !== "function") {
+        if (!localStorage.getItem("auth_token")) {
           router.push("/auth");
         }
-        const [res] = await Promise.all([axiosInstance.get("/api/v1/checkout")]);
+        const [res] = await Promise.all([
+          axiosInstance.get("/api/v1/checkout"),
+        ]);
         setSeatBoughts(res.data.data);
         midtransSetup(res.data.midtrans_client_key);
       } catch (err) {
@@ -60,7 +68,7 @@ export default function Cart() {
       onSuccess: function (result) {
         /* You may add your own implementation here */
         notifySucces("payment success!");
-        rerender()
+        rerender();
       },
       onPending: function (result) {
         /* You may add your own implementation here */
