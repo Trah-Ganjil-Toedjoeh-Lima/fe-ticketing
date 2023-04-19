@@ -55,7 +55,7 @@ export default function Admin() {
     if (typeof window !== "undefined") {
       notAdminHandler();
     }
-  }, [router]);
+  }, [router.pathname]);
 
   useEffect(() => {
     async function getAdminData() {

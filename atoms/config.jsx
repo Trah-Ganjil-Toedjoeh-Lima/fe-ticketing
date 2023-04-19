@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   withCredentials: true,
   headers: {
     Authorization:
