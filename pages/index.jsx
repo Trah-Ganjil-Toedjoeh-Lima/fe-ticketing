@@ -5,6 +5,7 @@ import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 
 export default function Home() {
+  
   return (
     <>
       <NavigationBar />

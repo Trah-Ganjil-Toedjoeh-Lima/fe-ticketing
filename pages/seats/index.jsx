@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 import { axiosInstance } from "@/atoms/config";
-import { notifyError } from "@/components/notify";
+import { notifyError, notifyErrorMessage } from "@/components/notify";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 export default function Seats() {
   // floor1
@@ -24,6 +25,7 @@ export default function Seats() {
   const [curFloor, setCurFloor] = useState(1);
   const [seatHighlight, setSeatHighlight] = useState([]);
   const [scaleN, setScaleN] = useState(8);
+  const [purchasedSeat, setPurchasedSeat] = useState(0);
 
   const mappersFloor1 = [
     { A: [0, 8, 8, 0] },
@@ -181,6 +183,24 @@ export default function Seats() {
     "scale-[200%]",
   ];
 
+  // 10 Minutes
+  const [counter, setCounter] = useState(60 * 10);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCounter((counter) => counter - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (counter === 0) {
+      window.location.reload();
+    } else if (counter === 3) {
+      notifyErrorMessage("reload dalam 3...");
+    }
+  }, [counter]);
+
   useEffect(() => {
     (async () => {
       try {
@@ -199,6 +219,7 @@ export default function Seats() {
     return;
   }
 
+  // Post data to cart
   async function postSeats(seatsArr) {
     try {
       await axiosInstance.post("/api/v1/seat_map", {
@@ -212,9 +233,17 @@ export default function Seats() {
   function divideByFloor(data) {
     const floor1 = [];
     const floor2 = [];
+    const reservedByMe = [];
 
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
+
+      if (obj.status === "reserved_by_me") {
+        reservedByMe.push(obj);
+        // onSeatPick(obj, userSeats);
+      } else if (obj.status === "purchased_by_me") {
+        setPurchasedSeat(purchasedSeat + 1);
+      }
 
       if (obj.row === "U" || obj.row === "V") {
         floor2.push(obj);
@@ -222,6 +251,9 @@ export default function Seats() {
         floor1.push(obj);
       }
     }
+
+    setUserSeats(reservedByMe.map((item) => item.seat_id));
+    setUserSeatsPick(reservedByMe);
 
     const floor1Seat = seatMapping(
       floor1,
@@ -255,7 +287,7 @@ export default function Seats() {
     for (let i = 0; i < numSeats; i++) {
       seatDict[i] = [];
     }
-
+    // Start mapping
     for (const mapper of mappers) {
       let row = Object.keys(mapper);
       let lengthsArr = Object.values(mapper);
@@ -267,6 +299,7 @@ export default function Seats() {
           seatDict[index][row] = new Array(value);
         }
 
+        // Devide into 4 major area, l, ml, mr, r
         value.forEach((item) => {
           if (item.row == row) {
             for (let i = 0; i < lengths.length; i++) {
@@ -294,6 +327,7 @@ export default function Seats() {
         const datas = entry[1];
         const index = entry[0];
         for (const item of datas) {
+          // Mapping the data into each corresponding key and value
           seatDict[index][item.row][
             item.column - startMappers[item.row][index]
           ] = item;
@@ -314,7 +348,7 @@ export default function Seats() {
       setUserSeatsPick(
         userSeatsPick.filter((item) => item.name !== array.name)
       );
-    } else if (userSeats.length < 5) {
+    } else if (userSeats.length < 5 - purchasedSeat) {
       setUserSeats([...userSeats, array.seat_id]);
       setUserSeatsPick([...userSeatsPick, array]);
     } else {
@@ -428,24 +462,26 @@ export default function Seats() {
   function temp_mapper(array, arrayUser) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
-      if (array[array.length - i]) {
-        if (array[array.length - i].status == "available") {
-          const isSelected = arrayUser.includes(
-            array[array.length - i].seat_id
-          );
+      const index = array.length - i;
+      if (array[index]) {
+        if (array[index].status == "available") {
+          const isSelected = arrayUser.includes(array[index].seat_id);
+          const isHighlight = seatHighlight.includes(array[index].price);
           arr.push(
             <div className={`bg-gmco-yellow duration-300 hover:scale-150`}>
               <div
                 className={`h-6 w-6 rounded-sm ${
-                  statusColor[array[array.length - i].status]
+                  statusColor[array[index].status]
+                }  cursor-pointer text-center text-[0.7rem] ${
+                  isHighlight ? "bg-gmco-orange-secondarylight" : ""
                 } ${
-                  priceColor[array[array.length - i].price]
-                } cursor-pointer text-center text-[0.7rem]  ${
-                  isSelected ? "border-2 border-red-500" : ""
+                  isSelected
+                    ? "scale-150 border-2 border-red-500 bg-opacity-50"
+                    : ""
                 }`}
-                onClick={() => onSeatPick(array[array.length - i], arrayUser)}
+                onClick={() => onSeatPick(array[index], arrayUser)}
               >
-                {array[array.length - i].name}
+                {array[index].name}
               </div>
             </div>
           );
@@ -453,10 +489,10 @@ export default function Seats() {
           arr.push(
             <div
               className={`h-6 w-6 cursor-not-allowed rounded-sm ${
-                statusColor[array[array.length - i].status]
+                statusColor[array[index].status]
               }  text-center text-[0.7rem]`}
             >
-              {array[array.length - i].name}
+              {array[index].name}
             </div>
           );
         }
@@ -474,8 +510,6 @@ export default function Seats() {
   function cek(halo) {
     console.log(halo);
   }
-
-  function priceHighlight() {}
 
   // Display
   // =================================
@@ -496,13 +530,23 @@ export default function Seats() {
         </div>
       </div>
 
+      {/* SIDE BAR START */}
+      {/* ================== */}
       <div className="h-a flex w-full">
         {/* Left Bar */}
         <div
           className={`${sideBarOpen ? "inline" : "hidden"} w-1/5 border-r-2`}
         >
           {/* Minimize Button */}
-          <div className="mt-3 flex w-full justify-end pr-2">
+
+          <div className="mt-3 flex w-full items-center justify-between pr-2">
+            <p className={`mb-2 pl-4 text-lg ${counter <= 10 ? "text-red-600" : "text-gmco-grey"}`} >
+              Refresh in{" "}
+              <b>
+                {Math.floor(counter / 60)}:{counter % 60}
+              </b>
+              <span><ExclamationTriangleIcon className={`ml-2 h-8 w-8 ${counter <= 10 ? "inline" : "hidden"}`}/> </span>
+            </p>
             <button
               className="rounded-lg bg-[#C76734] p-2 text-lg text-white"
               onClick={() => {
@@ -514,15 +558,6 @@ export default function Seats() {
           </div>
 
           {/* Milih Lantai */}
-          <button
-            className="bg-gmco-orange-secondarydark px-10 py-2"
-            onClick={() => {
-              cek(userSeats), postSeats(userSeats);
-            }}
-          >
-            Pesan
-          </button>
-
           <div className="mt-1 flex w-full border-2  border-gmco-orange-secondarydark">
             <button
               onClick={() => setCurFloor(1)}
@@ -587,6 +622,20 @@ export default function Seats() {
                   </>
                 </div>
               ))}
+
+              {/* Pesan Button */}
+              <button
+                className={`rounded-lg border-2 border-gmco-white  ${
+                  userSeats.length
+                    ? "bg-gmco-orange-secondarylight hover:scale-105"
+                    : "cursor-not-allowed bg-gmco-grey"
+                }  px-10 py-2`}
+                onClick={() => {
+                  cek(userSeats), postSeats(userSeats);
+                }}
+              >
+                Masukkan ke Cart
+              </button>
             </div>
           </div>
 
@@ -616,6 +665,8 @@ export default function Seats() {
           </div>
         </div>
 
+        {/* ============================ */}
+        {/* SEAT MAP START */}
         <div
           className={`${
             sideBarOpen ? "w-4/5" : "w-full"
@@ -651,8 +702,6 @@ export default function Seats() {
               </button>
             </div>
           </div>
-
-          {/* Ideku ini scale di 95% aja nanti dikasi tombol + sama - */}
 
           <div
             className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
@@ -727,6 +776,7 @@ export default function Seats() {
             </div>
 
             {/* Floor2 */}
+            {/* ============================ */}
             <div
               className={`flex h-full w-max scale-[100%] items-end justify-center gap-6 px-16 ${
                 curFloor === 2 ? "inline" : "hidden"

@@ -1,15 +1,16 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+// import { useEffect } from "react";
 
-// export function withAuth() {
-//   const [token, setToken] = useState("");
-//   const router = useRouter()
-//   if (typeof window !== "undefined"){
-//     setToken(localStorage.getItem("auth_token"));
-//     if (!token){
-//       router.push("/auth");
-//     }  
-//   };
+// export function useClearAuthTokenOnUnload(auth_token) {
+//   // useEffect(() => {
+//   //   // Store the authentication token in localStorage // Listen for the beforeunload event and remove the authentication token from localStorage
+//   //   const onUnload = () => {
+//   //     localStorage.removeItem("auth_token");
+//   //   };
+//   //   window.addEventListener("unload", onUnload);
+
+//   //   // Clean up the event listener on unmount
+//   //   return () => {
+//   //     window.removeEventListener("unload", onUnload);
+//   //   };
+//   // }, [auth_token]);
 // }
-
-

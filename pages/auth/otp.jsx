@@ -4,31 +4,27 @@ import { Card } from "flowbite-react";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/atoms/config";
+import { notifyError } from "../../components/notify";
 import Swal from "sweetalert2";
 
 export default function OtpPage() {
   const router = useRouter();
   const loginInput = router.query;
   const [otp, setOtp] = useState("");
-  const [otpSubmit, setOtpSubmit] = useState({
-    email: loginInput.email,
-    otp: otp,
-  });
 
   async function LoginSubmit(e) {
     e.preventDefault();
+
     if (otp.length == 6) {
       try {
-        console.log(JSON.stringify(loginInput));
         await axiosInstance
           .post("/api/v1/user/otp", {
             email: loginInput.email,
             otp: otp,
           })
+
           .then((res) => {
-            console.log(res);
             if (res.status === 200) {
-              console.log(res.data.token.AccessToken);
               localStorage.setItem(
                 "auth_token",
                 `Bearer ${res.data.token.AccessToken}`
@@ -51,26 +47,26 @@ export default function OtpPage() {
               });
             }
           });
+
       } catch (err) {
-        // notifyError(err);
-        console.log(err);
+        notifyError(err);
       }
     }
   }
-
+ 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <Card className=" flex  max-w-sm items-center py-4 sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6">
-        <EnvelopeOpenIcon className="mx-auto h-16 w-16">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
+      <Card className=" flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 ">
+        <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white">
           {" "}
         </EnvelopeOpenIcon>
-        <div className="self-center text-xl font-medium uppercase text-gray-800 sm:text-2xl">
+        <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
           Masukkan Kode Verifikasi
         </div>
-        <div className="text-center text-sm font-normal text-gray-800  sm:text-base ">
-          Kode verifikasi telah dikirimkan melalui email terdaftar
+        <div className="text-md text-center font-thin text-gmco-white  sm:text-base ">
+          kode verifikasi telah dikirimkan melalui email terdaftar
         </div>
-        <div className="mx-auto mt-9 items-center object-center">
+        <div className="mx-auto mt-9 items-center object-center  ">
           <OTPInput
             value={otp}
             onChange={setOtp}
@@ -86,15 +82,15 @@ export default function OtpPage() {
               fontSize: "20px",
               height: "2.5em",
               textAlign: "center",
-              backgroundColor: "black",
-              color: "white",
-              border: "1px solid lightskyblue",
+              backgroundColor: "white",
+              color: "black",
+              border: "1px solid white",
             }}
           />
         </div>
         <button
           type="submit"
-          className="font type mt-6 w-full rounded-lg bg-gmco-blue p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+          className="font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
           onClick={LoginSubmit}
         >
           Submit

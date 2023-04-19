@@ -29,30 +29,28 @@ export default function Auth() {
   async function LoginSubmit(e) {
     e.preventDefault();
     try {
-      console.log(JSON.stringify(loginInput));
       await axiosInstance
         .post("/api/v1/user/register_email", {
           email: loginInput.email,
         })
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           // const otp = res.data.totp_token;
           setLoginInput({ ...loginInput, otp: res.data.totp_token });
           if (res.status === 200) {
             // localStorage.setItem("auth_token", res.data.access_token);
             router.push(
               // "/auth/otp"
-                {
+              {
                 pathname: "/auth/otp",
-                query: {
-                  email: loginInput.email,
-                },
-              }
+                query: { email: loginInput.email },
+              },
+              "/auth/otp"
             );
           }
         });
     } catch (err) {
-      notifyError(err);
+       notifyError();     
     }
   }
 

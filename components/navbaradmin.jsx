@@ -6,9 +6,8 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FaShoppingCart } from "react-icons/fa";
 import { axiosInstance } from "@/atoms/config";
 import Swal from "sweetalert2";
-import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
-export default function NavigationBar() {
+export default function NavBarAdmin() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -33,14 +32,12 @@ export default function NavigationBar() {
     },
   ];
 
-  // if (typeof window !== "undefined") {
-  //   useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
-  // }
-
   useEffect(() => {
     (async () => {
       try {
-        const [res] = await Promise.all([axiosInstance.get("/api/v1/user/profile")]);
+        const [res] = await Promise.all([
+          axiosInstance.get("/api/v1/user/profile"),
+        ]);
         setLogedUser(res.data.data);
       } catch {}
     })();
@@ -83,26 +80,26 @@ export default function NavigationBar() {
   async function logoutSubmit(e) {
     e.preventDefault();
 
-  await axiosInstance.post('/api/v1/user/logout').then((res) => {
-    if (res.data.message == 'success') {
-      localStorage.removeItem("auth_token");
-      Swal.fire({
-        html: `<b>${res.data.message}</b> tunggu...`,
-        toast: true,
-        width: 350,
-        icon: "success",
-        iconColor: "#16a34a",
-        showConfirmButton: false,
-        timer: 1500,
-        showClass: {
-          popup: "",
-        },
-      }).then(() => {
-        router.push('/auth');
-      });
-    }
-  });
-}
+    await axiosInstance.post("/api/v1/user/logout").then((res) => {
+      if (res.data.message == "success") {
+        localStorage.removeItem("auth_token");
+        Swal.fire({
+          html: `<b>${res.data.message}</b> tunggu...`,
+          toast: true,
+          width: 350,
+          icon: "success",
+          iconColor: "#16a34a",
+          showConfirmButton: false,
+          timer: 1500,
+          showClass: {
+            popup: "",
+          },
+        }).then(() => {
+          router.push("/admin/login");
+        });
+      }
+    });
+  }
 
   return (
     <nav
