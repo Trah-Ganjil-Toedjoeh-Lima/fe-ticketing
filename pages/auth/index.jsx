@@ -42,12 +42,10 @@ export default function Auth() {
             // localStorage.setItem("auth_token", res.data.access_token);
             router.push(
               // "/auth/otp"
-                {
+              {
                 pathname: "/auth/otp",
-                query: {
-                  email: loginInput.email,
-                },
-              }
+                query: { email: loginInput.email }
+              }, '/auth/otp'
             );
           }
         });

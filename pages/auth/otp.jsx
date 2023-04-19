@@ -17,9 +17,10 @@ export default function OtpPage() {
 
   async function LoginSubmit(e) {
     e.preventDefault();
+    console.log(loginInput)
     if (otp.length == 6) {
       try {
-        console.log(JSON.stringify(loginInput));
+        console.log(JSON.stringify(loginInput.email),"ini di otp");
         await axiosInstance
           .post("/api/v1/user/otp", {
             email: loginInput.email,
@@ -57,7 +58,8 @@ export default function OtpPage() {
       }
     }
   }
-
+ 
+  console.log(loginInput.email)
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Card className=" flex  max-w-sm items-center py-4 sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6">

@@ -8,6 +8,13 @@ export const axiosInstance = axios.create({
   },
 });
 
+axiosInstance.interceptors.request.use(function (config) {
+  config.headers.Authorization = localStorage.getItem("auth_token")
+    ? `${localStorage.getItem("auth_token")}`
+    : "";
+  return config;
+});
+
 export function midtransSetup(myMidtransClientKey, callback) {
   // You can also change below url value to any script url you wish to load,
   // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
