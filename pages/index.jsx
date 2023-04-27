@@ -121,42 +121,39 @@ export default function Home() {
           </RevealWrapper>
         </div>
 
-        <div className="bg-gmco-grey">
+        <div className="bg-black">
           <div
             id="about"
             className="container mx-auto grid grid-cols-1 items-center justify-between px-10 md:grid-cols-2"
           >
             {/* Text */}
             <RevealWrapper duration={1000} distance="0">
-              <div className="w-full">
-                <div className="py-12 text-center md:text-left">
-                  <div className="text-md font-bold uppercase tracking-wide text-gmco-orange-secondarylight md:text-xl">
-                    About
+              <div className="flex w-full justify-end text-gmco-white">
+                <div className="w-3/4 py-12 text-center md:text-left">
+                  <div className="text-md font-bold tracking-wide md:text-2xl">
+                    Featuring,
                   </div>
-                  <h1 className="mb-4 mt-2 text-2xl font-semibold leading-tight text-gray-900 md:text-4xl">
-                    Grand Concert #10
+                  <h1 className="mb-4 mt-2 text-2xl font-extrabold leading-tight md:text-7xl">
+                    Addie MS{" "}
+                    <span className="text-gmco-orange-secondarydark">.</span>
                   </h1>
-                  <p className="text-md mb-4 leading-normal text-gray-900 md:text-lg">
-                    GMCO Live from the Living Room merupakan sebuah intimate
-                    orchestra concert yang dilaksanakan oleh Unit Kegiatan
-                    Mahasiswa Gadjah Mada Chamber Orchestra (GMCO UGM). Konser
-                    intim ini merupakan konser inovasi GMCO dengan nuansa santai
-                    layaknya suasana ruang keluarga, tetapi tetap mempertahankan
-                    esensi dan kualitas penampilan orkestra itu sendiri.
-                    <br />
-                    Selain penampilan dari para pemain GMCO, konser ini akan
-                    dimeriahkan oleh penampilan bintang tamu, penyanyi pria
-                    nasional, yaitu Sal Priadi. GMCO Live from the Living Room
-                    akan menjadi konser orkestra intim yang unik dan diminati
-                    banyak penikmat musik Yogyakarta.
+                  <p className="mb-4 text-justify text-base font-light leading-normal opacity-80 md:text-lg">
+                    Addie MS adalah seorang musisi, konduktor, dan arranger
+                    terkenal asal Indonesia. Dia dikenal sebagai pendiri dan
+                    konduktor dari Orkestra Simfoni Jakarta, yang telah tampil
+                    dalam berbagai pertunjukan musik di dalam dan luar negeri.
+                    Selain itu, dia juga aktif dalam mendukung pendidikan musik
+                    di Indonesia dan terlibat dalam berbagai kegiatan sosial dan
+                    lingkungan. Dia telah menerima banyak penghargaan atas
+                    kontribusinya dalam dunia musik dan kebudayaan Indonesia.
                   </p>
                   <a
                     className="text-gmco-white"
                     href="https://gmco.ukm.ugm.ac.id/"
                   >
-                    <button className="delay-15 rounded-md bg-gmco-blue-main px-4 py-2 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:px-6 md:py-3">
-                      More About GMCO
-                    </button>
+                    <a className="delay-15 border-b-2 py-3 transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight">
+                      More About Addie MS
+                    </a>
                   </a>
                 </div>
               </div>
@@ -164,12 +161,12 @@ export default function Home() {
 
             {/* GMCO Image */}
             <RevealWrapper origin="left" duration={1000} distance="100px">
-              <div className="flex justify-end w-full">
-                <div className="md:w-3/4">
+              <div className="w-full">
+                <div className="h-[70vh] md:w-3/4">
                   <Image
-                    src="/addie_ms.png"
+                    src="/addie_ms.webp"
                     alt="gambar addie ms"
-                    className="mx-auto h-auto w-full"
+                    className="mx-auto h-full w-auto object-cover"
                     width={500}
                     height={500}
                   />
