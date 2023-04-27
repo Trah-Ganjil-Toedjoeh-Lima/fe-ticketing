@@ -546,7 +546,7 @@ export default function Seats() {
   return (
     <>
       <NavigationBar />
-      <div className="relative h-max bg-gmco-blue-main">
+      <div className="relative h-52 bg-gmco-blue-main">
         <div className="absolute h-52 w-1/2 overflow-hidden bg-gmco-grey">
           <Image
             src="/gmco-cart.webp"
