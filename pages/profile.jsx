@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/atoms/config";
-import { notifyError, notifyErrorMessage } from "@/components/notify";
 import {
   notifyError,
   notifyErrorMessage,
