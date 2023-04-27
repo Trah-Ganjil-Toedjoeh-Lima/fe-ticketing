@@ -1,8 +1,12 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import NavigationBar from "@/components/navbar";
+import { useState, useEffect } from "react";
+
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+
 import FooterBar from "@/components/footer";
+import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/atoms/config";
 import { Loading } from "@/atoms/spinner";
 
@@ -11,8 +15,6 @@ import {
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 
 export default function Seats() {
   // floor1
@@ -663,7 +665,7 @@ export default function Seats() {
           <div className="bg-gmco-blue-main p-5 py-6 text-white">
             <div className="pb-3 text-xl font-semibold md:text-2xl">
               Kategori
-              <p className="text-[]">
+              <p className="text-[0.9rem]">
                 <span className="text-red-500">*</span>klik untuk melihat
               </p>
             </div>
@@ -874,7 +876,7 @@ export default function Seats() {
                 <Image
                   src="/shadow_floor1.webp"
                   alt="floor1"
-                  className="h-max w-max opacity-10"
+                  className="h-max w-full p-20 opacity-10"
                   width={1000}
                   height={1000}
                 />

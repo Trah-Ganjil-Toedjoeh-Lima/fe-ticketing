@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
 import { TrashIcon } from "@heroicons/react/24/solid";
@@ -98,12 +98,13 @@ export default function Cart() {
       html: `Anda yakin ingin menghapus transaksi?`,
       toast: true,
       icon: "warning",
-      iconColor: "#991b1b",
+      background: "#2d2d2f",
+      iconColor: "#287d92",
       showCancelButton: true,
       cancelButtonText: "Tidak",
-      cancelButtonColor: "#991b1b",
+      cancelButtonColor: "#c76734",
       confirmButtonText: "Ya",
-      confirmButtonColor: "#16a34a",
+      confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
       },
