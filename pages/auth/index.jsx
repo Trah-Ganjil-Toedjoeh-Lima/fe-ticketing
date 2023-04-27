@@ -72,11 +72,11 @@ export default function Auth() {
     <section className="block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
       <div className=" relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row ">
         {/* leftside */}
-        <div className='absolute bg-gmco-grey h-full w-full'>
+        <div className='absolute bg-gmco-grey h-full w-full overflow-hidden'>
           <Image
             src='/GMCO.webp'
             alt='bg gmco concert'
-            className='h-full w-auto object-cover opacity-50'
+            className='h-full w-full object-cover opacity-50'
             width={2000}
             height={2000}
           />
