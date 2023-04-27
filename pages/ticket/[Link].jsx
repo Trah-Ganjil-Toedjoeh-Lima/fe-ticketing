@@ -8,17 +8,26 @@ export async function getServerSideProps({ params }) {
   const { Link } = params;
 
   try {
-    const res = await axiosInstance.get(
+    const resProxy = await axiosInstance.get(
       `http://localhost:3000/api/v1/seat/${Link}`
-      // CHANGE TO PRODUCTION API
     );
-    // console.log(res.data);
-    const ticket = res.data.data;
+    // console.log(resProxy.data);
+    const ticketProxy = resProxy.data.data;
 
-    return { props: { ticket } };
-  } catch (err) {
-    console.error(err);
-    return { props: { ticket: null } };
+    return { props: { ticket: ticketProxy } };
+  } catch (errProxy) {
+    console.error(errProxy);
+    try {
+      const resRemote = await axiosInstance.get(
+        `https://dev-api.gmco-event.com/v1/seat/${Link}`
+      );
+      const ticketRemote = resRemote.data.data;
+
+      return { props: { ticket: ticketRemote } };
+    } catch (errRemote) {
+      console.error(errRemote);
+      return { props: { ticket: null } };
+    }
   }
 }
 
@@ -88,9 +97,9 @@ export default function Ticket() {
   }
 
   return (
-    <section className='flex min-h-screen w-full items-center justify-center bg-slate-950 p-3'>
-      <div className="grid max-w-6xl grid-cols-8 justify-center bg-[url('/E-ticket.svg')] bg-contain bg-center bg-no-repeat p-4 md:bg-cover md:py-8 lg:bg-contain lg:py-32">
-        <div className='col-span-2 flex flex-col items-center xl:-mt-8'>
+    <section className="flex min-h-screen w-full items-center justify-center bg-slate-950 p-3">
+      <div className="grid max-w-6xl grid-cols-8 justify-center bg-[url('/E-ticket.webp')] bg-contain bg-center bg-no-repeat p-4 md:bg-cover md:py-8 lg:bg-contain lg:py-32">
+        <div className="col-span-2 flex flex-col items-center xl:-mt-8">
           <Image
             src='/logo-anjangsana.webp'
             alt='logo gmco event'

@@ -35,7 +35,6 @@ export default function Auth() {
           email: loginInput.email,
         })
         .then((res) => {
-          //console.log(res);
           // const otp = res.data.totp_token;
           setLoginInput({ ...loginInput, otp: res.data.totp_token });
           if (res.status === 200) {
@@ -51,7 +50,8 @@ export default function Auth() {
           }
         });
     } catch (err) {
-       notifyError();     
+      console.log(err.toString());
+      //notifyError();
     }
   }
 
@@ -72,23 +72,21 @@ export default function Auth() {
     <section className="block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
       <div className=" relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row ">
         {/* leftside */}
-        <div className='absolute bg-gmco-grey h-full w-full overflow-hidden'>
+        <div className="absolute h-full w-full bg-gmco-grey">
           <Image
-            src='/GMCO.webp'
-            alt='bg gmco concert'
-            className='h-full w-full object-cover opacity-50'
+            src="/GMCO.webp"
+            alt="bg gmco concert"
+            className="h-full w-auto object-cover opacity-50"
             width={2000}
             height={2000}
           />
         </div>
-        <div className='place relative ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 '>
-          <h1 className='mb-3 text-4xl font-bold md:text-5xl'>
+        <div className="place relative ml-3 mt-14  flex h-3/6 w-full flex-col p-4 text-white backdrop-filter md:mt-0 md:w-7/12 md:items-start md:p-10 ">
+          <h1 className="mb-3 text-4xl font-bold md:text-5xl">
             Grand Concert{" "}
           </h1>
-          <p className='font-base mb-3 text-2xl md:text-3xl'>Vol.10</p>
-          <p className=' font-base text-2xl md:text-2xl'>
-            Anjangsana Simfoni{" "}
-          </p>
+          <p className="font-base mb-3 text-2xl md:text-3xl">Vol.10</p>
+          <p className=" font-base text-2xl md:text-2xl">Anjangsana Simfoni </p>
         </div>
         <Image
           src="/logo_gmco.webp"
