@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -32,6 +32,10 @@ export default function Profile() {
     Seat: [],
   });
 
+  function routeToSeats() {
+    router.push("/seats");
+  }
+
   // ini gk bisa dijadiin 1 karena kalo ticket ga ada chandra ngasihnya 404 jadi error ya harus dipihsa -weka
   // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
   // misal gini
@@ -48,7 +52,21 @@ export default function Profile() {
           axiosInstance.get("/api/v1/user/profile"),
         ]);
         console.log(userRes);
-        setUserData(userRes.data.data);
+        if (userRes.data.data.Name === "" && userRes.data.data.Phone === "") {
+          setUserData({
+            UserId: userRes.data.data.UserId,
+            Name: "WOI DIISI NAMANYA!!!!!",
+            Email: userRes.data.data.Email,
+            Phone: "Your number isnt registered yet",
+          });
+        } else {
+          setUserData(userRes.data.data);
+        }
+        setFormUserData({
+          name: userRes.data.data.Name,
+          email: userRes.data.data.Email,
+          phone: userRes.data.data.Phone,
+        });
       } catch (err) {
         notifyError(err);
         console.log(err);
@@ -69,14 +87,6 @@ export default function Profile() {
       }
     })();
   }, []);
-
-  useEffect(() => {
-    setFormUserData({
-      name: userData.Name,
-      email: userData.Email,
-      phone: userData.Phone,
-    });
-  }, [userData]);
 
   // console.log(formUserData);
 
@@ -164,7 +174,7 @@ export default function Profile() {
         </div>
 
         {/* CONTENT */}
-        <div className="container m-auto flex flex-col items-start lg:flex-row">
+        <div className="container m-auto flex flex-col items-center lg:flex-row lg:items-start">
           {/* EDIT IDENTITY */}
           <form
             onSubmit={handleSubmit}
@@ -224,20 +234,28 @@ export default function Profile() {
           </form>
 
           {/* List of Tickets */}
-          <div className="flex w-full flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-2/3">
+          <div className="flex w-screen flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-2/3 lg:w-full">
             <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
             {/* TICKET */}
             {seatsBought.Seat.length === 0 ? (
-              <div>
-                <p className="text-center text-2xl font-medium text-gmco-grey">
+              <div className="flex w-full flex-col items-center justify-center">
+                <p className="mb-8 text-center text-2xl font-medium text-gmco-grey">
                   Kowe ra nduwe tiket
                   <br />
                   Gek Ndang Tuku
                   <br />
                   Selak entek lur
                 </p>
+                <div
+                  className="button h-16 w-1/4 cursor-pointer select-none rounded-lg border-b-[1px] border-blue-400  bg-blue-500 transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841] hover:scale-105 hover:bg-blue-600 active:translate-y-2 active:border-b-[0px] active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]"
+                  onClick={routeToSeats}
+                >
+                  <span class="flex h-full flex-col items-center justify-center text-lg font-bold text-white ">
+                    Tuku saiki
+                  </span>
+                </div>
               </div>
             ) : (
               <div />
