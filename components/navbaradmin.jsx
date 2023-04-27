@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
+import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import { FaShoppingCart } from "react-icons/fa";
+
 import { axiosInstance } from "@/atoms/config";
-import Swal from "sweetalert2";
 
 export default function NavBarAdmin() {
   const router = useRouter();
@@ -21,15 +23,6 @@ export default function NavBarAdmin() {
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
-    {
-      name: (
-        <>
-          <FaShoppingCart className='hidden scale-x-[-1] md:inline md:h-6 md:w-6' />
-          <p className='md:hidden'>Shopping Cart</p>
-        </>
-      ),
-      route: "/seats/cart",
-    },
   ];
 
   useEffect(() => {
@@ -56,7 +49,7 @@ export default function NavBarAdmin() {
     };
   }, []);
 
-  function logoutCheck(e) {
+  function logoutCheck() {
     Swal.fire({
       html: `Anda yakin ingin keluar?`,
       toast: false,
@@ -79,9 +72,7 @@ export default function NavBarAdmin() {
     });
   }
 
-  async function logoutSubmit(e) {
-    e.preventDefault();
-
+  async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
       if (res.data.message == "success") {
         localStorage.removeItem("auth_token");

@@ -1,16 +1,18 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import NavigationBar from "@/components/navbar";
+import { useState, useEffect } from "react";
+
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+
 import FooterBar from "@/components/footer";
+import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/atoms/config";
 import {
   notifyError,
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 
 export default function Seats() {
   // floor1
@@ -853,7 +855,7 @@ export default function Seats() {
                 <Image
                   src="/shadow_floor1.webp"
                   alt="floor1"
-                  className="h-max w-max opacity-10"
+                  className="h-max w-full opacity-10 p-20"
                   width={1000}
                   height={1000}
                 />

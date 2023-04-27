@@ -1,13 +1,16 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-import { useEffect } from "react";
-import { useState } from "react";
-
-import { axiosInstance, midtransSetup } from "@/atoms/config";
-import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
+import NavigationBar from "@/components/navbar";
+import { axiosInstance } from "@/atoms/config";
 import { notifyError, notifyErrorMessage } from "@/components/notify";
+import {
+  notifyError,
+  notifyErrorMessage,
+  notifySucces,
+} from "@/components/notify";
 
 export default function Profile() {
   const router = useRouter();
@@ -99,10 +102,12 @@ export default function Profile() {
     e.preventDefault();
     try {
       await axiosInstance.patch("api/v1/user/profile", formUserData);
-      const resGet = await Promise.all([
-        axiosInstance.get("api/v1/user/profile"),
+      const [userRes] = await Promise.all([
+        axiosInstance.get("/api/v1/user/profile"),
       ]);
-      setUserData(resGet.data.data);
+      console.log(userRes);
+      setUserData(userRes.data.data);
+      notifySucces("Your profile has been successfully updated!");
     } catch (err) {
       notifyErrorMessage(err);
     }
@@ -117,20 +122,20 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="w-screen bg-gmco-yellow-secondary">
+      <div className="h-full w-screen bg-gmco-yellow-secondary">
         {/*This is the header */}
         <div className="relative w-full overflow-hidden ">
-        <div className="absolute h-64 w-full overflow-hidden bg-gmco-grey">
-          <Image
-            src="/GMCO_10.webp"
-            alt="background gmco"
-            className="w-full scale-105 object-cover object-top opacity-50"
-            width={3000}
-            height={3000}
-          />
+          <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
+            <Image
+              src="/GMCO_10.webp"
+              alt="background gmco"
+              className="w-full scale-105 object-cover object-top opacity-50"
+              width={3000}
+              height={3000}
+            />
           </div>
-          <div className="container relative m-auto flex items-center h-full flex-col pb-8 pt-24 lg:flex-row">
-            <div className="flex h-full w-1/5">
+          <div className="container relative m-auto flex h-full flex-col items-center pb-8 pt-24 lg:flex-row">
+            <div className="flex h-full lg:w-1/5">
               <h1 className="font-rubik text-5xl font-light text-white">
                 PROFIL
               </h1>
@@ -146,8 +151,9 @@ export default function Profile() {
                   key={key}
                   className={`font-sans text-gmco-yellow ${
                     key === "Name"
-                      ? "text-2xl font-semibold" :
-                      key === "UserId" ? "hidden"
+                      ? "text-2xl font-semibold"
+                      : key === "UserId"
+                      ? "hidden"
                       : "font-normal"
                   }`}
                 >
@@ -159,11 +165,11 @@ export default function Profile() {
         </div>
 
         {/* CONTENT */}
-        <div className="container m-auto flex flex-col lg:flex-row ">
+        <div className="container m-auto flex flex-col items-start lg:flex-row">
           {/* EDIT IDENTITY */}
           <form
             onSubmit={handleSubmit}
-            className="grid-col w-full items-start bg-gmco-yellow-secondary pl-2 pr-12 py-8 lg:w-1/3"
+            className="grid-col w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:w-1/3 lg:pr-12"
           >
             {/* Name */}
             <label htmlFor="nama" className="font-rubik text-white">
@@ -212,31 +218,44 @@ export default function Profile() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="mt-12 w-full rounded-lg bg-gmco-orange-secondarydark p-2 text-center font-inter text-lg font-semibold text-white hover:scale-110 duration-300"
+              className="mt-12 w-full rounded-lg bg-gmco-orange-secondarydark p-2 text-center font-inter text-lg font-semibold text-white duration-300 hover:scale-110"
             >
               PERBARUI PROFIL
             </button>
           </form>
 
           {/* List of Tickets */}
-          <div className="grid-col grid w-full gap-4 bg-gmco-white py-8 pl-8 pr-12 lg:w-2/3">
+          <div className="flex w-full flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-2/3">
             <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
             {/* TICKET */}
+            {seatsBought.Seat.length === 0 ? (
+              <div>
+                <p className="text-center text-2xl font-medium text-gmco-grey">
+                  Kowe ra nduwe tiket
+                  <br />
+                  Gek Ndang Tuku
+                  <br />
+                  Selak entek lur
+                </p>
+              </div>
+            ) : (
+              <div />
+            )}
             {seatsBought.Seat.map((seat, index) => (
               <div
                 key={index}
-                className="flex h-fit w-full flex-row border-4 border-gmco-yellow rounded-lg bg-white p-4"
+                className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row"
               >
                 {/* Kursi dan Tipe */}
-                <div className="flex w-1/5 flex-col justify-center text-center">
-                  <h1 className="font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl">
+                <div className="flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg sm:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
                     className={
-                      `w-full rounded-lg text-center text-sm font-normal text-gmco-white lg:text-base ` +
+                      `w-fit rounded-lg px-1 text-center text-xs font-normal text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
                       ({
                         Platinum: "bg-gmco-blue",
                         Diamond: "bg-violet-700",
@@ -251,13 +270,13 @@ export default function Profile() {
                 </div>
 
                 {/* Waktu dan Tempat */}
-                <div className="flex w-full items-center justify-end">
-                  <div className="flex h-full flex-col justify-center gap-2 text-end text-xs sm:text-sm lg:text-base">
+                <div className="flex w-full items-center sm:justify-end">
+                  <div className="flex w-1/2 flex-col gap-2 text-start text-xs sm:w-fit sm:items-center sm:text-end sm:text-sm lg:text-base">
                     <p>Auditorium Driyarkara</p>
                     <p>Sabtu, 27 Mei 2023</p>
                     <p>Open Gate 18.00 WIB</p>
                   </div>
-                  <div className="overflow-hidden">
+                  <div className="flex w-1/2 justify-end overflow-hidden sm:block sm:w-fit">
                     <Image
                       src="/qris-reinhart.webp"
                       alt="qris pls send money"
@@ -267,7 +286,7 @@ export default function Profile() {
                   </div>
 
                   {/* Nama Konser */}
-                  <div className="flex w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4">
+                  <div className="hidden w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex">
                     <div className="mx-2 overflow-hidden">
                       <Image
                         src="/logo-anjangsana.webp"

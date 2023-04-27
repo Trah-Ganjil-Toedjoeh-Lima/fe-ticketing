@@ -1,10 +1,11 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { axiosInstance } from "@/atoms/config";
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { notifyError, notifySucces } from "../../components/notify";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
+
+import { axiosInstance } from "@/atoms/config";
+import { notifySucces } from "@/components/notify";
 
 export default function AdminLogin() {
   const router = useRouter();

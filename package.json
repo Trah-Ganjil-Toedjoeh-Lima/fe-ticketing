@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
@@ -26,7 +25,7 @@
     "react-switch": "^7.0.0",
     "react-toastify": "^9.1.2",
     "scrollreveal": "^4.0.9",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.4.8"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
