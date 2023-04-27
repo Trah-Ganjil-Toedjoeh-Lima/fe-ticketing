@@ -1,16 +1,18 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import NavigationBar from "@/components/navbar";
+import { useState, useEffect } from "react";
+
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+
 import FooterBar from "@/components/footer";
+import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/atoms/config";
 import {
   notifyError,
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 
 export default function Seats() {
   // floor1

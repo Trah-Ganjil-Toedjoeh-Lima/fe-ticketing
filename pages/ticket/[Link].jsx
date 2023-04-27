@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
 import { axiosInstance } from "@/atoms/config";
 
 export async function getServerSideProps({ params }) {

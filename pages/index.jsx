@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
+
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 

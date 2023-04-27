@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
 import { TrashIcon } from "@heroicons/react/24/solid";

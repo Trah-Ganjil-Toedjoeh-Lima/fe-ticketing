@@ -1,12 +1,10 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-import { useEffect } from "react";
-import { useState } from "react";
-
-import { axiosInstance, midtransSetup } from "@/atoms/config";
-import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
+import NavigationBar from "@/components/navbar";
+import { axiosInstance } from "@/atoms/config";
 import { notifyError, notifyErrorMessage } from "@/components/notify";
 
 export default function Profile() {

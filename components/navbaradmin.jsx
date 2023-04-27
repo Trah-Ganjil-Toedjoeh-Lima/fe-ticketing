@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
+import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import { FaShoppingCart } from "react-icons/fa";
+
 import { axiosInstance } from "@/atoms/config";
-import Swal from "sweetalert2";
 
 export default function NavBarAdmin() {
   const router = useRouter();
