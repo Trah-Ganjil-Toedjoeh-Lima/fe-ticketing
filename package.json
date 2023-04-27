@@ -5,13 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "next lint",
-    "*.{js,jsx, html, json}": "prettier --write"
+    "start": "next start"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
