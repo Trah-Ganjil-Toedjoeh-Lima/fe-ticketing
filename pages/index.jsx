@@ -121,7 +121,7 @@ export default function Home() {
           </RevealWrapper>
         </div>
 
-        <div className="bg-black">
+        <div className="bg-[#191919] py-20">
           <div
             id="about"
             className="container mx-auto grid grid-cols-1 items-center justify-between px-10 md:grid-cols-2"
@@ -148,25 +148,23 @@ export default function Home() {
                     kontribusinya dalam dunia musik dan kebudayaan Indonesia.
                   </p>
                   <a
-                    className="text-gmco-white"
+                    className="delay-15 border-b-2 py-3 text-gmco-white transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight"
                     href="https://gmco.ukm.ugm.ac.id/"
                   >
-                    <a className="delay-15 border-b-2 py-3 transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight">
-                      More About Addie MS
-                    </a>
+                    More About Addie MS
                   </a>
                 </div>
               </div>
             </RevealWrapper>
 
             {/* GMCO Image */}
-            <RevealWrapper origin="left" duration={1000} distance="100px">
+            <RevealWrapper origin="left" duration={2000} distance="100px">
               <div className="w-full">
-                <div className="h-[70vh] md:w-3/4">
+                <div className="flex h-[70vh] items-center">
                   <Image
-                    src="/addie_ms.webp"
+                    src="/addiems_clearnew.png"
                     alt="gambar addie ms"
-                    className="mx-auto h-full w-auto object-cover"
+                    className="mx-auto h-full w-auto object-cover hover:animate-pulse"
                     width={500}
                     height={500}
                   />
