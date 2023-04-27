@@ -853,7 +853,7 @@ export default function Seats() {
                 <Image
                   src="/shadow_floor1.webp"
                   alt="floor1"
-                  className="h-max w-max opacity-10"
+                  className="h-max w-full opacity-10 p-20"
                   width={1000}
                   height={1000}
                 />
