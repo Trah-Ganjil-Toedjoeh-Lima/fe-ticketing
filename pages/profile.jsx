@@ -10,6 +10,7 @@ import {
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
+import Swal from "sweetalert2";
 
 export default function Profile() {
   const router = useRouter();
@@ -51,22 +52,24 @@ export default function Profile() {
         const [userRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
         ]);
-        console.log(userRes);
-        if (userRes.data.data.Name === "" && userRes.data.data.Phone === "") {
-          setUserData({
-            UserId: userRes.data.data.UserId,
-            Name: "WOI DIISI NAMANYA!!!!!",
-            Email: userRes.data.data.Email,
-            Phone: "Your number isnt registered yet",
+        if(!userRes.data.data.Email || !userRes.data.data.Phone){
+          Swal.fire({
+            html: "Isi data profile agar bisa membeli tiket",
+            toast: true,
+            width: 300,
+            icon: "warning",
+            background: "#2d2d2f",
+            iconColor: "#287d92",
+            color: "#f6f7f1",
+            showConfirmButton: false,
+            timer: 1500,
+            showClass: {
+              popup: "",
+            },
           });
-        } else {
-          setUserData(userRes.data.data);
         }
-        setFormUserData({
-          name: userRes.data.data.Name,
-          email: userRes.data.data.Email,
-          phone: userRes.data.data.Phone,
-        });
+        console.log(userRes.data.data, "ini data");
+        setUserData(userRes.data.data);
       } catch (err) {
         notifyError(err);
         console.log(err);
@@ -107,8 +110,32 @@ export default function Profile() {
     setFormUserData({ ...formUserData, [name]: value });
   }
 
-  const handleSubmit = async (e) => {
+  function confirmSubmit(e) {
     e.preventDefault();
+    Swal.fire({
+      html: `Pastikan Data yang Diisikan Sudah Sesuai!`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#f6f7f1",
+      background: "#2d2d2f",
+      color: "#f6f7f1",
+      showCancelButton: true,
+      showConfirmButton:true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#c76734",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#287d92",
+      showClass: {
+        popup: "",
+      },
+    }).then((result,e) => {
+      if (result.isConfirmed) {
+        handleSubmit(e);
+      }
+    });
+  }
+  async function handleSubmit(e){
+    // e.preventDefault();
     try {
       await axiosInstance.patch("api/v1/user/profile", formUserData);
       const [userRes] = await Promise.all([
@@ -177,7 +204,7 @@ export default function Profile() {
         <div className="container m-auto flex flex-col items-center lg:flex-row lg:items-start">
           {/* EDIT IDENTITY */}
           <form
-            onSubmit={handleSubmit}
+            onSubmit={confirmSubmit}
             className="grid-col w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:w-1/3 lg:pr-12"
           >
             {/* Name */}
