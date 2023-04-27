@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 import { axiosInstance } from "@/atoms/config";
+import { Loading } from "@/atoms/spinner";
+
 import {
   notifyError,
   notifyErrorMessage,
@@ -34,6 +36,7 @@ export default function Seats() {
   const [purchasedSeat, setPurchasedSeat] = useState(0);
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   // floor 1
   const mappersFloor1 = [
@@ -145,11 +148,12 @@ export default function Seats() {
 
   // universal
   const priceCategory = {
-    170000: "Radiant Rp170K",
-    145000: "Immortal Rp145K",
-    120000: "Ascendant Rp120K",
-    85000: "Diamond Rp85K",
-    60000: "Platinum Rp60K",
+    170000: "Harmoni Rp170K",
+    145000: "Serenada Rp145K",
+    120000: "Irama Rp120K",
+    85000: "Tala Rp85K",
+    60000: "Sekar Rp65K",
+    50000: "Gita Rp50K",
   };
   const statusColor = {
     available: "bg-[#8EBFD0]",
@@ -211,6 +215,7 @@ export default function Seats() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const res = await axiosInstance.get("/api/v1/seat_map");
         // const res = await axiosInstance.get("seatmap.json");
         divideByFloor(res.data.data);
@@ -218,6 +223,10 @@ export default function Seats() {
       } catch (err) {
         console.log(err);
         // notifyError(err);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       }
     })();
   }, []);
@@ -390,9 +399,7 @@ export default function Seats() {
           const isSelected = userSeats.includes(array[i].seat_id);
           const isHighlight = seatHighlight.includes(array[i].price);
           arr.push(
-            <div
-              className={`bg-gmco-yellow duration-300 hover:scale-150 ${deg_rot[i]}`}
-            >
+            <div className={` duration-300 hover:scale-150 ${deg_rot[i]}`}>
               <div
                 className={`h-6 w-6 rounded-sm ${
                   statusColor[array[i].status]
@@ -545,7 +552,9 @@ export default function Seats() {
   // =================================
   return (
     <>
+      <Loading isLoading={loading} />
       <NavigationBar />
+
       <div className="relative h-max bg-gmco-blue-main">
         <div className="absolute h-52 w-1/2 overflow-hidden bg-gmco-grey">
           <Image
@@ -555,8 +564,8 @@ export default function Seats() {
             width={3000}
             height={3000}
           />
-        </div> 
-        <div className="p-7 pt-16 relative">
+        </div>
+        <div className="relative p-7 pt-16">
           <p className="text-xl font-semibold text-gmco-white md:text-2xl">
             Anjangsana Simfoni
           </p>
@@ -573,6 +582,7 @@ export default function Seats() {
       {/* ================== */}
       <div className="flex h-max w-full flex-col md:flex-row">
         {/* Left Bar */}
+
         <div
           className={`${
             sideBarOpen ? "inline" : "hidden"
@@ -601,6 +611,7 @@ export default function Seats() {
                 />{" "}
               </span>
             </p>
+
             <button
               className="hidden rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white hover:scale-105 md:inline"
               onClick={() => {
@@ -652,7 +663,7 @@ export default function Seats() {
           <div className="bg-gmco-blue-main p-5 py-6 text-white">
             <div className="pb-3 text-xl font-semibold md:text-2xl">
               Kategori
-              <p className="text-xs">
+              <p className="text-[]">
                 <span className="text-red-500">*</span>klik untuk melihat
               </p>
             </div>
@@ -706,20 +717,30 @@ export default function Seats() {
               </p>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#5C9E82]"></div>
+                  <div className="h-4 w-4 self-center rounded-md bg-[#B8DEE9]"></div>
                   <p>Kursi Kosong</p>
                 </div>
                 <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#B8DEE9]"></div>
-                  <p>Kursi Terbeli Oleh Saya</p>
+                  <div className="h-4 w-4 self-center rounded-md bg-[#7E7E7E]"></div>
+                  <p>Kursi Terbeli</p>
+                </div>
+                <div className="flex flex-row content-center gap-2">
+                  <div className="h-4 w-4 self-center rounded-md bg-[#5C9E82]"></div>
+                  <p>Sudah Saya Bayar</p>
                 </div>
                 <div className="flex flex-row content-center gap-2">
                   <div className="h-4 w-4 self-center rounded-md bg-[#C0925E]"></div>
-                  <p>Kursi Dipesan</p>
+                  <div className="flex flex-col">
+                    <p>Kursi Sudah Direservasi</p>
+                    <p className="text-[0.7rem]">
+                      <span className="text-red-500">*</span>Setelah 15 menit
+                      tidak dibayar, kursi dapat dibeli kembali
+                    </p>
+                  </div>
                 </div>
                 <div className="flex flex-row content-center gap-2">
                   <div className="h-4 w-4 self-center rounded-md bg-[#F5DB91]"></div>
-                  <p>Kursi Dipilih Oleh Saya</p>
+                  <p>Belum Saya Bayar</p>
                 </div>
               </div>
             </div>
@@ -729,11 +750,11 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "w-full md:w-4/5" : "w-full"
-          } relative h-[60vh] overflow-hidden md:min-h-screen`}
+          } min:h-[60vh] relative overflow-hidden md:min-h-screen`}
         >
           {/* Hide Sidebar dan Zoom */}
           <div
-            className={`absolute z-10 flex h-[60vh] flex-col md:min-h-screen ${
+            className={`absolute z-10 flex h-full flex-col ${
               sideBarOpen ? "justify-end" : "justify-between"
             }`}
           >
