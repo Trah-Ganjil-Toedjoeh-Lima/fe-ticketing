@@ -21,15 +21,6 @@ export default function NavBarAdmin() {
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
-    {
-      name: (
-        <>
-          <FaShoppingCart className='hidden scale-x-[-1] md:inline md:h-6 md:w-6' />
-          <p className='md:hidden'>Shopping Cart</p>
-        </>
-      ),
-      route: "/seats/cart",
-    },
   ];
 
   useEffect(() => {
@@ -56,7 +47,7 @@ export default function NavBarAdmin() {
     };
   }, []);
 
-  function logoutCheck(e) {
+  function logoutCheck() {
     Swal.fire({
       html: `Anda yakin ingin keluar?`,
       toast: false,
@@ -72,14 +63,12 @@ export default function NavBarAdmin() {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        logoutSubmit(e);
+        logoutSubmit();
       }
     });
   }
 
-  async function logoutSubmit(e) {
-    e.preventDefault();
-
+  async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
       if (res.data.message == "success") {
         localStorage.removeItem("auth_token");
