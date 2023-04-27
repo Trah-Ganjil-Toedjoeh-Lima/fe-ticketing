@@ -146,8 +146,8 @@ export default function Cart() {
             src="/gmco-cart.webp"
             className="w-full h-full object-cover object-center opacity-50"
             alt="bg gmco concert"
-            width={3000}
-            height={3000}
+            width={2000}
+            height={2000}
           />
         </div>
 
