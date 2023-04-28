@@ -11,9 +11,8 @@ import {
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance } from "@/utils/config";
-import { Loading } from "@/utils/spinner";
-import { Button } from "@/utils/button";
+import { axiosInstance } from "@/atoms/config";
+import { Loading } from "@/atoms/spinner";
 
 import {
   notifyError,
@@ -564,6 +563,7 @@ export default function Seats() {
     }
     return arr;
   }
+
   // sidebar
   function hideSideBar(isOpen) {
     isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
@@ -682,10 +682,7 @@ export default function Seats() {
               </p>
             </div>
             <div className='self-center text-lg md:text-xl'>
-              {userSeatsPick.length}/5 kursi
-              <p className='text-base'>
-                <span className='text-red-500'>*</span>Sisa {5 - purchasedSeat}
-              </p>
+              {userSeatsPick.length}/{5 - purchasedSeat} kursi
             </div>
           </div>
 
@@ -697,11 +694,11 @@ export default function Seats() {
                 <span className='text-red-500'>*</span>klik untuk melihat
               </p>
             </div>
-            <div>
+            <div className='flex flex-col gap-3 md:text-lg'>
               {priceCategory1.map((namePrice) => (
-                <div>
-                  <Button
-                    className={`${
+                <div className='flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark'>
+                  <button
+                    className={`basis-1/2 cursor-pointer bg-gmco-blue-main p-2 text-left text-white hover:scale-105 hover:bg-gmco-orange-secondarydark ${
                       priceCategoryHighlight == 1
                         ? "scale-105 bg-gmco-orange-secondarydark"
                         : ""
@@ -712,9 +709,9 @@ export default function Seats() {
                         : setSeatHighlight([namePrice.price]);
                       namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
-                    name={namePrice.name}
-                  />
-
+                  >
+                    {namePrice.name}
+                  </button>
                   <div className='flex basis-1/2 flex-wrap justify-end'>
                     {userSeatsPick.map((item) =>
                       item.price == namePrice.price ? (

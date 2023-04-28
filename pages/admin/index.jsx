@@ -6,8 +6,9 @@ import { axiosInstance } from "@/utils/config";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
-  const [appConfig, setAppConfig] = useState(false);
+  const [appConfig, setAppConfig] = useState();
   const [qrScanMode, setQrScanMode] = useState("");
+  const [isChecked, setChecked] = useState();
   const router = useRouter();
 
   async function handleGate() {
@@ -17,8 +18,8 @@ export default function Admin() {
 
     try {
       const res = await axiosInstance.post(postURL);
-      setAppConfig(!appConfig);
-      console.log(res);
+      setAppConfig(configRes.data.app_config.IsOpenGate);
+      setChecked(!isChecked);
     } catch (err) {
       console.error(err);
     }
@@ -75,7 +76,7 @@ export default function Admin() {
     }
 
     getAdminData();
-  }, [appConfig, qrScanMode]);
+  }, [qrScanMode]);
 
   async function updateQrScanState(newState) {
     const patchURL = "/api/v1/admin/qr_scan_behaviour";
@@ -111,13 +112,13 @@ export default function Admin() {
             <label className='relative inline-flex cursor-pointer items-center'>
               <input
                 type='checkbox'
-                onChange={() => handleGate()}
-                checked={appConfig}
+                onChange={handleGate}
+                checked={isChecked}
                 value=''
                 className='peer sr-only'
               />
               <div className="peer h-7 w-14 rounded-full bg-gray-200 after:absolute after:left-[4px] after:top-0.5 after:h-6 after:w-6 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
-              {appConfig ? (
+              {isChecked ? (
                 <span className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>
                   Gate is open
                 </span>
