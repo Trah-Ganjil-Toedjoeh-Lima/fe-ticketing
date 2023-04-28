@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { axiosInstance } from "@/atoms/config";
+import { useState, useEffect } from "react";
+
 import NavBarAdmin from "@/components/navbaradmin";
+import { axiosInstance } from "@/atoms/config";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);

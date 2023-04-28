@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+
+import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import { FaShoppingCart } from "react-icons/fa";
+
 import { axiosInstance } from "@/atoms/config";
-import Swal from "sweetalert2";
-import { useClearAuthTokenOnUnload } from "@/atoms/authpage";
 
 export default function NavigationBar() {
   const router = useRouter();
@@ -66,12 +67,14 @@ export default function NavigationBar() {
       html: `Anda yakin ingin keluar?`,
       toast: false,
       icon: "warning",
-      iconColor: "#000000",
+      iconColor: "#f6f7f1",
+      background:"#2d2d2f",
+      color:"#f6f7f1",
       showCancelButton: true,
       cancelButtonText: "Tidak",
-      cancelButtonColor: "#991b1b",
+      cancelButtonColor: "#c76734",
       confirmButtonText: "Ya",
-      confirmButtonColor: "#16a34a",
+      confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
       },
@@ -91,7 +94,8 @@ export default function NavigationBar() {
           toast: true,
           width: 350,
           icon: "success",
-          iconColor: "#16a34a",
+          background: "#2d2d2f",
+          iconColor: "#287d92",
           showConfirmButton: false,
           timer: 1500,
           showClass: {

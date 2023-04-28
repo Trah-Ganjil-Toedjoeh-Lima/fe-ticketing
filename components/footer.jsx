@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+
 import {
   FaFacebook,
   FaInstagram,
@@ -7,7 +9,6 @@ import {
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
-import Image from "next/image";
 
 export default function FooterBar() {
   // Menu Lg 1 x (x) SM 1 x 2

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
+
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 
@@ -18,9 +19,9 @@ export default function Home() {
             autoPlay
             muted
             loop
-            className='absolute h-full w-full scale-[2.15] bg-clip-content object-cover py-24 opacity-40 md:scale-125 md:py-20'
+            className='absolute h-full w-full bg-clip-content object-cover opacity-40'
           >
-            <source src='/video-gmco.mp4' type='video/mp4' />
+            <source src='/video_v3.mp4' type='video/mp4' />
           </video>
           <RevealWrapper
             rotate={{ x: 10, y: 40, z: 0 }}

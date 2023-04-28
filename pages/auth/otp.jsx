@@ -36,7 +36,8 @@ export default function OtpPage() {
                 toast: true,
                 width: 300,
                 icon: "success",
-                iconColor: "#16a34a",
+                background: "#2d2d2f",
+                iconColor: "#287d92",
                 showConfirmButton: false,
                 timer: 1500,
                 showClass: {
@@ -54,6 +55,19 @@ export default function OtpPage() {
       }
     }
   }
+
+    if (typeof window !== "undefined") {
+      const btn = document.getElementById("login");
+      if (btn) {
+        // Not called
+        btn.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            document.getElementById("login").click();
+          }
+        });
+      }
+    }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
