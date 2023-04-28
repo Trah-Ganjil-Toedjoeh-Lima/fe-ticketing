@@ -46,7 +46,7 @@ export default function OtpPage() {
                 },
               }).then(() => {
                 router.push({
-                  pathname: "/",
+                  pathname: "/profile",
                 });
               });
             }
@@ -71,7 +71,7 @@ export default function OtpPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
+    <div className="max-w-screen flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
       <Card className=" flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 ">
         <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white" />
         <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">

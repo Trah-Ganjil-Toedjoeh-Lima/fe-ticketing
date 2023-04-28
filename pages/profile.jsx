@@ -130,29 +130,26 @@ export default function Profile() {
       showClass: {
         popup: "",
       },
-    })
-      .then((result, e) => {})
-      .then((result, e) => {
-        if (result.isConfirmed) {
-          handleSubmit(e);
-        }
-      });
+    }).then((result, e) => {
+      if (result.isConfirmed) {
+        handleSubmit(e);
+      }
+    });
   }
   async function handleSubmit(e) {
-    async function handleSubmit(e) {
-      // e.preventDefault();
-      try {
-        await axiosInstance.patch("api/v1/user/profile", formUserData);
-        const [userRes] = await Promise.all([
-          axiosInstance.get("/api/v1/user/profile"),
-        ]);
-        console.log(userRes);
-        setUserData(userRes.data.data);
-        notifySucces("Your profile has been successfully updated!");
-      } catch (err) {
-        notifyErrorMessage(err);
-      }
+    // e.preventDefault();
+    try {
+      await axiosInstance.patch("api/v1/user/profile", formUserData);
+      const [userRes] = await Promise.all([
+        axiosInstance.get("/api/v1/user/profile"),
+      ]);
+      console.log(userRes);
+      setUserData(userRes.data.data);
+      notifySucces("Your profile has been successfully updated!");
+    } catch (err) {
+      notifyErrorMessage(err);
     }
+  }
 
     Object.keys(userData).map((key) => {
       console.log(userData[key]);
@@ -164,14 +161,14 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className='h-full w-screen bg-gmco-yellow-secondary'>
+      <div className="max-w-screen h-full bg-gmco-yellow-secondary">
         {/*This is the header */}
         <div className='relative w-full overflow-hidden '>
           <div className='absolute flex h-64 w-full overflow-hidden bg-gmco-grey'>
             <Image
-              src='/GMCO_10.webp'
-              alt='background gmco'
-              className='w-full scale-105 object-cover object-top opacity-50'
+              src="/profile/GMCO_10.webp"
+              alt="background gmco"
+              className="w-full scale-105 object-cover object-top opacity-50"
               width={3000}
               height={3000}
             />
@@ -297,8 +294,8 @@ export default function Profile() {
                 className='flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row'
               >
                 {/* Kursi dan Tipe */}
-                <div className='flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center'>
-                  <h1 className='font-rubik text-xs font-bold text-gmco-grey sm:text-xl lg:text-2xl'>
+                <div className="flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
@@ -326,8 +323,8 @@ export default function Profile() {
                   </div>
                   <div className='flex w-1/2 justify-end overflow-hidden sm:block sm:w-fit'>
                     <Image
-                      src='/qris-reinhart.webp'
-                      alt='qris pls send money'
+                      src="/profile/qris-reinhart.webp"
+                      alt="qris pls send money"
                       width={100}
                       height={100}
                     />

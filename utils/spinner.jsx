@@ -9,11 +9,11 @@ export const Loading = ({ isLoading }) => {
     >
       {/* <img src="/violin-loading.gif"></img> */}
       <Image
-        className=""
+        className="w-36"
         src="/musicnotes.gif"
         alt="tuan krap with violin"
-        width={500}
-        height={374}
+        width={700}
+        height={574}
       ></Image>
     </div>
   );

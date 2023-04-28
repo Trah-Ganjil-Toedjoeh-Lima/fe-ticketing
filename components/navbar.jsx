@@ -161,8 +161,8 @@ export default function NavigationBar() {
               label={
                 <Avatar
                   rounded={true}
-                  alt='User settings'
-                  img='/violin-picture.webp'
+                  alt="User settings"
+                  img="/navbar/violin-picture.webp"
                 />
               }
             >

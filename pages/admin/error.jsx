@@ -27,9 +27,9 @@ export default function Error() {
       <Head>
         <title>Error!</title>
       </Head>
-      <div className='relative min-h-screen bg-gmco-orange-secondarydark p-4 md:flex'>
-        <div className='container relative items-center justify-center space-y-4'>
-          <div className='text-4xl font-bold text-gray-50'>
+      <div className="max-w-screen relative min-h-screen bg-gmco-orange-secondarydark p-4 md:flex">
+        <div className="container relative items-center justify-center space-y-4">
+          <div className="text-4xl font-bold text-gray-50">
             Error: Unauthorized
           </div>
           <div>
@@ -37,7 +37,7 @@ export default function Error() {
               Oops! Your account is not authorized to access this route.
               <br /> Please log out, then log in as an admin.
               <br />
-              <p className='italic'>Only click if you are an admin!</p>
+              <p className="italic">Only click if you are an admin!</p>
             </label>
           </div>
           <div>
