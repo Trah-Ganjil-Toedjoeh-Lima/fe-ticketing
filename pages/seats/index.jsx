@@ -267,7 +267,7 @@ export default function Seats() {
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       if (err.response.data.error === "your credentials are invalid") {
         notifyError("Silahkan Login Terlebih Dahulu");
         router.push({
