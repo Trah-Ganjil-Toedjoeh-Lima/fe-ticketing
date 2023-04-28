@@ -7,7 +7,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance, midtransSetup } from "@/atoms/config";
+import { axiosInstance, midtransSetup } from "@/utils/config";
 import {
   notifyError,
   notifySucces,
@@ -144,9 +144,9 @@ export default function Cart() {
       <div className='realtive overflow-hidden bg-gmco-blue-main md:min-h-screen'>
         <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
           <Image
-            src="/gmco-cart.webp"
-            className="w-full h-full object-cover object-center opacity-50"
-            alt="bg gmco concert"
+            src='/gmco-cart.webp'
+            className='h-full w-full object-cover object-center opacity-50'
+            alt='bg gmco concert'
             width={2000}
             height={2000}
           />
@@ -235,7 +235,7 @@ export default function Cart() {
               {/* Batalkan Transaksi */}
               <div className='h-min rounded-2xl bg-gmco-white/75 p-6 '>
                 <div className='flex items-center justify-between'>
-                  <p className='font-bold text-lg'>Batalkan Transaksi</p>
+                  <p className='text-lg font-bold'>Batalkan Transaksi</p>
                   <button
                     onClick={() => canselCheck()}
                     className='flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 hover:text-gmco-grey'

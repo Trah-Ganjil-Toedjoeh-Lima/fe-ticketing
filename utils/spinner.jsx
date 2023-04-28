@@ -18,4 +18,4 @@ export const Loading = ({ isLoading }) => {
     </div>
   );
 };
-export default Loading;
+// export default Loading;
