@@ -121,7 +121,7 @@ export default function FooterBar() {
           {socials.map((social, index) => (
             <Link
               key={index}
-              href="#"
+              href={social.route}
               className="text-gmco-white/50 hover:text-gmco-white"
             >
               {social.name}

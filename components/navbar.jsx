@@ -162,7 +162,7 @@ export default function NavigationBar() {
                 <Avatar
                   rounded={true}
                   alt="User settings"
-                  img="/violin-picture.webp"
+                  img="/navbar/violin-picture.webp"
                 />
               }
             >

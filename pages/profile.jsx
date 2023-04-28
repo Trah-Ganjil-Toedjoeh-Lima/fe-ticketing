@@ -130,6 +130,12 @@ export default function Profile() {
       showClass: {
         popup: "",
       },
+    })
+      .then((result, e) => {
+        if (result.isConfirmed) {
+          handleSubmit(e);
+        }
+      });
     }).then((result, e) => {
       if (result.isConfirmed) {
         handleSubmit(e);
@@ -160,7 +166,7 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="h-full w-screen bg-gmco-yellow-secondary">
+      <div className="max-w-screen h-full bg-gmco-yellow-secondary">
         {/*This is the header */}
         <div className="relative w-full overflow-hidden ">
           <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
@@ -294,7 +300,7 @@ export default function Profile() {
               >
                 {/* Kursi dan Tipe */}
                 <div className="flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
-                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg sm:text-xl lg:text-2xl">
+                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
