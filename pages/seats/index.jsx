@@ -44,60 +44,50 @@ export default function Seats() {
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [priceCategoryHighlight, setPriceCategoryHighlight] = useState(0);
+  const [priceCategoryHighlight, setPriceCategoryHighlight] = useState([]);
 
   // floor 1
   const mappersFloor1 = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
-    { C: [15, 9, 9, 13] },
-    { D: [15, 10, 11, 14] },
+    { C: [13, 9, 9, 15] },
+    { D: [14, 11, 10, 15] },
     { E: [16, 11, 11, 16] },
     { F: [17, 12, 12, 17] },
     { G: [17, 12, 12, 17] },
-    { H: [16, 13, 13, 15] },
-    { I: [15, 14, 14, 13] },
-    { J: [14, 14, 14, 13] },
+    { H: [15, 13, 13, 16] },
+    { I: [14, 14, 14, 15] },
+    { J: [13, 14, 14, 14] },
     { K: [13, 15, 15, 13] },
     { L: [12, 15, 15, 12] },
     { M: [11, 16, 16, 11] },
     { N: [10, 16, 16, 10] },
-    { O: [10, 18, 17, 9] },
-    { P: [9, 18, 17, 9] },
+    { O: [9, 17, 18, 10] },
+    { P: [9, 17, 18, 9] },
     { Q: [8, 18, 18, 8] },
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
-    { T: [0, 0, 0, 7] },
   ];
   const startMappersFloor1 = {
     A: [0, 1, 9, 0],
-    D: [1, 16, 26, 37],
-    E: [1, 17, 28, 39],
-    F: [1, 18, 30, 42],
-    G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
-    K: [1, 14, 29, 44],
     B: [1, 14, 23, 32],
-    C: [1, 16, 25, 34],
-    D: [1, 16, 26, 37],
+    C: [1, 14, 23, 32],
+    D: [1, 15, 26, 36],
     E: [1, 17, 28, 39],
     F: [1, 18, 30, 42],
     G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
+    H: [1, 16, 29, 42],
+    I: [1, 15, 29, 43],
+    J: [1, 14, 28, 42],
     K: [1, 14, 29, 44],
     L: [1, 13, 28, 43],
     M: [1, 12, 28, 44],
     N: [1, 11, 27, 43],
-    O: [1, 11, 29, 46],
-    P: [1, 10, 28, 45],
+    O: [1, 10, 27, 45],
+    P: [1, 10, 27, 45],
     Q: [1, 9, 27, 45],
     R: [1, 8, 27, 46],
     S: [1, 8, 27, 46],
-    T: [0, 0, 0, 1],
   };
   const deg_rot = [
     "-translate-y-[20px]",
@@ -146,12 +136,12 @@ export default function Seats() {
 
   // floor2
   const mappersFloor2 = [
+    { T: [12, 12, 14, 11, 13] },
     { U: [12, 13, 14, 11, 13] },
-    { V: [12, 12, 14, 11, 13] },
   ];
   const startMappersFloor2 = {
+    T: [1, 13, 25, 39, 50],
     U: [1, 13, 26, 40, 51],
-    V: [1, 13, 25, 39, 50],
   };
 
   // universal
@@ -160,7 +150,7 @@ export default function Seats() {
     145000: "Serenada Rp145K",
     120000: "Irama Rp120K",
     85000: "Tala Rp85K",
-    60000: "Sekar Rp65K",
+    65000: "Sekar Rp65K",
     50000: "Gita Rp50K",
   };
 
@@ -169,7 +159,7 @@ export default function Seats() {
     { name: "Serenada Rp145K", price: 145000, lantai: 1, isHover: 0 },
     { name: "Irama Rp120K", price: 120000, lantai: 1, isHover: 0 },
     { name: "Tala Rp85K", price: 85000, lantai: 1, isHover: 0 },
-    { name: "Sekar Rp65K", price: 60000, lantai: 1, isHover: 0 },
+    { name: "Sekar Rp65K", price: 65000, lantai: 1, isHover: 0 },
     { name: "Gita Rp50K", price: 50000, lantai: 2, isHover: 0 },
   ];
 
@@ -268,8 +258,15 @@ export default function Seats() {
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      // console.log(err);
-      notifyError(err);
+      //console.log(err);
+      if (err.response.data.error === "your credentials are invalid") {
+        notifyError("Silahkan Login Terlebih Dahulu");
+        router.push({
+          pathname: "/auth",
+        });
+      } else {
+        notifyError(err);
+      }
     }
   }
 
@@ -295,7 +292,7 @@ export default function Seats() {
       }
 
       // untuk misah 2 lantai
-      if (obj.row === "U" || obj.row === "V") {
+      if (obj.row === "T" || obj.row === "U") {
         floor2.push(obj);
       } else {
         floor1.push(obj);
@@ -412,7 +409,7 @@ export default function Seats() {
   }
 
   // mapping lantai 1 sayap kiri
-  function left_mapper(array, arrayUser, priceCat) {
+  function left_mapper(array, arrayUser) {
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
@@ -434,10 +431,10 @@ export default function Seats() {
                   onSeatPick(array[i], arrayUser);
                 }}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight(1);
+                  setPriceCategoryHighlight([array[i].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight(0);
+                  setPriceCategoryHighlight([]);
                 }}
               >
                 {array[i].name}
@@ -490,6 +487,12 @@ export default function Seats() {
                     : ""
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[index].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
+                }}
               >
                 {array[index].name}
               </div>
@@ -542,6 +545,12 @@ export default function Seats() {
                     : ""
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[index].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
+                }}
               >
                 {array[index].name}
               </div>
@@ -697,23 +706,42 @@ export default function Seats() {
                 <span className='text-red-500'>*</span>klik untuk melihat
               </p>
             </div>
-            <div>
+            <div className='space-y-4'>
               {priceCategory1.map((namePrice) => (
-                <div>
-                  <Button
-                    className={`${
-                      priceCategoryHighlight == 1
-                        ? "scale-105 bg-gmco-orange-secondarydark"
-                        : ""
-                    }`}
+                <div className='group relative flex border-b-2 border-gmco-blue-main'>
+                  <button
+                    className={`group relative w-48 inline-block px-4 py-2 font-medium`}
                     onClick={() => {
                       seatHighlight.includes(namePrice.price)
                         ? setSeatHighlight([])
                         : setSeatHighlight([namePrice.price]);
                       namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
-                    name={namePrice.name}
-                  />
+                  >
+                    <span
+                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
+                        priceCategoryHighlight.includes(namePrice.price)
+                          ? "bg-gmco-orange-secondarydark -translate-x-0 -translate-y-0"
+                          : "bg-gmco-grey"
+                      }`}
+                    ></span>
+                    <span
+                      className={`absolute inset-0 w-full border-2 border-black transition duration-200 ease-out group-hover:bg-gmco-orange-secondarydark ${
+                        priceCategoryHighlight.includes(namePrice.price)
+                          ? "bg-gmco-orange-secondarydark"
+                          : "bg-gmco-blue-main"
+                      }`}
+                    ></span>
+                    <span
+                      className={`relative text-gmco-white transition duration-200 ease-out group-hover:text-gmco-yellow ${
+                        priceCategoryHighlight.includes(namePrice.price)
+                          ? "text-gmco-yellow"
+                          : "text-gmco-white"
+                      }`}
+                    >
+                      {namePrice.name}
+                    </span>
+                  </button>
 
                   <div className='flex basis-1/2 flex-wrap justify-end'>
                     {userSeatsPick.map((item) =>
@@ -732,7 +760,7 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg text-white  ${
+                className={`rounded-lg text-white transition duration-200 ease-out  ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                     : "cursor-not-allowed bg-gmco-grey opacity-50"
@@ -914,9 +942,10 @@ export default function Seats() {
                     height={1000}
                   />
                 </div>
-                {/* left */}
-                {/* row wise */}
+
                 <div className='mt-2 flex gap-6 '>
+                  {/* left */}
+                  {/* row wise */}
                   <div className='flex -translate-y-36 rotate-[16deg] flex-col gap-2'>
                     {l_seatmap_2.map((seats) => (
                       // col wise
@@ -929,11 +958,11 @@ export default function Seats() {
                   </div>
                   {/* middle left */}
                   {/* row wise */}
-                  <div className='flex -translate-y-10 rotate-[12deg] flex-col gap-2'>
+                  <div className='flex -translate-y-10 rotate-[11deg] flex-col gap-2'>
                     {ml_seatmap_2.map((seats) => (
                       // col wise
                       <div
-                        className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
+                        className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
                         {temp_mapper(seats, userSeats)}
                       </div>
