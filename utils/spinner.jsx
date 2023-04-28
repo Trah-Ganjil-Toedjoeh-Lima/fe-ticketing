@@ -10,8 +10,8 @@ export const Loading = ({ isLoading }) => {
       {/* <img src="/violin-loading.gif"></img> */}
       <Image
         className="w-36"
-        src="/musicnotes.gif"
-        alt="tuan krap with violin"
+        src="/seatmap/musicnotes.gif"
+        alt="not balok loading"
         width={700}
         height={574}
       ></Image>

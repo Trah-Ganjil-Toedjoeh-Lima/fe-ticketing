@@ -55,12 +55,11 @@ export default function FooterBar() {
     },
     {
       name: <FaFacebook className="h-5 w-5" />,
-      route:
-        "/https://www.facebook.com/people/Gadjah-Mada-Chamber-Orchestra/100067509763569/",
+      route: "https://www.facebook.com/people/Gadjah-Mada-Chamber-Orchestra/100067509763569/",
     },
     {
       name: <FaYoutube className="h-5 w-5" />,
-      route: "/https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA",
+      route: "https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA",
     },
   ];
 
