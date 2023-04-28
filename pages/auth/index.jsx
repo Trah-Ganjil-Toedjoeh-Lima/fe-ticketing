@@ -69,7 +69,7 @@ export default function Auth() {
   }
 
   return (
-    <section className="block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
+    <section className="max-w-screen block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
       <div className=" relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row ">
         {/* leftside */}
         <div className="absolute h-full w-full bg-gmco-grey">

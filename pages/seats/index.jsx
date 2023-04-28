@@ -439,9 +439,9 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`rounded-base h-6 w-6 cursor-not-allowed ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed text-center text-[0.7rem] text-gmco-white opacity-80 ${
                 statusColor[array[i].status]
-              }  text-center text-[0.7rem] ${deg_rot[i]}`}
+              } ${deg_rot[i]}`}
             >
               {array[i].name}
             </div>
@@ -449,7 +449,7 @@ export default function Seats() {
         }
       } else {
         arr.push(
-          <div className={`rounded-base h-6 w-6 bg-black ${deg_rot[i]}`}></div>
+          <div className={`rounded-base h-6 w-6 bg-black ${deg_rot[i]}`} />
         );
       }
     }
@@ -490,9 +490,9 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`rounded-base h-6 w-6 cursor-not-allowed ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed text-center text-[0.7rem] text-gmco-white opacity-80 ${
                 statusColor[array[index].status]
-              }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
+              } ${deg_rot[i - 1]}`}
             >
               {array[index].name}
             </div>
@@ -500,9 +500,7 @@ export default function Seats() {
         }
       } else {
         arr.push(
-          <div
-            className={`rounded-base h-6 w-6 bg-black ${deg_rot[i - 1]}`}
-          ></div>
+          <div className={`rounded-base h-6 w-6 bg-black ${deg_rot[i - 1]}`} />
         );
       }
     }
@@ -574,7 +572,7 @@ export default function Seats() {
       <Loading isLoading={loading} />
       <NavigationBar />
 
-      <div className="relative h-max bg-gmco-blue-main">
+      <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
         <div className="absolute h-52 w-screen overflow-hidden bg-gmco-grey">
           <Image
             src="/gmco-cart.webp"
@@ -590,9 +588,6 @@ export default function Seats() {
           </p>
           <p className="text-3xl font-bold text-gmco-white md:text-5xl">
             GMCO Concert #10
-          </p>
-          <p className="mt-3 text-base font-bold text-gmco-white">
-            Yogyakarta, 27 Mei 2023
           </p>
         </div>
       </div>
@@ -645,7 +640,7 @@ export default function Seats() {
           <div className="flex w-full justify-center">
             <button
               onClick={() => setCurFloor(1)}
-              className={`w-[45%] rounded-md py-2 font-semibold duration-300 ease-in-out hover:scale-105 drop-shadow-md ${
+              className={`w-[45%] rounded-md py-2 font-semibold drop-shadow-md duration-300 ease-in-out hover:scale-105 ${
                 curFloor === 1
                   ? "bg-gmco-blue-main text-gmco-white"
                   : "bg-gmco-white text-gmco-grey"
@@ -656,7 +651,7 @@ export default function Seats() {
             <div className="w-[2%]" />
             <button
               onClick={() => setCurFloor(2)}
-              className={`w-[45%] rounded-md py-2 font-semibold duration-300 ease-in-out hover:scale-105 drop-shadow-md ${
+              className={`w-[45%] rounded-md py-2 font-semibold drop-shadow-md duration-300 ease-in-out hover:scale-105 ${
                 curFloor === 2
                   ? "bg-gmco-blue-main text-gmco-white"
                   : "bg-gmco-white text-gmco-grey"
@@ -674,9 +669,9 @@ export default function Seats() {
                 <span className="text-red-500">*</span>Maximal pembelian 5 kursi
               </p>
             </div>
-            <div className="self-center text-lg md:text-xl">
-              {userSeatsPick.length}/5 kursi
-              <p className="text-base">
+            <div className="self-center text-lg font-semibold md:text-xl">
+              {userSeatsPick.length} kursi
+              <p className="text-base font-normal">
                 <span className="text-red-500">*</span>Sisa {5 - purchasedSeat}
               </p>
             </div>
@@ -720,11 +715,11 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg text-white  ${
+                className={`rounded-lg px-10 py-2 text-white drop-shadow-md ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
-                    : "cursor-not-allowed bg-gmco-grey opacity-50"
-                }  px-10 py-2`}
+                    : "pointer-events-none bg-gmco-grey opacity-50"
+                }`}
                 onClick={() => postSeats(userSeats)}
               >
                 Masukkan ke Cart
@@ -736,33 +731,29 @@ export default function Seats() {
           <div className="p-5">
             <div className="text-black">
               <p className="pb-3 text-xl font-semibold md:text-2xl">
-                Keterangan
+                Keterangan Warna
               </p>
-              <div className="flex flex-col gap-2 text-xl">
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#B8DEE9]"></div>
+              <div className="flex flex-col gap-2 text-xl font-semibold">
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 self-center rounded-md bg-gmco-blue" />
                   <p>Kursi Kosong</p>
                 </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#7E7E7E]"></div>
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
                   <p>Kursi Terbeli</p>
                 </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#5C9E82]"></div>
-                  <p>Sudah Saya Bayar</p>
-                </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#C0925E]"></div>
-                  <div className="flex flex-col">
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary" />
+                  <div>
                     <p>Kursi Sudah Direservasi</p>
-                    <p className="text-base">
+                    <p className="text-base font-normal">
                       <span className="text-red-500">*</span>Setelah 15 menit
                       tidak dibayar, kursi dapat dibeli kembali
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#F5DB91]"></div>
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
                   <p>Belum Saya Bayar</p>
                 </div>
               </div>
@@ -782,14 +773,14 @@ export default function Seats() {
             }`}
           >
             <button
-              className={`m-3 flex items-center rounded-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
+              className={`m-3 ml-0 flex items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
                 hideSideBar(sideBarOpen);
               }}
             >
-              Show Details
+              Show
               <span>
                 <ArrowRightIcon className="h-5 w-5" />
               </span>
@@ -821,9 +812,19 @@ export default function Seats() {
             <div
               className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
             >
-              <div className="flex w-2/5 items-center justify-center bg-gmco-grey py-8 text-gmco-white">
-                Panggung
+              <div className="relative flex h-max w-3/4 translate-y-[100px] items-center justify-center">
+                <Image
+                  src="/stage.png"
+                  className="h-full w-full object-cover object-center"
+                  alt="bg gmco concert"
+                  width={2000}
+                  height={2000}
+                />
+                <p className="absolute z-20 text-6xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                  Stage
+                </p>
               </div>
+
               {/* Floor1 */}
               <div
                 className={`flex h-max w-max cursor-move pt-8 duration-300 ease-in-out ${
@@ -834,7 +835,7 @@ export default function Seats() {
                 <div className="pointer-events-none flex translate-x-10">
                   {/* left */}
                   {/* row wise */}
-                  <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2">
+                  <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2 bg-[url('/frameleft.png')] bg-cover pl-5">
                     {l_seatmap.map((seats) => (
                       // col wise
                       <div
@@ -847,7 +848,7 @@ export default function Seats() {
 
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] pb-12">
+                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/framemiddleleft.png')] bg-cover pb-12">
                     {ml_seatmap.map((seats, index) => (
                       // col wise
                       // prin)
@@ -864,7 +865,7 @@ export default function Seats() {
                 <div className="pointer-events-none flex -translate-x-10">
                   {/* middle right */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem]">
+                  <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/framemiddleright.png')] bg-cover">
                     {mr_seatmap.map((seats, index) => (
                       // col wise
                       <div
@@ -877,7 +878,7 @@ export default function Seats() {
 
                   {/* right */}
                   {/* row wise */}
-                  <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2">
+                  <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2 bg-[url('/frameright.png')] bg-cover pr-5">
                     {r_seatmap.map((seats) => (
                       // col wise
                       <div
@@ -897,7 +898,7 @@ export default function Seats() {
                   curFloor === 2 ? "inline" : "hidden"
                 }`}
               >
-                <div className="h-3/4">
+                <div className="relative flex h-3/4 items-center justify-center">
                   <Image
                     src="/shadow_floor1.webp"
                     alt="floor1"
@@ -905,11 +906,14 @@ export default function Seats() {
                     width={1000}
                     height={1000}
                   />
+                  <p className="absolute z-20 opacity-70 text-4xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                    Lantai 1
+                  </p>
                 </div>
                 {/* left */}
                 {/* row wise */}
                 <div className="mt-2 flex gap-6 ">
-                  <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2">
+                  <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
                     {l_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -921,7 +925,7 @@ export default function Seats() {
                   </div>
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2">
+                  <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
                     {ml_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -933,7 +937,7 @@ export default function Seats() {
                   </div>
                   {/* middle */}
                   {/* row wise */}
-                  <div className="flex flex-col gap-2 pb-12">
+                  <div className="flex flex-col gap-2 bg-[url('/frametop.png')] bg-cover pb-12 pt-10">
                     {m_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -945,7 +949,7 @@ export default function Seats() {
                   </div>
                   {/* middle right */}
                   {/* row wise */}
-                  <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2">
+                  <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
                     {mr_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -957,7 +961,7 @@ export default function Seats() {
                   </div>
                   {/* right */}
                   {/* row wise */}
-                  <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2">
+                  <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
                     {r_seatmap_2.map((seats) => (
                       // col wise
                       <div

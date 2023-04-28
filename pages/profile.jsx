@@ -158,7 +158,7 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="h-full w-screen bg-gmco-yellow-secondary">
+      <div className="h-full max-w-screen bg-gmco-yellow-secondary">
         {/*This is the header */}
         <div className="relative w-full overflow-hidden ">
           <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
