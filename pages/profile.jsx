@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -364,6 +364,7 @@ export default function Profile() {
       <FooterBar />
     </>
   );
+}
 }
 
 export async function getServerSideProps(ctx) {
