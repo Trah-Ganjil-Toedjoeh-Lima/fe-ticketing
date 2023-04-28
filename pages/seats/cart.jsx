@@ -144,11 +144,11 @@ export default function Cart() {
       <div className='realtive overflow-hidden bg-gmco-blue-main md:min-h-screen'>
         <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
           <Image
-            src='/gmco-cart.webp'
-            className='h-full w-full object-cover object-center opacity-50'
-            alt='bg gmco concert'
-            width={3000}
-            height={3000}
+            src="/gmco-cart.webp"
+            className="w-full h-full object-cover object-center opacity-50"
+            alt="bg gmco concert"
+            width={2000}
+            height={2000}
           />
         </div>
 

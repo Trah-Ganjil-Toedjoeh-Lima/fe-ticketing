@@ -3,7 +3,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowRightIcon,
+  ExclamationTriangleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -157,6 +161,16 @@ export default function Seats() {
     60000: "Sekar Rp65K",
     50000: "Gita Rp50K",
   };
+
+  const priceCategory1 = [
+    { name: "Harmoni Rp170K", price: 170000 },
+    { name: "Serenada Rp145K", price: 145000 },
+    { name: "Irama Rp120K", price: 120000 },
+    { name: "Tala Rp85K", price: 85000 },
+    { name: "Sekar Rp65K", price: 60000 },
+    { name: "Gita Rp50K", price: 50000 },
+  ];
+
   const statusColor = {
     available: "bg-[#8EBFD0]",
     reserved_by_me: "bg-[#F5DB91]",
@@ -251,8 +265,8 @@ export default function Seats() {
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      console.log(err);
-      // notifyError(err);
+      // console.log(err);
+      notifyError(err);
     }
   }
 
@@ -265,6 +279,7 @@ export default function Seats() {
     const floor1 = [];
     const floor2 = [];
     const reservedByMe = [];
+    let purchased = 0;
 
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
@@ -273,7 +288,7 @@ export default function Seats() {
       if (obj.status === "reserved_by_me") {
         reservedByMe.push(obj);
       } else if (obj.status === "purchased_by_me") {
-        setPurchasedSeat(purchasedSeat + 1);
+        purchased += 1;
       }
 
       // untuk misah 2 lantai
@@ -287,6 +302,7 @@ export default function Seats() {
     // kursi yang sudah dipesan sebelumnya
     setUserSeats(reservedByMe.map((item) => item.seat_id));
     setUserSeatsPick(reservedByMe);
+    setPurchasedSeat(purchased);
 
     // passing data lantai 1 dan 2
     const floor1Seat = seatMapping(
@@ -394,6 +410,7 @@ export default function Seats() {
 
   // mapping lantai 1 sayap kiri
   function left_mapper(array, arrayUser) {
+    console.log(array);
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
@@ -403,7 +420,7 @@ export default function Seats() {
           arr.push(
             <div className={` duration-300 hover:scale-150 ${deg_rot[i]}`}>
               <div
-                className={`h-6 w-6 rounded-sm ${
+                className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
                 }  cursor-pointer text-center text-[0.7rem]
                   ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
@@ -422,7 +439,7 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed ${
                 statusColor[array[i].status]
               }  text-center text-[0.7rem] ${deg_rot[i]}`}
             >
@@ -432,7 +449,7 @@ export default function Seats() {
         }
       } else {
         arr.push(
-          <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i]}`}></div>
+          <div className={`rounded-base h-6 w-6 bg-black ${deg_rot[i]}`}></div>
         );
       }
     }
@@ -455,7 +472,7 @@ export default function Seats() {
               }`}
             >
               <div
-                className={`h-6 w-6 rounded-sm ${
+                className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
                   isHighlight ? "bg-gmco-orange-secondarylight" : ""
@@ -473,7 +490,7 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed ${
                 statusColor[array[index].status]
               }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
             >
@@ -484,7 +501,7 @@ export default function Seats() {
       } else {
         arr.push(
           <div
-            className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i - 1]}`}
+            className={`rounded-base h-6 w-6 bg-black ${deg_rot[i - 1]}`}
           ></div>
         );
       }
@@ -507,7 +524,7 @@ export default function Seats() {
           arr.push(
             <div className={`bg-gmco-yellow duration-300 hover:scale-150`}>
               <div
-                className={`h-6 w-6 rounded-sm ${
+                className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
                   isHighlight ? "bg-gmco-orange-secondarylight" : ""
@@ -525,7 +542,7 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed ${
                 statusColor[array[index].status]
               }  text-center text-[0.7rem]`}
             >
@@ -534,7 +551,7 @@ export default function Seats() {
           );
         }
       } else {
-        arr.push(<div className={`h-6 w-6 rounded-sm bg-black`}></div>);
+        arr.push(<div className={`rounded-base h-6 w-6 bg-black`}></div>);
       }
     }
     return arr;
@@ -558,7 +575,7 @@ export default function Seats() {
       <NavigationBar />
 
       <div className="relative h-max bg-gmco-blue-main">
-        <div className="absolute h-52 w-1/2 overflow-hidden bg-gmco-grey">
+        <div className="absolute h-52 w-screen overflow-hidden bg-gmco-grey">
           <Image
             src="/gmco-cart.webp"
             className="h-full w-full object-cover object-center opacity-50"
@@ -582,18 +599,18 @@ export default function Seats() {
 
       {/* SIDE BAR START */}
       {/* ================== */}
-      <div className="flex h-max w-full flex-col md:flex-row">
+      <div className="flex h-max w-full flex-col bg-gmco-white md:flex-row">
         {/* Left Bar */}
 
         <div
           className={`${
             sideBarOpen ? "inline" : "hidden"
-          } order-last flex w-full flex-col bg-gmco-grey bg-opacity-10 md:order-first md:w-1/5 md:gap-y-3`}
+          } order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter md:order-first md:w-1/5`}
         >
           {/* Minimize Button */}
-          <div className="mt-3 flex w-full items-center justify-between pr-2">
+          <div className="my-3 flex w-full items-center justify-between pr-2">
             <p
-              className={`mb-2 pl-4 text-lg ${
+              className={`mb-2 flex items-center pl-4 text-lg ${
                 counter <= 10
                   ? "text-red-600"
                   : counter <= 60
@@ -601,7 +618,7 @@ export default function Seats() {
                   : "text-gmco-grey"
               }`}
             >
-              Refresh in{" "}
+              Refresh in
               <b>
                 {Math.floor(counter / 60)}:{counter % 60}
               </b>
@@ -615,32 +632,33 @@ export default function Seats() {
             </p>
 
             <button
-              className="hidden rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white hover:scale-105 md:inline"
+              className="hidden p-2 text-lg text-gmco-grey hover:scale-105 md:inline"
               onClick={() => {
                 hideSideBar(sideBarOpen);
               }}
             >
-              Hide Details &lt;
+              <XMarkIcon className="h-7 w-7 stroke-2" />
             </button>
           </div>
 
           {/* Milih Lantai */}
-          <div className="flex w-full border-2 border-gmco-orange-secondarydark">
+          <div className="flex w-full justify-center">
             <button
               onClick={() => setCurFloor(1)}
-              className={`w-1/2 py-2 font-semibold duration-300 ease-in-out ${
+              className={`w-[45%] rounded-md py-2 font-semibold duration-300 ease-in-out hover:scale-105 drop-shadow-md ${
                 curFloor === 1
-                  ? "bg-gmco-orange-secondarydark text-gmco-white"
+                  ? "bg-gmco-blue-main text-gmco-white"
                   : "bg-gmco-white text-gmco-grey"
               }`}
             >
               Lantai 1
             </button>
+            <div className="w-[2%]" />
             <button
               onClick={() => setCurFloor(2)}
-              className={`w-1/2 py-2 font-semibold duration-300 ease-in-out ${
+              className={`w-[45%] rounded-md py-2 font-semibold duration-300 ease-in-out hover:scale-105 drop-shadow-md ${
                 curFloor === 2
-                  ? "bg-gmco-orange-secondarydark text-gmco-white"
+                  ? "bg-gmco-blue-main text-gmco-white"
                   : "bg-gmco-white text-gmco-grey"
               }`}
             >
@@ -649,31 +667,34 @@ export default function Seats() {
           </div>
 
           {/* Jumlah Kursi */}
-          <div className="flex justify-between bg-gmco-yellow p-5 py-3 md:py-6">
+          <div className="flex justify-between px-5 pt-3 md:pt-6">
             <div className="text-xl font-semibold md:text-2xl">
               Jumlah Kursi
-              <p className="text-xs">
+              <p className="text-base font-normal">
                 <span className="text-red-500">*</span>Maximal pembelian 5 kursi
               </p>
             </div>
-            <div className="self-center text-xl md:text-2xl">
-              {userSeatsPick.length} kursi
+            <div className="self-center text-lg md:text-xl">
+              {userSeatsPick.length}/5 kursi
+              <p className="text-base">
+                <span className="text-red-500">*</span>Sisa {5 - purchasedSeat}
+              </p>
             </div>
           </div>
 
           {/* Kategori Kursi */}
-          <div className="bg-gmco-blue-main p-5 py-6 text-white">
+          <div className="px-5 pt-6 text-black">
             <div className="pb-3 text-xl font-semibold md:text-2xl">
               Kategori
-              <p className="text-[0.9rem]">
+              <p className="text-base font-normal">
                 <span className="text-red-500">*</span>klik untuk melihat
               </p>
             </div>
             <div className="flex flex-col gap-3 md:text-lg">
               {Object.entries(priceCategory).map((namePrice) => (
-                <div className="flex">
+                <div className="flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark">
                   <button
-                    className="basis-1/2 cursor-pointer rounded-md border-2 border-gmco-white bg-gmco-blue p-2 text-left hover:scale-105 hover:bg-gmco-blue-main"
+                    className={`basis-1/2 cursor-pointer bg-gmco-blue-main p-2 text-left text-white hover:scale-105 hover:bg-gmco-orange-secondarydark`}
                     onClick={() => {
                       seatHighlight.includes(namePrice[0])
                         ? setSeatHighlight([])
@@ -699,10 +720,10 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg border-2 border-gmco-white  ${
+                className={`rounded-lg text-white  ${
                   userSeats.length
-                    ? "bg-gmco-orange-secondarylight hover:scale-105"
-                    : "cursor-not-allowed bg-gmco-grey"
+                    ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
+                    : "cursor-not-allowed bg-gmco-grey opacity-50"
                 }  px-10 py-2`}
                 onClick={() => postSeats(userSeats)}
               >
@@ -712,12 +733,12 @@ export default function Seats() {
           </div>
 
           {/* Keterangan Kursi */}
-          <div className="bg-gmco-blue p-5 ">
-            <div className=" text-gmco-grey">
+          <div className="p-5">
+            <div className="text-black">
               <p className="pb-3 text-xl font-semibold md:text-2xl">
                 Keterangan
               </p>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 text-xl">
                 <div className="flex flex-row content-center gap-2">
                   <div className="h-4 w-4 self-center rounded-md bg-[#B8DEE9]"></div>
                   <p>Kursi Kosong</p>
@@ -734,7 +755,7 @@ export default function Seats() {
                   <div className="h-4 w-4 self-center rounded-md bg-[#C0925E]"></div>
                   <div className="flex flex-col">
                     <p>Kursi Sudah Direservasi</p>
-                    <p className="text-[0.7rem]">
+                    <p className="text-base">
                       <span className="text-red-500">*</span>Setelah 15 menit
                       tidak dibayar, kursi dapat dibeli kembali
                     </p>
@@ -752,7 +773,7 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "w-full md:w-4/5" : "w-full"
-          } min:h-[60vh] relative overflow-hidden md:min-h-screen`}
+          } relative min-h-[60vh] overflow-hidden md:min-h-screen`}
         >
           {/* Hide Sidebar dan Zoom */}
           <div
@@ -761,14 +782,17 @@ export default function Seats() {
             }`}
           >
             <button
-              className={`m-3 rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white hover:scale-105 ${
+              className={`m-3 flex items-center rounded-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
                 hideSideBar(sideBarOpen);
               }}
             >
-              Show Details &gt;
+              Show Details
+              <span>
+                <ArrowRightIcon className="h-5 w-5" />
+              </span>
             </button>
 
             <div className="m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
@@ -869,17 +893,19 @@ export default function Seats() {
               {/* Floor2 */}
               {/* ============================ */}
               <div
-                className={`b-24 flex h-full w-max cursor-move flex-col justify-center duration-300 ease-in-out ${
+                className={`b-24 flex h-full w-max cursor-move flex-col items-center duration-300 ease-in-out ${
                   curFloor === 2 ? "inline" : "hidden"
                 }`}
               >
-                <Image
-                  src="/shadow_floor1.webp"
-                  alt="floor1"
-                  className="h-max w-full p-20 opacity-10"
-                  width={1000}
-                  height={1000}
-                />
+                <div className="h-3/4">
+                  <Image
+                    src="/shadow_floor1.webp"
+                    alt="floor1"
+                    className="h-full w-auto p-20 opacity-10"
+                    width={1000}
+                    height={1000}
+                  />
+                </div>
                 {/* left */}
                 {/* row wise */}
                 <div className="mt-2 flex gap-6 ">
