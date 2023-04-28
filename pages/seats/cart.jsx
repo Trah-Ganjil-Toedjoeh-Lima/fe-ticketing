@@ -153,7 +153,7 @@ export default function Cart() {
       <div className="realtive max-w-screen overflow-hidden bg-gmco-blue-main md:min-h-screen">
         <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
           <Image
-            src="/gmco-cart.webp"
+            src="/GMCO.webp"
             className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
             width={2000}

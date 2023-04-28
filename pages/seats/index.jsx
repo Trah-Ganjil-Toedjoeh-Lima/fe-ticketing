@@ -240,7 +240,7 @@ export default function Seats() {
             router.push({
               pathname: "/seats/cart",
             });
-          }, 3000);
+          }, 2000);
         });
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
@@ -577,16 +577,16 @@ export default function Seats() {
       <NavigationBar />
 
       <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
-        <div className="absolute h-52 w-screen overflow-hidden bg-gmco-grey">
+        <div className="absolute h-64 w-screen overflow-hidden bg-gmco-grey">
           <Image
-            src="/gmco-cart.webp"
+            src="/seatmap/GMCO.webp"
             className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
             width={3000}
             height={3000}
           />
         </div>
-        <div className="relative p-7 pt-16">
+        <div className="relative p-7 pt-20">
           <p className="text-xl font-semibold text-gmco-white md:text-2xl">
             Anjangsana Simfoni
           </p>
@@ -777,12 +777,12 @@ export default function Seats() {
         >
           {/* Hide Sidebar dan Zoom */}
           <div
-            className={`absolute z-10 flex h-full flex-col ${
+            className={`absolute z-10 pointer-events-none flex h-full flex-col ${
               sideBarOpen ? "justify-end" : "justify-between"
             }`}
           >
             <button
-              className={`m-3 ml-0 flex items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
+              className={`m-3 ml-0 flex pointer-events-auto items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
@@ -795,7 +795,7 @@ export default function Seats() {
               </span>
             </button>
 
-            <div className="m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
+            <div className="m-3 flex w-max pointer-events-auto flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
               <button
                 className={`h-max px-4 py-2 duration-300 hover:scale-150`}
                 onClick={() => {
@@ -844,7 +844,7 @@ export default function Seats() {
                 <div className="pointer-events-none flex translate-x-10">
                   {/* left */}
                   {/* row wise */}
-                  <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2 bg-[url('/frameleft.png')] bg-cover pl-5">
+                  <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2 bg-[url('/seatmap/frameleft.png')] bg-cover pl-5">
                     {l_seatmap.map((seats) => (
                       // col wise
                       <div
@@ -857,7 +857,7 @@ export default function Seats() {
 
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/framemiddleleft.png')] bg-cover pb-12">
+                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleleft.png')] bg-cover pb-12">
                     {ml_seatmap.map((seats, index) => (
                       // col wise
                       // prin)
@@ -874,7 +874,7 @@ export default function Seats() {
                 <div className="pointer-events-none flex -translate-x-10">
                   {/* middle right */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/framemiddleright.png')] bg-cover">
+                  <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleright.png')] bg-cover">
                     {mr_seatmap.map((seats, index) => (
                       // col wise
                       <div
@@ -887,7 +887,7 @@ export default function Seats() {
 
                   {/* right */}
                   {/* row wise */}
-                  <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2 bg-[url('/frameright.png')] bg-cover pr-5">
+                  <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2 bg-[url('/seatmap/frameright.png')] bg-cover pr-5">
                     {r_seatmap.map((seats) => (
                       // col wise
                       <div
@@ -921,7 +921,7 @@ export default function Seats() {
                 </div>
 
                 <div className="mt-2 flex gap-6 ">
-                  <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
+                  <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {l_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -933,7 +933,7 @@ export default function Seats() {
                   </div>
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
+                  <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {ml_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -945,7 +945,7 @@ export default function Seats() {
                   </div>
                   {/* middle */}
                   {/* row wise */}
-                  <div className="flex flex-col gap-2 bg-[url('/frametop.png')] bg-cover pb-12 pt-10">
+                  <div className="flex flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pb-12 pt-10">
                     {m_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -957,7 +957,7 @@ export default function Seats() {
                   </div>
                   {/* middle right */}
                   {/* row wise */}
-                  <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
+                  <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {mr_seatmap_2.map((seats) => (
                       // col wise
                       <div
@@ -969,7 +969,7 @@ export default function Seats() {
                   </div>
                   {/* right */}
                   {/* row wise */}
-                  <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
+                  <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {r_seatmap_2.map((seats) => (
                       // col wise
                       <div
