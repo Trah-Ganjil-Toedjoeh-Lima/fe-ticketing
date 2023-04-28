@@ -217,8 +217,14 @@ export default function Seats() {
         divideByFloor(res.data.data);
         // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         // notifyError(err);
+        if(err.response.data.error === "the gate has not been opened") {
+          notifyError("Pemesanan belum dibuka");
+          router.push("/closegate")
+        } else {
+          notifyError("Terjadi Kesalahan");
+        }
       } finally {
         setTimeout(() => {
           setLoading(false);
