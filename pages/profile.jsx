@@ -52,17 +52,20 @@ export default function Profile() {
         const [userRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
         ]);
-        if(!userRes.data.data.Email || !userRes.data.data.Phone){
+        if (!userRes.data.data.Email || !userRes.data.data.Phone) {
           Swal.fire({
-            html: "Isi data profile agar bisa membeli tiket",
-            toast: true,
-            width: 300,
+            html: `Isi Data Profil agar Bisa Membeli Tiket!`,
+            toast: false,
             icon: "warning",
+            iconColor: "#f6f7f1",
             background: "#2d2d2f",
-            iconColor: "#287d92",
             color: "#f6f7f1",
-            showConfirmButton: false,
-            timer: 1500,
+            showCancelButton: true,
+            showConfirmButton: true,
+            cancelButtonText: "Tidak",
+            cancelButtonColor: "#c76734",
+            confirmButtonText: "Ya",
+            confirmButtonColor: "#287d92",
             showClass: {
               popup: "",
             },
@@ -119,22 +122,23 @@ export default function Profile() {
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
-      showCancelButton: true,
-      showConfirmButton:true,
-      cancelButtonText: "Tidak",
-      cancelButtonColor: "#c76734",
-      confirmButtonText: "Ya",
+      // showCancelButton: true,
+      showConfirmButton: true,
+      // cancelButtonText: "Tidak",
+      // cancelButtonColor: "#c76734",
+      showCloseButton: true,
+      confirmButtonText: "OKE",
       confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
       },
-    }).then((result,e) => {
+    }).then((result, e) => {
       if (result.isConfirmed) {
         handleSubmit(e);
       }
     });
   }
-  async function handleSubmit(e){
+  async function handleSubmit(e) {
     // e.preventDefault();
     try {
       await axiosInstance.patch("api/v1/user/profile", formUserData);
@@ -147,7 +151,7 @@ export default function Profile() {
     } catch (err) {
       notifyErrorMessage(err);
     }
-  };
+  }
 
   Object.keys(userData).map((key) => {
     console.log(userData[key]);
@@ -261,7 +265,7 @@ export default function Profile() {
           </form>
 
           {/* List of Tickets */}
-          <div className="flex w-screen flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-2/3 lg:w-full">
+          <div className="flex w-screen flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-full ">
             <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
