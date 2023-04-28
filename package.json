@@ -5,13 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "next lint",
-    "*.{js,jsx, html, json}": "prettier --write"
+    "start": "next start"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
@@ -35,8 +29,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.7",

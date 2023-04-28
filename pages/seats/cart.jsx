@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
 import { TrashIcon } from "@heroicons/react/24/solid";
@@ -25,26 +25,30 @@ export default function Cart() {
     user_name: "user_name",
     user_phone: "user_phone",
   });
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/checkout"),
-        ]);
-        setSeatBoughts(res.data.data);
-        midtransSetup(res.data.midtrans_client_key);
-      } catch (err) {
-        notifyError(err);
-      }
-    })();
-  }, []);
+  const category = {
+    gita: "bg-[#A3A3A3]",
+    sekar: "bg-[#D8B830]",
+    tala: "bg-[#2196F3]",
+    irama: "bg-[#00CED1]",
+    serenada: "bg-[#FF5A5F]",
+    harmony: "bg-[#FFA500]",
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
-      router.push("/auth");
+      notifyErrorMessage("Anda belum login.");
     } else {
-      midtransSetup();
+      (async () => {
+        try {
+          const [res] = await Promise.all([
+            axiosInstance.get("/api/v1/checkout"),
+          ]);
+          setSeatBoughts(res.data.data);
+          midtransSetup(res.data.midtrans_client_key);
+        } catch (err) {
+          notifyErrorMessage("Anda belum melakukan transaksi.");
+        }
+      })();
     }
   }, []);
 
@@ -70,7 +74,7 @@ export default function Cart() {
     window.snap.pay(token, {
       onSuccess: function () {
         /* You may add your own implementation here */
-        notifySucces("payment success!");
+        notifySucces("Payment successful!");
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
@@ -80,30 +84,32 @@ export default function Cart() {
       },
       onPending: function () {
         /* You may add your own implementation here */
-        notifyInfo("wating your payment!");
+        notifyInfo("Waiting for your payment...");
       },
       onError: function () {
         /* You may add your own implementation here */
-        notifyErrorMessage("payment failed!");
+        notifyErrorMessage("Payment failed!");
       },
       onClose: function () {
         /* You may add your own implementation here */
-        notifyWarning("you closed the popup without finishing the payment");
+        notifyWarning("You closed the pop-up without finishing the payment.");
       },
     });
   }
 
-  function canselCheck() {
+  function cancelCheck() {
     Swal.fire({
       html: `Anda yakin ingin menghapus transaksi?`,
       toast: true,
       icon: "warning",
-      iconColor: "#991b1b",
+      background: "#2d2d2f",
+      iconColor: "#287d92",
       showCancelButton: true,
       cancelButtonText: "Tidak",
-      cancelButtonColor: "#991b1b",
+      cancelButtonColor: "#c76734",
       confirmButtonText: "Ya",
-      confirmButtonColor: "#16a34a",
+      confirmButtonColor: "#287d92",
+      color: "#f6f7f1",
       showClass: {
         popup: "",
       },
@@ -122,7 +128,7 @@ export default function Cart() {
           user_email: "user.email",
           user_name: "user_name",
           user_phone: "user_phone",
-        })
+        }).then(() => notifySucces("Pesanan Dihapus"))
       );
     } catch (err) {
       notifyError(err);
@@ -140,14 +146,14 @@ export default function Cart() {
   return (
     <>
       <NavigationBar />
-      <div className="realtive overflow-hidden bg-gmco-blue-main md:min-h-screen">
+      <div className="realtive max-w-screen overflow-hidden bg-gmco-blue-main md:min-h-screen">
         <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
           <Image
-            src="/gmco-cart.webp"
-            className="w-full h-full object-cover object-center opacity-50"
+            src="/GMCO.webp"
+            className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
-            width={3000}
-            height={3000}
+            width={2000}
+            height={2000}
           />
         </div>
 
@@ -176,25 +182,6 @@ export default function Cart() {
                     <tr key={index} className="divide-y">
                       <td className="border-t pt-4">
                         <div className="flex items-center">
-                          {/* <div className="hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 md:inline">
-                            {seatBought.price > 100000 ? (
-                              <Image
-                                src="/chair.webp"
-                                alt="Kursi Bagus Enak Diduduki"
-                                className="h-full w-full object-cover object-center"
-                                width={1000}
-                                height={1000}
-                              />
-                            ) : (
-                              <Image
-                                src="/chair-hijau.webp"
-                                alt="Kursi Hijau Sangat Kuat"
-                                className="h-full w-full object-cover object-center"
-                                width={1000}
-                                height={1000}
-                              />
-                            )}
-                          </div> */}
                           <h3 className="text-md font-extrabold md:text-xl">
                             Kursi {seatBought.name}
                           </h3>
@@ -203,10 +190,20 @@ export default function Cart() {
 
                       <td className="pt-4">
                         <div className="flex flex-col items-center justify-center gap-1 text-xs text-gmco-grey md:flex-row md:gap-3 md:text-sm">
-                          <p className="w-max rounded-md bg-gmco-yellow p-1 md:p-2 ">
-                            Kategori
+                          <p
+                            className={`w-24 rounded-md p-1 text-center font-semibold capitalize md:p-2 ${
+                              category[seatBought.category]
+                            }`}
+                          >
+                            {seatBought.category}
                           </p>
-                          <p className="w-max rounded-md bg-gmco-yellow p-1 md:p-2 ">
+                          <p
+                            className={`w-24 rounded-md p-1 text-center font-semibold md:p-2 ${
+                              seatBought.name[0] > "S"
+                                ? "bg-gmco-orange-secondarydark"
+                                : "bg-gmco-orange-secondarylight"
+                            }`}
+                          >
                             Lantai {seatBought.name[0] > "S" ? 2 : 1}
                           </p>
                         </div>
@@ -234,9 +231,9 @@ export default function Cart() {
               {/* Batalkan Transaksi */}
               <div className="h-min rounded-2xl bg-gmco-white/75 p-6 ">
                 <div className="flex items-center justify-between">
-                  <p className="text-lg">Batalkan Transaksi</p>
+                  <p className="text-lg font-bold">Batalkan Transaksi</p>
                   <button
-                    onClick={() => canselCheck()}
+                    onClick={() => cancelCheck()}
                     className="flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 hover:text-gmco-grey"
                   >
                     <TrashIcon className="w- h-5" />
@@ -251,7 +248,7 @@ export default function Cart() {
                   <p>{formatNumber(orderTotal)}</p>
                 </div>
                 <p className="mt-0.5 text-sm text-gmco-grey/70">
-                  Pajak sudah termasuk<span className="text-red-500">*</span>
+                  Sudah termasuk pajak<span className="text-red-500">*</span>
                 </p>
                 <div className="mt-6 flex items-center justify-center md:justify-end">
                   <button
