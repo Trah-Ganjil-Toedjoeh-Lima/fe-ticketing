@@ -11,8 +11,8 @@ import {
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance } from "@/atoms/config";
-import { Loading } from "@/atoms/spinner";
+import { axiosInstance } from "@/utils/config";
+import { Loading } from "@/utils/spinner";
 import {
   notifyError,
   notifyErrorMessage,
@@ -695,7 +695,7 @@ export default function Seats() {
               </p>
             </div>
             <div className='space-y-4'>
-              {priceCategory1.map((namePrice) => (
+              {priceCategory.map((namePrice) => (
                 <div className='group relative flex border-b-2 border-gmco-blue-main'>
                   <button
                     className={`group relative inline-block w-48 px-4 py-2 font-medium`}
