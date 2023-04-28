@@ -564,7 +564,6 @@ export default function Seats() {
     }
     return arr;
   }
-  console.log(priceCategory)
   // sidebar
   function hideSideBar(isOpen) {
     isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
@@ -699,7 +698,7 @@ export default function Seats() {
               </p>
             </div>
             <div className='flex flex-col gap-3 md:text-lg'>
-              {Object.entries(priceCategory).map((namePrice) => (
+              {priceCategory1.map((namePrice) => (
                 <div className='flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark'>
                   <Button
                     onClick={() => {
@@ -708,7 +707,7 @@ export default function Seats() {
                         : setSeatHighlight([namePrice.price]);
                       namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
-                    label={namePrice.name}
+                    name={namePrice.name}
                   />
 
                   <div className='flex basis-1/2 flex-wrap justify-end'>
