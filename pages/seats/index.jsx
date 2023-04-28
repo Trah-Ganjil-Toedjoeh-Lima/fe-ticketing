@@ -3,13 +3,16 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronRightIcon,
+  ExclamationTriangleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/atoms/config";
 import { Loading } from "@/atoms/spinner";
-
 import {
   notifyError,
   notifyErrorMessage,
@@ -39,59 +42,50 @@ export default function Seats() {
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [priceCategoryHighlight, setPriceCategoryHighlight] = useState([]);
 
   // floor 1
   const mappersFloor1 = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
-    { C: [15, 9, 9, 13] },
-    { D: [15, 10, 11, 14] },
+    { C: [13, 9, 9, 15] },
+    { D: [14, 11, 10, 15] },
     { E: [16, 11, 11, 16] },
     { F: [17, 12, 12, 17] },
     { G: [17, 12, 12, 17] },
-    { H: [16, 13, 13, 15] },
-    { I: [15, 14, 14, 13] },
-    { J: [14, 14, 14, 13] },
+    { H: [15, 13, 13, 16] },
+    { I: [14, 14, 14, 15] },
+    { J: [13, 14, 14, 14] },
     { K: [13, 15, 15, 13] },
     { L: [12, 15, 15, 12] },
     { M: [11, 16, 16, 11] },
     { N: [10, 16, 16, 10] },
-    { O: [10, 18, 17, 9] },
-    { P: [9, 18, 17, 9] },
+    { O: [9, 17, 18, 10] },
+    { P: [9, 17, 18, 9] },
     { Q: [8, 18, 18, 8] },
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
-    { T: [0, 0, 0, 7] },
   ];
   const startMappersFloor1 = {
     A: [0, 1, 9, 0],
-    D: [1, 16, 26, 37],
-    E: [1, 17, 28, 39],
-    F: [1, 18, 30, 42],
-    G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
-    K: [1, 14, 29, 44],
     B: [1, 14, 23, 32],
-    C: [1, 16, 25, 34],
-    D: [1, 16, 26, 37],
+    C: [1, 14, 23, 32],
+    D: [1, 15, 26, 36],
     E: [1, 17, 28, 39],
     F: [1, 18, 30, 42],
     G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
+    H: [1, 16, 29, 42],
+    I: [1, 15, 29, 43],
+    J: [1, 14, 28, 42],
     K: [1, 14, 29, 44],
     L: [1, 13, 28, 43],
     M: [1, 12, 28, 44],
     N: [1, 11, 27, 43],
-    O: [1, 11, 29, 46],
-    P: [1, 10, 28, 45],
+    O: [1, 10, 27, 45],
+    P: [1, 10, 27, 45],
     Q: [1, 9, 27, 45],
     R: [1, 8, 27, 46],
     S: [1, 8, 27, 46],
-    T: [0, 0, 0, 1],
   };
   const deg_rot = [
     "-translate-y-[20px]",
@@ -140,27 +134,27 @@ export default function Seats() {
 
   // floor2
   const mappersFloor2 = [
+    { T: [12, 12, 14, 11, 13] },
     { U: [12, 13, 14, 11, 13] },
-    { V: [12, 12, 14, 11, 13] },
   ];
   const startMappersFloor2 = {
+    T: [1, 13, 25, 39, 50],
     U: [1, 13, 26, 40, 51],
-    V: [1, 13, 25, 39, 50],
   };
 
   // universal
-  const priceCategory = {
-    170000: "Harmoni Rp170K",
-    145000: "Serenada Rp145K",
-    120000: "Irama Rp120K",
-    85000: "Tala Rp85K",
-    60000: "Sekar Rp65K",
-    50000: "Gita Rp50K",
-  };
+  const priceCategory = [
+    { name: "Harmoni Rp170K", price: 170000, lantai: 1, isHover: 0 },
+    { name: "Serenada Rp145K", price: 145000, lantai: 1, isHover: 0 },
+    { name: "Irama Rp120K", price: 120000, lantai: 1, isHover: 0 },
+    { name: "Tala Rp85K", price: 85000, lantai: 1, isHover: 0 },
+    { name: "Sekar Rp65K", price: 65000, lantai: 1, isHover: 0 },
+    { name: "Gita Rp50K", price: 50000, lantai: 2, isHover: 0 },
+  ];
   const statusColor = {
     available: "bg-[#8EBFD0]",
     reserved_by_me: "bg-[#F5DB91]",
-    purchased_by_me: "bg-[#5C9E82]",
+    purchased_by_me: "bg-[#7E7E7E]",
     reserved: "bg-[#C0925E]",
     purchased: "bg-[#7E7E7E]",
   };
@@ -223,8 +217,14 @@ export default function Seats() {
         divideByFloor(res.data.data);
         // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         // notifyError(err);
+        if(err.response.data.error === "the gate has not been opened") {
+          notifyError("Pemesanan belum dibuka");
+          router.push("/closegate")
+        } else {
+          notifyError("Terjadi Kesalahan");
+        }
       } finally {
         setTimeout(() => {
           setLoading(false);
@@ -246,13 +246,20 @@ export default function Seats() {
             router.push({
               pathname: "/seats/cart",
             });
-          }, 3000);
+          }, 2000);
         });
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      console.log(err);
-      // notifyError(err);
+      //console.log(err);
+      if (err.response.data.error === "your credentials are invalid") {
+        notifyError("Silahkan Login Terlebih Dahulu");
+        router.push({
+          pathname: "/auth",
+        });
+      } else {
+        notifyError(err);
+      }
     }
   }
 
@@ -265,6 +272,7 @@ export default function Seats() {
     const floor1 = [];
     const floor2 = [];
     const reservedByMe = [];
+    let purchased = 0;
 
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
@@ -273,11 +281,11 @@ export default function Seats() {
       if (obj.status === "reserved_by_me") {
         reservedByMe.push(obj);
       } else if (obj.status === "purchased_by_me") {
-        setPurchasedSeat(purchasedSeat + 1);
+        purchased += 1;
       }
 
       // untuk misah 2 lantai
-      if (obj.row === "U" || obj.row === "V") {
+      if (obj.row === "T" || obj.row === "U") {
         floor2.push(obj);
       } else {
         floor1.push(obj);
@@ -287,6 +295,7 @@ export default function Seats() {
     // kursi yang sudah dipesan sebelumnya
     setUserSeats(reservedByMe.map((item) => item.seat_id));
     setUserSeatsPick(reservedByMe);
+    setPurchasedSeat(purchased);
 
     // passing data lantai 1 dan 2
     const floor1Seat = seatMapping(
@@ -403,9 +412,9 @@ export default function Seats() {
           arr.push(
             <div className={` duration-300 hover:scale-150 ${deg_rot[i]}`}>
               <div
-                className={`h-6 w-6 rounded-sm ${
+                className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
-                }  cursor-pointer text-center text-[0.7rem]
+                }  cursor-pointer text-center text-[0.7rem] 
                   ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -413,6 +422,12 @@ export default function Seats() {
                 }`}
                 onClick={() => {
                   onSeatPick(array[i], arrayUser);
+                }}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[i].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
                 }}
               >
                 {array[i].name}
@@ -422,9 +437,9 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed text-center text-[0.7rem] text-gmco-white opacity-80 ${
                 statusColor[array[i].status]
-              }  text-center text-[0.7rem] ${deg_rot[i]}`}
+              } ${deg_rot[i]}`}
             >
               {array[i].name}
             </div>
@@ -432,7 +447,7 @@ export default function Seats() {
         }
       } else {
         arr.push(
-          <div className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i]}`}></div>
+          <div className={`rounded-base h-6 w-6 bg-black ${deg_rot[i]}`} />
         );
       }
     }
@@ -455,7 +470,7 @@ export default function Seats() {
               }`}
             >
               <div
-                className={`h-6 w-6 rounded-sm ${
+                className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
                   isHighlight ? "bg-gmco-orange-secondarylight" : ""
@@ -465,6 +480,12 @@ export default function Seats() {
                     : ""
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[index].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
+                }}
               >
                 {array[index].name}
               </div>
@@ -473,9 +494,9 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed text-center text-[0.7rem] text-gmco-white opacity-80 ${
                 statusColor[array[index].status]
-              }  text-center text-[0.7rem] ${deg_rot[i - 1]}`}
+              } ${deg_rot[i - 1]}`}
             >
               {array[index].name}
             </div>
@@ -483,9 +504,7 @@ export default function Seats() {
         }
       } else {
         arr.push(
-          <div
-            className={`h-6 w-6 rounded-sm bg-black ${deg_rot[i - 1]}`}
-          ></div>
+          <div className={`rounded-base h-6 w-6 bg-black ${deg_rot[i - 1]}`} />
         );
       }
     }
@@ -496,7 +515,7 @@ export default function Seats() {
   // still need rework
   // please change @akbar
   // not my job ps: weka
-  function temp_mapper(array, arrayUser) {
+  function secondfloor_mapper(array, arrayUser) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
       const index = array.length - i;
@@ -507,7 +526,7 @@ export default function Seats() {
           arr.push(
             <div className={`bg-gmco-yellow duration-300 hover:scale-150`}>
               <div
-                className={`h-6 w-6 rounded-sm ${
+                className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
                   isHighlight ? "bg-gmco-orange-secondarylight" : ""
@@ -517,6 +536,12 @@ export default function Seats() {
                     : ""
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[index].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
+                }}
               >
                 {array[index].name}
               </div>
@@ -525,7 +550,7 @@ export default function Seats() {
         } else {
           arr.push(
             <div
-              className={`h-6 w-6 cursor-not-allowed rounded-sm ${
+              className={`rounded-base h-6 w-6 cursor-not-allowed ${
                 statusColor[array[index].status]
               }  text-center text-[0.7rem]`}
             >
@@ -534,7 +559,7 @@ export default function Seats() {
           );
         }
       } else {
-        arr.push(<div className={`h-6 w-6 rounded-sm bg-black`}></div>);
+        arr.push(<div className={`rounded-base h-6 w-6 bg-black`}></div>);
       }
     }
     return arr;
@@ -557,43 +582,40 @@ export default function Seats() {
       <Loading isLoading={loading} />
       <NavigationBar />
 
-      <div className="relative h-max bg-gmco-blue-main">
-        <div className="absolute h-52 w-1/2 overflow-hidden bg-gmco-grey">
+      <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
+        <div className="absolute h-64 w-screen overflow-hidden bg-gmco-grey">
           <Image
-            src="/gmco-cart.webp"
+            src="/seatmap/GMCO.webp"
             className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
             width={3000}
             height={3000}
           />
         </div>
-        <div className="relative p-7 pt-16">
+        <div className="relative p-7 pt-20">
           <p className="text-xl font-semibold text-gmco-white md:text-2xl">
             Anjangsana Simfoni
           </p>
           <p className="text-3xl font-bold text-gmco-white md:text-5xl">
             GMCO Concert #10
           </p>
-          <p className="mt-3 text-base font-bold text-gmco-white">
-            Yogyakarta, 27 Mei 2023
-          </p>
         </div>
       </div>
 
       {/* SIDE BAR START */}
       {/* ================== */}
-      <div className="flex h-max w-full flex-col md:flex-row">
+      <div className="flex h-max w-full flex-col bg-gmco-white md:flex-row">
         {/* Left Bar */}
 
         <div
           className={`${
             sideBarOpen ? "inline" : "hidden"
-          } order-last flex w-full flex-col bg-gmco-grey bg-opacity-10 md:order-first md:w-1/5 md:gap-y-3`}
+          } order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter md:order-first md:w-1/5`}
         >
           {/* Minimize Button */}
-          <div className="mt-3 flex w-full items-center justify-between pr-2">
+          <div className="my-3 flex w-full items-center justify-between pr-2">
             <p
-              className={`mb-2 pl-4 text-lg ${
+              className={`mb-2 flex items-center pl-4 text-lg ${
                 counter <= 10
                   ? "text-red-600"
                   : counter <= 60
@@ -601,7 +623,7 @@ export default function Seats() {
                   : "text-gmco-grey"
               }`}
             >
-              Refresh in{" "}
+              Refresh in &nbsp;
               <b>
                 {Math.floor(counter / 60)}:{counter % 60}
               </b>
@@ -615,32 +637,33 @@ export default function Seats() {
             </p>
 
             <button
-              className="hidden rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white hover:scale-105 md:inline"
+              className="hidden p-2 text-lg text-gmco-grey hover:scale-105 md:inline"
               onClick={() => {
                 hideSideBar(sideBarOpen);
               }}
             >
-              Hide Details &lt;
+              <XMarkIcon className="h-7 w-7 stroke-2" />
             </button>
           </div>
 
           {/* Milih Lantai */}
-          <div className="flex w-full border-2 border-gmco-orange-secondarydark">
+          <div className="flex w-full justify-center">
             <button
               onClick={() => setCurFloor(1)}
-              className={`w-1/2 py-2 font-semibold duration-300 ease-in-out ${
+              className={`w-[45%] rounded-md py-2 font-semibold drop-shadow-md duration-300 ease-in-out hover:scale-105 ${
                 curFloor === 1
-                  ? "bg-gmco-orange-secondarydark text-gmco-white"
+                  ? "bg-gmco-blue-main text-gmco-white"
                   : "bg-gmco-white text-gmco-grey"
               }`}
             >
               Lantai 1
             </button>
+            <div className="w-[2%]" />
             <button
               onClick={() => setCurFloor(2)}
-              className={`w-1/2 py-2 font-semibold duration-300 ease-in-out ${
+              className={`w-[45%] rounded-md py-2 font-semibold drop-shadow-md duration-300 ease-in-out hover:scale-105 ${
                 curFloor === 2
-                  ? "bg-gmco-orange-secondarydark text-gmco-white"
+                  ? "bg-gmco-blue-main text-gmco-white"
                   : "bg-gmco-white text-gmco-grey"
               }`}
             >
@@ -649,42 +672,50 @@ export default function Seats() {
           </div>
 
           {/* Jumlah Kursi */}
-          <div className="flex justify-between bg-gmco-yellow p-5 py-3 md:py-6">
+          <div className="flex justify-between px-5 pt-3 md:pt-6">
             <div className="text-xl font-semibold md:text-2xl">
               Jumlah Kursi
-              <p className="text-xs">
+              <p className="text-base font-normal">
                 <span className="text-red-500">*</span>Maximal pembelian 5 kursi
               </p>
             </div>
-            <div className="self-center text-xl md:text-2xl">
+            <div className="self-center text-lg font-semibold md:text-xl">
               {userSeatsPick.length} kursi
+              <p className="text-base font-normal">
+                <span className="text-red-500">*</span>Sisa {5 - purchasedSeat}
+              </p>
             </div>
           </div>
 
           {/* Kategori Kursi */}
-          <div className="bg-gmco-blue-main p-5 py-6 text-white">
+          <div className="px-5 pt-6 text-black">
             <div className="pb-3 text-xl font-semibold md:text-2xl">
               Kategori
-              <p className="text-[0.9rem]">
+              <p className="text-base font-normal">
                 <span className="text-red-500">*</span>klik untuk melihat
               </p>
             </div>
             <div className="flex flex-col gap-3 md:text-lg">
-              {Object.entries(priceCategory).map((namePrice) => (
-                <div className="flex">
+              {priceCategory.map((namePrice) => (
+                <div className="flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark">
                   <button
-                    className="basis-1/2 cursor-pointer rounded-md border-2 border-gmco-white bg-gmco-blue p-2 text-left hover:scale-105 hover:bg-gmco-blue-main"
+                    className={`duration-400 basis-1/2 cursor-pointer bg-gmco-blue-main p-2 text-left text-white transition ease-in-out hover:scale-105 hover:bg-gmco-orange-secondarydark ${
+                      priceCategoryHighlight.includes(namePrice.price)
+                        ? "scale-105 bg-gmco-orange-secondarydark"
+                        : ""
+                    }`}
                     onClick={() => {
-                      seatHighlight.includes(namePrice[0])
+                      seatHighlight.includes(namePrice.price)
                         ? setSeatHighlight([])
-                        : setSeatHighlight(namePrice[0]);
+                        : setSeatHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
                   >
-                    {namePrice[1]}
+                    {namePrice.name}
                   </button>
                   <div className="flex basis-1/2 flex-wrap justify-end">
                     {userSeatsPick.map((item) =>
-                      item.price == namePrice[0] ? (
+                      item.price == namePrice.price ? (
                         <span className="self-center pl-2">
                           {item.name}
                           {","}{" "}
@@ -699,11 +730,11 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg border-2 border-gmco-white  ${
+                className={`rounded-lg px-10 py-2 text-white drop-shadow-md ${
                   userSeats.length
-                    ? "bg-gmco-orange-secondarylight hover:scale-105"
-                    : "cursor-not-allowed bg-gmco-grey"
-                }  px-10 py-2`}
+                    ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
+                    : "pointer-events-none bg-gmco-grey opacity-50"
+                }`}
                 onClick={() => postSeats(userSeats)}
               >
                 Masukkan ke Cart
@@ -712,37 +743,33 @@ export default function Seats() {
           </div>
 
           {/* Keterangan Kursi */}
-          <div className="bg-gmco-blue p-5 ">
-            <div className=" text-gmco-grey">
+          <div className="p-5">
+            <div className="text-black">
               <p className="pb-3 text-xl font-semibold md:text-2xl">
-                Keterangan
+                Keterangan Warna
               </p>
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#B8DEE9]"></div>
-                  <p>Kursi Kosong</p>
+              <div className="flex flex-col gap-2 text-lg font-semibold">
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 self-center rounded-md bg-gmco-blue" />
+                  <p>Available Seat</p>
                 </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#7E7E7E]"></div>
-                  <p>Kursi Terbeli</p>
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
+                  <p>Purchased</p>
                 </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#5C9E82]"></div>
-                  <p>Sudah Saya Bayar</p>
-                </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#C0925E]"></div>
-                  <div className="flex flex-col">
-                    <p>Kursi Sudah Direservasi</p>
-                    <p className="text-[0.7rem]">
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary" />
+                  <div>
+                    <p>Reserved Seat</p>
+                    <p className="text-base font-normal">
                       <span className="text-red-500">*</span>Setelah 15 menit
                       tidak dibayar, kursi dapat dibeli kembali
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-row content-center gap-2">
-                  <div className="h-4 w-4 self-center rounded-md bg-[#F5DB91]"></div>
-                  <p>Belum Saya Bayar</p>
+                <div className="flex content-center gap-2">
+                  <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
+                  <p>Reserved by Me</p>
                 </div>
               </div>
             </div>
@@ -752,26 +779,29 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "w-full md:w-4/5" : "w-full"
-          } min:h-[60vh] relative overflow-hidden md:min-h-screen`}
+          } relative min-h-[60vh] overflow-hidden md:min-h-screen`}
         >
           {/* Hide Sidebar dan Zoom */}
           <div
-            className={`absolute z-10 flex h-full flex-col ${
+            className={`absolute z-10 pointer-events-none flex h-full flex-col ${
               sideBarOpen ? "justify-end" : "justify-between"
             }`}
           >
             <button
-              className={`m-3 rounded-lg bg-gmco-orange-secondarylight p-2 text-lg text-white hover:scale-105 ${
+              className={`m-3 ml-0 flex pointer-events-auto items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
                 hideSideBar(sideBarOpen);
               }}
             >
-              Show Details &gt;
+              Detail{" "}
+              <span>
+                <ChevronRightIcon className="h-5 w-5" />
+              </span>
             </button>
 
-            <div className="m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
+            <div className="m-3 flex w-max pointer-events-auto flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
               <button
                 className={`h-max px-4 py-2 duration-300 hover:scale-150`}
                 onClick={() => {
@@ -797,9 +827,19 @@ export default function Seats() {
             <div
               className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
             >
-              <div className="flex w-2/5 items-center justify-center bg-gmco-grey py-8 text-gmco-white">
-                Panggung
+              <div className="relative flex h-max w-3/4 translate-y-[100px] items-center justify-center">
+                <Image
+                  src="/seatmap/stage.png"
+                  className="h-full w-full object-cover object-center"
+                  alt="bg gmco concert"
+                  width={2000}
+                  height={2000}
+                />
+                <p className="absolute z-20 text-6xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                  Stage
+                </p>
               </div>
+
               {/* Floor1 */}
               <div
                 className={`flex h-max w-max cursor-move pt-8 duration-300 ease-in-out ${
@@ -810,20 +850,20 @@ export default function Seats() {
                 <div className="pointer-events-none flex translate-x-10">
                   {/* left */}
                   {/* row wise */}
-                  <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2">
+                  <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2 bg-[url('/seatmap/frameleft.png')] bg-cover pl-5">
                     {l_seatmap.map((seats) => (
                       // col wise
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {left_mapper(seats, userSeats)}
+                        {left_mapper(seats, userSeats, priceCategory)}
                       </div>
                     ))}
                   </div>
 
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] pb-12">
+                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleleft.png')] bg-cover pb-12">
                     {ml_seatmap.map((seats, index) => (
                       // col wise
                       // prin)
@@ -840,7 +880,7 @@ export default function Seats() {
                 <div className="pointer-events-none flex -translate-x-10">
                   {/* middle right */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem]">
+                  <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleright.png')] bg-cover">
                     {mr_seatmap.map((seats, index) => (
                       // col wise
                       <div
@@ -853,7 +893,7 @@ export default function Seats() {
 
                   {/* right */}
                   {/* row wise */}
-                  <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2">
+                  <div className="flex -translate-x-12 -rotate-[24deg] flex-col gap-2 bg-[url('/seatmap/frameright.png')] bg-cover pr-5">
                     {r_seatmap.map((seats) => (
                       // col wise
                       <div
@@ -869,75 +909,79 @@ export default function Seats() {
               {/* Floor2 */}
               {/* ============================ */}
               <div
-                className={`b-24 flex h-full w-max cursor-move flex-col justify-center duration-300 ease-in-out ${
+                className={`b-24 flex h-full w-max cursor-move flex-col items-center duration-300 ease-in-out ${
                   curFloor === 2 ? "inline" : "hidden"
                 }`}
               >
-                <Image
-                  src="/shadow_floor1.webp"
-                  alt="floor1"
-                  className="h-max w-full p-20 opacity-10"
-                  width={1000}
-                  height={1000}
-                />
-                {/* left */}
-                {/* row wise */}
+                <div className="relative flex h-3/4 items-center justify-center">
+                  <Image
+                    src="/seatmap/shadow_floor1.webp"
+                    alt="floor1"
+                    className="h-full w-auto p-20 opacity-10"
+                    width={1000}
+                    height={1000}
+                  />
+                  <p className="absolute z-20 text-4xl text-gmco-white opacity-70 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                    Lantai 1
+                  </p>
+                </div>
+
                 <div className="mt-2 flex gap-6 ">
-                  <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2">
+                  <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {l_seatmap_2.map((seats) => (
                       // col wise
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2">
+                  <div className="flex -translate-y-10 rotate-[12deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {ml_seatmap_2.map((seats) => (
                       // col wise
                       <div
-                        className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
+                        className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
                   {/* middle */}
                   {/* row wise */}
-                  <div className="flex flex-col gap-2 pb-12">
+                  <div className="flex flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pb-12 pt-10">
                     {m_seatmap_2.map((seats) => (
                       // col wise
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
                   {/* middle right */}
                   {/* row wise */}
-                  <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2">
+                  <div className="flex -translate-y-10 -rotate-[12deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {mr_seatmap_2.map((seats) => (
                       // col wise
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
                   {/* right */}
                   {/* row wise */}
-                  <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2">
+                  <div className="flex -translate-y-36 -rotate-[16deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {r_seatmap_2.map((seats) => (
                       // col wise
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>

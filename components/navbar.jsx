@@ -94,6 +94,7 @@ export default function NavigationBar() {
           toast: true,
           width: 350,
           icon: "success",
+          color:"#f6f7f1",
           background: "#2d2d2f",
           iconColor: "#287d92",
           showConfirmButton: false,
@@ -161,7 +162,7 @@ export default function NavigationBar() {
                 <Avatar
                   rounded={true}
                   alt="User settings"
-                  img="/violin-picture.webp"
+                  img="/navbar/violin-picture.webp"
                 />
               }
             >
