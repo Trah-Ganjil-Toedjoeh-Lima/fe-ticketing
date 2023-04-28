@@ -219,9 +219,9 @@ export default function Seats() {
       } catch (err) {
         // console.log(err);
         // notifyError(err);
-        if(err.response.data.error === "the gate has not been opened") {
+        if (err.response.data.error === "the gate has not been opened") {
           notifyError("Pemesanan belum dibuka");
-          router.push("/closegate")
+          router.push("/closegate");
         } else {
           notifyError("Terjadi Kesalahan");
         }
@@ -256,7 +256,6 @@ export default function Seats() {
         notifyError("Silahkan Login Terlebih Dahulu");
         router.push({
           pathname: "/auth",
-        });
         });
       } else {
         notifyError(err);
@@ -582,18 +581,18 @@ export default function Seats() {
       <Loading isLoading={loading} />
       <NavigationBar />
 
-      <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
-        <div className="absolute h-64 w-screen overflow-hidden bg-gmco-grey">
+      <div className='max-w-screen relative h-max overflow-hidden bg-gmco-blue-main'>
+        <div className='absolute h-64 w-screen overflow-hidden bg-gmco-grey'>
           <Image
-            src="/seatmap/GMCO.webp"
-            className="h-full w-full object-cover object-center opacity-50"
-            alt="bg gmco concert"
+            src='/seatmap/GMCO.webp'
+            className='h-full w-full object-cover object-center opacity-50'
+            alt='bg gmco concert'
             width={3000}
             height={3000}
           />
         </div>
-        <div className="relative p-7 pt-20">
-          <p className="text-xl font-semibold text-gmco-white md:text-2xl">
+        <div className='relative p-7 pt-20'>
+          <p className='text-xl font-semibold text-gmco-white md:text-2xl'>
             Anjangsana Simfoni
           </p>
           <p className='text-3xl font-bold text-gmco-white md:text-5xl'>
@@ -679,10 +678,10 @@ export default function Seats() {
                 <span className='text-red-500'>*</span>Maximal pembelian 5 kursi
               </p>
             </div>
-            <div className="self-center text-lg font-semibold md:text-xl">
+            <div className='self-center text-lg font-semibold md:text-xl'>
               {userSeatsPick.length} kursi
-              <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Sisa {5 - purchasedSeat}
+              <p className='text-base font-normal'>
+                <span className='text-red-500'>*</span>Sisa {5 - purchasedSeat}
               </p>
             </div>
           </div>
@@ -699,7 +698,7 @@ export default function Seats() {
               {priceCategory1.map((namePrice) => (
                 <div className='group relative flex border-b-2 border-gmco-blue-main'>
                   <button
-                    className={`group relative w-48 inline-block px-4 py-2 font-medium`}
+                    className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
                       seatHighlight.includes(namePrice.price)
                         ? setSeatHighlight([])
@@ -710,7 +709,7 @@ export default function Seats() {
                     <span
                       className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
                         priceCategoryHighlight.includes(namePrice.price)
-                          ? "bg-gmco-orange-secondarydark -translate-x-0 -translate-y-0"
+                          ? "-translate-x-0 -translate-y-0 bg-gmco-orange-secondarydark"
                           : "bg-gmco-grey"
                       }`}
                     ></span>
@@ -749,7 +748,7 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg px-10 py-2 text-white transition duration-200 ease-out drop-shadow-md ${
+                className={`rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                     : "pointer-events-none bg-gmco-grey opacity-50"
@@ -762,32 +761,32 @@ export default function Seats() {
           </div>
 
           {/* Keterangan Kursi */}
-          <div className="p-5">
-            <div className="text-black">
-              <p className="pb-3 text-xl font-semibold md:text-2xl">
+          <div className='p-5'>
+            <div className='text-black'>
+              <p className='pb-3 text-xl font-semibold md:text-2xl'>
                 Keterangan Warna
               </p>
-              <div className="flex flex-col gap-2 text-lg font-semibold">
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 self-center rounded-md bg-gmco-blue" />
+              <div className='flex flex-col gap-2 text-lg font-semibold'>
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 self-center rounded-md bg-gmco-blue' />
                   <p>Available Seat</p>
                 </div>
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 self-center rounded-md bg-gmco-grey-secondary' />
                   <p>Purchased</p>
                 </div>
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary" />
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary' />
                   <div>
                     <p>Reserved Seat</p>
-                    <p className="text-base font-normal">
-                      <span className="text-red-500">*</span>Setelah 15 menit
+                    <p className='text-base font-normal'>
+                      <span className='text-red-500'>*</span>Setelah 15 menit
                       tidak dibayar, kursi dapat dibeli kembali
                     </p>
                   </div>
                 </div>
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 self-center rounded-md bg-gmco-yellow' />
                   <p>Reserved by Me</p>
                 </div>
               </div>
@@ -802,12 +801,12 @@ export default function Seats() {
         >
           {/* Hide Sidebar dan Zoom */}
           <div
-            className={`absolute z-10 pointer-events-none flex h-full flex-col ${
+            className={`pointer-events-none absolute z-10 flex h-full flex-col ${
               sideBarOpen ? "justify-end" : "justify-between"
             }`}
           >
             <button
-              className={`m-3 ml-0 flex pointer-events-auto items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
+              className={`pointer-events-auto m-3 ml-0 flex items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
@@ -816,11 +815,11 @@ export default function Seats() {
             >
               Detail{" "}
               <span>
-                <ChevronRightIcon className="h-5 w-5" />
+                <ChevronRightIcon className='h-5 w-5' />
               </span>
             </button>
 
-            <div className="m-3 flex w-max pointer-events-auto flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
+            <div className='pointer-events-auto m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey '>
               <button
                 className={`h-max px-4 py-2 duration-300 hover:scale-150`}
                 onClick={() => {
@@ -846,15 +845,15 @@ export default function Seats() {
             <div
               className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
             >
-              <div className="relative flex h-max w-3/4 translate-y-[100px] items-center justify-center">
+              <div className='relative flex h-max w-3/4 translate-y-[100px] items-center justify-center'>
                 <Image
-                  src="/seatmap/stage.png"
-                  className="h-full w-full object-cover object-center"
-                  alt="bg gmco concert"
+                  src='/seatmap/stage.png'
+                  className='h-full w-full object-cover object-center'
+                  alt='bg gmco concert'
                   width={2000}
                   height={2000}
                 />
-                <p className="absolute z-20 text-6xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                <p className='absolute z-20 text-6xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]'>
                   Stage
                 </p>
               </div>
@@ -932,20 +931,20 @@ export default function Seats() {
                   curFloor === 2 ? "inline" : "hidden"
                 }`}
               >
-                <div className="relative flex h-3/4 items-center justify-center">
+                <div className='relative flex h-3/4 items-center justify-center'>
                   <Image
-                    src="/seatmap/shadow_floor1.webp"
-                    alt="floor1"
-                    className="h-full w-auto p-20 opacity-10"
+                    src='/seatmap/shadow_floor1.webp'
+                    alt='floor1'
+                    className='h-full w-auto p-20 opacity-10'
                     width={1000}
                     height={1000}
                   />
-                  <p className="absolute z-20 text-4xl text-gmco-white opacity-70 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                  <p className='absolute z-20 text-4xl text-gmco-white opacity-70 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]'>
                     Lantai 1
                   </p>
                 </div>
 
-                <div className="mt-2 flex gap-6 ">
+                <div className='mt-2 flex gap-6 '>
                   <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {l_seatmap_2.map((seats) => (
                       // col wise
