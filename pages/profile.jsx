@@ -131,7 +131,6 @@ export default function Profile() {
         popup: "",
       },
     })
-      .then((result, e) => {})
       .then((result, e) => {
         if (result.isConfirmed) {
           handleSubmit(e);
