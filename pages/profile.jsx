@@ -123,21 +123,24 @@ export default function Profile() {
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
-      showCancelButton: true,
+      // showCancelButton: true,
       showConfirmButton: true,
-      cancelButtonText: "Tidak",
-      cancelButtonColor: "#c76734",
-      confirmButtonText: "Ya",
+      // cancelButtonText: "Tidak",
+      // cancelButtonColor: "#c76734",
+      showCloseButton: true,
+      confirmButtonText: "OKE",
       confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
       },
+    }).then((result, e) => {
     }).then((result, e) => {
       if (result.isConfirmed) {
         handleSubmit(e);
       }
     });
   }
+  async function handleSubmit(e) {
   async function handleSubmit(e) {
     // e.preventDefault();
     try {
