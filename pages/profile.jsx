@@ -296,7 +296,7 @@ export default function Profile() {
               >
                 {/* Kursi dan Tipe */}
                 <div className="flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
-                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg sm:text-xl lg:text-2xl">
+                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
