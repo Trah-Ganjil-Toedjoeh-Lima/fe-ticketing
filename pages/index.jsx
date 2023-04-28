@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
-
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+;
 
 export default function Home() {
   return (
@@ -179,6 +183,149 @@ export default function Home() {
             </RevealWrapper>
           </div>
         </div>
+        <div className=" flex flex-col bg-gmco-blue-secondary p-10 ">
+          <h1 className="mx-auto mb-10 text-4xl font-bold text-gray-900">
+            FAQ<span>'</span>S
+          </h1>
+          <Accordion className="bg-gmco-white">
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Hal apa saja yang diperlukan sebelum membeli ticket?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                a. Akun email yang aktif dan dapat diakses <br />
+                b. Akses ke aplikasi <b>*e-banking</b> atau <b>*e-wallet</b>{" "}
+                yang akan anda gunakan untuk membayar tiket <br />
+                c. (Direkomendasikan) Mengakses website ini melalui perangkat
+                kedua seperti desktop, laptop atau tablet
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion className="">
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Bagaimana cara melakukan pemesanan dan pembayaran TODO
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>???</span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Bagaimana cara mengecek tiket yang telah saya beli TODO ?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>???</span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Apakah saya dapat mengembalikan tiket yang telah terbeli?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>TIDAKKK!!!!!</span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Berapa jumlah kursi maksimum yang dapat saya pesan?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                5 kursi per email. Bila anda ingin membeli lebih dari jumlah ini
+                anda dapat memesan menggunakan alamat email lain
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Berapa lama durasi proses transaksi?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                a. Durasi transaksi maksimum adalah 20 menit. <br />
+                b. Durasi ini terdiri dari durasi maksimum saat memilih metode
+                pembayaran (5 menit) dan durasi maksimum saat melakukan
+                pembayaran (15 menit). <br />
+                c. Perhitungan durasi dimulai pada saat anda mengklik “bayar” di
+                halaman checkoutt
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Apa yang terjadi bila saya telah memesan kursi namun gagal pada
+                saat melakukan transaksi?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                Kursi yang anda pesan akan kembali tersedia dalam kurun waktu 15
+                menit dari percobaan transaksi sebelumnya. Anda dapat memesannya
+                kembali jika belum dipesan/didahului oleh pengguna lain
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Apa saja metode pembayaran yang didukung?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                a. E-banking Mandiri, BNI, BRI, Permata <br />
+                b. E-wallet GoPay, Shopee Pay, OVO, Dana, LinkAja
+              </span>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+
+        {/* Home Content 1 */}
       </div>
       <FooterBar />
     </>
