@@ -829,7 +829,7 @@ export default function Seats() {
             >
               <div className="relative flex h-max w-3/4 translate-y-[100px] items-center justify-center">
                 <Image
-                  src="/stage.png"
+                  src="/seatmap/stage.png"
                   className="h-full w-full object-cover object-center"
                   alt="bg gmco concert"
                   width={2000}
@@ -915,7 +915,7 @@ export default function Seats() {
               >
                 <div className="relative flex h-3/4 items-center justify-center">
                   <Image
-                    src="/shadow_floor1.webp"
+                    src="/seatmap/shadow_floor1.webp"
                     alt="floor1"
                     className="h-full w-auto p-20 opacity-10"
                     width={1000}

@@ -20,7 +20,7 @@ export default function Home() {
             loop
             className="absolute h-full w-full bg-clip-content object-cover opacity-40"
           >
-            <source src="/homepage/video_v3.mp4" type="video/mp4" />
+            <source src="/video_v3.mp4" type="video/mp4" />
           </video>
           <RevealWrapper
             rotate={{ x: 10, y: 40, z: 0 }}
@@ -169,7 +169,7 @@ export default function Home() {
             >
               <div className="flex h-[50vh] md:h-[70vh] items-center">
                 <Image
-                  src="/addiems_clearnew.png"
+                  src="/homepage/addiems_clearnew.png"
                   alt="gambar addie ms"
                   className="mx-auto w-full h-auto object-cover"
                   width={500}

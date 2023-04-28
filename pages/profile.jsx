@@ -166,7 +166,7 @@ export default function Profile() {
         <div className="relative w-full overflow-hidden ">
           <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
             <Image
-              src="/GMCO_10.webp"
+              src="/profile/GMCO_10.webp"
               alt="background gmco"
               className="w-full scale-105 object-cover object-top opacity-50"
               width={3000}
@@ -323,7 +323,7 @@ export default function Profile() {
                   </div>
                   <div className="flex w-1/2 justify-end overflow-hidden sm:block sm:w-fit">
                     <Image
-                      src="/qris-reinhart.webp"
+                      src="/profile/qris-reinhart.webp"
                       alt="qris pls send money"
                       width={100}
                       height={100}
