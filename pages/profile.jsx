@@ -130,12 +130,6 @@ export default function Profile() {
       showClass: {
         popup: "",
       },
-    })
-      .then((result, e) => {
-        if (result.isConfirmed) {
-          handleSubmit(e);
-        }
-      });
     }).then((result, e) => {
       if (result.isConfirmed) {
         handleSubmit(e);
