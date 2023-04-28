@@ -77,6 +77,7 @@ export default function Profile() {
           phone: userRes.data.data.Phone,
         });
       } catch (err) {
+        console.log(err);
         notifyError(err);
       }
     })();
@@ -123,11 +124,8 @@ export default function Profile() {
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
-      showCancelButton: true,
       showConfirmButton: true,
-      cancelButtonText: "Tidak",
-      cancelButtonColor: "#c76734",
-      confirmButtonText: "Ya",
+      confirmButtonText: "Oke",
       confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
