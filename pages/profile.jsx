@@ -77,7 +77,9 @@ export default function Profile() {
           phone: userRes.data.data.Phone,
         });
       } catch (err) {
-        console.log(err);
+        if (err.response.data.error === "your credentials are invalid") {
+          router.push("/auth");
+        }
         notifyError(err);
       }
     })();
