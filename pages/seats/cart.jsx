@@ -27,24 +27,20 @@ export default function Cart() {
   });
 
   useEffect(() => {
-    (async () => {
-      try {
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/checkout"),
-        ]);
-        setSeatBoughts(res.data.data);
-        midtransSetup(res.data.midtrans_client_key);
-      } catch (err) {
-        notifyErrorMessage("Anda belum melakukan transaksi.");
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
     if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
-      router.push("/auth");
+      notifyErrorMessage("Anda belum login.");
     } else {
-      midtransSetup();
+      (async () => {
+        try {
+          const [res] = await Promise.all([
+            axiosInstance.get("/api/v1/checkout"),
+          ]);
+          setSeatBoughts(res.data.data);
+          midtransSetup(res.data.midtrans_client_key);
+        } catch (err) {
+          notifyErrorMessage("Anda belum melakukan transaksi.");
+        }
+      })();
     }
   }, []);
 
