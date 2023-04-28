@@ -43,7 +43,7 @@ export default function Cart() {
         setSeatBoughts(res.data.data);
         midtransSetup(res.data.midtrans_client_key);
       } catch (err) {
-        notifyError(err);
+        notifyErrorMessage("Anda belum melakukan transaksi.");
       }
     })();
   }, []);
@@ -78,7 +78,7 @@ export default function Cart() {
     window.snap.pay(token, {
       onSuccess: function () {
         /* You may add your own implementation here */
-        notifySucces("payment success!");
+        notifySucces("Payment successful!");
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
@@ -88,15 +88,15 @@ export default function Cart() {
       },
       onPending: function () {
         /* You may add your own implementation here */
-        notifyInfo("wating your payment!");
+        notifyInfo("Waiting for your payment...");
       },
       onError: function () {
         /* You may add your own implementation here */
-        notifyErrorMessage("payment failed!");
+        notifyErrorMessage("Payment failed!");
       },
       onClose: function () {
         /* You may add your own implementation here */
-        notifyWarning("you closed the popup without finishing the payment");
+        notifyWarning("You closed the pop-up without finishing the payment.");
       },
     });
   }
@@ -235,7 +235,7 @@ export default function Cart() {
               {/* Batalkan Transaksi */}
               <div className="h-min rounded-2xl bg-gmco-white/75 p-6 ">
                 <div className="flex items-center justify-between">
-                  <p className="text-lg">Batalkan Transaksi</p>
+                  <p className="text-lg font-bold">Batalkan Transaksi</p>
                   <button
                     onClick={() => cancelCheck()}
                     className="flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 hover:text-gmco-grey"
@@ -252,7 +252,7 @@ export default function Cart() {
                   <p>{formatNumber(orderTotal)}</p>
                 </div>
                 <p className="mt-0.5 text-sm text-gmco-grey/70">
-                  Pajak sudah termasuk<span className="text-red-500">*</span>
+                  Sudah termasuk pajak<span className="text-red-500">*</span>
                 </p>
                 <div className="mt-6 flex items-center justify-center md:justify-end">
                   <button

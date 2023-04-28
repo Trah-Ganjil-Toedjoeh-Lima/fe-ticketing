@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import {
-  ArrowRightIcon,
+  ChevronRightIcon,
   ExclamationTriangleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
@@ -13,7 +13,6 @@ import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/atoms/config";
 import { Loading } from "@/atoms/spinner";
-
 import {
   notifyError,
   notifyErrorMessage,
@@ -43,59 +42,50 @@ export default function Seats() {
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [priceCategoryHighlight, setPriceCategoryHighlight] = useState([]);
 
   // floor 1
   const mappersFloor1 = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
-    { C: [15, 9, 9, 13] },
-    { D: [15, 10, 11, 14] },
+    { C: [13, 9, 9, 15] },
+    { D: [14, 11, 10, 15] },
     { E: [16, 11, 11, 16] },
     { F: [17, 12, 12, 17] },
     { G: [17, 12, 12, 17] },
-    { H: [16, 13, 13, 15] },
-    { I: [15, 14, 14, 13] },
-    { J: [14, 14, 14, 13] },
+    { H: [15, 13, 13, 16] },
+    { I: [14, 14, 14, 15] },
+    { J: [13, 14, 14, 14] },
     { K: [13, 15, 15, 13] },
     { L: [12, 15, 15, 12] },
     { M: [11, 16, 16, 11] },
     { N: [10, 16, 16, 10] },
-    { O: [10, 18, 17, 9] },
-    { P: [9, 18, 17, 9] },
+    { O: [9, 17, 18, 10] },
+    { P: [9, 17, 18, 9] },
     { Q: [8, 18, 18, 8] },
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
-    { T: [0, 0, 0, 7] },
   ];
   const startMappersFloor1 = {
     A: [0, 1, 9, 0],
-    D: [1, 16, 26, 37],
-    E: [1, 17, 28, 39],
-    F: [1, 18, 30, 42],
-    G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
-    K: [1, 14, 29, 44],
     B: [1, 14, 23, 32],
-    C: [1, 16, 25, 34],
-    D: [1, 16, 26, 37],
+    C: [1, 14, 23, 32],
+    D: [1, 15, 26, 36],
     E: [1, 17, 28, 39],
     F: [1, 18, 30, 42],
     G: [1, 18, 30, 42],
-    H: [1, 17, 30, 43],
-    I: [1, 16, 30, 44],
-    J: [1, 15, 29, 43],
+    H: [1, 16, 29, 42],
+    I: [1, 15, 29, 43],
+    J: [1, 14, 28, 42],
     K: [1, 14, 29, 44],
     L: [1, 13, 28, 43],
     M: [1, 12, 28, 44],
     N: [1, 11, 27, 43],
-    O: [1, 11, 29, 46],
-    P: [1, 10, 28, 45],
+    O: [1, 10, 27, 45],
+    P: [1, 10, 27, 45],
     Q: [1, 9, 27, 45],
     R: [1, 8, 27, 46],
     S: [1, 8, 27, 46],
-    T: [0, 0, 0, 1],
   };
   const deg_rot = [
     "-translate-y-[20px]",
@@ -144,37 +134,27 @@ export default function Seats() {
 
   // floor2
   const mappersFloor2 = [
+    { T: [12, 12, 14, 11, 13] },
     { U: [12, 13, 14, 11, 13] },
-    { V: [12, 12, 14, 11, 13] },
   ];
   const startMappersFloor2 = {
+    T: [1, 13, 25, 39, 50],
     U: [1, 13, 26, 40, 51],
-    V: [1, 13, 25, 39, 50],
   };
 
   // universal
-  const priceCategory = {
-    170000: "Harmoni Rp170K",
-    145000: "Serenada Rp145K",
-    120000: "Irama Rp120K",
-    85000: "Tala Rp85K",
-    60000: "Sekar Rp65K",
-    50000: "Gita Rp50K",
-  };
-
-  const priceCategory1 = [
-    { name: "Harmoni Rp170K", price: 170000 },
-    { name: "Serenada Rp145K", price: 145000 },
-    { name: "Irama Rp120K", price: 120000 },
-    { name: "Tala Rp85K", price: 85000 },
-    { name: "Sekar Rp65K", price: 60000 },
-    { name: "Gita Rp50K", price: 50000 },
+  const priceCategory = [
+    { name: "Harmoni Rp170K", price: 170000, lantai: 1, isHover: 0 },
+    { name: "Serenada Rp145K", price: 145000, lantai: 1, isHover: 0 },
+    { name: "Irama Rp120K", price: 120000, lantai: 1, isHover: 0 },
+    { name: "Tala Rp85K", price: 85000, lantai: 1, isHover: 0 },
+    { name: "Sekar Rp65K", price: 65000, lantai: 1, isHover: 0 },
+    { name: "Gita Rp50K", price: 50000, lantai: 2, isHover: 0 },
   ];
-
   const statusColor = {
     available: "bg-[#8EBFD0]",
     reserved_by_me: "bg-[#F5DB91]",
-    purchased_by_me: "bg-[#5C9E82]",
+    purchased_by_me: "bg-[#7E7E7E]",
     reserved: "bg-[#C0925E]",
     purchased: "bg-[#7E7E7E]",
   };
@@ -265,8 +245,15 @@ export default function Seats() {
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      // console.log(err);
-      notifyError(err);
+      //console.log(err);
+      if (err.response.data.error === "your credentials are invalid") {
+        notifyError("Silahkan Login Terlebih Dahulu");
+        router.push({
+          pathname: "/auth",
+        });
+      } else {
+        notifyError(err);
+      }
     }
   }
 
@@ -292,7 +279,7 @@ export default function Seats() {
       }
 
       // untuk misah 2 lantai
-      if (obj.row === "U" || obj.row === "V") {
+      if (obj.row === "T" || obj.row === "U") {
         floor2.push(obj);
       } else {
         floor1.push(obj);
@@ -410,7 +397,6 @@ export default function Seats() {
 
   // mapping lantai 1 sayap kiri
   function left_mapper(array, arrayUser) {
-    console.log(array);
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
@@ -422,7 +408,7 @@ export default function Seats() {
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
-                }  cursor-pointer text-center text-[0.7rem]
+                }  cursor-pointer text-center text-[0.7rem] 
                   ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -430,6 +416,12 @@ export default function Seats() {
                 }`}
                 onClick={() => {
                   onSeatPick(array[i], arrayUser);
+                }}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[i].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
                 }}
               >
                 {array[i].name}
@@ -482,6 +474,12 @@ export default function Seats() {
                     : ""
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[index].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
+                }}
               >
                 {array[index].name}
               </div>
@@ -511,7 +509,7 @@ export default function Seats() {
   // still need rework
   // please change @akbar
   // not my job ps: weka
-  function temp_mapper(array, arrayUser) {
+  function secondfloor_mapper(array, arrayUser) {
     let arr = [];
     for (let i = array.length; i > 0; i--) {
       const index = array.length - i;
@@ -532,6 +530,12 @@ export default function Seats() {
                     : ""
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight([array[index].price]);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight([]);
+                }}
               >
                 {array[index].name}
               </div>
@@ -613,7 +617,7 @@ export default function Seats() {
                   : "text-gmco-grey"
               }`}
             >
-              Refresh in
+              Refresh in &nbsp;
               <b>
                 {Math.floor(counter / 60)}:{counter % 60}
               </b>
@@ -686,21 +690,26 @@ export default function Seats() {
               </p>
             </div>
             <div className="flex flex-col gap-3 md:text-lg">
-              {Object.entries(priceCategory).map((namePrice) => (
+              {priceCategory.map((namePrice) => (
                 <div className="flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark">
                   <button
-                    className={`basis-1/2 cursor-pointer bg-gmco-blue-main p-2 text-left text-white hover:scale-105 hover:bg-gmco-orange-secondarydark`}
+                    className={`duration-400 basis-1/2 cursor-pointer bg-gmco-blue-main p-2 text-left text-white transition ease-in-out hover:scale-105 hover:bg-gmco-orange-secondarydark ${
+                      priceCategoryHighlight.includes(namePrice.price)
+                        ? "scale-105 bg-gmco-orange-secondarydark"
+                        : ""
+                    }`}
                     onClick={() => {
-                      seatHighlight.includes(namePrice[0])
+                      seatHighlight.includes(namePrice.price)
                         ? setSeatHighlight([])
-                        : setSeatHighlight(namePrice[0]);
+                        : setSeatHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
                   >
-                    {namePrice[1]}
+                    {namePrice.name}
                   </button>
                   <div className="flex basis-1/2 flex-wrap justify-end">
                     {userSeatsPick.map((item) =>
-                      item.price == namePrice[0] ? (
+                      item.price == namePrice.price ? (
                         <span className="self-center pl-2">
                           {item.name}
                           {","}{" "}
@@ -733,19 +742,19 @@ export default function Seats() {
               <p className="pb-3 text-xl font-semibold md:text-2xl">
                 Keterangan Warna
               </p>
-              <div className="flex flex-col gap-2 text-xl font-semibold">
+              <div className="flex flex-col gap-2 text-lg font-semibold">
                 <div className="flex content-center gap-2">
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-blue" />
-                  <p>Kursi Kosong</p>
+                  <p>Available Seat</p>
                 </div>
                 <div className="flex content-center gap-2">
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
-                  <p>Kursi Terbeli</p>
+                  <p>Purchased</p>
                 </div>
                 <div className="flex content-center gap-2">
                   <div className="h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary" />
                   <div>
-                    <p>Kursi Sudah Direservasi</p>
+                    <p>Reserved Seat</p>
                     <p className="text-base font-normal">
                       <span className="text-red-500">*</span>Setelah 15 menit
                       tidak dibayar, kursi dapat dibeli kembali
@@ -754,7 +763,7 @@ export default function Seats() {
                 </div>
                 <div className="flex content-center gap-2">
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
-                  <p>Belum Saya Bayar</p>
+                  <p>Reserved by Me</p>
                 </div>
               </div>
             </div>
@@ -780,9 +789,9 @@ export default function Seats() {
                 hideSideBar(sideBarOpen);
               }}
             >
-              Show
+              Detail{" "}
               <span>
-                <ArrowRightIcon className="h-5 w-5" />
+                <ChevronRightIcon className="h-5 w-5" />
               </span>
             </button>
 
@@ -841,7 +850,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {left_mapper(seats, userSeats)}
+                        {left_mapper(seats, userSeats, priceCategory)}
                       </div>
                     ))}
                   </div>
@@ -906,12 +915,11 @@ export default function Seats() {
                     width={1000}
                     height={1000}
                   />
-                  <p className="absolute z-20 opacity-70 text-4xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                  <p className="absolute z-20 text-4xl text-gmco-white opacity-70 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
                     Lantai 1
                   </p>
                 </div>
-                {/* left */}
-                {/* row wise */}
+
                 <div className="mt-2 flex gap-6 ">
                   <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/frametop.png')] bg-cover pt-10">
                     {l_seatmap_2.map((seats) => (
@@ -919,7 +927,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
@@ -929,9 +937,9 @@ export default function Seats() {
                     {ml_seatmap_2.map((seats) => (
                       // col wise
                       <div
-                        className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
+                        className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
@@ -943,7 +951,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
@@ -955,7 +963,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
@@ -967,7 +975,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {temp_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeats)}
                       </div>
                     ))}
                   </div>
