@@ -36,6 +36,7 @@ export default function OtpPage() {
                 toast: true,
                 width: 300,
                 icon: "success",
+                color: "#f6f7f1",
                 background: "#2d2d2f",
                 iconColor: "#287d92",
                 showConfirmButton: false,
@@ -56,23 +57,23 @@ export default function OtpPage() {
     }
   }
 
-    if (typeof window !== "undefined") {
-      const btn = document.getElementById("login");
-      if (btn) {
-        // Not called
-        btn.addEventListener("keypress", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            document.getElementById("login").click();
-          }
-        });
-      }
+  if (typeof window !== "undefined") {
+    const btn = document.getElementById("login");
+    if (btn) {
+      // Not called
+      btn.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          document.getElementById("login").click();
+        }
+      });
     }
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
       <Card className=" flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 ">
-        <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white"/>
+        <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white" />
         <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
           Masukkan Kode Verifikasi
         </div>
