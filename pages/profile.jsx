@@ -1,13 +1,16 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { use, useEffect, useState } from "react";
 
-import { useEffect } from "react";
-import { useState } from "react";
-
-import { axiosInstance, midtransSetup } from "@/atoms/config";
-import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
-import { notifyError, notifyErrorMessage } from "@/components/notify";
+import NavigationBar from "@/components/navbar";
+import { axiosInstance } from "@/atoms/config";
+import {
+  notifyError,
+  notifyErrorMessage,
+  notifySucces,
+} from "@/components/notify";
+import Swal from "sweetalert2";
 
 export default function Profile() {
   const router = useRouter();
@@ -30,38 +33,70 @@ export default function Profile() {
     Seat: [],
   });
 
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      !localStorage.getItem("auth_token")
-    ) {
-      router.push("/auth");
-    }
+  function routeToSeats() {
+    router.push("/seats");
+  }
 
+  // ini gk bisa dijadiin 1 karena kalo ticket ga ada chandra ngasihnya 404 jadi error ya harus dipihsa -weka
+  // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
+  // misal gini
+  useEffect(() => {
+    (async () => {
+      if (
+        typeof window !== "undefined" &&
+        !localStorage.getItem("auth_token")
+      ) {
+        router.push("/auth");
+      }
+      try {
+        const [userRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/profile"),
+        ]);
+        if (!userRes.data.data.Email || !userRes.data.data.Phone) {
+          Swal.fire({
+            html: `Mohon Lengkapi Nama dan Nomor WhatsApp Anda Agar Dapat Membeli Tiket`,
+            toast: false,
+            icon: "warning",
+            iconColor: "#f6f7f1",
+            background: "#2d2d2f",
+            color: "#f6f7f1",
+            showConfirmButton: true,
+            cancelButtonColor: "#c76734",
+            confirmButtonText: "Ya, Saya Mengerti",
+            confirmButtonColor: "#287d92",
+            showClass: {
+              popup: "",
+            },
+          });
+        }
+        console.log(userRes.data.data, "ini data");
+        setUserData(userRes.data.data);
+        setFormUserData({
+          name: userRes.data.data.Name,
+          email: userRes.data.data.Email,
+          phone: userRes.data.data.Phone,
+        });
+      } catch (err) {
+        console.log(err);
+        notifyError(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
-        const [userRes, ticketRes] = await Promise.all([
-          axiosInstance.get("api/v1/user/profile"),
-          axiosInstance.get("api/v1/user/tickets"),
+        const [ticketRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/tickets"),
         ]);
-        setUserData(userRes.data.data);
         setSeatsBought(ticketRes.data.data);
       } catch (err) {
-        notifyErrorMessage(err);
         console.log(err);
       }
     })();
+  }, []);
 
-  }, [router]);
-
-  useEffect(() => {
-    setFormUserData({
-      name: userData.Name,
-      email: userData.Email,
-      phone: userData.Phone,
-    });
-
-  }, [userData]);
+  // console.log(formUserData);
 
   function mapCategory(price) {
     const categories = {
@@ -69,7 +104,7 @@ export default function Profile() {
       85000: "Diamond",
       120000: "Ascendant",
       145000: "Immortal",
-      default: "Radiant"
+      default: "Radiant",
     };
 
     return categories[price] || categories.default;
@@ -80,58 +115,101 @@ export default function Profile() {
     setFormUserData({ ...formUserData, [name]: value });
   }
 
-  const handleSubmit = async (e) => {
+  function confirmSubmit(e) {
     e.preventDefault();
+    Swal.fire({
+      html: `Pastikan Data yang Diisikan Sudah Sesuai!`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#f6f7f1",
+      background: "#2d2d2f",
+      color: "#f6f7f1",
+      showConfirmButton: true,
+      confirmButtonText: "Oke",
+      confirmButtonColor: "#287d92",
+      showClass: {
+        popup: "",
+      },
+    }).then((result, e) => {
+    }).then((result, e) => {
+      if (result.isConfirmed) {
+        handleSubmit(e);
+      }
+    });
+  }
+
+  async function handleSubmit(e) {
+    // e.preventDefault();
     try {
-      const resPatch = await axiosInstance.patch(
-        "api/v1/user/profile",
-        formUserData
-      );
-      const [resGet] = await Promise.all([
-        axiosInstance.get("api/v1/user/profile"),
+      await axiosInstance.patch("api/v1/user/profile", formUserData);
+      const [userRes] = await Promise.all([
+        axiosInstance.get("/api/v1/user/profile"),
       ]);
-      setUserData(resGet.data.data);
+      console.log(userRes);
+      setUserData(userRes.data.data);
+      notifySucces("Your profile has been successfully updated!");
     } catch (err) {
       notifyErrorMessage(err);
     }
-  };
+  }
 
+  Object.keys(userData).map((key) => {
+    console.log(userData[key]);
+  });
+
+  // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="w-screen bg-gmco-white">
+      <div className="h-full w-screen bg-gmco-yellow-secondary">
         {/*This is the header */}
-        <div className="relative w-screen overflow-hidden">
-          <img
-            className="h-64 w-full scale-105 object-cover object-top blur-[5px] brightness-75 "
-            src="/GMCO_10.webp"
-          ></img>
-          <div className="absolute left-0 top-0 flex h-full w-full flex-col px-12 py-16 lg:flex-row">
-            <div className="flex h-full w-1/5 items-center">
+        <div className="relative w-full overflow-hidden ">
+          <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
+            <Image
+              src="/GMCO_10.webp"
+              alt="background gmco"
+              className="w-full scale-105 object-cover object-top opacity-50"
+              width={3000}
+              height={3000}
+            />
+          </div>
+          <div className="container relative m-auto flex h-full flex-col items-center pb-8 pt-24 lg:flex-row">
+            <div className="flex h-full lg:w-1/5">
               <h1 className="font-rubik text-5xl font-light text-white">
                 PROFIL
               </h1>
             </div>
 
             <div className="flex w-4/5 flex-col items-start lg:items-end">
-              {Object.keys(userData).map((key) => {
-                <p key={key}
-                  className={`font-sans text-gmco-yellow ${key === "Name" ? "mt-8 text-xl font-semibold" : "font-normal"}`}
+              {/* aku agak bingung kok gk keluar hasilnya */}
+              {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
+              {/* awal => {} harusnya => () */}
+              {/* kutambah kalo id gk ditampilin ya */}
+              {Object.keys(userData).map((key) => (
+                <p
+                  key={key}
+                  className={`font-sans text-gmco-yellow ${
+                    key === "Name"
+                      ? "text-2xl font-semibold"
+                      : key === "UserId"
+                      ? "hidden"
+                      : "font-normal"
+                  }`}
                 >
                   {userData[key]}
                 </p>
-              })}
+              ))}
             </div>
           </div>
         </div>
 
         {/* CONTENT */}
-        <div className="flex w-full flex-col lg:flex-row">
+        <div className="container m-auto flex flex-col items-center lg:flex-row lg:items-start">
           {/* EDIT IDENTITY */}
           <form
-            onSubmit={handleSubmit}
-            className="grid-col w-full items-start bg-gmco-yellow-secondary px-12 py-8 lg:w-1/3"
+            onSubmit={confirmSubmit}
+            className="grid-col w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:w-1/3 lg:pr-12"
           >
             {/* Name */}
             <label htmlFor="nama" className="font-rubik text-white">
@@ -180,31 +258,50 @@ export default function Profile() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="mt-12 w-full rounded-lg bg-[#932F2F] p-2 text-center font-inter text-lg font-semibold text-white"
+              className="mt-12 w-full rounded-lg bg-gmco-orange-secondarydark p-2 text-center font-inter text-lg font-semibold text-white duration-300 hover:scale-110"
             >
               PERBARUI PROFIL
             </button>
           </form>
 
           {/* List of Tickets */}
-          <div className="grid-col grid w-full gap-4 py-8 pl-8 pr-12 lg:w-2/3">
+          <div className="flex w-screen flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-full">
             <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
             {/* TICKET */}
+            {seatsBought.Seat.length === 0 ? (
+              <div className="flex w-full flex-col items-center justify-center">
+                <p className="mb-8 text-center text-2xl text-gmco-grey">
+                  Kowe ra nduwe tiket
+                  <br />
+                  Gek Ndang Tuku
+                  <br />
+                  Selak entek lur
+                </p>
+                <button
+                  class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
+                  onClick={routeToSeats}
+                >
+                  Tuku Saiki
+                </button>
+              </div>
+            ) : (
+              <div />
+            )}
             {seatsBought.Seat.map((seat, index) => (
               <div
                 key={index}
-                className="flex h-fit w-full flex-row rounded-lg bg-white p-4"
+                className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row"
               >
                 {/* Kursi dan Tipe */}
-                <div className="flex w-1/5 flex-col justify-center text-center">
-                  <h1 className="font-rubik text-lg font-bold text-gmco-grey sm:text-xl lg:text-2xl">
+                <div className="flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg sm:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
                     className={
-                      `w-full rounded-lg text-center text-sm font-normal text-gmco-white lg:text-base ` +
+                      `w-fit rounded-lg px-1 text-center text-xs font-normal text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
                       ({
                         Platinum: "bg-gmco-blue",
                         Diamond: "bg-violet-700",
@@ -219,13 +316,13 @@ export default function Profile() {
                 </div>
 
                 {/* Waktu dan Tempat */}
-                <div className="flex w-full items-center justify-end">
-                  <div className="flex h-full flex-col justify-center gap-2 text-end text-xs sm:text-sm lg:text-base">
+                <div className="flex w-full items-center sm:justify-end">
+                  <div className="flex w-1/2 flex-col gap-2 text-start text-xs sm:w-fit sm:items-center sm:text-end sm:text-sm lg:text-base">
                     <p>Auditorium Driyarkara</p>
                     <p>Sabtu, 27 Mei 2023</p>
                     <p>Open Gate 18.00 WIB</p>
                   </div>
-                  <div className="overflow-hidden">
+                  <div className="flex w-1/2 justify-end overflow-hidden sm:block sm:w-fit">
                     <Image
                       src="/qris-reinhart.webp"
                       alt="qris pls send money"
@@ -235,7 +332,7 @@ export default function Profile() {
                   </div>
 
                   {/* Nama Konser */}
-                  <div className="flex w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4">
+                  <div className="hidden w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex">
                     <div className="mx-2 overflow-hidden">
                       <Image
                         src="/logo-anjangsana.webp"

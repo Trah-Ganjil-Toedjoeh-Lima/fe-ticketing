@@ -10,3 +10,30 @@
     -moz-appearance: textfield !important;
   }
 }
+
+:root {
+  --primary: #f6f7f1;
+  --secondary: #287d92;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: large;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 0px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 0px;
+  border: 0px solid var(--primary);
+}

@@ -1,6 +1,7 @@
-import Head from "next/head";
 import React from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
+
 import { axiosInstance } from "@/atoms/config";
 
 export default function Error() {

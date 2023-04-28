@@ -1,60 +1,60 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
+
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
 
 export default function Home() {
-  
   return (
     <>
       <NavigationBar />
-      <div className='bg-gmco-white'>
+      <div className="max-w-screen bg-gmco-white">
         {/* Hero Section */}
-        <div className='relative h-[50vh] w-screen overflow-hidden bg-gmco-grey md:h-screen'>
+        <div className="relative h-[50vh] w-full overflow-hidden bg-gmco-grey md:h-screen">
           <video
-            preload='auto'
+            preload="auto"
             playsInline
             autoPlay
             muted
             loop
-            className='absolute h-full w-full scale-[2.15] bg-clip-content object-cover py-24 opacity-40 md:scale-125 md:py-20'
+            className="absolute h-full w-full bg-clip-content object-cover opacity-40"
           >
-            <source src='/video-gmco.mp4' type='video/mp4' />
+            <source src="/video_v3.mp4" type="video/mp4" />
           </video>
           <RevealWrapper
             rotate={{ x: 10, y: 40, z: 0 }}
-            origin='left'
+            origin="left"
             delay={100}
             duration={2000}
-            distance='250px'
+            distance="250px"
           >
-            <div className='relative z-10 flex h-[50vh] items-center justify-center bg-cover md:h-screen'>
-              <div className='flex h-max w-max flex-wrap items-center justify-center'>
+            <div className="relative z-10 flex h-[50vh] items-center justify-center bg-cover md:h-screen">
+              <div className="flex h-max w-max flex-wrap items-center justify-center">
                 <Image
-                  src='/logo-anjangsana.webp'
-                  alt='logo anjangsana'
-                  className='mt-auto h-[30vw] w-auto md:-ml-8 md:h-[35vh] xl:-ml-20 xl:h-[55vh]'
+                  src="/logo-anjangsana.webp"
+                  alt="logo anjangsana"
+                  className="mt-auto h-[30vw] w-auto md:-ml-8 md:h-[35vh] xl:-ml-20 xl:h-[55vh]"
                   width={1000}
                   height={1000}
                 />
-                <div className='w-max text-left'>
-                  <h2 className='text-3xl font-bold text-white drop-shadow md:text-5xl xl:text-8xl '>
+                <div className="w-max text-left">
+                  <h2 className="text-3xl font-bold text-white drop-shadow md:text-5xl xl:text-8xl ">
                     GRAND CONCERT
                   </h2>
-                  <p className='mb-2 font-normal text-white drop-shadow md:mb-6 md:text-4xl xl:mb-16 xl:text-6xl'>
+                  <p className="mb-2 font-normal text-white drop-shadow md:mb-6 md:text-4xl xl:mb-16 xl:text-6xl">
                     Vol. 10
                   </p>
-                  <p className='font-normal text-white drop-shadow md:text-2xl'>
+                  <p className="font-normal text-white drop-shadow md:text-2xl">
                     Sabtu, <b>27</b> Mei 2023 @ <b>18.00 WIB</b>
                     <br />
                     Auditorium Driyarkara
                   </p>
                 </div>
-                <div className='mt-4 flex w-full justify-center md:mt-1 lg:-mt-10'>
+                <div className="mt-4 flex w-full justify-center md:mt-1 lg:-mt-10">
                   <Link
-                    href='/seats'
-                    className='delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-4 md:text-2xl'
+                    href="/seats"
+                    className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-4 md:text-2xl"
                   >
                     Buy Ticket Now!
                   </Link>
@@ -66,17 +66,17 @@ export default function Home() {
 
         {/* Home Content 1 */}
         <div
-          id='about'
-          className='container mx-auto grid grid-cols-1 items-center justify-between px-10 py-20 md:grid-cols-2'
+          id="about"
+          className="container mx-auto grid grid-cols-1 items-center justify-between px-10 py-20 md:grid-cols-2"
         >
           {/* GMCO Image */}
-          <RevealWrapper origin='left' duration={1000} distance='100px'>
-            <div className='w-full'>
-              <div className='md:w-3/4'>
+          <RevealWrapper origin="left" duration={1000} distance="100px">
+            <div className="w-full">
+              <div className="md:w-3/4">
                 <Image
-                  src='/logo_gmco.webp'
-                  alt='logo gmco.webp'
-                  className='mx-auto h-auto w-full'
+                  src="/logo_gmco.webp"
+                  alt="logo gmco.webp"
+                  className="mx-auto h-auto w-full"
                   width={500}
                   height={500}
                 />
@@ -85,16 +85,16 @@ export default function Home() {
           </RevealWrapper>
 
           {/* Text */}
-          <RevealWrapper duration={1000} distance='0'>
-            <div className='w-full'>
-              <div className='py-12 text-center md:text-left'>
-                <div className='text-md font-bold uppercase tracking-wide text-gmco-orange-secondarylight md:text-xl'>
+          <RevealWrapper duration={1000} distance="0">
+            <div className="w-full">
+              <div className="py-12 text-center md:text-left">
+                <div className="text-md font-bold uppercase tracking-wide text-gmco-orange-secondarylight md:text-xl">
                   About
                 </div>
-                <h1 className='mb-4 mt-2 text-2xl font-semibold leading-tight text-gray-900 md:text-4xl'>
+                <h1 className="mb-4 mt-2 text-2xl font-semibold leading-tight text-gray-900 md:text-4xl">
                   Grand Concert #10
                 </h1>
-                <p className='text-md mb-4 leading-normal text-gray-900 md:text-lg'>
+                <p className="text-md mb-4 leading-normal text-gray-900 md:text-lg">
                   GMCO Live from the Living Room merupakan sebuah intimate
                   orchestra concert yang dilaksanakan oleh Unit Kegiatan
                   Mahasiswa Gadjah Mada Chamber Orchestra (GMCO UGM). Konser
@@ -109,16 +109,69 @@ export default function Home() {
                   banyak penikmat musik Yogyakarta.
                 </p>
                 <a
-                  className='text-gmco-white'
-                  href='https://gmco.ukm.ugm.ac.id/'
+                  className="text-gmco-white"
+                  href="https://gmco.ukm.ugm.ac.id/"
                 >
-                  <button className='delay-15 rounded-md bg-gmco-blue-main px-4 py-2 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:px-6 md:py-3'>
+                  <button className="delay-15 rounded-md bg-gmco-blue-main px-4 py-2 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-orange-secondarydark md:px-6 md:py-3">
                     More About GMCO
                   </button>
                 </a>
               </div>
             </div>
           </RevealWrapper>
+        </div>
+
+        <div className="bg-[#191919] py-20">
+          <div
+            id="about"
+            className="container mx-auto grid grid-cols-1 items-center justify-between px-10 md:grid-cols-2"
+          >
+            {/* Text */}
+            <RevealWrapper duration={1000} distance="0">
+              <div className="flex w-full justify-end text-gmco-white">
+                <div className="w-3/4 py-12 text-center md:text-left">
+                  <div className="text-md font-bold tracking-wide md:text-2xl">
+                    Featuring,
+                  </div>
+                  <h1 className="mb-4 mt-2 text-2xl font-extrabold leading-tight md:text-7xl">
+                    Addie MS{" "}
+                    <span className="text-gmco-orange-secondarydark">.</span>
+                  </h1>
+                  <p className="mb-4 text-justify text-base font-light leading-normal opacity-80 md:text-lg">
+                    Addie MS adalah seorang musisi, konduktor, dan arranger
+                    terkenal asal Indonesia. Dia dikenal sebagai pendiri dan
+                    konduktor dari Orkestra Simfoni Jakarta, yang telah tampil
+                    dalam berbagai pertunjukan musik di dalam dan luar negeri.
+                    Selain itu, dia juga aktif dalam mendukung pendidikan musik
+                    di Indonesia dan terlibat dalam berbagai kegiatan sosial dan
+                    lingkungan. Dia telah menerima banyak penghargaan atas
+                    kontribusinya dalam dunia musik dan kebudayaan Indonesia.
+                  </p>
+                  <a
+                    className="delay-15 border-b-2 py-3 text-gmco-white transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight"
+                    href="https://gmco.ukm.ugm.ac.id/"
+                  >
+                    More About Addie MS
+                  </a>
+                </div>
+              </div>
+            </RevealWrapper>
+
+            {/* GMCO Image */}
+            <RevealWrapper origin="left" duration={2000} distance="100px">
+              <div className="w-full">
+                <div className="flex h-[70vh] items-center">
+                  <Image
+                    src="/addiems_clearnew.png"
+                    alt="gambar addie ms"
+                    className="mx-auto h-full w-auto object-cover hover:animate-pulse"
+                    width={500}
+                    height={500}
+                  />
+                </div>
+              </div>
+            </RevealWrapper>
+          </div>
         </div>
 
         {/* Home Content 1 */}

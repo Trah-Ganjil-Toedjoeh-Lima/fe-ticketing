@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
+import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import { FaShoppingCart } from "react-icons/fa";
+
 import { axiosInstance } from "@/atoms/config";
-import Swal from "sweetalert2";
 
 export default function NavBarAdmin() {
   const router = useRouter();
@@ -21,15 +23,6 @@ export default function NavBarAdmin() {
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
-    {
-      name: (
-        <>
-          <FaShoppingCart className='hidden scale-x-[-1] md:inline md:h-6 md:w-6' />
-          <p className='md:hidden'>Shopping Cart</p>
-        </>
-      ),
-      route: "/seats/cart",
-    },
   ];
 
   useEffect(() => {
@@ -56,30 +49,30 @@ export default function NavBarAdmin() {
     };
   }, []);
 
-  function logoutCheck(e) {
+  function logoutCheck() {
     Swal.fire({
       html: `Anda yakin ingin keluar?`,
       toast: false,
       icon: "warning",
-      iconColor: "#000000",
+      iconColor: "#f6f7f1",
+      background: "#2d2d2f",
+      color: "#f6f7f1",
       showCancelButton: true,
       cancelButtonText: "Tidak",
-      cancelButtonColor: "#991b1b",
+      cancelButtonColor: "#c76734",
       confirmButtonText: "Ya",
-      confirmButtonColor: "#16a34a",
+      confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        logoutSubmit(e);
+        logoutSubmit();
       }
     });
   }
 
-  async function logoutSubmit(e) {
-    e.preventDefault();
-
+  async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
       if (res.data.message == "success") {
         localStorage.removeItem("auth_token");
@@ -88,7 +81,9 @@ export default function NavBarAdmin() {
           toast: true,
           width: 350,
           icon: "success",
-          iconColor: "#16a34a",
+          color: "#f6f7f1",
+          background: "#2d2d2f",
+          iconColor: "#287d92",
           showConfirmButton: false,
           timer: 1500,
           showClass: {
