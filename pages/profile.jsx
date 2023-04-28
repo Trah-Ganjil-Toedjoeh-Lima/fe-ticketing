@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -10,6 +10,7 @@ import {
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
+import Swal from "sweetalert2";
 
 export default function Profile() {
   const router = useRouter();
@@ -32,6 +33,10 @@ export default function Profile() {
     Seat: [],
   });
 
+  function routeToSeats() {
+    router.push("/seats");
+  }
+
   // ini gk bisa dijadiin 1 karena kalo ticket ga ada chandra ngasihnya 404 jadi error ya harus dipihsa -weka
   // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
   // misal gini
@@ -47,7 +52,23 @@ export default function Profile() {
         const [userRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
         ]);
-        console.log(userRes);
+        if(!userRes.data.data.Email || !userRes.data.data.Phone){
+          Swal.fire({
+            html: "Isi data profile agar bisa membeli tiket",
+            toast: true,
+            width: 300,
+            icon: "warning",
+            background: "#2d2d2f",
+            iconColor: "#287d92",
+            color: "#f6f7f1",
+            showConfirmButton: false,
+            timer: 1500,
+            showClass: {
+              popup: "",
+            },
+          });
+        }
+        console.log(userRes.data.data, "ini data");
         setUserData(userRes.data.data);
       } catch (err) {
         notifyError(err);
@@ -70,14 +91,6 @@ export default function Profile() {
     })();
   }, []);
 
-  useEffect(() => {
-    setFormUserData({
-      name: userData.Name,
-      email: userData.Email,
-      phone: userData.Phone,
-    });
-  }, [userData]);
-
   // console.log(formUserData);
 
   function mapCategory(price) {
@@ -97,8 +110,32 @@ export default function Profile() {
     setFormUserData({ ...formUserData, [name]: value });
   }
 
-  const handleSubmit = async (e) => {
+  function confirmSubmit(e) {
     e.preventDefault();
+    Swal.fire({
+      html: `Pastikan Data yang Diisikan Sudah Sesuai!`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#f6f7f1",
+      background: "#2d2d2f",
+      color: "#f6f7f1",
+      showCancelButton: true,
+      showConfirmButton:true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#c76734",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#287d92",
+      showClass: {
+        popup: "",
+      },
+    }).then((result,e) => {
+      if (result.isConfirmed) {
+        handleSubmit(e);
+      }
+    });
+  }
+  async function handleSubmit(e){
+    // e.preventDefault();
     try {
       await axiosInstance.patch("api/v1/user/profile", formUserData);
       const [userRes] = await Promise.all([
@@ -164,10 +201,10 @@ export default function Profile() {
         </div>
 
         {/* CONTENT */}
-        <div className="container m-auto flex flex-col items-start lg:flex-row">
+        <div className="container m-auto flex flex-col items-center lg:flex-row lg:items-start">
           {/* EDIT IDENTITY */}
           <form
-            onSubmit={handleSubmit}
+            onSubmit={confirmSubmit}
             className="grid-col w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:w-1/3 lg:pr-12"
           >
             {/* Name */}
@@ -224,20 +261,28 @@ export default function Profile() {
           </form>
 
           {/* List of Tickets */}
-          <div className="flex w-full flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-2/3">
+          <div className="flex w-screen flex-col gap-4 overflow-auto bg-gmco-white px-8 py-8 lg:h-screen lg:w-2/3 lg:w-full">
             <p className="text-start text-2xl font-medium text-gmco-grey">
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
             {/* TICKET */}
             {seatsBought.Seat.length === 0 ? (
-              <div>
-                <p className="text-center text-2xl font-medium text-gmco-grey">
+              <div className="flex w-full flex-col items-center justify-center">
+                <p className="mb-8 text-center text-2xl font-medium text-gmco-grey">
                   Kowe ra nduwe tiket
                   <br />
                   Gek Ndang Tuku
                   <br />
                   Selak entek lur
                 </p>
+                <div
+                  className="button h-16 w-1/4 cursor-pointer select-none rounded-lg border-b-[1px] border-blue-400  bg-blue-500 transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841] hover:scale-105 hover:bg-blue-600 active:translate-y-2 active:border-b-[0px] active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]"
+                  onClick={routeToSeats}
+                >
+                  <span class="flex h-full flex-col items-center justify-center text-lg font-bold text-white ">
+                    Tuku saiki
+                  </span>
+                </div>
               </div>
             ) : (
               <div />
