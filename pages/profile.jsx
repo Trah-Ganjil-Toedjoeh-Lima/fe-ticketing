@@ -77,6 +77,7 @@ export default function Profile() {
           phone: userRes.data.data.Phone,
         });
       } catch (err) {
+        console.log(err);
         notifyError(err);
       }
     })();
@@ -123,39 +124,40 @@ export default function Profile() {
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
-      showCancelButton: true,
       showConfirmButton: true,
-      cancelButtonText: "Tidak",
-      cancelButtonColor: "#c76734",
-      confirmButtonText: "Ya",
+      confirmButtonText: "Oke",
       confirmButtonColor: "#287d92",
       showClass: {
         popup: "",
       },
-    }).then((result, e) => {
-      if (result.isConfirmed) {
-        handleSubmit(e);
-      }
-    });
+    })
+      .then((result, e) => {})
+      .then((result, e) => {
+        if (result.isConfirmed) {
+          handleSubmit(e);
+        }
+      });
   }
   async function handleSubmit(e) {
-    // e.preventDefault();
-    try {
-      await axiosInstance.patch("api/v1/user/profile", formUserData);
-      const [userRes] = await Promise.all([
-        axiosInstance.get("/api/v1/user/profile"),
-      ]);
-      console.log(userRes);
-      setUserData(userRes.data.data);
-      notifySucces("Your profile has been successfully updated!");
-    } catch (err) {
-      notifyErrorMessage(err);
+    async function handleSubmit(e) {
+      // e.preventDefault();
+      try {
+        await axiosInstance.patch("api/v1/user/profile", formUserData);
+        const [userRes] = await Promise.all([
+          axiosInstance.get("/api/v1/user/profile"),
+        ]);
+        console.log(userRes);
+        setUserData(userRes.data.data);
+        notifySucces("Your profile has been successfully updated!");
+      } catch (err) {
+        notifyErrorMessage(err);
+      }
     }
-  }
 
-  Object.keys(userData).map((key) => {
-    console.log(userData[key]);
-  });
+    Object.keys(userData).map((key) => {
+      console.log(userData[key]);
+    });
+  }
 
   // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
@@ -296,7 +298,7 @@ export default function Profile() {
               >
                 {/* Kursi dan Tipe */}
                 <div className='flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center'>
-                  <h1 className='font-rubik text-xs font-bold text-gmco-grey sm:text-lg sm:text-xl lg:text-2xl'>
+                  <h1 className='font-rubik text-xs font-bold text-gmco-grey sm:text-xl lg:text-2xl'>
                     Seat {seat.name}
                   </h1>
                   <p

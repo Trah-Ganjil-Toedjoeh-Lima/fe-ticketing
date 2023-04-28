@@ -44,6 +44,7 @@ export default function Seats() {
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [priceCategoryHighlight, setPriceCategoryHighlight] = useState(0);
 
   // floor 1
   const mappersFloor1 = [
@@ -164,21 +165,22 @@ export default function Seats() {
   };
 
   const priceCategory1 = [
-    { name: "Harmoni Rp170K", price: 170000 },
-    { name: "Serenada Rp145K", price: 145000 },
-    { name: "Irama Rp120K", price: 120000 },
-    { name: "Tala Rp85K", price: 85000 },
-    { name: "Sekar Rp65K", price: 60000 },
-    { name: "Gita Rp50K", price: 50000 },
+    { name: "Harmoni Rp170K", price: 170000, lantai: 1, isHover: 0 },
+    { name: "Serenada Rp145K", price: 145000, lantai: 1, isHover: 0 },
+    { name: "Irama Rp120K", price: 120000, lantai: 1, isHover: 0 },
+    { name: "Tala Rp85K", price: 85000, lantai: 1, isHover: 0 },
+    { name: "Sekar Rp65K", price: 60000, lantai: 1, isHover: 0 },
+    { name: "Gita Rp50K", price: 50000, lantai: 2, isHover: 0 },
   ];
 
   const statusColor = {
     available: "bg-[#8EBFD0]",
     reserved_by_me: "bg-[#F5DB91]",
-    purchased_by_me: "bg-[#5C9E82]",
+    purchased_by_me: "bg-[#7E7E7E]",
     reserved: "bg-[#C0925E]",
     purchased: "bg-[#7E7E7E]",
   };
+
   const scaleFactor = [
     "scale-[10%]",
     "scale-[20%]",
@@ -410,8 +412,7 @@ export default function Seats() {
   }
 
   // mapping lantai 1 sayap kiri
-  function left_mapper(array, arrayUser) {
-    console.log(array);
+  function left_mapper(array, arrayUser, priceCat) {
     let arr = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
@@ -423,7 +424,7 @@ export default function Seats() {
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
-                }  cursor-pointer text-center text-[0.7rem]
+                }  cursor-pointer text-center text-[0.7rem] 
                   ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -431,6 +432,12 @@ export default function Seats() {
                 }`}
                 onClick={() => {
                   onSeatPick(array[i], arrayUser);
+                }}
+                onMouseEnter={() => {
+                  setPriceCategoryHighlight(1);
+                }}
+                onMouseLeave={() => {
+                  setPriceCategoryHighlight(0);
                 }}
               >
                 {array[i].name}
@@ -557,7 +564,7 @@ export default function Seats() {
     }
     return arr;
   }
-
+  console.log(priceCategory)
   // sidebar
   function hideSideBar(isOpen) {
     isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
@@ -619,7 +626,7 @@ export default function Seats() {
                   : "text-gmco-grey"
               }`}
             >
-              Refresh in
+              Refresh in &nbsp;
               <b>
                 {Math.floor(counter / 60)}:{counter % 60}
               </b>
@@ -696,16 +703,17 @@ export default function Seats() {
                 <div className='flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark'>
                   <Button
                     onClick={() => {
-                      seatHighlight.includes(namePrice[0])
+                      seatHighlight.includes(namePrice.price)
                         ? setSeatHighlight([])
-                        : setSeatHighlight(namePrice[0]);
+                        : setSeatHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
-                    label={namePrice[1]}
+                    label={namePrice.name}
                   />
-                  
+
                   <div className='flex basis-1/2 flex-wrap justify-end'>
                     {userSeatsPick.map((item) =>
-                      item.price == namePrice[0] ? (
+                      item.price == namePrice.price ? (
                         <span className='self-center pl-2'>
                           {item.name}
                           {","}{" "}
@@ -741,20 +749,16 @@ export default function Seats() {
               <div className='flex flex-col gap-2 text-xl'>
                 <div className='flex flex-row content-center gap-2'>
                   <div className='h-4 w-4 self-center rounded-md bg-[#B8DEE9]'></div>
-                  <p>Kursi Kosong</p>
+                  <p>Available Seat</p>
                 </div>
                 <div className='flex flex-row content-center gap-2'>
                   <div className='h-4 w-4 self-center rounded-md bg-[#7E7E7E]'></div>
-                  <p>Kursi Terbeli</p>
-                </div>
-                <div className='flex flex-row content-center gap-2'>
-                  <div className='h-4 w-4 self-center rounded-md bg-[#5C9E82]'></div>
-                  <p>Sudah Saya Bayar</p>
+                  <p>Purchased</p>
                 </div>
                 <div className='flex flex-row content-center gap-2'>
                   <div className='h-4 w-4 self-center rounded-md bg-[#C0925E]'></div>
                   <div className='flex flex-col'>
-                    <p>Kursi Sudah Direservasi</p>
+                    <p>Reserved Seat</p>
                     <p className='text-base'>
                       <span className='text-red-500'>*</span>Setelah 15 menit
                       tidak dibayar, kursi dapat dibeli kembali
@@ -763,7 +767,7 @@ export default function Seats() {
                 </div>
                 <div className='flex flex-row content-center gap-2'>
                   <div className='h-4 w-4 self-center rounded-md bg-[#F5DB91]'></div>
-                  <p>Belum Saya Bayar</p>
+                  <p>Reserved by Me</p>
                 </div>
               </div>
             </div>
@@ -840,7 +844,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {left_mapper(seats, userSeats)}
+                        {left_mapper(seats, userSeats, priceCategory1)}
                       </div>
                     ))}
                   </div>
