@@ -132,7 +132,8 @@ export default function Cart() {
         notifySucces("Pesanan Dihapus");
         localStorage.removeItem("user_seats");
         localStorage.removeItem("user_seats_pick");
-        console.log("Local Storage Cleared");
+        // console.log("Local Storage Cleared");
+        router.push("/seats")
       });
     } catch (err) {
       notifyError(err);

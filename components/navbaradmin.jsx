@@ -74,7 +74,7 @@ export default function NavBarAdmin() {
 
   async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
-      if (res.data.message == "success") {
+      if (res.data.message == "success" || res.status == 400) {
         localStorage.removeItem("auth_token");
         Swal.fire({
           html: `<b>${res.data.message}</b> tunggu...`,
