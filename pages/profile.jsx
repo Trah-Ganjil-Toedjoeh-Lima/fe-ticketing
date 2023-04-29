@@ -44,6 +44,7 @@ export default function Profile() {
     if (!localStorage.getItem("auth_token")) {
       notifyErrorMessage("Anda belum login. Silahkan login terlebih dahulu.");
       router.push("/auth");
+      return;
     }
 
     (async () => {
