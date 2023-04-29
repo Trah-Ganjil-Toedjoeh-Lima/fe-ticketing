@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 
 export async function getServerSideProps({ params }) {
   const { Link } = params;

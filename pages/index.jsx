@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RevealWrapper } from "next-reveal";
-
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import NavigationBar from "@/components/navbar";
 import FooterBar from "@/components/footer";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+;
 
 export default function Home() {
   return (
@@ -11,7 +15,7 @@ export default function Home() {
       <NavigationBar />
       <div className="max-w-screen bg-gmco-white">
         {/* Hero Section */}
-        <div className="relative h-[50vh] w-full overflow-hidden bg-gmco-grey md:h-screen">
+        <div className="relative w-full overflow-hidden bg-gmco-grey h-screen">
           <video
             preload="auto"
             playsInline
@@ -20,7 +24,7 @@ export default function Home() {
             loop
             className="absolute h-full w-full bg-clip-content object-cover opacity-40"
           >
-            <source src="/video_v3.mp4" type="video/mp4" />
+            <source src="/homepage/video_v3.mp4" type="video/mp4" />
           </video>
           <RevealWrapper
             rotate={{ x: 10, y: 40, z: 0 }}
@@ -29,8 +33,8 @@ export default function Home() {
             duration={2000}
             distance="250px"
           >
-            <div className="relative z-10 flex h-[50vh] items-center justify-center bg-cover md:h-screen">
-              <div className="flex h-max w-max flex-wrap items-center justify-center">
+            <div className="relative z-10 flex items-center justify-center bg-cover h-screen">
+              <div className="flex flex-col md:flex-row h-max w-max flex-wrap items-center justify-center">
                 <Image
                   src="/logo-anjangsana.webp"
                   alt="logo anjangsana"
@@ -38,7 +42,7 @@ export default function Home() {
                   width={1000}
                   height={1000}
                 />
-                <div className="w-max text-left">
+                <div className="w-max text-center md:text-left">
                   <h2 className="text-3xl font-bold text-white drop-shadow md:text-5xl xl:text-8xl ">
                     GRAND CONCERT
                   </h2>
@@ -67,12 +71,12 @@ export default function Home() {
         {/* Home Content 1 */}
         <div
           id="about"
-          className="container mx-auto grid grid-cols-1 items-center justify-between px-10 py-20 md:grid-cols-2"
+          className="container mx-auto grid grid-cols-1 items-center justify-between px-10 py-20 lg:grid-cols-2"
         >
           {/* GMCO Image */}
           <RevealWrapper origin="left" duration={1000} distance="100px">
             <div className="w-full">
-              <div className="md:w-3/4">
+              <div className="lg:w-3/4">
                 <Image
                   src="/logo_gmco.webp"
                   alt="logo gmco.webp"
@@ -87,7 +91,7 @@ export default function Home() {
           {/* Text */}
           <RevealWrapper duration={1000} distance="0">
             <div className="w-full">
-              <div className="py-12 text-center md:text-left">
+              <div className="py-12 text-center lg:text-left">
                 <div className="text-md font-bold uppercase tracking-wide text-gmco-orange-secondarylight md:text-xl">
                   About
                 </div>
@@ -121,57 +125,204 @@ export default function Home() {
           </RevealWrapper>
         </div>
 
+        {/* Home Content2 - Addie MS */}
         <div className="bg-[#191919] py-20">
           <div
             id="about"
-            className="container mx-auto grid grid-cols-1 items-center justify-between px-10 md:grid-cols-2"
+            className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2"
           >
             {/* Text */}
-            <RevealWrapper duration={1000} distance="0">
-              <div className="flex w-full justify-end text-gmco-white">
-                <div className="w-3/4 py-12 text-center md:text-left">
-                  <div className="text-md font-bold tracking-wide md:text-2xl">
-                    Featuring,
-                  </div>
-                  <h1 className="mb-4 mt-2 text-2xl font-extrabold leading-tight md:text-7xl">
-                    Addie MS{" "}
-                    <span className="text-gmco-orange-secondarydark">.</span>
-                  </h1>
-                  <p className="mb-4 text-justify text-base font-light leading-normal opacity-80 md:text-lg">
-                    Addie MS adalah seorang musisi, konduktor, dan arranger
-                    terkenal asal Indonesia. Dia dikenal sebagai pendiri dan
-                    konduktor dari Orkestra Simfoni Jakarta, yang telah tampil
-                    dalam berbagai pertunjukan musik di dalam dan luar negeri.
-                    Selain itu, dia juga aktif dalam mendukung pendidikan musik
-                    di Indonesia dan terlibat dalam berbagai kegiatan sosial dan
-                    lingkungan. Dia telah menerima banyak penghargaan atas
-                    kontribusinya dalam dunia musik dan kebudayaan Indonesia.
-                  </p>
-                  <a
-                    className="delay-15 border-b-2 py-3 text-gmco-white transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight"
-                    href="https://gmco.ukm.ugm.ac.id/"
-                  >
-                    More About Addie MS
-                  </a>
+            <RevealWrapper
+              duration={1000}
+              distance="0"
+              className="order-last lg:order-first flex w-full justify-end text-gmco-white"
+            >
+              <div className="lg:w-3/4 py-12 text-center md:text-left">
+                <div className="text-md font-bold tracking-wide md:text-2xl">
+                  Featuring,
                 </div>
+                <h1 className="mb-4 mt-2 text-2xl font-extrabold leading-tight md:text-7xl">
+                  Addie MS{" "}
+                  <span className="text-gmco-orange-secondarydark">.</span>
+                </h1>
+                <p className="mb-4 text-justify text-base font-light leading-normal opacity-80 md:text-lg">
+                  Addie MS adalah seorang musisi, konduktor, dan arranger
+                  terkenal asal Indonesia. Dia dikenal sebagai pendiri dan
+                  konduktor dari Orkestra Simfoni Jakarta, yang telah tampil
+                  dalam berbagai pertunjukan musik di dalam dan luar negeri.
+                  Selain itu, dia juga aktif dalam mendukung pendidikan musik di
+                  Indonesia dan terlibat dalam berbagai kegiatan sosial dan
+                  lingkungan. Dia telah menerima banyak penghargaan atas
+                  kontribusinya dalam dunia musik dan kebudayaan Indonesia.
+                </p>
+                <a
+                  className="delay-15 border-b-2 py-3 text-gmco-white transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight"
+                  href="https://gmco.ukm.ugm.ac.id/"
+                >
+                  More About Addie MS
+                </a>
               </div>
             </RevealWrapper>
 
             {/* GMCO Image */}
-            <RevealWrapper origin="left" duration={2000} distance="100px">
-              <div className="w-full">
-                <div className="flex h-[70vh] items-center">
-                  <Image
-                    src="/addiems_clearnew.png"
-                    alt="gambar addie ms"
-                    className="mx-auto h-full w-auto object-cover hover:animate-pulse"
-                    width={500}
-                    height={500}
-                  />
-                </div>
+            <RevealWrapper
+              origin="left"
+              duration={2000}
+              distance="100px"
+              className="w-full"
+            >
+              <div className="flex h-[50vh] md:h-[70vh] items-center">
+                <Image
+                  src="/homepage/addiems_clearnew.png"
+                  alt="gambar addie ms"
+                  className="mx-auto w-full h-auto object-cover"
+                  width={500}
+                  height={500}
+                />
               </div>
             </RevealWrapper>
           </div>
+        </div>
+        <div className=" flex flex-col bg-gmco-blue-secondary p-10 ">
+          <h1 className="mx-auto mb-10 text-4xl font-bold text-gray-900">
+            FAQ
+          </h1>
+          <Accordion className="bg-gmco-white">
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Hal apa saja yang diperlukan sebelum membeli ticket?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                a. Akun email yang aktif dan dapat diakses <br />
+                b. Akses ke aplikasi <b>*e-banking</b> atau <b>*e-wallet</b>{" "}
+                yang akan anda gunakan untuk membayar tiket <br />
+                c. (Direkomendasikan) Mengakses website ini melalui perangkat
+                kedua seperti desktop, laptop atau tablet
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion className="">
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Bagaimana cara melakukan pemesanan dan pembayaran TODO
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>???</span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Bagaimana cara mengecek tiket yang telah saya beli TODO ?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>???</span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Apakah saya dapat mengembalikan tiket yang telah terbeli?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>TIDAKKK!!!!!</span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Berapa jumlah kursi maksimum yang dapat saya pesan?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                5 kursi per email. Bila anda ingin membeli lebih dari jumlah ini
+                anda dapat memesan menggunakan alamat email lain
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Berapa lama durasi proses transaksi?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                a. Durasi transaksi maksimum adalah 20 menit. <br />
+                b. Durasi ini terdiri dari durasi maksimum saat memilih metode
+                pembayaran (5 menit) dan durasi maksimum saat melakukan
+                pembayaran (15 menit). <br />
+                c. Perhitungan durasi dimulai pada saat anda mengklik “bayar” di
+                halaman checkoutt
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Apa yang terjadi bila saya telah memesan kursi namun gagal pada
+                saat melakukan transaksi?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                Kursi yang anda pesan akan kembali tersedia dalam kurun waktu 15
+                menit dari percobaan transaksi sebelumnya. Anda dapat memesannya
+                kembali jika belum dipesan/didahului oleh pengguna lain
+              </span>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <span className="font-semibold">
+                Apa saja metode pembayaran yang didukung?
+              </span>
+            </AccordionSummary>
+            <AccordionDetails className="-mt-3">
+              <span>
+                a. E-banking Mandiri, BNI, BRI, Permata <br />
+                b. E-wallet GoPay, Shopee Pay, OVO, Dana, LinkAja
+              </span>
+            </AccordionDetails>
+          </Accordion>
         </div>
 
         {/* Home Content 1 */}
