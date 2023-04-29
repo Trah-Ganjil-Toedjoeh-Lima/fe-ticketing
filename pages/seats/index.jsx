@@ -252,7 +252,8 @@ export default function Seats() {
 
   useEffect(() => {
     if (isReservedSeatLoaded === true && isLocalSeatLoaded === false) {
-      //console.log("Get User Seats from Local Storage");
+      // console.log(userSeatsPick)
+      // console.log("Get User Seats from Local Storage");
       const savedUserSeats = JSON.parse(localStorage.getItem("user_seats"));
       const savedUserSeatsPick = JSON.parse(
         localStorage.getItem("user_seats_pick")
@@ -416,7 +417,7 @@ export default function Seats() {
     ) {
       setUserSeats(reservedByMe.map((item) => item.seat_id));
     }
-    if (userSeatsPick.includes(reservedByMe)) {
+    if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
     }
     setPurchasedSeat(purchased);
@@ -812,13 +813,13 @@ export default function Seats() {
             <div className="text-xl font-semibold md:text-2xl">
               Jumlah Kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Maximal pembelian 5 kursi
+                <span className="text-red-500">*</span>Maksimal pembelian 5 kursi
               </p>
             </div>
             <div className="self-center text-lg font-semibold md:text-xl">
               {userSeatsPick.length} kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Sisa {5 - purchasedSeat}
+                <span className="text-red-500">*</span>Sisa {5 - userSeatsPick.length - purchasedSeat}
               </p>
             </div>
           </div>
