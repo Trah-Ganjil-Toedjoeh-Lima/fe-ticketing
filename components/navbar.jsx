@@ -87,14 +87,14 @@ export default function NavigationBar() {
 
   async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
-      if (res.data.message == "success") {
+      if (res.data.message == "success" || res.status == 400) {
         localStorage.removeItem("auth_token");
         Swal.fire({
           html: `<b>${res.data.message}</b> tunggu...`,
           toast: true,
           width: 350,
           icon: "success",
-          color:"#f6f7f1",
+          color: "#f6f7f1",
           background: "#2d2d2f",
           iconColor: "#287d92",
           showConfirmButton: false,
