@@ -89,6 +89,23 @@ export default function Profile() {
   useEffect(() => {
     (async () => {
       try {
+        const [adminRes] = await Promise.all([
+          axiosInstance.get("/api/v1/admin/healthAdmin"),
+        ]);
+        // console.log(adminRes)
+        if (adminRes.status === 200) {
+          notifySucces("Anda telah login sebagai admin.")
+          router.push("/admin");
+        }
+      } catch (err) {
+        // console.log(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
         const [ticketRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/tickets"),
         ]);
