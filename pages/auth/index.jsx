@@ -6,6 +6,7 @@ import { EnvelopeIcon } from "@heroicons/react/24/outline";
 
 import { notifyError, notifyErrorMessage } from "@/components/notify";
 import { axiosInstance } from "@/utils/config";
+import { useEffect } from "react";
 
 export default function Auth() {
   const router = useRouter();
@@ -26,6 +27,28 @@ export default function Auth() {
   //     query: { loginInput: loginInput.email },
   //   });
   // }
+
+  useEffect(() => {
+    async function checkIfTokenValid() {
+      if (localStorage.getItem("auth_token")) {
+        try {
+          const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
+          if (res.status === 200)
+            notifyErrorMessage("Anda sudah login");
+            router.push({
+              pathname: "/profile",
+            });
+          return;
+        } catch (err) {
+          if (err.response.status !== 200) {
+            notifyErrorMessage("Token Expired. Silahkan login kembali.");
+            localStorage.removeItem("auth_token");
+          }
+        }
+      }
+    }
+    checkIfTokenValid();
+  }, []);
 
   async function LoginSubmit(e) {
     e.preventDefault();

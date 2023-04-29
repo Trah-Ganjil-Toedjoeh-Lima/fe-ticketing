@@ -13,11 +13,42 @@ import {
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
-
+import { useEffect } from "react";
 export default function OtpPage() {
   const router = useRouter();
   const loginInput = router.query;
   const [otp, setOtp] = useState("");
+
+  useEffect(() => {
+    async function checkIfTokenValid() {
+        try {
+          const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
+          notifyErrorMessage("Anda sudah login");
+          if (res.status === 200)
+            router.push({
+              pathname: "/profile",
+            });
+          return;
+        } catch (err) {
+          // Only goes here when the status isn't 200 OK
+          if (err.response.status !== 200) {
+            notifyErrorMessage("Token Expired. Silahkan login kembali.");
+            localStorage.removeItem("auth_token");
+            router.push("/auth");
+            return;
+          }
+        }
+    }
+
+    if (localStorage.getItem("auth_token")) {
+      checkIfTokenValid();
+    } else if(loginInput.email === undefined){
+      notifyErrorMessage("Email tidak boleh kosong")
+      router.push({
+        pathname: "/auth",
+      });
+    }
+  }, []);
 
   async function LoginSubmit(e) {
     e.preventDefault();
