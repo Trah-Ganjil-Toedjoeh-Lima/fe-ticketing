@@ -290,7 +290,7 @@ export default function Seats() {
         });
       }
       if (savedUserSeatsPick !== null) {
-        console.log(savedUserSeatsPick)
+        // console.log(savedUserSeatsPick)
         savedUserSeatsPick.forEach((seatpick) => {
           if (userSeatsPick.some(e => e.seat_id === seatpick.seat_id) === false) {
             console.log("Set User Seats Pick:", seatpick);
@@ -456,11 +456,11 @@ export default function Seats() {
       userSeats.includes(reservedByMe.map((item) => item.seat_id)) === false
     ) {
       setUserSeats(reservedByMe.map((item) => item.seat_id));
-      console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
+      // console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
     }
     if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
-      console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
+      // console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
     }
     setPurchasedSeat(purchased);
 
@@ -745,8 +745,8 @@ export default function Seats() {
     return arr;
   }
 
-  console.log(userSeatsPick);
-  console.log(userSeats);
+  // console.log(userSeatsPick);
+  // console.log(userSeats);
 
   // Display
   // =================================
