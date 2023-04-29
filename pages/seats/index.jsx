@@ -52,26 +52,26 @@ export default function Seats() {
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
   const [update, setUpdate] = useState("");
   const [isReservedByOthers, setIsReservedByOthers] = useState(false);
-  // const [canWriteLocalSeat, setCanWriteLocalSeat] = useState(false);
+  // const [writeToLocalStorage, setWriteToLocalStorage] = useState();
 
   // floor 1
   const mappersFloor1 = [
     { A: [0, 8, 8, 0] },
     { B: [13, 9, 9, 13] },
-    { C: [13, 9, 9, 15] },
-    { D: [14, 11, 10, 15] },
+    { C: [15, 9, 9, 13] },
+    { D: [15, 10, 11, 14] },
     { E: [16, 11, 11, 16] },
     { F: [17, 12, 12, 17] },
     { G: [17, 12, 12, 17] },
-    { H: [15, 13, 13, 16] },
-    { I: [14, 14, 14, 15] },
-    { J: [13, 14, 14, 14] },
+    { H: [16, 13, 13, 15] },
+    { I: [15, 14, 14, 14] },
+    { J: [14, 14, 14, 13] },
     { K: [13, 15, 15, 13] },
     { L: [12, 15, 15, 12] },
     { M: [11, 16, 16, 11] },
     { N: [10, 16, 16, 10] },
-    { O: [9, 17, 18, 10] },
-    { P: [9, 17, 18, 9] },
+    { O: [10, 18, 17, 9] },
+    { P: [9, 18, 17, 9] },
     { Q: [8, 18, 18, 8] },
     { R: [7, 19, 19, 7] },
     { S: [7, 19, 19, 7] },
@@ -79,20 +79,20 @@ export default function Seats() {
   const startMappersFloor1 = {
     A: [0, 1, 9, 0],
     B: [1, 14, 23, 32],
-    C: [1, 14, 23, 32],
-    D: [1, 15, 26, 36],
+    C: [1, 16, 25, 34],
+    D: [1, 16, 26, 37],
     E: [1, 17, 28, 39],
     F: [1, 18, 30, 42],
     G: [1, 18, 30, 42],
-    H: [1, 16, 29, 42],
-    I: [1, 15, 29, 43],
-    J: [1, 14, 28, 42],
+    H: [1, 17, 30, 43],
+    I: [1, 16, 30, 44],
+    J: [1, 15, 29, 43],
     K: [1, 14, 29, 44],
     L: [1, 13, 28, 43],
     M: [1, 12, 28, 44],
     N: [1, 11, 27, 43],
-    O: [1, 10, 27, 45],
-    P: [1, 10, 27, 45],
+    O: [1, 11, 29, 46],
+    P: [1, 10, 28, 45],
     Q: [1, 9, 27, 45],
     R: [1, 8, 27, 46],
     S: [1, 8, 27, 46],
@@ -144,12 +144,12 @@ export default function Seats() {
 
   // floor2
   const mappersFloor2 = [
-    { T: [12, 12, 14, 11, 13] },
-    { U: [12, 13, 14, 11, 13] },
+    { T: [13, 11, 14, 12, 12] },
+    { U: [13, 11, 14, 13, 12] },
   ];
   const startMappersFloor2 = {
-    T: [1, 13, 25, 39, 50],
-    U: [1, 13, 26, 40, 51],
+    T: [1, 14, 25, 39, 51],
+    U: [1, 14, 25, 39, 52],
   };
 
   // universal
@@ -272,18 +272,22 @@ export default function Seats() {
         });
       }
       if (savedUserSeatsPick !== null) {
-        savedUserSeatsPick.forEach((seat) => {
-          if (userSeatsPick.includes(seat) === false) {
-            // console.log("Set User Seats Pick:", seat);
-            nonDuplicateSeatsPick.push(seat);
+        console.log(savedUserSeatsPick)
+        savedUserSeatsPick.forEach((seatpick) => {
+          if (userSeatsPick.some(e => e.seat_id === seatpick.seat_id) === false) {
+            console.log("Set User Seats Pick:", seatpick);
+            nonDuplicateSeatsPick.push(seatpick);
           }
         });
       }
+
       if (nonDuplicateSeats.length > 0) {
         setUserSeats([...userSeats, ...nonDuplicateSeats]);
+        console.log("Adding user seats from local storage")
       }
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
+        console.log("Adding user seats pick from local storage")
       }
       setLocalSeatLoaded(true);
     }
@@ -293,9 +297,14 @@ export default function Seats() {
     // console.log("Save User Seats to Local Storage: ", canWriteLocalSeat);
     if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
       localStorage.setItem("user_seats", JSON.stringify(userSeats));
+    }
+  }, [userSeats]);
+
+  useEffect(() => {
+    if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
       localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
     }
-  }, [userSeats, userSeatsPick]);
+  }, [userSeatsPick]); 
 
   // Post data to cart
   async function postSeats(seatsArr) {
@@ -399,7 +408,8 @@ export default function Seats() {
     const floor2 = [];
     const reservedByMe = [];
     let purchased = 0;
-
+    // let userSeatsAPI = [];
+    // let userSeatsPickAPI = [];
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
 
@@ -424,9 +434,11 @@ export default function Seats() {
       userSeats.includes(reservedByMe.map((item) => item.seat_id)) === false
     ) {
       setUserSeats(reservedByMe.map((item) => item.seat_id));
+      console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
     }
     if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
+      console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
     }
     setPurchasedSeat(purchased);
 
@@ -727,8 +739,8 @@ export default function Seats() {
             src="/seatmap/GMCO.webp"
             className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
-            width={3000}
-            height={3000}
+            width={1920}
+            height={1281}
           />
         </div>
         <div className="relative p-7 pt-20">
@@ -736,7 +748,7 @@ export default function Seats() {
             Anjangsana Simfoni
           </p>
           <p className="text-3xl font-bold text-gmco-white md:text-5xl">
-            GMCO Concert #10
+            Grand Concert Vol. 10
           </p>
         </div>
       </div>
