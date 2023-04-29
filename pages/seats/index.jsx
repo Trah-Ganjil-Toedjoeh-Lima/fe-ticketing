@@ -52,6 +52,7 @@ export default function Seats() {
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
   const [update, setUpdate] = useState("");
   const [isReservedByOthers, setIsReservedByOthers] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   // const [writeToLocalStorage, setWriteToLocalStorage] = useState();
 
   // floor 1
@@ -221,6 +222,23 @@ export default function Seats() {
     })();
   }, []);
 
+  // get admin
+  useEffect(() => {
+    (async () => {
+      try {
+        const [adminRes] = await Promise.all([
+          axiosInstance.get("/api/v1/admin/healthAdmin"),
+        ]);
+        // console.log(adminRes)
+        if (adminRes.status === 200) {
+          setIsAdmin(true);
+        }
+      } catch (err) {
+        setIsAdmin(false);
+      }
+    })();
+  }, []);
+
   // get kursi
   useEffect(() => {
     // get kursi from api
@@ -308,6 +326,10 @@ export default function Seats() {
 
   // Post data to cart
   async function postSeats(seatsArr) {
+    if (isAdmin) {
+      notifyErrorMessage("Admin tidak bisa memesan kursi");
+      return;
+    }
     console.log(seatsArr);
     var mySeatsTmp = seatsArr;
     const reservedByOthers = [];
