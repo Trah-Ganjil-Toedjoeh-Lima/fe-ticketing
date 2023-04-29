@@ -955,7 +955,7 @@ export default function Seats() {
 
           {/* ============================ */}
           {/* SEAT MAP START */}
-          <div className="h-full cursor-move justify-start overflow-scroll">
+          <div className="no-select h-full cursor-move justify-start overflow-scroll">
             <div
               className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
             >
