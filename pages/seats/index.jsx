@@ -49,7 +49,7 @@ export default function Seats() {
   const [isReservedSeatLoaded, setReservedListLoaded] = useState(false);
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
   const [isReservedByOthers, setIsReservedByOthers] = useState(false);
-  // const [canWriteLocalSeat, setCanWriteLocalSeat] = useState(false);
+  // const [writeToLocalStorage, setWriteToLocalStorage] = useState();
 
   // floor 1
   const mappersFloor1 = [
@@ -265,18 +265,22 @@ export default function Seats() {
         });
       }
       if (savedUserSeatsPick !== null) {
-        savedUserSeatsPick.forEach((seat) => {
-          if (userSeatsPick.includes(seat) === false) {
-            // console.log("Set User Seats Pick:", seat);
-            nonDuplicateSeatsPick.push(seat);
+        console.log(savedUserSeatsPick)
+        savedUserSeatsPick.forEach((seatpick) => {
+          if (userSeatsPick.some(e => e.seat_id === seatpick.seat_id) === false) {
+            console.log("Set User Seats Pick:", seatpick);
+            nonDuplicateSeatsPick.push(seatpick);
           }
         });
       }
+
       if (nonDuplicateSeats.length > 0) {
         setUserSeats([...userSeats, ...nonDuplicateSeats]);
+        console.log("Adding user seats from local storage")
       }
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
+        console.log("Adding user seats pick from local storage")
       }
       setLocalSeatLoaded(true);
     }
@@ -286,9 +290,14 @@ export default function Seats() {
     // console.log("Save User Seats to Local Storage: ", canWriteLocalSeat);
     if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
       localStorage.setItem("user_seats", JSON.stringify(userSeats));
+    }
+  }, [userSeats]);
+
+  useEffect(() => {
+    if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
       localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
     }
-  }, [userSeats, userSeatsPick]);
+  }, [userSeatsPick]); 
 
   // Post data to cart
   async function postSeats(seatsArr) {
@@ -319,11 +328,15 @@ export default function Seats() {
     }
 
     if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
-      notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa...");
+      notifyErrorMessage(
+        "Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa..."
+      );
     }
 
     if (mySeatsTmp.length === 0) {
-      notifyErrorMessage("Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain...");
+      notifyErrorMessage(
+        "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
+      );
       localStorage.removeItem("user_seats");
       localStorage.removeItem("user_seats_pick");
       window.location.reload();
@@ -356,7 +369,9 @@ export default function Seats() {
           err.response.data.error ===
           "you are not authorized, please fill your name or phone number data"
         ) {
-          notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu");
+          notifyErrorMessage(
+            "Silakan lengkapi data profil Anda terlebih dahulu"
+          );
           router.push({
             pathname: "/profile",
           });
@@ -364,7 +379,7 @@ export default function Seats() {
           notifyError(err);
         }
       }
-    } 
+    }
   }
 
   // clear all seats data
@@ -386,7 +401,8 @@ export default function Seats() {
     const floor2 = [];
     const reservedByMe = [];
     let purchased = 0;
-
+    // let userSeatsAPI = [];
+    // let userSeatsPickAPI = [];
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
 
@@ -411,9 +427,11 @@ export default function Seats() {
       userSeats.includes(reservedByMe.map((item) => item.seat_id)) === false
     ) {
       setUserSeats(reservedByMe.map((item) => item.seat_id));
+      console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
     }
     if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
+      console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
     }
     setPurchasedSeat(purchased);
 
@@ -814,13 +832,15 @@ export default function Seats() {
             <div className="text-xl font-semibold md:text-2xl">
               Jumlah Kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Maksimal pembelian 5 kursi
+                <span className="text-red-500">*</span>Maksimal pembelian 5
+                kursi
               </p>
             </div>
             <div className="self-center text-lg font-semibold md:text-xl">
               {userSeatsPick.length} kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Sisa {5 - userSeatsPick.length - purchasedSeat}
+                <span className="text-red-500">*</span>Sisa{" "}
+                {5 - userSeatsPick.length - purchasedSeat}
               </p>
             </div>
           </div>
@@ -916,7 +936,9 @@ export default function Seats() {
                     : "pointer-events-none bg-gmco-grey opacity-50"
                 }`}
                 onClick={() => clearSeats()}
-              >Hapus Semua Pilihan</button>
+              >
+                Hapus Semua Pilihan
+              </button>
               <button
                 className={`rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                   userSeats.length
