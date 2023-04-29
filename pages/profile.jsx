@@ -41,13 +41,12 @@ export default function Profile() {
   // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
   // misal gini
   useEffect(() => {
+    if (!localStorage.getItem("auth_token")) {
+      notifyErrorMessage("Anda belum login. Silahkan login terlebih dahulu.");
+      router.push("/auth");
+    }
+
     (async () => {
-      if (
-        typeof window !== "undefined" &&
-        !localStorage.getItem("auth_token")
-      ) {
-        router.push("/auth");
-      }
       try {
         const [userRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
@@ -69,7 +68,7 @@ export default function Profile() {
             },
           });
         }
-        console.log(userRes.data.data, "ini data");
+        // console.log(userRes.data.data, "ini data");
         setUserData(userRes.data.data);
         setFormUserData({
           name: userRes.data.data.Name,
@@ -77,8 +76,11 @@ export default function Profile() {
           phone: userRes.data.data.Phone,
         });
       } catch (err) {
-        console.log(err);
-        notifyError(err);
+        // console.log(err);
+        if(err.response.data.error === "your credentials are invalid"){
+          notifyErrorMessage("Token Expired. Silahkan login kembali.");
+          router.push("/auth");
+        }
       }
     })();
   }, []);
