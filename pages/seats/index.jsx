@@ -328,6 +328,9 @@ export default function Seats() {
 
     if (mySeatsTmp.length === 0) {
       notifyErrorMessage("Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain...");
+      localStorage.removeItem("user_seats");
+      localStorage.removeItem("user_seats_pick");
+      window.location.reload();
     } else {
       try {
         await axiosInstance
@@ -336,11 +339,13 @@ export default function Seats() {
           })
           .then(() => {
             notifySucces("Pesanan Ditambahkan, Mengalihkan...");
+            localStorage.removeItem("user_seats");
+            localStorage.removeItem("user_seats_pick");
             setTimeout(function () {
               router.push({
                 pathname: "/seats/cart",
               });
-            }, 2000);
+            }, 1000);
           });
         // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
         // fungsi then route push
@@ -364,6 +369,15 @@ export default function Seats() {
         }
       }
     } 
+  }
+
+  // clear all seats data
+  function clearSeats() {
+    setUserSeats([]);
+    setUserSeatsPick([]);
+    localStorage.removeItem("user_seats");
+    localStorage.removeItem("user_seats_pick");
+    window.location.reload();
   }
 
   //
@@ -895,6 +909,14 @@ export default function Seats() {
               {/* Pesan Button */}
               <button
                 className={`w-full rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
+                  userSeats.length
+                    ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
+                    : "pointer-events-none bg-gmco-grey opacity-50"
+                }`}
+                onClick={() => clearSeats()}
+              >Hapus Semua Pilihan</button>
+              <button
+                className={`rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                     : "pointer-events-none bg-gmco-grey opacity-50"
