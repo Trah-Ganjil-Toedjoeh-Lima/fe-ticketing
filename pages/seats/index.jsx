@@ -734,7 +734,7 @@ export default function Seats() {
             Anjangsana Simfoni
           </p>
           <p className="text-3xl font-bold text-gmco-white md:text-5xl">
-            GMCO Concert #10
+            Grand Concert Vol. 10
           </p>
         </div>
       </div>
