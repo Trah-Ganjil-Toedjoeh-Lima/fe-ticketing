@@ -5,9 +5,14 @@ import OTPInput from "react-otp-input";
 import { Card } from "flowbite-react";
 import { useRouter } from "next/router";
 
-import { notifyError } from "@/components/notify";
 import { axiosInstance } from "@/utils/config";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
+
+import {
+  notifyError,
+  notifyErrorMessage,
+  notifySucces,
+} from "@/components/notify";
 
 export default function OtpPage() {
   const router = useRouter();
@@ -45,6 +50,7 @@ export default function OtpPage() {
                   popup: "",
                 },
               }).then(() => {
+                notifySucces("Login Berhasil");
                 router.push({
                   pathname: "/profile",
                 });
@@ -54,8 +60,12 @@ export default function OtpPage() {
       } catch (err) {
         notifyError(err);
       }
+    } else if (otp.length === 0) {
+      notifyErrorMessage("Kode OTP tidak boleh kosong");
+    } else {
+      notifyErrorMessage("Kode OTP harus 6 digit");
     }
-  }
+  } 
 
   if (typeof window !== "undefined") {
     const btn = document.getElementById("login");
