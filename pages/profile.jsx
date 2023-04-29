@@ -136,11 +136,7 @@ export default function Profile() {
           handleSubmit(e);
         }
       });
-    }).then((result, e) => {
-      if (result.isConfirmed) {
-        handleSubmit(e);
-      }
-    });
+    }
   }
   async function handleSubmit(e) {
     // e.preventDefault();
