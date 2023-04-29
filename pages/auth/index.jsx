@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 
-import { notifyError } from "@/components/notify";
+import { notifyError, notifyErrorMessage } from "@/components/notify";
 import { axiosInstance } from "@/utils/config";
+import { useEffect } from "react";
 
 export default function Auth() {
   const router = useRouter();
@@ -27,8 +28,35 @@ export default function Auth() {
   //   });
   // }
 
+  useEffect(() => {
+    async function checkIfTokenValid() {
+      if (localStorage.getItem("auth_token")) {
+        try {
+          const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
+          if (res.status === 200)
+            notifyErrorMessage("Anda sudah login");
+            router.push({
+              pathname: "/profile",
+            });
+          return;
+        } catch (err) {
+          if (err.response.status !== 200) {
+            notifyErrorMessage("Token Expired. Silahkan login kembali.");
+            localStorage.removeItem("auth_token");
+          }
+        }
+      }
+    }
+    checkIfTokenValid();
+  }, []);
+
   async function LoginSubmit(e) {
     e.preventDefault();
+    if (loginInput.email === "") {
+      notifyErrorMessage("Email tidak boleh kosong");
+      return;
+    }
+
     try {
       await axiosInstance
         .post("/api/v1/user/register_email", {
@@ -124,6 +152,7 @@ export default function Auth() {
                   value={loginInput.email}
                   className='mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500'
                   id='email'
+                  required
                 />
                 <EnvelopeIcon className='absolute right-4 top-4 h-7 w-7 stroke-slate-400'>
                   {" "}
