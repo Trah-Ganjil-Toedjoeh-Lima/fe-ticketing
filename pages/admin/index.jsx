@@ -17,7 +17,8 @@ export default function Admin() {
       const isOpenGate = res.data.app_config.IsOpenGate.toLowerCase() === "true";
       console.log(isOpenGate)
       setChecked(isOpenGate);
-      setQrScanMode(res.data.app_config.qr_scan_behaviour);
+      console.log(res.data.app_config.QrScanBehaviour)
+      setQrScanMode(res.data.app_config.QrScanBehaviour);
     });
   }, [isAdmin]);
 
