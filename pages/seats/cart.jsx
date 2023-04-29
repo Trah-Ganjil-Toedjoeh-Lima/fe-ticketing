@@ -122,14 +122,18 @@ export default function Cart() {
 
   async function handleCancel() {
     try {
-      await axiosInstance.delete("/api/v1/checkout").then(() =>
+      await axiosInstance.delete("/api/v1/checkout").then(() => {
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
           user_name: "user_name",
           user_phone: "user_phone",
-        }).then(() => notifySucces("Pesanan Dihapus"))
-      );
+        });
+        notifySucces("Pesanan Dihapus");
+        localStorage.removeItem("user_seats");
+        localStorage.removeItem("user_seats_pick");
+        console.log("Local Storage Cleared");
+      });
     } catch (err) {
       notifyError(err);
     }
