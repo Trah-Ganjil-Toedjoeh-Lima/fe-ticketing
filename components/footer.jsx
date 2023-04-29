@@ -27,7 +27,7 @@ export default function FooterBar() {
         { name: "Instagram", route: "https://www.instagram.com/gmco_ugm/" },
         { name: "Twitter", route: "https://twitter.com/GMCO_UGM?s=08" },
         {
-          name: "Youtube",
+          name: "YouTube",
           route: "https://www.youtube.com/channel/UC0VSyJsls-u84buKVgWsBUA",
         },
       ],

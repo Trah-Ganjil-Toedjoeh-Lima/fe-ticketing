@@ -118,7 +118,7 @@ export default function Profile() {
   function confirmSubmit(e) {
     e.preventDefault();
     Swal.fire({
-      html: `Pastikan Data yang Diisikan Sudah Sesuai!`,
+      html: `Pastikan data yang diisikan sudah sesuai.`,
       toast: false,
       icon: "warning",
       iconColor: "#f6f7f1",

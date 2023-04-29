@@ -73,8 +73,8 @@ export default function Auth() {
   }
 
   return (
-    <section className="max-w-screen block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex">
-      <div className=" relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row ">
+    <section className='max-w-screen block min-h-screen items-center justify-center bg-gmco-grey p-4 md:flex'>
+      <div className=' relative flex w-full max-w-screen-lg flex-col overflow-hidden rounded-lg bg-cover shadow-lg md:m-10 md:flex-row '>
         {/* leftside */}
         <div className='absolute h-full w-full bg-gmco-grey'>
           <Image
@@ -144,15 +144,14 @@ export default function Auth() {
 
             <button
               onClick={handleGoBack}
-              className="mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white"
+              className='mb-6 w-full rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
               KEMBALI
             </button>
-            
-            <label className="pt-3 text-center text-xs text-gmco-white">
+
+            <label className='pt-3 text-center text-xs text-gmco-white'>
               Gadjah Mada Chamber Orchestra
             </label>
-            
           </form>
         </div>
       </div>
