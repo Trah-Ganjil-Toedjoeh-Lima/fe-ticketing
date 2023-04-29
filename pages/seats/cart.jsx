@@ -7,7 +7,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance, midtransSetup } from "@/atoms/config";
+import { axiosInstance, midtransSetup } from "@/utils/config";
 import {
   notifyError,
   notifySucces,
@@ -122,14 +122,18 @@ export default function Cart() {
 
   async function handleCancel() {
     try {
-      await axiosInstance.delete("/api/v1/checkout").then(() =>
+      await axiosInstance.delete("/api/v1/checkout").then(() => {
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
           user_name: "user_name",
           user_phone: "user_phone",
-        }).then(() => notifySucces("Pesanan Dihapus"))
-      );
+        });
+        notifySucces("Pesanan Dihapus");
+        localStorage.removeItem("user_seats");
+        localStorage.removeItem("user_seats_pick");
+        console.log("Local Storage Cleared");
+      });
     } catch (err) {
       notifyError(err);
     }
@@ -149,7 +153,7 @@ export default function Cart() {
       <div className="realtive max-w-screen overflow-hidden bg-gmco-blue-main md:min-h-screen">
         <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
           <Image
-            src="/GMCO.webp"
+            src="/seatmap/GMCO.webp"
             className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
             width={2000}

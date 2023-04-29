@@ -173,7 +173,7 @@ export default function Home() {
             >
               <div className="flex h-[50vh] md:h-[70vh] items-center">
                 <Image
-                  src="/addiems_clearnew.png"
+                  src="/homepage/addiems_clearnew.png"
                   alt="gambar addie ms"
                   className="mx-auto w-full h-auto object-cover"
                   width={500}
@@ -185,7 +185,7 @@ export default function Home() {
         </div>
         <div className=" flex flex-col bg-gmco-blue-secondary p-10 ">
           <h1 className="mx-auto mb-10 text-4xl font-bold text-gray-900">
-            FAQ<span>'</span>S
+            FAQ
           </h1>
           <Accordion className="bg-gmco-white">
             <AccordionSummary

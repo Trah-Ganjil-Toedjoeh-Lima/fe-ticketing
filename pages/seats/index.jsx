@@ -11,8 +11,8 @@ import {
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance } from "@/atoms/config";
-import { Loading } from "@/atoms/spinner";
+import { axiosInstance } from "@/utils/config";
+import { Loading } from "@/utils/spinner";
 import {
   notifyError,
   notifyErrorMessage,
@@ -37,12 +37,18 @@ export default function Seats() {
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [curFloor, setCurFloor] = useState(1);
   const [seatHighlight, setSeatHighlight] = useState([]);
+  const [seatHoverHighlight, setSeatHoverHighlight] = useState([]);
   const [scaleN, setScaleN] = useState(0);
   const [purchasedSeat, setPurchasedSeat] = useState(0);
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [priceCategoryHighlight, setPriceCategoryHighlight] = useState([]);
+  const [priceCategoryHoverHighlight, setPriceCategoryHoverHighlight] =
+    useState([]);
+  const [isReservedSeatLoaded, setReservedListLoaded] = useState(false);
+  const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
+  // const [canWriteLocalSeat, setCanWriteLocalSeat] = useState(false);
 
   // floor 1
   const mappersFloor1 = [
@@ -209,21 +215,26 @@ export default function Seats() {
 
   // get kursi
   useEffect(() => {
+    // get kursi from api
     (async () => {
       try {
         setLoading(true);
         const res = await axiosInstance.get("/api/v1/seat_map");
         // const res = await axiosInstance.get("seatmap.json");
         divideByFloor(res.data.data);
+        setReservedListLoaded(true);
+        // getReservedSeats(res.data.data);
         // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
         // console.log(err);
         // notifyError(err);
-        if(err.response.data.error === "the gate has not been opened") {
-          notifyError("Pemesanan belum dibuka");
-          router.push("/closegate")
-        } else {
-          notifyError("Terjadi Kesalahan");
+        try {
+          if (err.response.data.error === "the gate has not been opened") {
+            notifyErrorMessage("Pemesanan belum dibuka");
+            router.push("/closegate");
+          }
+        } catch (err) {
+          notifyError(err);
         }
       } finally {
         setTimeout(() => {
@@ -232,6 +243,50 @@ export default function Seats() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (isReservedSeatLoaded === true && isLocalSeatLoaded === false) {
+      //console.log("Get User Seats from Local Storage");
+      const savedUserSeats = JSON.parse(localStorage.getItem("user_seats"));
+      const savedUserSeatsPick = JSON.parse(
+        localStorage.getItem("user_seats_pick")
+      );
+      let nonDuplicateSeats = [];
+      let nonDuplicateSeatsPick = [];
+
+      if (savedUserSeats !== null) {
+        savedUserSeats.forEach((seat) => {
+          if (userSeats.includes(seat) === false) {
+            // console.log("Set User Seats:", seat);
+            nonDuplicateSeats.push(seat);
+          }
+        });
+      }
+      if (savedUserSeatsPick !== null) {
+        savedUserSeatsPick.forEach((seat) => {
+          if (userSeatsPick.includes(seat) === false) {
+            // console.log("Set User Seats Pick:", seat);
+            nonDuplicateSeatsPick.push(seat);
+          }
+        });
+      }
+      if (nonDuplicateSeats.length > 0) {
+        setUserSeats([...userSeats, ...nonDuplicateSeats]);
+      }
+      if (nonDuplicateSeatsPick.length > 0) {
+        setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
+      }
+      setLocalSeatLoaded(true);
+    }
+  }, [isReservedSeatLoaded]);
+
+  useEffect(() => {
+    // console.log("Save User Seats to Local Storage: ", canWriteLocalSeat);
+    if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
+      localStorage.setItem("user_seats", JSON.stringify(userSeats));
+      localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
+    }
+  }, [userSeats, userSeatsPick]);
 
   // Post data to cart
   async function postSeats(seatsArr) {
@@ -242,6 +297,8 @@ export default function Seats() {
         })
         .then(() => {
           notifySucces("Pesanan Ditambahkan, Mengalihkan...");
+          // localStorage.setItem("user_seats", JSON.stringify(null));
+          // localStorage.setItem("user_seats_pick", JSON.stringify(null));
           setTimeout(function () {
             router.push({
               pathname: "/seats/cart",
@@ -253,9 +310,17 @@ export default function Seats() {
     } catch (err) {
       //console.log(err);
       if (err.response.data.error === "your credentials are invalid") {
-        notifyError("Silahkan Login Terlebih Dahulu");
+        notifyErrorMessage("Silakan login terlebih dahulu");
         router.push({
           pathname: "/auth",
+        });
+      } else if (
+        err.response.data.error ===
+        "you are not authorized, please fill your name or phone number data"
+      ) {
+        notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu");
+        router.push({
+          pathname: "/profile",
         });
       } else {
         notifyError(err);
@@ -293,8 +358,15 @@ export default function Seats() {
     }
 
     // kursi yang sudah dipesan sebelumnya
-    setUserSeats(reservedByMe.map((item) => item.seat_id));
-    setUserSeatsPick(reservedByMe);
+    // console.log("Set User Seats from API (reserved_by_me)");
+    if (
+      userSeats.includes(reservedByMe.map((item) => item.seat_id)) === false
+    ) {
+      setUserSeats(reservedByMe.map((item) => item.seat_id));
+    }
+    if (userSeatsPick.includes(reservedByMe)) {
+      setUserSeatsPick(reservedByMe);
+    }
     setPurchasedSeat(purchased);
 
     // passing data lantai 1 dan 2
@@ -395,9 +467,7 @@ export default function Seats() {
       setUserSeats([...userSeats, array.seat_id]);
       setUserSeatsPick([...userSeatsPick, array]);
     } else {
-      notifyError({
-        response: { data: { error: "Maksimum pembelian kursi adalah 5" } },
-      });
+      notifyErrorMessage("Maksimal membeli 5 kursi per akun");
     }
   }
 
@@ -409,13 +479,20 @@ export default function Seats() {
         if (array[i].status === "available") {
           const isSelected = userSeats.includes(array[i].seat_id);
           const isHighlight = seatHighlight.includes(array[i].price);
+          const isHoverHighlight = seatHoverHighlight.includes(array[i].price);
           arr.push(
             <div className={` duration-300 hover:scale-150 ${deg_rot[i]}`}>
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
                 }  cursor-pointer text-center text-[0.7rem] 
-                  ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
+                  ${
+                    isHighlight
+                      ? " bg-gmco-orange-secondarylight"
+                      : isHoverHighlight
+                      ? "bg-gmco-yellow-secondary"
+                      : ""
+                  } ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
                     : ""
@@ -424,10 +501,10 @@ export default function Seats() {
                   onSeatPick(array[i], arrayUser);
                 }}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight([array[i].price]);
+                  setPriceCategoryHoverHighlight([array[i].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight([]);
+                  setPriceCategoryHoverHighlight([]);
                 }}
               >
                 {array[i].name}
@@ -463,6 +540,9 @@ export default function Seats() {
         if (array[index].status == "available") {
           const isSelected = arrayUser.includes(array[index].seat_id);
           const isHighlight = seatHighlight.includes(array[index].price);
+          const isHoverHighlight = seatHoverHighlight.includes(
+            array[index].price
+          );
           arr.push(
             <div
               className={`bg-gmco-yellow duration-300 hover:scale-150 ${
@@ -473,7 +553,11 @@ export default function Seats() {
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
-                  isHighlight ? "bg-gmco-orange-secondarylight" : ""
+                  isHighlight
+                    ? "bg-gmco-orange-secondarylight"
+                    : isHoverHighlight
+                    ? "bg-gmco-yellow-secondary"
+                    : ""
                 } ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -481,10 +565,10 @@ export default function Seats() {
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight([array[index].price]);
+                  setPriceCategoryHoverHighlight([array[index].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight([]);
+                  setPriceCategoryHoverHighlight([]);
                 }}
               >
                 {array[index].name}
@@ -523,13 +607,20 @@ export default function Seats() {
         if (array[index].status == "available") {
           const isSelected = arrayUser.includes(array[index].seat_id);
           const isHighlight = seatHighlight.includes(array[index].price);
+          const isHoverHighlight = seatHoverHighlight.includes(
+            array[index].price
+          );
           arr.push(
             <div className={`bg-gmco-yellow duration-300 hover:scale-150`}>
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
-                  isHighlight ? "bg-gmco-orange-secondarylight" : ""
+                  isHighlight
+                    ? "bg-gmco-orange-secondarylight"
+                    : isHoverHighlight
+                    ? "bg-gmco-yellow-secondary"
+                    : ""
                 } ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -537,10 +628,10 @@ export default function Seats() {
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight([array[index].price]);
+                  setPriceCategoryHoverHighlight([array[index].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight([]);
+                  setPriceCategoryHoverHighlight([]);
                 }}
               >
                 {array[index].name}
@@ -564,7 +655,6 @@ export default function Seats() {
     }
     return arr;
   }
-
   // sidebar
   function hideSideBar(isOpen) {
     isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
@@ -695,24 +785,66 @@ export default function Seats() {
                 <span className="text-red-500">*</span>klik untuk melihat
               </p>
             </div>
-            <div className="flex flex-col gap-3 md:text-lg">
+            <div className="space-y-4">
               {priceCategory.map((namePrice) => (
-                <div className="flex border-b-2 border-gmco-blue-main hover:border-gmco-orange-secondarydark">
+                <div className="group relative flex border-b-2 border-gmco-blue-main">
                   <button
-                    className={`duration-400 basis-1/2 cursor-pointer bg-gmco-blue-main p-2 text-left text-white transition ease-in-out hover:scale-105 hover:bg-gmco-orange-secondarydark ${
-                      priceCategoryHighlight.includes(namePrice.price)
-                        ? "scale-105 bg-gmco-orange-secondarydark"
-                        : ""
-                    }`}
+                    className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
                       seatHighlight.includes(namePrice.price)
                         ? setSeatHighlight([])
                         : setSeatHighlight([namePrice.price]);
                       namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
+                      priceCategoryHighlight.includes(namePrice.price)
+                        ? setPriceCategoryHighlight([])
+                        : setPriceCategoryHighlight([namePrice.price]);
+                    }}
+                    onMouseEnter={() => {
+                      seatHoverHighlight.includes(namePrice.price)
+                        ? setSeatHoverHighlight([])
+                        : setSeatHoverHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
+                    }}
+                    onMouseLeave={() => {
+                      seatHoverHighlight.includes(namePrice.price)
+                        ? setSeatHoverHighlight([])
+                        : setSeatHoverHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
                   >
-                    {namePrice.name}
+                    <span
+                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
+                        priceCategoryHighlight.includes(namePrice.price)
+                          ? "-translate-x-0 -translate-y-0 bg-gmco-yellow-secondary"
+                          : "bg-gmco-grey"
+                      }`}
+                    ></span>
+                    <span
+                      className={`absolute inset-0 w-full border-2 border-black transition duration-200 ease-out group-hover:bg-gmco-orange-secondarydark ${
+                        priceCategoryHighlight.includes(namePrice.price)
+                          ? "bg-gmco-orange-secondarydark"
+                          : priceCategoryHoverHighlight.includes(
+                              namePrice.price
+                            )
+                          ? "bg-gmco-yellow-secondary"
+                          : "bg-gmco-blue-main"
+                      }`}
+                    ></span>
+                    <span
+                      className={`relative text-gmco-white transition duration-200 ease-out group-hover:text-gmco-yellow ${
+                        priceCategoryHighlight.includes(namePrice.price)
+                          ? "text-gmco-yellow"
+                          : priceCategoryHoverHighlight.includes(
+                              namePrice.price
+                            )
+                          ? "text-gmco-grey"
+                          : "text-gmco-white"
+                      }`}
+                    >
+                      {namePrice.name}
+                    </span>
                   </button>
+
                   <div className="flex basis-1/2 flex-wrap justify-end">
                     {userSeatsPick.map((item) =>
                       item.price == namePrice.price ? (
@@ -730,7 +862,7 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg px-10 py-2 text-white drop-shadow-md ${
+                className={`rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                     : "pointer-events-none bg-gmco-grey opacity-50"
@@ -783,12 +915,12 @@ export default function Seats() {
         >
           {/* Hide Sidebar dan Zoom */}
           <div
-            className={`absolute z-10 pointer-events-none flex h-full flex-col ${
+            className={`pointer-events-none absolute z-10 flex h-full flex-col ${
               sideBarOpen ? "justify-end" : "justify-between"
             }`}
           >
             <button
-              className={`m-3 ml-0 flex pointer-events-auto items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
+              className={`pointer-events-auto m-3 ml-0 flex items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
               onClick={() => {
@@ -801,7 +933,7 @@ export default function Seats() {
               </span>
             </button>
 
-            <div className="m-3 flex w-max pointer-events-auto flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
+            <div className="pointer-events-auto m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
               <button
                 className={`h-max px-4 py-2 duration-300 hover:scale-150`}
                 onClick={() => {
@@ -829,7 +961,7 @@ export default function Seats() {
             >
               <div className="relative flex h-max w-3/4 translate-y-[100px] items-center justify-center">
                 <Image
-                  src="/stage.png"
+                  src="/seatmap/stage.png"
                   className="h-full w-full object-cover object-center"
                   alt="bg gmco concert"
                   width={2000}
@@ -915,7 +1047,7 @@ export default function Seats() {
               >
                 <div className="relative flex h-3/4 items-center justify-center">
                   <Image
-                    src="/shadow_floor1.webp"
+                    src="/seatmap/shadow_floor1.webp"
                     alt="floor1"
                     className="h-full w-auto p-20 opacity-10"
                     width={1000}

@@ -6,7 +6,7 @@ import { Card } from "flowbite-react";
 import { useRouter } from "next/router";
 
 import { notifyError } from "@/components/notify";
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 
 export default function OtpPage() {
@@ -77,17 +77,17 @@ export default function OtpPage() {
         <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
           Masukkan Kode Verifikasi
         </div>
-        <div className="text-md text-center font-thin text-gmco-white  sm:text-base ">
+        <div className='text-md text-center font-thin text-gmco-white  sm:text-base '>
           kode verifikasi telah dikirimkan melalui email terdaftar
         </div>
-        <div className="mx-auto mt-9 items-center object-center  ">
+        <div className='mx-auto mt-9 items-center object-center  '>
           <OTPInput
             value={otp}
             onChange={setOtp}
             numInputs={6}
             renderSeparator={<span>-</span>}
             renderInput={(props) => <input {...props} />}
-            inputType="number"
+            inputType='number'
             inputStyle={{
               fontFamily: "monospace",
               margin: "0.1em",
@@ -103,8 +103,8 @@ export default function OtpPage() {
           />
         </div>
         <button
-          type="submit"
-          className="font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+          type='submit'
+          className='font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg'
           onClick={LoginSubmit}
         >
           Submit

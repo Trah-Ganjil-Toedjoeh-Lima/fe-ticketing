@@ -2,12 +2,13 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import NavBarAdmin from "@/components/navbaradmin";
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
-  const [appConfig, setAppConfig] = useState(false);
+  const [appConfig, setAppConfig] = useState();
   const [qrScanMode, setQrScanMode] = useState("");
+  const [isChecked, setChecked] = useState();
   const router = useRouter();
 
   async function handleGate() {
@@ -17,8 +18,8 @@ export default function Admin() {
 
     try {
       const res = await axiosInstance.post(postURL);
-      setAppConfig(!appConfig);
-      console.log(res);
+      setAppConfig(configRes.data.app_config.IsOpenGate);
+      setChecked(!isChecked);
     } catch (err) {
       console.error(err);
     }
@@ -75,7 +76,7 @@ export default function Admin() {
     }
 
     getAdminData();
-  }, [appConfig, qrScanMode]);
+  }, [qrScanMode]);
 
   async function updateQrScanState(newState) {
     const patchURL = "/api/v1/admin/qr_scan_behaviour";
