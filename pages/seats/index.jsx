@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import {
   ChevronRightIcon,
   ExclamationTriangleIcon,
+  TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
@@ -18,6 +19,7 @@ import {
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
+import { FaShoppingCart, FaTrash } from "react-icons/fa";
 
 export default function Seats() {
   // floor1
@@ -35,6 +37,7 @@ export default function Seats() {
   const [userSeats, setUserSeats] = useState([]);
   const [userSeatsPick, setUserSeatsPick] = useState([]);
   const [sideBarOpen, setSideBarOpen] = useState(true);
+  const [purchasedSeat, setPurchasedSeat] = useState(0);
   const [curFloor, setCurFloor] = useState(1);
   const [seatHighlight, setSeatHighlight] = useState([]);
   const [seatHoverHighlight, setSeatHoverHighlight] = useState([]);
@@ -323,11 +326,15 @@ export default function Seats() {
     }
 
     if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
-      notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa...");
+      notifyErrorMessage(
+        "Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa..."
+      );
     }
 
     if (mySeatsTmp.length === 0) {
-      notifyErrorMessage("Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain...");
+      notifyErrorMessage(
+        "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
+      );
       localStorage.removeItem("user_seats");
       localStorage.removeItem("user_seats_pick");
       window.location.reload();
@@ -360,7 +367,9 @@ export default function Seats() {
           err.response.data.error ===
           "you are not authorized, please fill your name or phone number data"
         ) {
-          notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu");
+          notifyErrorMessage(
+            "Silakan lengkapi data profil Anda terlebih dahulu"
+          );
           router.push({
             pathname: "/profile",
           });
@@ -368,7 +377,7 @@ export default function Seats() {
           notifyError(err);
         }
       }
-    } 
+    }
   }
 
   // clear all seats data
@@ -377,7 +386,7 @@ export default function Seats() {
     setUserSeatsPick([]);
     localStorage.removeItem("user_seats");
     localStorage.removeItem("user_seats_pick");
-    rerender()
+    rerender();
   }
 
   //
@@ -419,6 +428,7 @@ export default function Seats() {
     if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
     }
+    setPurchasedSeat(purchased);
 
     // passing data lantai 1 dan 2
     const floor1Seat = seatMapping(
@@ -695,20 +705,14 @@ export default function Seats() {
           );
         }
       } else {
-        arr.push(<div className={`rounded-base h-6 w-6 bg-black`}></div>);
+        arr.push(<div className={`rounded-base h-6 w-6 bg-black`} />);
       }
     }
     return arr;
   }
-  // sidebar
-  function hideSideBar(isOpen) {
-    isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
-  }
 
-  // for debugging
-  // function cek(halo) {
-  //   console.log(halo);
-  // }
+  console.log(userSeatsPick);
+  console.log(userSeats);
 
   // Display
   // =================================
@@ -773,9 +777,7 @@ export default function Seats() {
 
             <button
               className="hidden p-2 text-lg text-gmco-grey hover:scale-105 md:inline"
-              onClick={() => {
-                hideSideBar(sideBarOpen);
-              }}
+              onClick={() => setSideBarOpen(false)}
             >
               <XMarkIcon className="h-7 w-7 stroke-2" />
             </button>
@@ -811,13 +813,15 @@ export default function Seats() {
             <div className="text-xl font-semibold md:text-2xl">
               Jumlah Kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Maksimal pembelian 5 kursi
+                <span className="text-red-500">*</span>Maksimal pembelian 5
+                kursi
               </p>
             </div>
             <div className="self-center text-lg font-semibold md:text-xl">
               {userSeatsPick.length} kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Sisa {5 - userSeatsPick.length}
+                <span className="text-red-500">*</span>Sisa{" "}
+                {5 - userSeatsPick.length - purchasedSeat}
               </p>
             </div>
           </div>
@@ -906,24 +910,30 @@ export default function Seats() {
               ))}
 
               {/* Pesan Button */}
-              <button
-                className={`w-full rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
-                  userSeats.length
-                    ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
-                    : "pointer-events-none bg-gmco-grey opacity-50"
-                }`}
-                onClick={() => clearSeats()}
-              >Hapus Semua Pilihan</button>
-              <button
-                className={`rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
-                  userSeats.length
-                    ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
-                    : "pointer-events-none bg-gmco-grey opacity-50"
-                }`}
-                onClick={() => postSeats(userSeats)}
-              >
-                Masukkan ke Cart
-              </button>
+              <div className="flex w-full gap-2">
+                <button
+                  className={`flex w-2/5 items-center justify-center rounded-lg px-4 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
+                    userSeats.length
+                      ? "bg-red-800 opacity-100 hover:scale-105"
+                      : "pointer-events-none bg-gmco-grey opacity-50"
+                  }`}
+                  onClick={() => clearSeats()}
+                >
+                  <FaTrash className="h-4 w-4" />
+                  &nbsp; Hapus
+                </button>
+                <button
+                  className={`flex w-3/5 items-center justify-center rounded-lg px-4 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
+                    userSeats.length
+                      ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
+                      : "pointer-events-none bg-gmco-grey opacity-50"
+                  }`}
+                  onClick={() => postSeats(userSeats)}
+                >
+                  <FaShoppingCart className="h-5 w-5 scale-x-[-1]" />
+                  &nbsp; Checkout
+                </button>
+              </div>
             </div>
           </div>
 
@@ -964,7 +974,7 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "w-full md:w-4/5" : "w-full"
-          } relative min-h-[60vh] overflow-hidden md:min-h-screen`}
+          } relative min-h-[50vh] overflow-hidden md:min-h-screen`}
         >
           {/* Hide Sidebar dan Zoom */}
           <div
@@ -976,9 +986,7 @@ export default function Seats() {
               className={`pointer-events-auto m-3 ml-0 flex items-center rounded-r-lg bg-gmco-grey p-2 text-lg text-white hover:scale-105 ${
                 sideBarOpen ? "hidden" : "inline"
               }`}
-              onClick={() => {
-                hideSideBar(sideBarOpen);
-              }}
+              onClick={() => setSideBarOpen(true)}
             >
               Detail{" "}
               <span>
@@ -1008,7 +1016,8 @@ export default function Seats() {
 
           {/* ============================ */}
           {/* SEAT MAP START */}
-          <div className="no-select h-full cursor-move justify-start overflow-scroll">
+
+          <div className="relative h-full justify-start overflow-scroll">
             <div
               className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
             >
@@ -1028,7 +1037,7 @@ export default function Seats() {
               {/* Floor1 */}
               {/* ============================ */}
               <div
-                className={`flex h-max w-max cursor-move pt-8 duration-300 ease-in-out ${
+                className={`flex h-max w-max pt-8 duration-300 ease-in-out ${
                   curFloor === 1 ? "inline" : "hidden"
                 }`}
               >
@@ -1095,7 +1104,7 @@ export default function Seats() {
               {/* Floor2 */}
               {/* ============================ */}
               <div
-                className={`b-24 flex h-full w-max cursor-move flex-col items-center duration-300 ease-in-out ${
+                className={`b-24 flex h-full w-max flex-col items-center duration-300 ease-in-out ${
                   curFloor === 2 ? "inline" : "hidden"
                 }`}
               >

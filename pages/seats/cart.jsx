@@ -244,7 +244,7 @@ export default function Cart() {
                     onClick={() => cancelCheck()}
                     className="flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 hover:text-gmco-grey"
                   >
-                    <TrashIcon className="w- h-5" />
+                    <TrashIcon className="w-5 h-5" />
                   </button>
                 </div>
               </div>
