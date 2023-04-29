@@ -323,6 +323,8 @@ export default function Seats() {
 
     if (mySeatsTmp.length === 0) {
       notifyErrorMessage("Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain...");
+      localStorage.removeItem("user_seats");
+      localStorage.removeItem("user_seats_pick");
       window.location.reload();
     } else {
       try {
@@ -332,6 +334,8 @@ export default function Seats() {
           })
           .then(() => {
             notifySucces("Pesanan Ditambahkan, Mengalihkan...");
+            localStorage.removeItem("user_seats");
+            localStorage.removeItem("user_seats_pick");
             setTimeout(function () {
               router.push({
                 pathname: "/seats/cart",
