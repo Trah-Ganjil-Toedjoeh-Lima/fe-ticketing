@@ -39,7 +39,6 @@ export default function Seats() {
   const [seatHighlight, setSeatHighlight] = useState([]);
   const [seatHoverHighlight, setSeatHoverHighlight] = useState([]);
   const [scaleN, setScaleN] = useState(0);
-  const [purchasedSeat, setPurchasedSeat] = useState(0);
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -420,7 +419,6 @@ export default function Seats() {
     if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
     }
-    setPurchasedSeat(purchased);
 
     // passing data lantai 1 dan 2
     const floor1Seat = seatMapping(
@@ -819,7 +817,7 @@ export default function Seats() {
             <div className="self-center text-lg font-semibold md:text-xl">
               {userSeatsPick.length} kursi
               <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Sisa {5 - userSeatsPick.length - purchasedSeat}
+                <span className="text-red-500">*</span>Sisa {5 - userSeatsPick.length}
               </p>
             </div>
           </div>
