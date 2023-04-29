@@ -6,20 +6,22 @@ import { axiosInstance } from "@/utils/config";
 
 export default function Admin() {
   const [adminData, setAdminData] = useState([]);
-  const [appConfig, setAppConfig] = useState();
+  // const [appConfig, setAppConfig] = useState(false);
   const [qrScanMode, setQrScanMode] = useState("");
   const [isChecked, setChecked] = useState();
   const router = useRouter();
 
   async function handleGate() {
-    const postURL = appConfig
+    const postURL = isChecked
       ? "/api/v1/admin/close_the_gate"
       : "/api/v1/admin/open_the_gate";
 
     try {
-      const res = await axiosInstance.post(postURL);
-      setAppConfig(configRes.data.app_config.IsOpenGate);
-      setChecked(!isChecked);
+      await axiosInstance
+        .post(postURL)
+        .then((res) => {
+          setChecked(!isChecked);
+        })
     } catch (err) {
       console.error(err);
     }
@@ -66,10 +68,11 @@ export default function Admin() {
           axiosInstance.get("/api/v1/admin/seats"),
           axiosInstance.get("/api/v1/admin/get_app_config"),
         ]);
-
         setAdminData(seatsRes.data.data);
-        setAppConfig(configRes.data.app_config.IsOpenGate);
+        // setAppConfig(Boolean(configRes.data.app_config.IsOpenGate));
+        setChecked(Boolean(configRes.data.app_config.IsOpenGate));
         setQrScanMode(configRes.data.app_config.QrScanBehaviour);
+        // console.log("Open Gate? ", appConfig);
       } catch (error) {
         console.error(error);
       }
@@ -113,12 +116,12 @@ export default function Admin() {
               <input
                 type="checkbox"
                 onChange={() => handleGate()}
-                checked={appConfig}
-                value=""
+                checked={isChecked}
+                // value=""
                 className="peer sr-only"
               />
               <div className="peer h-7 w-14 rounded-full bg-gray-200 after:absolute after:left-[4px] after:top-0.5 after:h-6 after:w-6 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
-              {appConfig ? (
+              {isChecked ? (
                 <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                   Gate is open
                 </span>
