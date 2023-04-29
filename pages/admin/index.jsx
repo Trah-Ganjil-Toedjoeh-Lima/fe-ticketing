@@ -5,25 +5,42 @@ import NavBarAdmin from "@/components/navbaradmin";
 import { axiosInstance } from "@/utils/config";
 
 export default function Admin() {
+  const [isAdmin, setAsAdmin] = useState(false);
   const [adminData, setAdminData] = useState([]);
-  const [appConfig, setAppConfig] = useState();
+  // const [appConfig, setAppConfig] = useState(false);
   const [qrScanMode, setQrScanMode] = useState("");
-  const [isChecked, setChecked] = useState();
+  const [isChecked, setChecked] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    axiosInstance.get("/api/v1/admin/get_app_config").then((res) => {
+      const isOpenGate = res.data.app_config.IsOpenGate.toLowerCase() === "true";
+      console.log(isOpenGate)
+      setChecked(isOpenGate);
+      console.log(res.data.app_config.QrScanBehaviour)
+      setQrScanMode(res.data.app_config.QrScanBehaviour);
+    });
+  }, [isAdmin]);
+
   async function handleGate() {
-    const postURL = appConfig
+    const postURL = isChecked
       ? "/api/v1/admin/close_the_gate"
       : "/api/v1/admin/open_the_gate";
 
     try {
-      const res = await axiosInstance.post(postURL);
-      setAppConfig(configRes.data.app_config.IsOpenGate);
-      setChecked(!isChecked);
+      await axiosInstance.post(postURL).then((res) => {
+        setChecked(!isChecked);
+      });
     } catch (err) {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    axiosInstance.get("/api/v1/admin/seats").then((res) => {
+      setAdminData(res.data.data);
+    });
+  }, []);
 
   useEffect(() => {
     // Checks if the currently logged in user is an admin
@@ -34,13 +51,14 @@ export default function Admin() {
         // Only goes here when the status isn't 200 OK
         if (err.response.status !== 200) {
           console.log(`${err.response.status} ${err.response.statusText}`);
+          setAsAdmin(false); // If user is not an admin
           router.push("/admin/error");
           return false;
         } else {
           console.error(err); // Handles misc. errors
         }
       }
-      return true; // If user is an admin
+      setAsAdmin(true); // If user is an admin
     }
 
     function notAdminHandler() {
@@ -57,26 +75,6 @@ export default function Admin() {
       notAdminHandler();
     }
   }, [router.pathname]);
-
-  useEffect(() => {
-    async function getAdminData() {
-      //Try-catch block on promised GET requests to back-end
-      try {
-        const [seatsRes, configRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/seats"),
-          axiosInstance.get("/api/v1/admin/get_app_config"),
-        ]);
-
-        setAdminData(seatsRes.data.data);
-        setAppConfig(configRes.data.app_config.IsOpenGate);
-        setQrScanMode(configRes.data.app_config.QrScanBehaviour);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    getAdminData();
-  }, [qrScanMode]);
 
   async function updateQrScanState(newState) {
     const patchURL = "/api/v1/admin/qr_scan_behaviour";
@@ -113,12 +111,12 @@ export default function Admin() {
               <input
                 type="checkbox"
                 onChange={() => handleGate()}
-                checked={appConfig}
-                value=""
+                checked={false || isChecked}
+                value="false"
                 className="peer sr-only"
               />
               <div className="peer h-7 w-14 rounded-full bg-gray-200 after:absolute after:left-[4px] after:top-0.5 after:h-6 after:w-6 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
-              {appConfig ? (
+              {isChecked ? (
                 <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                   Gate is open
                 </span>
