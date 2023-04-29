@@ -48,6 +48,7 @@ export default function Seats() {
     useState([]);
   const [isReservedSeatLoaded, setReservedListLoaded] = useState(false);
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
+  const [isReservedByOthers, setIsReservedByOthers] = useState(false);
   // const [canWriteLocalSeat, setCanWriteLocalSeat] = useState(false);
 
   // floor 1
@@ -290,42 +291,74 @@ export default function Seats() {
 
   // Post data to cart
   async function postSeats(seatsArr) {
-    try {
-      await axiosInstance
-        .post("/api/v1/seat_map", {
-          data: seatsArr,
-        })
-        .then(() => {
-          notifySucces("Pesanan Ditambahkan, Mengalihkan...");
-          // localStorage.setItem("user_seats", JSON.stringify(null));
-          // localStorage.setItem("user_seats_pick", JSON.stringify(null));
-          setTimeout(function () {
-            router.push({
-              pathname: "/seats/cart",
-            });
-          }, 2000);
-        });
-      // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
-      // fungsi then route push
-    } catch (err) {
-      //console.log(err);
-      if (err.response.data.error === "your credentials are invalid") {
-        notifyErrorMessage("Silakan login terlebih dahulu");
-        router.push({
-          pathname: "/auth",
-        });
-      } else if (
-        err.response.data.error ===
-        "you are not authorized, please fill your name or phone number data"
-      ) {
-        notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu");
-        router.push({
-          pathname: "/profile",
-        });
-      } else {
-        notifyError(err);
+    console.log(seatsArr);
+    var mySeatsTmp = seatsArr;
+    const reservedByOthers = [];
+    const res = await axiosInstance.get("/api/v1/seat_map");
+    // console.log(res.length)
+    for (let i = 0; i < res.data.data.length; i++) {
+      // console.log(i)
+      const obj = res.data.data[i];
+
+      // untuk ambil kusi terpesan
+      if (obj.status === "reserved") {
+        reservedByOthers.push(obj);
       }
     }
+
+    for (let j = 0; j < reservedByOthers.length; j++) {
+      // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+      if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
+        setIsReservedByOthers(true);
+        // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
+        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+        mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
+        // console.log("Kursi tersisa:", mySeatsTmp)
+      }
+    }
+
+    if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
+      notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa...");
+    }
+
+    if (mySeatsTmp.length === 0) {
+      notifyErrorMessage("Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain...");
+    } else {
+      try {
+        await axiosInstance
+          .post("/api/v1/seat_map", {
+            data: mySeatsTmp,
+          })
+          .then(() => {
+            notifySucces("Pesanan Ditambahkan, Mengalihkan...");
+            setTimeout(function () {
+              router.push({
+                pathname: "/seats/cart",
+              });
+            }, 2000);
+          });
+        // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
+        // fungsi then route push
+      } catch (err) {
+        //console.log(err);
+        if (err.response.data.error === "your credentials are invalid") {
+          notifyErrorMessage("Silakan login terlebih dahulu");
+          router.push({
+            pathname: "/auth",
+          });
+        } else if (
+          err.response.data.error ===
+          "you are not authorized, please fill your name or phone number data"
+        ) {
+          notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu");
+          router.push({
+            pathname: "/profile",
+          });
+        } else {
+          notifyError(err);
+        }
+      }
+    } 
   }
 
   //
