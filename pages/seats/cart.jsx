@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
@@ -18,7 +17,7 @@ import {
 
 export default function Cart() {
   const [orderTotal, setOrderTotal] = useState(0);
-  const router = useRouter();
+  const [update, setUpdate] = useState("");
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
@@ -33,6 +32,10 @@ export default function Cart() {
     serenada: "bg-[#FF5A5F]",
     harmony: "bg-[#FFA500]",
   };
+
+  function rerender() {
+    setUpdate(`update ${Math.random()}`);
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
@@ -75,6 +78,7 @@ export default function Cart() {
       onSuccess: function () {
         /* You may add your own implementation here */
         notifySucces("Payment successful!");
+        rerender()
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
@@ -130,9 +134,9 @@ export default function Cart() {
           user_phone: "user_phone",
         });
         notifySucces("Pesanan Dihapus");
+        rerender()
         localStorage.removeItem("user_seats");
         localStorage.removeItem("user_seats_pick");
-        console.log("Local Storage Cleared");
       });
     } catch (err) {
       notifyError(err);
@@ -149,7 +153,7 @@ export default function Cart() {
 
   return (
     <>
-      <NavigationBar />
+      <NavigationBar doUpdate={update} />
       <div className="realtive max-w-screen overflow-hidden bg-gmco-blue-main md:min-h-screen">
         <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
           <Image

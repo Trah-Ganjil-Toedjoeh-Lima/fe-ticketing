@@ -7,15 +7,13 @@ import FooterBar from "@/components/footer";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-;
-
 export default function Home() {
   return (
     <>
       <NavigationBar />
       <div className="max-w-screen bg-gmco-white">
         {/* Hero Section */}
-        <div className="relative w-full overflow-hidden bg-gmco-grey h-screen">
+        <div className="relative h-screen w-full overflow-hidden bg-gmco-grey">
           <video
             preload="auto"
             playsInline
@@ -33,8 +31,8 @@ export default function Home() {
             duration={2000}
             distance="250px"
           >
-            <div className="relative z-10 flex items-center justify-center bg-cover h-screen">
-              <div className="flex flex-col md:flex-row h-max w-max flex-wrap items-center justify-center">
+            <div className="relative z-10 flex h-screen items-center justify-center bg-cover">
+              <div className="flex h-max w-max flex-col flex-wrap items-center justify-center md:flex-row">
                 <Image
                   src="/logo-anjangsana.webp"
                   alt="logo anjangsana"
@@ -135,9 +133,9 @@ export default function Home() {
             <RevealWrapper
               duration={1000}
               distance="0"
-              className="order-last lg:order-first flex w-full justify-end text-gmco-white"
+              className="order-last flex w-full justify-end text-gmco-white lg:order-first"
             >
-              <div className="lg:w-3/4 py-12 text-center md:text-left">
+              <div className="py-12 text-center md:text-left lg:w-3/4">
                 <div className="text-md font-bold tracking-wide md:text-2xl">
                   Featuring,
                 </div>
@@ -171,11 +169,11 @@ export default function Home() {
               distance="100px"
               className="w-full"
             >
-              <div className="flex h-[50vh] md:h-[70vh] items-center">
+              <div className="flex h-[50vh] items-center md:h-[70vh]">
                 <Image
                   src="/homepage/addiems_clearnew.png"
                   alt="gambar addie ms"
-                  className="mx-auto w-full h-auto object-cover"
+                  className="mx-auto h-auto w-full object-cover"
                   width={500}
                   height={500}
                 />
@@ -183,7 +181,8 @@ export default function Home() {
             </RevealWrapper>
           </div>
         </div>
-        <div className=" flex flex-col bg-gmco-blue-secondary p-10 ">
+
+        <div id="FAQ" className=" flex flex-col bg-gmco-blue-secondary p-10 ">
           <h1 className="mx-auto mb-10 text-4xl font-bold text-gray-900">
             FAQ
           </h1>

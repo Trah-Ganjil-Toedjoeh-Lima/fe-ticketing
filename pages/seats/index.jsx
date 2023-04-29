@@ -48,6 +48,7 @@ export default function Seats() {
     useState([]);
   const [isReservedSeatLoaded, setReservedListLoaded] = useState(false);
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
+  const [update, setUpdate] = useState("");
   // const [canWriteLocalSeat, setCanWriteLocalSeat] = useState(false);
 
   // floor 1
@@ -185,6 +186,10 @@ export default function Seats() {
     "scale-[190%]",
     "scale-[200%]",
   ];
+  
+  function rerender() {
+    setUpdate(`update ${Math.random()}`);
+  }
 
   // Counter 10 Minutes
   useEffect(() => {
@@ -299,6 +304,7 @@ export default function Seats() {
           notifySucces("Pesanan Ditambahkan, Mengalihkan...");
           // localStorage.setItem("user_seats", JSON.stringify(null));
           // localStorage.setItem("user_seats_pick", JSON.stringify(null));
+          rerender()
           setTimeout(function () {
             router.push({
               pathname: "/seats/cart",
@@ -670,7 +676,7 @@ export default function Seats() {
   return (
     <>
       <Loading isLoading={loading} />
-      <NavigationBar />
+      <NavigationBar doUpdate={update} />
 
       <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
         <div className="absolute h-64 w-screen overflow-hidden bg-gmco-grey">
@@ -787,7 +793,7 @@ export default function Seats() {
             </div>
             <div className="space-y-4">
               {priceCategory.map((namePrice) => (
-                <div className="group relative flex border-b-2 border-gmco-blue-main">
+                <div className="group relative flex border-b-4 border-gmco-grey">
                   <button
                     className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
@@ -862,7 +868,7 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
+                className={`rounded-lg w-full px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                     : "pointer-events-none bg-gmco-grey opacity-50"
@@ -973,6 +979,7 @@ export default function Seats() {
               </div>
 
               {/* Floor1 */}
+              {/* ============================ */}
               <div
                 className={`flex h-max w-max cursor-move pt-8 duration-300 ease-in-out ${
                   curFloor === 1 ? "inline" : "hidden"
