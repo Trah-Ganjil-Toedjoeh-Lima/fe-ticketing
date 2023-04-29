@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
@@ -7,7 +6,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance, midtransSetup } from "@/atoms/config";
+import { axiosInstance, midtransSetup } from "@/utils/config";
 import {
   notifyError,
   notifySucces,
@@ -18,33 +17,41 @@ import {
 
 export default function Cart() {
   const [orderTotal, setOrderTotal] = useState(0);
-  const router = useRouter();
+  const [update, setUpdate] = useState("");
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
     user_name: "user_name",
     user_phone: "user_phone",
   });
+  const category = {
+    gita: "bg-[#A3A3A3]",
+    sekar: "bg-[#D8B830]",
+    tala: "bg-[#2196F3]",
+    irama: "bg-[#00CED1]",
+    serenada: "bg-[#FF5A5F]",
+    harmony: "bg-[#FFA500]",
+  };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/checkout"),
-        ]);
-        setSeatBoughts(res.data.data);
-        midtransSetup(res.data.midtrans_client_key);
-      } catch (err) {
-        notifyErrorMessage("Anda belum melakukan transaksi.");
-      }
-    })();
-  }, []);
+  function rerender() {
+    setUpdate(`update ${Math.random()}`);
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
-      router.push("/auth");
+      notifyErrorMessage("Anda belum login.");
     } else {
-      midtransSetup();
+      (async () => {
+        try {
+          const [res] = await Promise.all([
+            axiosInstance.get("/api/v1/checkout"),
+          ]);
+          setSeatBoughts(res.data.data);
+          midtransSetup(res.data.midtrans_client_key);
+        } catch (err) {
+          notifyErrorMessage("Anda belum melakukan transaksi.");
+        }
+      })();
     }
   }, []);
 
@@ -71,6 +78,7 @@ export default function Cart() {
       onSuccess: function () {
         /* You may add your own implementation here */
         notifySucces("Payment successful!");
+        rerender()
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
@@ -93,7 +101,7 @@ export default function Cart() {
     });
   }
 
-  function canselCheck() {
+  function cancelCheck() {
     Swal.fire({
       html: `Anda yakin ingin menghapus transaksi?`,
       toast: true,
@@ -105,6 +113,7 @@ export default function Cart() {
       cancelButtonColor: "#c76734",
       confirmButtonText: "Ya",
       confirmButtonColor: "#287d92",
+      color: "#f6f7f1",
       showClass: {
         popup: "",
       },
@@ -117,14 +126,18 @@ export default function Cart() {
 
   async function handleCancel() {
     try {
-      await axiosInstance.delete("/api/v1/checkout").then(() =>
+      await axiosInstance.delete("/api/v1/checkout").then(() => {
         setSeatBoughts({
           seats: [],
           user_email: "user.email",
           user_name: "user_name",
           user_phone: "user_phone",
-        })
-      );
+        });
+        notifySucces("Pesanan Dihapus");
+        rerender()
+        localStorage.removeItem("user_seats");
+        localStorage.removeItem("user_seats_pick");
+      });
     } catch (err) {
       notifyError(err);
     }
@@ -140,15 +153,15 @@ export default function Cart() {
 
   return (
     <>
-      <NavigationBar />
-      <div className='realtive overflow-hidden bg-gmco-blue-main md:min-h-screen'>
-        <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
+      <NavigationBar doUpdate={update} />
+      <div className="realtive max-w-screen overflow-hidden bg-gmco-blue-main md:min-h-screen">
+        <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
           <Image
-            src="/gmco-cart.webp"
-            className="w-full h-full object-cover object-center opacity-50"
-            alt="bg gmco concert"
-            width={2000}
-            height={2000}
+            src='/seatmap/GMCO-11_crop.webp'
+            className='h-full w-full object-cover opacity-40 md:object-top lg:object-left-bottom'
+            alt='gmco concert'
+            width={1920}
+            height={1281}
           />
         </div>
 
@@ -177,25 +190,6 @@ export default function Cart() {
                     <tr key={index} className='divide-y'>
                       <td className='border-t pt-4'>
                         <div className='flex items-center'>
-                          {/* <div className="hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 md:inline">
-                            {seatBought.price > 100000 ? (
-                              <Image
-                                src="/chair.webp"
-                                alt="Kursi Bagus Enak Diduduki"
-                                className="h-full w-full object-cover object-center"
-                                width={1000}
-                                height={1000}
-                              />
-                            ) : (
-                              <Image
-                                src="/chair-hijau.webp"
-                                alt="Kursi Hijau Sangat Kuat"
-                                className="h-full w-full object-cover object-center"
-                                width={1000}
-                                height={1000}
-                              />
-                            )}
-                          </div> */}
                           <h3 className='text-md font-extrabold md:text-xl'>
                             Kursi {seatBought.name}
                           </h3>
@@ -204,10 +198,20 @@ export default function Cart() {
 
                       <td className='pt-4'>
                         <div className='flex flex-col items-center justify-center gap-1 text-xs text-gmco-grey md:flex-row md:gap-3 md:text-sm'>
-                          <p className='w-max rounded-md bg-gmco-yellow p-1 md:p-2 '>
-                            Kategori
+                          <p
+                            className={`w-24 rounded-md p-1 text-center font-semibold capitalize md:p-2 ${
+                              category[seatBought.category]
+                            }`}
+                          >
+                            {seatBought.category}
                           </p>
-                          <p className='w-max rounded-md bg-gmco-yellow p-1 md:p-2 '>
+                          <p
+                            className={`w-24 rounded-md p-1 text-center font-semibold md:p-2 ${
+                              seatBought.name[0] > "S"
+                                ? "bg-gmco-orange-secondarydark"
+                                : "bg-gmco-orange-secondarylight"
+                            }`}
+                          >
                             Lantai {seatBought.name[0] > "S" ? 2 : 1}
                           </p>
                         </div>
@@ -235,12 +239,12 @@ export default function Cart() {
               {/* Batalkan Transaksi */}
               <div className='h-min rounded-2xl bg-gmco-white/75 p-6 '>
                 <div className='flex items-center justify-between'>
-                  <p className='font-bold text-lg'>Batalkan Transaksi</p>
+                  <p className='text-lg font-bold'>Batalkan Transaksi</p>
                   <button
-                    onClick={() => canselCheck()}
+                    onClick={() => cancelCheck()}
                     className='flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 hover:text-gmco-grey'
                   >
-                    <TrashIcon className='w- h-5' />
+                    <TrashIcon className="w-5 h-5" />
                   </button>
                 </div>
               </div>

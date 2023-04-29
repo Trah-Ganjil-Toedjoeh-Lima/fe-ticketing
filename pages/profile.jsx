@@ -4,7 +4,7 @@ import { use, useEffect, useState } from "react";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 import {
   notifyError,
   notifyErrorMessage,
@@ -37,7 +37,7 @@ export default function Profile() {
     router.push("/seats");
   }
 
-  // ini gk bisa dijadiin 1 karena kalo ticket ga ada chandra ngasihnya 404 jadi error ya harus dipihsa -weka
+  // ini gk bisa dijadiin 1 karena kalo ticket ga ada, chandra ngasihnya 404 jadi error ya harus dipisah -weka
   // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
   // misal gini
   useEffect(() => {
@@ -120,9 +120,9 @@ export default function Profile() {
   function confirmSubmit(e) {
     e.preventDefault();
     Swal.fire({
-      html: `Pastikan Data yang Diisikan Sudah Sesuai!`,
+      html: `Pastikan data yang diisikan sudah sesuai.`,
       toast: false,
-      icon: "warning",
+      icon: "info",
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
@@ -162,26 +162,26 @@ export default function Profile() {
     <>
       {/* HEADER */}
       <NavigationBar />
-      <div className="h-full w-screen bg-gmco-yellow-secondary">
+      <div className="max-w-screen h-full bg-gmco-yellow-secondary">
         {/*This is the header */}
         <div className="relative w-full overflow-hidden ">
           <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
             <Image
-              src="/GMCO_10.webp"
-              alt="background gmco"
-              className="w-full scale-105 object-cover object-top opacity-50"
-              width={3000}
-              height={3000}
+              src='/profile/GMCO_10.webp'
+              alt='background gmco'
+              className='w-full scale-105 object-cover object-top opacity-50'
+              width={1920}
+              height={650}
             />
           </div>
-          <div className="container relative m-auto flex h-full flex-col items-center pb-8 pt-24 lg:flex-row">
-            <div className="flex h-full lg:w-1/5">
-              <h1 className="font-rubik text-5xl font-light text-white">
-                PROFIL
+          <div className='relative justify-between m-auto flex h-full flex-col pb-8 pt-24 lg:flex-row'>
+            <div className='items-center md:items-start lg:items-end px-4 md:px-8 lg:ml-40'>
+              <h1 className='flex w-max text-2xl border-b-2 md:text-4xl lg:text-4xl font-bold text-gmco-white'>
+                Profil
               </h1>
             </div>
 
-            <div className="flex w-4/5 flex-col items-start lg:items-end">
+            <div className='mr-8 flex flex-col items-end lg:mr-48 lg:items-end'>
               {/* aku agak bingung kok gk keluar hasilnya */}
               {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
               {/* awal => {} harusnya => () */}
@@ -191,7 +191,7 @@ export default function Profile() {
                   key={key}
                   className={`font-sans text-gmco-yellow ${
                     key === "Name"
-                      ? "text-2xl font-semibold"
+                      ? "text-xl lg:text-2xl font-semibold"
                       : key === "UserId"
                       ? "hidden"
                       : "font-normal"
@@ -273,11 +273,9 @@ export default function Profile() {
             {seatsBought.Seat.length === 0 ? (
               <div className="flex w-full flex-col items-center justify-center">
                 <p className="mb-8 text-center text-2xl text-gmco-grey">
-                  Kowe ra nduwe tiket
+                  Anda belum membeli tiket.
                   <br />
-                  Gek Ndang Tuku
-                  <br />
-                  Selak entek lur
+                  Silakan menuju ke halaman seat map untuk membeli tiket.
                 </p>
                 <button
                   class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
@@ -295,13 +293,13 @@ export default function Profile() {
                 className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row"
               >
                 {/* Kursi dan Tipe */}
-                <div className="flex w-1/2 justify-start gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
-                  <h1 className="font-rubik text-xs font-bold text-gmco-grey sm:text-lg sm:text-xl lg:text-2xl">
+                <div className="flex w-full justify-center gap-1 text-start  sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                  <h1 className="font-rubik text-lg font-bold text-gmco-grey md:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
                     className={
-                      `w-fit rounded-lg px-1 text-center text-xs font-normal text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
+                      `w-fit rounded-lg p-1 text-center text-xs font-normal text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
                       ({
                         Platinum: "bg-gmco-blue",
                         Diamond: "bg-violet-700",
@@ -316,23 +314,41 @@ export default function Profile() {
                 </div>
 
                 {/* Waktu dan Tempat */}
-                <div className="flex w-full items-center sm:justify-end">
-                  <div className="flex w-1/2 flex-col gap-2 text-start text-xs sm:w-fit sm:items-center sm:text-end sm:text-sm lg:text-base">
+                <div className="flex  w-full flex-row items-center justify-center p-2 md:justify-between">
+                  <div className="ml-3 flex w-1/2 flex-col gap-2 text-start text-xs sm:w-fit sm:items-center sm:text-end sm:text-sm lg:text-base">
                     <p>Auditorium Driyarkara</p>
                     <p>Sabtu, 27 Mei 2023</p>
                     <p>Open Gate 18.00 WIB</p>
                   </div>
-                  <div className="flex w-1/2 justify-end overflow-hidden sm:block sm:w-fit">
-                    <Image
-                      src="/qris-reinhart.webp"
-                      alt="qris pls send money"
-                      width={100}
-                      height={100}
+                  <a
+                    href="#_"
+                    className="text-md group -mt-7 sm:mt-0 relative mx-2  -center text-center h-1/2 w-1/3"
+                  >
+                    <span
+                      className="absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0"   
                     />
-                  </div>
+                    <span
+                      className="absolute inset-0 w-full border-2 border-black transition duration-200 ease-out group-hover:bg-gmco-orange-secondarydark bg-gmco-blue-main" 
+                    ></span>
+                    <span
+                      className="relative  items-center sm:top-6 md:top-6 lg:top-8 xl:top-4  text-xs sm:text-base md:text-lg  mx-2 font-bold text-gmco-white  transition duration-200 ease-out group-hover:text-gmco-yellow " 
+                      
+                    >
+                      Lihat E-Ticket
+                    </span>
+                    {/* <span class="relative z-10 block overflow-hidden rounded-lg border-2 border-gray-900 px-5 py-3 font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out group-hover:text-white">
+                      <span class="absolute inset-0 h-full w-full rounded-lg bg-gmco-blue px-5 py-3"></span>
+                      <span class="ease absolute left-0 -ml-2 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-gray-900 transition-all duration-300 group-hover:-rotate-180"></span>
+                      <span class="relative">Lihat E-Ticket</span>
+                    </span>
+                    <span
+                      class="absolute bottom-0 right-0 -mb-1 -mr-1 h-12 w-full rounded-lg bg-gray-900 transition-all duration-200 ease-linear group-hover:mb-0 group-hover:mr-0"
+                      data-rounded="rounded-lg"
+                    ></span> */}
+                  </a>
 
                   {/* Nama Konser */}
-                  <div className="hidden w-1/2 items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex">
+                  <div className="hidden w-1/3 items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex">
                     <div className="mx-2 overflow-hidden">
                       <Image
                         src="/logo-anjangsana.webp"

@@ -7,11 +7,12 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 
-export default function NavigationBar() {
+export default function NavigationBar({ doUpdate }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [checkout, setCheckout] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [logedUser, setLogedUser] = useState({
     Email: "",
@@ -23,10 +24,21 @@ export default function NavigationBar() {
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "Seat", route: "/seats" },
+    { name: "FAQ", route: "/#FAQ" },
     {
       name: (
         <>
-          <FaShoppingCart className="hidden scale-x-[-1] md:inline md:h-6 md:w-6" />
+          <div className="relative hidden h-full w-full md:flex">
+            <FaShoppingCart className="scale-x-[-1] md:h-6 md:w-6" />
+            <p
+              className={`absolute right-0 top-0 rounded-sm bg-red-500 px-1 text-xs ${
+                checkout === 0 ? "hidden" : "inline"
+              }`}
+            >
+              {checkout}
+            </p>
+          </div>
+
           <p className="md:hidden">Shopping Cart</p>
         </>
       ),
@@ -39,6 +51,7 @@ export default function NavigationBar() {
   // }
 
   useEffect(() => {
+    // get user profile
     (async () => {
       try {
         const [res] = await Promise.all([
@@ -47,20 +60,30 @@ export default function NavigationBar() {
         setLogedUser(res.data.data);
       } catch {}
     })();
-  }, []);
 
-  useEffect(() => {
+    // get user checkout
+    (async () => {
+      try {
+        const [res] = await Promise.all([
+          axiosInstance.get("/api/v1/checkout"),
+        ]);
+        setCheckout(res.data.data.seats.length);
+        console.log("kakakakaka");
+      } catch (err) {
+        setCheckout(0);
+      }
+    })();
+
+    // should always run
     const handleScroll = () => {
       const position = window.pageYOffset;
       setScrollPosition(position);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [doUpdate]);
 
   function logoutCheck() {
     Swal.fire({
@@ -68,8 +91,8 @@ export default function NavigationBar() {
       toast: false,
       icon: "warning",
       iconColor: "#f6f7f1",
-      background:"#2d2d2f",
-      color:"#f6f7f1",
+      background: "#2d2d2f",
+      color: "#f6f7f1",
       showCancelButton: true,
       cancelButtonText: "Tidak",
       cancelButtonColor: "#c76734",
@@ -87,13 +110,14 @@ export default function NavigationBar() {
 
   async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
-      if (res.data.message == "success") {
+      if (res.data.message == "success" || res.status == 400) {
         localStorage.removeItem("auth_token");
         Swal.fire({
           html: `<b>${res.data.message}</b> tunggu...`,
           toast: true,
           width: 350,
           icon: "success",
+          color: "#f6f7f1",
           background: "#2d2d2f",
           iconColor: "#287d92",
           showConfirmButton: false,
@@ -161,7 +185,7 @@ export default function NavigationBar() {
                 <Avatar
                   rounded={true}
                   alt="User settings"
-                  img="/violin-picture.webp"
+                  img="/navbar/violin-picture.webp"
                 />
               }
             >
