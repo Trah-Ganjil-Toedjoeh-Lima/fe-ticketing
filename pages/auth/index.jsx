@@ -156,16 +156,6 @@ export default function Auth() {
         </div>
       </div>
       {/* right side */}
-      {/* <div className=" md:w-1/3 lg:w-1/4">
-          <img
-            src="/herotemp.webp"
-            alt=""
-            className="w-full h-full hidden lg:rounded-r-2xl md:block object-cover"
-          />
-          <div className="absolute hidden top-5 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block">
-            <span className="text-white text-xl">Welcome to GC GMCO</span>
-          </div>
-        </div> */}
     </section>
   );
 }

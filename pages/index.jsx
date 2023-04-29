@@ -7,8 +7,6 @@ import FooterBar from "@/components/footer";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-;
-
 export default function Home() {
   return (
     <>
@@ -183,7 +181,9 @@ export default function Home() {
             </RevealWrapper>
           </div>
         </div>
-        <div className=" flex flex-col bg-gmco-blue-secondary p-10 ">
+
+        {/* FAQ */}
+        <div id="FAQ" className=" flex flex-col bg-gmco-blue-secondary p-10 ">
           <h1 className="mx-auto mb-6 text-4xl font-bold text-gray-900">FAQ</h1>
           <div className="container mx-auto items-center justify-center">
             <Accordion className="rounded-t-lg">

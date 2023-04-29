@@ -165,21 +165,21 @@ export default function Profile() {
         <div className="relative w-full overflow-hidden ">
           <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
             <Image
-              src="/profile/GMCO_10.webp"
-              alt="background gmco"
-              className="w-full scale-105 object-cover object-top opacity-50"
-              width={3000}
-              height={3000}
+              src='/profile/GMCO_10.webp'
+              alt='background gmco'
+              className='w-full scale-105 object-cover object-top opacity-50'
+              width={1920}
+              height={650}
             />
           </div>
-          <div className="container relative m-auto flex h-full flex-col items-center pb-8 pt-24 lg:flex-row">
-            <div className="flex h-full lg:w-1/5">
-              <h1 className="font-rubik text-5xl font-light text-white">
-                PROFIL
+          <div className='relative justify-between m-auto flex h-full flex-col pb-8 pt-24 lg:flex-row'>
+            <div className='items-center md:items-start lg:items-end px-4 md:px-8 lg:ml-40'>
+              <h1 className='flex w-max text-2xl border-b-2 md:text-4xl lg:text-4xl font-bold text-gmco-white'>
+                Profil
               </h1>
             </div>
 
-            <div className="flex w-4/5 flex-col items-start lg:items-end">
+            <div className='mr-8 flex flex-col items-end lg:mr-48 lg:items-end'>
               {/* aku agak bingung kok gk keluar hasilnya */}
               {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
               {/* awal => {} harusnya => () */}
@@ -189,7 +189,7 @@ export default function Profile() {
                   key={key}
                   className={`font-sans text-gmco-yellow ${
                     key === "Name"
-                      ? "text-2xl font-semibold"
+                      ? "text-xl lg:text-2xl font-semibold"
                       : key === "UserId"
                       ? "hidden"
                       : "font-normal"
