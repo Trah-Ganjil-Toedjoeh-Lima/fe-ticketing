@@ -248,7 +248,7 @@ export default function Seats() {
         }, 500);
       }
     })();
-  }, []);
+  }, [update]);
 
   useEffect(() => {
     if (isReservedSeatLoaded === true && isLocalSeatLoaded === false) {
@@ -377,7 +377,7 @@ export default function Seats() {
     setUserSeatsPick([]);
     localStorage.removeItem("user_seats");
     localStorage.removeItem("user_seats_pick");
-    window.location.reload();
+    rerender()
   }
 
   //
