@@ -186,7 +186,7 @@ export default function Seats() {
     "scale-[190%]",
     "scale-[200%]",
   ];
-  
+
   function rerender() {
     setUpdate(`update ${Math.random()}`);
   }
@@ -304,7 +304,7 @@ export default function Seats() {
           notifySucces("Pesanan Ditambahkan, Mengalihkan...");
           // localStorage.setItem("user_seats", JSON.stringify(null));
           // localStorage.setItem("user_seats_pick", JSON.stringify(null));
-          rerender()
+          rerender();
           setTimeout(function () {
             router.push({
               pathname: "/seats/cart",
@@ -487,7 +487,7 @@ export default function Seats() {
           const isHighlight = seatHighlight.includes(array[i].price);
           const isHoverHighlight = seatHoverHighlight.includes(array[i].price);
           arr.push(
-            <div className={` duration-300 hover:scale-150 ${deg_rot[i]}`}>
+            <div className={`duration-300 hover:scale-150 ${deg_rot[i]}`}>
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
@@ -550,11 +550,7 @@ export default function Seats() {
             array[index].price
           );
           arr.push(
-            <div
-              className={`bg-gmco-yellow duration-300 hover:scale-150 ${
-                deg_rot[i - 1]
-              }`}
-            >
+            <div className={`duration-300 hover:scale-150 ${deg_rot[i - 1]}`}>
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
@@ -617,31 +613,29 @@ export default function Seats() {
             array[index].price
           );
           arr.push(
-            <div className={`bg-gmco-yellow duration-300 hover:scale-150`}>
-              <div
-                className={`rounded-base h-6 w-6 ${
-                  statusColor[array[index].status]
-                }  cursor-pointer text-center text-[0.7rem] ${
-                  isHighlight
-                    ? "bg-gmco-orange-secondarylight"
-                    : isHoverHighlight
-                    ? "bg-gmco-yellow-secondary"
-                    : ""
-                } ${
-                  isSelected
-                    ? "scale-150 border-2 border-red-500 bg-opacity-50"
-                    : ""
-                }`}
-                onClick={() => onSeatPick(array[index], arrayUser)}
-                onMouseEnter={() => {
-                  setPriceCategoryHoverHighlight([array[index].price]);
-                }}
-                onMouseLeave={() => {
-                  setPriceCategoryHoverHighlight([]);
-                }}
-              >
-                {array[index].name}
-              </div>
+            <div
+              className={`rounded-base h-6 w-6 duration-300 hover:scale-150 ${
+                statusColor[array[index].status]
+              }  cursor-pointer text-center text-[0.7rem] ${
+                isHighlight
+                  ? "bg-gmco-orange-secondarylight"
+                  : isHoverHighlight
+                  ? "bg-gmco-yellow-secondary"
+                  : ""
+              } ${
+                isSelected
+                  ? "scale-150 border-2 border-red-500 bg-opacity-50"
+                  : ""
+              }`}
+              onClick={() => onSeatPick(array[index], arrayUser)}
+              onMouseEnter={() => {
+                setPriceCategoryHoverHighlight([array[index].price]);
+              }}
+              onMouseLeave={() => {
+                setPriceCategoryHoverHighlight([]);
+              }}
+            >
+              {array[index].name}
             </div>
           );
         } else {
@@ -868,7 +862,7 @@ export default function Seats() {
 
               {/* Pesan Button */}
               <button
-                className={`rounded-lg w-full px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
+                className={`w-full rounded-lg px-10 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                   userSeats.length
                     ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                     : "pointer-events-none bg-gmco-grey opacity-50"
