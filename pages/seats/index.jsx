@@ -725,8 +725,8 @@ export default function Seats() {
             src="/seatmap/GMCO.webp"
             className="h-full w-full object-cover object-center opacity-50"
             alt="bg gmco concert"
-            width={3000}
-            height={3000}
+            width={1920}
+            height={1281}
           />
         </div>
         <div className="relative p-7 pt-20">
