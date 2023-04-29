@@ -37,12 +37,14 @@ export default function Seats() {
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [curFloor, setCurFloor] = useState(1);
   const [seatHighlight, setSeatHighlight] = useState([]);
+  const [seatHoverHighlight, setSeatHoverHighlight] = useState([]);
   const [scaleN, setScaleN] = useState(0);
   const [purchasedSeat, setPurchasedSeat] = useState(0);
   const [counter, setCounter] = useState(60 * 10);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [priceCategoryHighlight, setPriceCategoryHighlight] = useState([]);
+  const [priceCategoryHoverHighlight, setPriceCategoryHoverHighlight] = useState([]);
 
   // floor 1
   const mappersFloor1 = [
@@ -253,9 +255,14 @@ export default function Seats() {
     } catch (err) {
       //console.log(err);
       if (err.response.data.error === "your credentials are invalid") {
-        notifyError("Silahkan Login Terlebih Dahulu");
+        notifyErrorMessage("Silakan login terlebih dahulu");
         router.push({
           pathname: "/auth",
+        });
+      } else if (err.response.data.error === "you are not authorized, please fill your name or phone number data") {
+        notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu")
+        router.push({
+          pathname: "/profile",
         });
       } else {
         notifyError(err);
@@ -395,9 +402,7 @@ export default function Seats() {
       setUserSeats([...userSeats, array.seat_id]);
       setUserSeatsPick([...userSeatsPick, array]);
     } else {
-      notifyError({
-        response: { data: { error: "Maksimum pembelian kursi adalah 5" } },
-      });
+      notifyErrorMessage("Maksimal membeli 5 kursi per akun");
     }
   }
 
@@ -409,13 +414,14 @@ export default function Seats() {
         if (array[i].status === "available") {
           const isSelected = userSeats.includes(array[i].seat_id);
           const isHighlight = seatHighlight.includes(array[i].price);
+          const isHoverHighlight = seatHoverHighlight.includes(array[i].price);
           arr.push(
             <div className={` duration-300 hover:scale-150 ${deg_rot[i]}`}>
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[i].status]
                 }  cursor-pointer text-center text-[0.7rem] 
-                  ${isHighlight ? " bg-gmco-orange-secondarylight" : ""} ${
+                  ${isHighlight ? " bg-gmco-orange-secondarylight" : isHoverHighlight ? "bg-gmco-yellow-secondary" : ""} ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
                     : ""
@@ -424,10 +430,10 @@ export default function Seats() {
                   onSeatPick(array[i], arrayUser);
                 }}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight([array[i].price]);
+                  setPriceCategoryHoverHighlight([array[i].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight([]);
+                  setPriceCategoryHoverHighlight([]);
                 }}
               >
                 {array[i].name}
@@ -463,6 +469,7 @@ export default function Seats() {
         if (array[index].status == "available") {
           const isSelected = arrayUser.includes(array[index].seat_id);
           const isHighlight = seatHighlight.includes(array[index].price);
+          const isHoverHighlight = seatHoverHighlight.includes(array[index].price);
           arr.push(
             <div
               className={`bg-gmco-yellow duration-300 hover:scale-150 ${
@@ -473,7 +480,7 @@ export default function Seats() {
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
-                  isHighlight ? "bg-gmco-orange-secondarylight" : ""
+                  isHighlight ? "bg-gmco-orange-secondarylight" : isHoverHighlight ? "bg-gmco-yellow-secondary" : ""
                 } ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -481,10 +488,10 @@ export default function Seats() {
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight([array[index].price]);
+                  setPriceCategoryHoverHighlight([array[index].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight([]);
+                  setPriceCategoryHoverHighlight([]);
                 }}
               >
                 {array[index].name}
@@ -523,13 +530,14 @@ export default function Seats() {
         if (array[index].status == "available") {
           const isSelected = arrayUser.includes(array[index].seat_id);
           const isHighlight = seatHighlight.includes(array[index].price);
+          const isHoverHighlight = seatHoverHighlight.includes(array[index].price);
           arr.push(
             <div className={`bg-gmco-yellow duration-300 hover:scale-150`}>
               <div
                 className={`rounded-base h-6 w-6 ${
                   statusColor[array[index].status]
                 }  cursor-pointer text-center text-[0.7rem] ${
-                  isHighlight ? "bg-gmco-orange-secondarylight" : ""
+                  isHighlight ? "bg-gmco-orange-secondarylight" : isHoverHighlight ? "bg-gmco-yellow-secondary" : ""
                 } ${
                   isSelected
                     ? "scale-150 border-2 border-red-500 bg-opacity-50"
@@ -537,10 +545,10 @@ export default function Seats() {
                 }`}
                 onClick={() => onSeatPick(array[index], arrayUser)}
                 onMouseEnter={() => {
-                  setPriceCategoryHighlight([array[index].price]);
+                  setPriceCategoryHoverHighlight([array[index].price]);
                 }}
                 onMouseLeave={() => {
-                  setPriceCategoryHighlight([]);
+                  setPriceCategoryHoverHighlight([]);
                 }}
               >
                 {array[index].name}
@@ -704,19 +712,36 @@ export default function Seats() {
                         ? setSeatHighlight([])
                         : setSeatHighlight([namePrice.price]);
                       namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
+                      priceCategoryHighlight.includes(namePrice.price)
+                        ? setPriceCategoryHighlight([])
+                        : setPriceCategoryHighlight([namePrice.price]);
+                    }}
+                    onMouseEnter={() => {
+                      seatHoverHighlight.includes(namePrice.price)
+                        ? setSeatHoverHighlight([])
+                        : setSeatHoverHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
+                    }}
+                    onMouseLeave={() => {
+                      seatHoverHighlight.includes(namePrice.price)
+                        ? setSeatHoverHighlight([])
+                        : setSeatHoverHighlight([namePrice.price]);
+                      namePrice.lantai == 1 ? setCurFloor(1) : setCurFloor(2);
                     }}
                   >
                     <span
                       className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
                         priceCategoryHighlight.includes(namePrice.price)
-                          ? "-translate-x-0 -translate-y-0 bg-gmco-orange-secondarydark"
+                          ? "-translate-x-0 -translate-y-0 bg-gmco-yellow-secondary"
                           : "bg-gmco-grey"
                       }`}
                     ></span>
                     <span
                       className={`absolute inset-0 w-full border-2 border-black transition duration-200 ease-out group-hover:bg-gmco-orange-secondarydark ${
                         priceCategoryHighlight.includes(namePrice.price)
-                          ? "bg-gmco-orange-secondarydark"
+                        ? "bg-gmco-orange-secondarydark"
+                        : priceCategoryHoverHighlight.includes(namePrice.price)
+                          ? "bg-gmco-yellow-secondary"
                           : "bg-gmco-blue-main"
                       }`}
                     ></span>
@@ -724,7 +749,9 @@ export default function Seats() {
                       className={`relative text-gmco-white transition duration-200 ease-out group-hover:text-gmco-yellow ${
                         priceCategoryHighlight.includes(namePrice.price)
                           ? "text-gmco-yellow"
-                          : "text-gmco-white"
+                          : priceCategoryHoverHighlight.includes(namePrice.price)
+                            ? "text-gmco-grey"
+                            : "text-gmco-white"
                       }`}
                     >
                       {namePrice.name}
