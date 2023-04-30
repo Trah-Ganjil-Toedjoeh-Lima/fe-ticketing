@@ -171,9 +171,9 @@ export default function Profile() {
     }
   }
 
-  Object.keys(userData).map((key) => {
-    console.log(userData[key]);
-  });
+  // Object.keys(userData).map((key) => {
+  //   console.log(userData[key]);
+  // });
 
   // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
