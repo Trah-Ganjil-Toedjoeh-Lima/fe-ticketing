@@ -11,6 +11,7 @@ import {
   notifySucces,
 } from "@/components/notify";
 import Swal from "sweetalert2";
+import { Loading } from "@/utils/spinner";
 
 export default function Profile() {
   const router = useRouter();
@@ -33,6 +34,9 @@ export default function Profile() {
     Seat: [],
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [verboseMsg, setVerboseMsg] = useState("Loading...");
+
   function routeToSeats() {
     router.push("/seats");
   }
@@ -49,9 +53,12 @@ export default function Profile() {
 
     (async () => {
       try {
+        setIsLoading(true);
+        setVerboseMsg("Getting user data...");
         const [userRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
         ]);
+        setIsLoading(false);
         if (!userRes.data.data.Email || !userRes.data.data.Phone) {
           Swal.fire({
             html: `Mohon Lengkapi Nama dan Nomor WhatsApp Anda Agar Dapat Membeli Tiket`,
@@ -86,32 +93,36 @@ export default function Profile() {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [adminRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/healthAdmin"),
-        ]);
-        // console.log(adminRes)
-        if (adminRes.status === 200) {
-          notifySucces("Anda telah login sebagai admin.")
-          router.push("/admin");
-        }
-      } catch (err) {
-        // console.log(err);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const [adminRes] = await Promise.all([
+  //         axiosInstance.get("/api/v1/admin/healthAdmin"),
+  //       ]);
+  //       // console.log(adminRes)
+  //       if (adminRes.status === 200) {
+  //         notifySucces("Anda telah login sebagai admin.")
+  //         router.push("/admin");
+  //       }
+  //     } catch (err) {
+  //       // console.log(err);
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
+        setVerboseMsg("Getting ticket data ...");
         const [ticketRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/tickets"),
         ]);
+        setIsLoading(false);
         setSeatsBought(ticketRes.data.data);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        notifyErrorMessage("Gagal mengambil data tiket")
       }
     })();
   }, []);
@@ -179,6 +190,7 @@ export default function Profile() {
   return (
     <>
       {/* HEADER */}
+      <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar />
       <div className="max-w-screen h-full bg-gmco-yellow-secondary">
         {/*This is the header */}
@@ -397,11 +409,11 @@ export default function Profile() {
   );
 }
 
-export async function getServerSideProps(ctx) {
-  const { req } = ctx;
-  let baseURL = "";
-  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
-    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  }
-  return { props: {} };
-}
+// export async function getServerSideProps(ctx) {
+//   const { req } = ctx;
+//   let baseURL = "";
+//   if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+//     baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+//   }
+//   return { props: {} };
+// }
