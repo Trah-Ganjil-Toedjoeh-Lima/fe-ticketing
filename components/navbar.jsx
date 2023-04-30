@@ -8,6 +8,7 @@ import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
 import { axiosInstance } from "@/utils/config";
+import { notifySucces } from "./notify";
 
 export default function NavigationBar({ doUpdate }) {
   const router = useRouter();
@@ -126,7 +127,12 @@ export default function NavigationBar({ doUpdate }) {
             popup: "",
           },
         }).then(() => {
-          router.push("/auth");
+          notifySucces("Berhasil keluar");
+          if (router.pathname == "/") {
+            router.reload();
+          } else {
+            router.push("/");
+          }
         });
       }
     });
