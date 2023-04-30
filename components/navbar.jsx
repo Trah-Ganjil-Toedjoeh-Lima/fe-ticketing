@@ -24,8 +24,8 @@ export default function NavigationBar({ doUpdate }) {
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
-    { name: "Seat", route: "/seats" },
     { name: "FAQ", route: "/#FAQ" },
+    { name: "Seat", route: "/seats" },
     {
       name: (
         <>
