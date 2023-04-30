@@ -52,6 +52,7 @@ export default function Seats() {
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
   const [update, setUpdate] = useState("");
   const [isReservedByOthers, setIsReservedByOthers] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   // const [writeToLocalStorage, setWriteToLocalStorage] = useState();
 
   // floor 1
@@ -221,6 +222,23 @@ export default function Seats() {
     })();
   }, []);
 
+  // get admin
+  useEffect(() => {
+    (async () => {
+      try {
+        const [adminRes] = await Promise.all([
+          axiosInstance.get("/api/v1/admin/healthAdmin"),
+        ]);
+        // console.log(adminRes)
+        if (adminRes.status === 200) {
+          setIsAdmin(true);
+        }
+      } catch (err) {
+        setIsAdmin(false);
+      }
+    })();
+  }, []);
+
   // get kursi
   useEffect(() => {
     // get kursi from api
@@ -272,7 +290,7 @@ export default function Seats() {
         });
       }
       if (savedUserSeatsPick !== null) {
-        console.log(savedUserSeatsPick)
+        // console.log(savedUserSeatsPick)
         savedUserSeatsPick.forEach((seatpick) => {
           if (userSeatsPick.some(e => e.seat_id === seatpick.seat_id) === false) {
             console.log("Set User Seats Pick:", seatpick);
@@ -308,6 +326,10 @@ export default function Seats() {
 
   // Post data to cart
   async function postSeats(seatsArr) {
+    if (isAdmin) {
+      notifyErrorMessage("Admin tidak bisa memesan kursi");
+      return;
+    }
     console.log(seatsArr);
     var mySeatsTmp = seatsArr;
     const reservedByOthers = [];
@@ -434,11 +456,11 @@ export default function Seats() {
       userSeats.includes(reservedByMe.map((item) => item.seat_id)) === false
     ) {
       setUserSeats(reservedByMe.map((item) => item.seat_id));
-      console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
+      // console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
     }
     if (userSeatsPick.includes(reservedByMe) === false) {
       setUserSeatsPick(reservedByMe);
-      console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
+      // console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
     }
     setPurchasedSeat(purchased);
 
@@ -723,8 +745,8 @@ export default function Seats() {
     return arr;
   }
 
-  console.log(userSeatsPick);
-  console.log(userSeats);
+  // console.log(userSeatsPick);
+  // console.log(userSeats);
 
   // Display
   // =================================

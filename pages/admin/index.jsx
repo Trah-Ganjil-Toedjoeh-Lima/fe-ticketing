@@ -12,16 +12,6 @@ export default function Admin() {
   const [isChecked, setChecked] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    axiosInstance.get("/api/v1/admin/get_app_config").then((res) => {
-      const isOpenGate = res.data.app_config.IsOpenGate.toLowerCase() === "true";
-      console.log(isOpenGate)
-      setChecked(isOpenGate);
-      console.log(res.data.app_config.QrScanBehaviour)
-      setQrScanMode(res.data.app_config.QrScanBehaviour);
-    });
-  }, [isAdmin]);
-
   async function handleGate() {
     const postURL = isChecked
       ? "/api/v1/admin/close_the_gate"
@@ -37,16 +27,11 @@ export default function Admin() {
   }
 
   useEffect(() => {
-    axiosInstance.get("/api/v1/admin/seats").then((res) => {
-      setAdminData(res.data.data);
-    });
-  }, []);
-
-  useEffect(() => {
     // Checks if the currently logged in user is an admin
     async function checkIfAdmin() {
       try {
-        const res = await axiosInstance.get("/api/v1/admin/seats"); //admin-only endpoint
+        const res = await axiosInstance.get("/api/v1/admin/healthAdmin"); //admin-only endpoint
+        setAsAdmin(true); // If user is an admin
       } catch (err) {
         // Only goes here when the status isn't 200 OK
         if (err.response.status !== 200) {
@@ -58,13 +43,12 @@ export default function Admin() {
           console.error(err); // Handles misc. errors
         }
       }
-      setAsAdmin(true); // If user is an admin
     }
 
     function notAdminHandler() {
       // If user is not logged in, redirect to /admin/login
       if (!localStorage.getItem("auth_token")) {
-        router.push("admin/login");
+        router.push("/admin/login");
       } else {
         // User is logged in -> check if user is an admin or not
         checkIfAdmin();
@@ -75,6 +59,26 @@ export default function Admin() {
       notAdminHandler();
     }
   }, [router.pathname]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    axiosInstance.get("/api/v1/admin/get_app_config").then((res) => {
+      const isOpenGate =
+        res.data.app_config.IsOpenGate.toLowerCase() === "true";
+      console.log(isOpenGate);
+      setChecked(isOpenGate);
+      console.log(res.data.app_config.QrScanBehaviour);
+      setQrScanMode(res.data.app_config.QrScanBehaviour);
+    });
+    // setChecked(false);
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    axiosInstance.get("/api/v1/admin/seats").then((res) => {
+      setAdminData(res.data.data);
+    });
+  }, [isAdmin]);
 
   async function updateQrScanState(newState) {
     const patchURL = "/api/v1/admin/qr_scan_behaviour";

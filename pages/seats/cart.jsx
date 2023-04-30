@@ -16,6 +16,7 @@ import {
 } from "@/components/notify";
 
 export default function Cart() {
+  const [isAdmin, setIsAdmin] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
   const [update, setUpdate] = useState("");
   const [seatBoughts, setSeatBoughts] = useState({
@@ -38,21 +39,36 @@ export default function Cart() {
   }
 
   useEffect(() => {
-    if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
-      notifyErrorMessage("Anda belum login.");
-    } else {
-      (async () => {
-        try {
-          const [res] = await Promise.all([
-            axiosInstance.get("/api/v1/checkout"),
-          ]);
-          setSeatBoughts(res.data.data);
-          midtransSetup(res.data.midtrans_client_key);
-        } catch (err) {
-          notifyErrorMessage("Anda belum melakukan transaksi.");
+    (async () => {
+      try {
+        const [adminRes] = await Promise.all([
+          axiosInstance.get("/api/v1/admin/healthAdmin"),
+        ]);
+        // console.log(adminRes)
+        if (adminRes.status === 200) {
+          setIsAdmin(true);
+          notifyInfo("Anda login sebagai admin. Checkout tidak tersedia.");
+          return;
         }
-      })();
-    }
+      } catch (err) {
+        setIsAdmin(false);
+        if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
+          notifyErrorMessage("Anda belum login.");
+        } else {
+          (async () => {
+            try {
+              const [res] = await Promise.all([
+                axiosInstance.get("/api/v1/checkout"),
+              ]);
+              setSeatBoughts(res.data.data);
+              midtransSetup(res.data.midtrans_client_key);
+            } catch (err) {
+              notifyErrorMessage("Anda belum melakukan transaksi.");
+            }
+          })();
+        }
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -65,11 +81,15 @@ export default function Cart() {
   }, [seatBoughts]);
 
   async function handleCheckout() {
-    try {
-      const res = await axiosInstance.post("/api/v1/checkout");
-      openMidtransWindow(res.data.snap_response.token);
-    } catch (err) {
-      notifyError(err);
+    if(!isAdmin){
+      try {
+        const res = await axiosInstance.post("/api/v1/checkout");
+        openMidtransWindow(res.data.snap_response.token);
+      } catch (err) {
+        notifyError(err);
+      }
+    } else {
+      notifyErrorMessage("Admin tidak bisa membeli tiket");
     }
   }
 
