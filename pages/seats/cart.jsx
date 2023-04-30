@@ -14,11 +14,14 @@ import {
   notifyInfo,
   notifyWarning,
 } from "@/components/notify";
+import { Loading } from "@/utils/spinner";
 
 export default function Cart() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
   const [update, setUpdate] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [verboseMsg, setVerboseMsg] = useState("Loading...");
   const [seatBoughts, setSeatBoughts] = useState({
     seats: [],
     user_email: "user.email",
@@ -41,6 +44,8 @@ export default function Cart() {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
+        setVerboseMsg("Loading Cart...");
         const [adminRes] = await Promise.all([
           axiosInstance.get("/api/v1/admin/healthAdmin"),
         ]);
@@ -65,6 +70,7 @@ export default function Cart() {
             } catch (err) {
               notifyErrorMessage("Anda belum melakukan transaksi.");
             }
+            setIsLoading(false);
           })();
         }
       }
@@ -173,6 +179,7 @@ export default function Cart() {
 
   return (
     <>
+    <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar doUpdate={update} />
       <div className="realtive max-w-screen overflow-hidden bg-gmco-blue-main md:min-h-screen">
         <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
