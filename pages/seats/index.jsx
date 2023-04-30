@@ -999,7 +999,7 @@ export default function Seats() {
                       ? "bg-red-800 opacity-100 hover:scale-105"
                       : "pointer-events-none bg-gmco-grey opacity-50"
                   }`}
-                  onClick={() => clearSeats()}
+                  onClick={() => cancelCheck()}
                 >
                   <FaTrash className="h-4 w-4" />
                   &nbsp; Hapus
