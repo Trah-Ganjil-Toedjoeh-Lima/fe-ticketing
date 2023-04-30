@@ -351,7 +351,7 @@ export default function Profile() {
                     <p>Open Gate 18.00 WIB</p>
                   </div>
                   <a
-                    href="#_"
+                    href={`/ticket/${seat.link}`}
                     className="text-md group -mt-7 sm:mt-0 relative mx-2  -center text-center h-1/2 w-1/3"
                   >
                     <span
