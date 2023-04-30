@@ -311,7 +311,7 @@ export default function Profile() {
                   class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
                   onClick={routeToSeats}
                 >
-                  Tuku Saiki
+                  Beli Sekarang
                 </button>
               </div>
             ) : (
