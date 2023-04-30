@@ -20,7 +20,7 @@ import {
   notifySucces,
 } from "@/components/notify";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
-import LoadingOverlay from '@speedy4all/react-loading-overlay';
+// import LoadingOverlay from '@speedy4all/react-loading-overlay';
 
 export default function Seats() {
   // floor1
