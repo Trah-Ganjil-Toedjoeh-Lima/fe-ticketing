@@ -11,6 +11,7 @@ import {
   notifySucces,
 } from "@/components/notify";
 import Swal from "sweetalert2";
+import { Loading } from "@/utils/spinner";
 
 export default function Profile() {
   const router = useRouter();
@@ -33,6 +34,9 @@ export default function Profile() {
     Seat: [],
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [verboseMsg, setVerboseMsg] = useState("Loading...");
+
   function routeToSeats() {
     router.push("/seats");
   }
@@ -49,9 +53,12 @@ export default function Profile() {
 
     (async () => {
       try {
+        setIsLoading(true);
+        setVerboseMsg("Getting user data...");
         const [userRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
         ]);
+        setIsLoading(false);
         if (!userRes.data.data.Email || !userRes.data.data.Phone) {
           Swal.fire({
             html: `Mohon Lengkapi Nama dan Nomor WhatsApp Anda Agar Dapat Membeli Tiket`,
@@ -86,32 +93,36 @@ export default function Profile() {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [adminRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/healthAdmin"),
-        ]);
-        // console.log(adminRes)
-        if (adminRes.status === 200) {
-          notifySucces("Anda telah login sebagai admin.")
-          router.push("/admin");
-        }
-      } catch (err) {
-        // console.log(err);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const [adminRes] = await Promise.all([
+  //         axiosInstance.get("/api/v1/admin/healthAdmin"),
+  //       ]);
+  //       // console.log(adminRes)
+  //       if (adminRes.status === 200) {
+  //         notifySucces("Anda telah login sebagai admin.")
+  //         router.push("/admin");
+  //       }
+  //     } catch (err) {
+  //       // console.log(err);
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
+        setVerboseMsg("Getting ticket data ...");
         const [ticketRes] = await Promise.all([
           axiosInstance.get("/api/v1/user/tickets"),
         ]);
+        setIsLoading(false);
         setSeatsBought(ticketRes.data.data);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        notifyErrorMessage("Gagal mengambil data tiket")
       }
     })();
   }, []);
@@ -179,6 +190,7 @@ export default function Profile() {
   return (
     <>
       {/* HEADER */}
+      <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar />
       <div className="max-w-screen h-full bg-gmco-yellow-secondary">
         {/*This is the header */}
@@ -299,7 +311,7 @@ export default function Profile() {
                   class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
                   onClick={routeToSeats}
                 >
-                  Tuku Saiki
+                  Beli Sekarang
                 </button>
               </div>
             ) : (
@@ -339,7 +351,7 @@ export default function Profile() {
                     <p>Open Gate 18.00 WIB</p>
                   </div>
                   <a
-                    href="#_"
+                    href={`/ticket/${seat.link}`}
                     className="text-md group -mt-7 sm:mt-0 relative mx-2  -center text-center h-1/2 w-1/3"
                   >
                     <span
@@ -397,11 +409,11 @@ export default function Profile() {
   );
 }
 
-export async function getServerSideProps(ctx) {
-  const { req } = ctx;
-  let baseURL = "";
-  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
-    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  }
-  return { props: {} };
-}
+// export async function getServerSideProps(ctx) {
+//   const { req } = ctx;
+//   let baseURL = "";
+//   if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+//     baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+//   }
+//   return { props: {} };
+// }

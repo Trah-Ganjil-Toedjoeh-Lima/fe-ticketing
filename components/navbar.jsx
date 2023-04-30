@@ -21,6 +21,7 @@ export default function NavigationBar({ doUpdate }) {
     Phone: "",
     UserId: 0,
   });
+  const [isLoading, setIsLoading] = useState(true);
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
@@ -55,11 +56,15 @@ export default function NavigationBar({ doUpdate }) {
     // get user profile
     (async () => {
       try {
+        setIsLoading(true);
         const [res] = await Promise.all([
           axiosInstance.get("/api/v1/user/profile"),
         ]);
         setLogedUser(res.data.data);
-      } catch {}
+        setIsLoading(false);
+      } catch {
+        setIsLoading(false);
+      }
     })();
 
     // get user checkout
@@ -179,7 +184,7 @@ export default function NavigationBar({ doUpdate }) {
                 scrollPosition > 0
                   ? "hover:bg-gray-700/10 "
                   : "hover:bg-gmco-white/10"
-              }`}
+              } ${isLoading ? "hidden" : "inline"}`}
             >
               Login
             </Link>
