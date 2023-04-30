@@ -20,6 +20,7 @@ import {
   notifySucces,
 } from "@/components/notify";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
+import LoadingOverlay from '@speedy4all/react-loading-overlay';
 
 export default function Seats() {
   // floor1
@@ -53,6 +54,7 @@ export default function Seats() {
   const [update, setUpdate] = useState("");
   const [isReservedByOthers, setIsReservedByOthers] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [verboseMsg, setVerboseMsg] = useState("Loading...");
   // const [writeToLocalStorage, setWriteToLocalStorage] = useState();
 
   // floor 1
@@ -329,7 +331,14 @@ export default function Seats() {
     if (isAdmin) {
       notifyErrorMessage("Admin tidak bisa memesan kursi");
       return;
+    } else if (!localStorage.getItem("auth_token")) {
+      notifyErrorMessage("Silahkan login terlebih dahulu");
+      router.push("/auth");
+      return;
     }
+
+    setLoading(true);
+    setVerboseMsg("Validating seats order...");
     console.log(seatsArr);
     var mySeatsTmp = seatsArr;
     const reservedByOthers = [];
@@ -368,9 +377,11 @@ export default function Seats() {
       );
       localStorage.removeItem("user_seats");
       localStorage.removeItem("user_seats_pick");
-      window.location.reload();
+      setLoading(false);
+      rerender(Math.random);
     } else {
       try {
+        setVerboseMsg("Requesting Seats...");
         await axiosInstance
           .post("/api/v1/seat_map", {
             data: mySeatsTmp,
@@ -384,13 +395,14 @@ export default function Seats() {
                 pathname: "/seats/cart",
               });
             }, 1000);
+            setLoading(false);
           });
         // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
         // fungsi then route push
       } catch (err) {
         //console.log(err);
         if (err.response.data.error === "your credentials are invalid") {
-          notifyErrorMessage("Silakan login terlebih dahulu");
+          notifyErrorMessage("Token Expired. Silakan login kembali");
           router.push({
             pathname: "/auth",
           });
@@ -405,7 +417,9 @@ export default function Seats() {
             pathname: "/profile",
           });
         } else {
+          setLoading(false);
           notifyError(err);
+          rerender(Math.random);
         }
       }
     }
@@ -752,7 +766,7 @@ export default function Seats() {
   // =================================
   return (
     <>
-      <Loading isLoading={loading} />
+      <Loading isLoading={loading} verboseMsg={verboseMsg} />
       <NavigationBar doUpdate={update} />
 
       <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
