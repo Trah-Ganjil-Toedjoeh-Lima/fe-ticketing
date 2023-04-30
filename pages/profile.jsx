@@ -85,7 +85,7 @@ export default function Profile() {
         });
       } catch (err) {
         // console.log(err);
-        if(err.response.data.error === "your credentials are invalid"){
+        if (err.response.data.error === "your credentials are invalid") {
           notifyErrorMessage("Token Expired. Silahkan login kembali.");
           router.push("/auth");
         }
@@ -122,24 +122,12 @@ export default function Profile() {
         setSeatsBought(ticketRes.data.data);
       } catch (err) {
         // console.log(err);
-        notifyErrorMessage("Gagal mengambil data tiket")
+        notifyErrorMessage("Gagal mengambil data tiket");
       }
     })();
   }, []);
 
   // console.log(formUserData);
-
-  function mapCategory(price) {
-    const categories = {
-      60000: "Platinum",
-      85000: "Diamond",
-      120000: "Ascendant",
-      145000: "Immortal",
-      default: "Radiant",
-    };
-
-    return categories[price] || categories.default;
-  }
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -149,15 +137,18 @@ export default function Profile() {
   function confirmSubmit(e) {
     e.preventDefault();
     Swal.fire({
-      html: `Pastikan data yang diisikan sudah sesuai.`,
+      html: `Apakah anda yakin data yang diisi sudah sesuai?`,
       toast: false,
       icon: "info",
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
       showConfirmButton: true,
-      confirmButtonText: "Oke",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Saya Yakin",
+      cancelButtonText: "Batalkan",
       confirmButtonColor: "#287d92",
+      cancelButtonColor: "#c76734",
       showClass: {
         popup: "",
       },
@@ -197,21 +188,21 @@ export default function Profile() {
         <div className="relative w-full overflow-hidden ">
           <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
             <Image
-              src='/profile/GMCO_10.webp'
-              alt='background gmco'
-              className='w-full scale-105 object-cover object-top opacity-50'
+              src="/profile/GMCO_10.webp"
+              alt="background gmco"
+              className="w-full scale-105 object-cover object-top opacity-50"
               width={1920}
               height={650}
             />
           </div>
-          <div className='relative justify-between m-auto flex h-full flex-col pb-8 pt-24 lg:flex-row'>
-            <div className='items-center md:items-start lg:items-end px-4 md:px-8 lg:ml-40'>
-              <h1 className='flex w-max text-2xl border-b-2 md:text-4xl lg:text-4xl font-bold text-gmco-white'>
+          <div className="relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row">
+            <div className="items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end">
+              <h1 className="flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-4xl">
                 Profil
               </h1>
             </div>
 
-            <div className='mr-8 flex flex-col items-end lg:mr-48 lg:items-end'>
+            <div className="mr-8 flex flex-col items-end lg:mr-48 lg:items-end">
               {/* aku agak bingung kok gk keluar hasilnya */}
               {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
               {/* awal => {} harusnya => () */}
@@ -221,7 +212,7 @@ export default function Profile() {
                   key={key}
                   className={`font-sans text-gmco-yellow ${
                     key === "Name"
-                      ? "text-xl lg:text-2xl font-semibold"
+                      ? "text-xl font-semibold lg:text-2xl"
                       : key === "UserId"
                       ? "hidden"
                       : "font-normal"
@@ -239,7 +230,7 @@ export default function Profile() {
           {/* EDIT IDENTITY */}
           <form
             onSubmit={confirmSubmit}
-            className="grid-col w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:w-1/3 lg:pr-12"
+            className="grid-col lg:w-1/3 w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:pr-12"
           >
             {/* Name */}
             <label htmlFor="nama" className="font-rubik text-white">
@@ -305,10 +296,10 @@ export default function Profile() {
                 <p className="mb-8 text-center text-2xl text-gmco-grey">
                   Anda belum membeli tiket.
                   <br />
-                  Silakan menuju ke halaman seat map untuk membeli tiket.
+                  Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
-                  class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
+                  class="sm:w-1/4 w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700"
                   onClick={routeToSeats}
                 >
                   Beli Sekarang
@@ -323,23 +314,23 @@ export default function Profile() {
                 className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row"
               >
                 {/* Kursi dan Tipe */}
-                <div className="flex w-full justify-center gap-1 text-start  sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                <div className="sm:w-1/5 my-2 flex w-full justify-center gap-1 text-start sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
                   <h1 className="font-rubik text-lg font-bold text-gmco-grey md:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
                     className={
-                      `w-fit rounded-lg p-1 text-center text-xs font-normal text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
+                      `w-fit rounded-lg px-1 text-center text-xs font-normal capitalize text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
                       ({
-                        Platinum: "bg-gmco-blue",
-                        Diamond: "bg-violet-700",
-                        Ascendant: "bg-emerald-700",
-                        Immortal: "bg-rose-400",
-                        Radiant: "bg-rose-800",
-                      }[mapCategory(seat.price)] || "bg-rose-800")
+                        gita: "bg-[#A3A3A3]",
+                        sekar: "bg-[#D8B830]",
+                        tala: "bg-[#2196F3]",
+                        irama: "bg-[#00CED1]",
+                        serenada: "bg-[#FF5A5F]",
+                      }[seat.category] || "bg-[#FFA500]")
                     }
                   >
-                    {mapCategory(seat.price)}
+                    {seat.category}
                   </p>
                 </div>
 
@@ -352,18 +343,11 @@ export default function Profile() {
                   </div>
                   <a
                     href={`/ticket/${seat.link}`}
-                    className="text-md group -mt-7 sm:mt-0 relative mx-2  -center text-center h-1/2 w-1/3"
+                    className="text-md -center group relative mx-2 -mt-7  h-1/2 w-1/3 text-center sm:mt-0"
                   >
-                    <span
-                      className="absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0"   
-                    />
-                    <span
-                      className="absolute inset-0 w-full border-2 border-black transition duration-200 ease-out group-hover:bg-gmco-orange-secondarydark bg-gmco-blue-main" 
-                    ></span>
-                    <span
-                      className="relative  items-center sm:top-6 md:top-6 lg:top-8 xl:top-4  text-xs sm:text-base md:text-lg  mx-2 font-bold text-gmco-white  transition duration-200 ease-out group-hover:text-gmco-yellow " 
-                      
-                    >
+                    <span className="absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0" />
+                    <span className="absolute inset-0 w-full border-2 border-black bg-gmco-blue-main transition duration-200 ease-out group-hover:bg-gmco-orange-secondarydark"></span>
+                    <span className="relative  mx-2 items-center text-xs font-bold text-gmco-white  transition duration-200 ease-out  group-hover:text-gmco-yellow sm:top-6 sm:text-base  md:top-6 md:text-lg lg:top-8 xl:top-4 ">
                       Lihat E-Ticket
                     </span>
                     {/* <span class="relative z-10 block overflow-hidden rounded-lg border-2 border-gray-900 px-5 py-3 font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out group-hover:text-white">
