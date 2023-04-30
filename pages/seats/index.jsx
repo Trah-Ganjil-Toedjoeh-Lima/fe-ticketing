@@ -456,7 +456,7 @@ export default function Seats() {
       await axiosInstance.delete("/api/v1/checkout");
     } catch (err) {
       if (err.response.data.error === "cannot find transaction data for this user") {
-        notifyInfo("Cart Anda kosong. Menghapus data seatmap saja...");
+        notifyInfo("Cart Anda kosong. Menghapus pilihan pada seatmap saja...");
       } else {
         notifyError(err);
       }
