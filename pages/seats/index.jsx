@@ -17,9 +17,11 @@ import { Loading } from "@/utils/spinner";
 import {
   notifyError,
   notifyErrorMessage,
+  notifyInfo,
   notifySucces,
 } from "@/components/notify";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
+import Swal from "sweetalert2";
 // import LoadingOverlay from '@speedy4all/react-loading-overlay';
 
 export default function Seats() {
@@ -425,8 +427,40 @@ export default function Seats() {
     }
   }
 
+  function cancelCheck() {
+    Swal.fire({
+      html: `Anda yakin ingin menghapus transaksi termasuk yang sudah masuk ke Cart? <br> <br> <b>Perhatian:</b> <br> <i>Transaksi yang sudah dihapus tidak dapat dikembalikan</i>`,
+      toast: true,
+      icon: "warning",
+      background: "#2d2d2f",
+      iconColor: "#287d92",
+      showCancelButton: true,
+      cancelButtonText: "Tidak",
+      cancelButtonColor: "#c76734",
+      confirmButtonText: "Ya",
+      confirmButtonColor: "#287d92",
+      color: "#f6f7f1",
+      showClass: {
+        popup: "",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clearSeats();
+      }
+    });
+  }
+
   // clear all seats data
-  function clearSeats() {
+  async function clearSeats() {
+    try {
+      await axiosInstance.delete("/api/v1/checkout");
+    } catch (err) {
+      if (err.response.data.error === "cannot find transaction data for this user") {
+        notifyInfo("Cart Anda kosong. Menghapus data seatmap saja...");
+      } else {
+        notifyError(err);
+      }
+    }
     setUserSeats([]);
     setUserSeatsPick([]);
     localStorage.removeItem("user_seats");
