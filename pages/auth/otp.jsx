@@ -60,7 +60,6 @@ export default function OtpPage() {
             email: loginInput.email,
             otp: otp,
           })
-
           .then((res) => {
             if (res.status === 200) {
               localStorage.setItem(
@@ -89,7 +88,11 @@ export default function OtpPage() {
             }
           });
       } catch (err) {
-        notifyError(err);
+        if (err.response.data.message === "otp is not valid") {
+          notifyErrorMessage("Kode OTP tidak valid");
+        } else {
+          notifyErrorMessage(err.response.data.message);
+        }
       }
     } else if (otp.length === 0) {
       notifyErrorMessage("Kode OTP tidak boleh kosong");
