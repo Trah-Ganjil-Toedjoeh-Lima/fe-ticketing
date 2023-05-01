@@ -328,6 +328,10 @@ export default function Seats() {
     }
   }, [userSeatsPick]); 
 
+  function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+  }
+
   // Post data to cart
   async function postSeats(seatsArr) {
     if (isAdmin) {
@@ -341,90 +345,94 @@ export default function Seats() {
 
     setLoading(true);
     setVerboseMsg("Validating seats order...");
-    console.log(seatsArr);
-    var mySeatsTmp = seatsArr;
-    const reservedByOthers = [];
-    const res = await axiosInstance.get("/api/v1/seat_map");
-    // console.log(res.length)
-    for (let i = 0; i < res.data.data.length; i++) {
-      // console.log(i)
-      const obj = res.data.data[i];
+    //console.log(seatsArr);
+    
+    setTimeout(async () => {
+      var mySeatsTmp = seatsArr;
+      const reservedByOthers = [];
+      //setVerboseMsg("Checking seats availability...");
+      const res = await axiosInstance.get("/api/v1/seat_map");
+      // console.log(res.length)
+      for (let i = 0; i < res.data.data.length; i++) {
+        // console.log(i)
+        const obj = res.data.data[i];
 
-      // untuk ambil kusi terpesan
-      if (obj.status === "reserved") {
-        reservedByOthers.push(obj);
-      }
-    }
-
-    for (let j = 0; j < reservedByOthers.length; j++) {
-      // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-      if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
-        setIsReservedByOthers(true);
-        // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
-        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-        mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
-        // console.log("Kursi tersisa:", mySeatsTmp)
-      }
-    }
-
-    if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
-      notifyErrorMessage(
-        "Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa..."
-      );
-    }
-
-    if (mySeatsTmp.length === 0) {
-      notifyErrorMessage(
-        "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
-      );
-      localStorage.removeItem("user_seats");
-      localStorage.removeItem("user_seats_pick");
-      setLoading(false);
-      rerender(Math.random);
-    } else {
-      try {
-        setVerboseMsg("Requesting Seats...");
-        await axiosInstance
-          .post("/api/v1/seat_map", {
-            data: mySeatsTmp,
-          })
-          .then(() => {
-            notifySucces("Pesanan Ditambahkan, Mengalihkan...");
-            localStorage.removeItem("user_seats");
-            localStorage.removeItem("user_seats_pick");
-            setTimeout(function () {
-              router.push({
-                pathname: "/seats/cart",
-              });
-            }, 1000);
-            setLoading(false);
-          });
-        // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
-        // fungsi then route push
-      } catch (err) {
-        //console.log(err);
-        if (err.response.data.error === "your credentials are invalid") {
-          notifyErrorMessage("Token Expired. Silakan login kembali");
-          router.push({
-            pathname: "/auth",
-          });
-        } else if (
-          err.response.data.error ===
-          "you are not authorized, please fill your name or phone number data"
-        ) {
-          notifyErrorMessage(
-            "Silakan lengkapi data profil Anda terlebih dahulu"
-          );
-          router.push({
-            pathname: "/profile",
-          });
-        } else {
-          setLoading(false);
-          notifyError(err);
-          rerender(Math.random);
+        // untuk ambil kusi terpesan
+        if (obj.status === "reserved") {
+          reservedByOthers.push(obj);
         }
       }
-    }
+
+      for (let j = 0; j < reservedByOthers.length; j++) {
+        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+        if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
+          setIsReservedByOthers(true);
+          // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
+          // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+          mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
+          // console.log("Kursi tersisa:", mySeatsTmp)
+        }
+      }
+
+      if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
+        notifyErrorMessage(
+          "Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa..."
+        );
+      }
+
+      if (mySeatsTmp.length === 0) {
+        notifyErrorMessage(
+          "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
+        );
+        localStorage.removeItem("user_seats");
+        localStorage.removeItem("user_seats_pick");
+        setLoading(false);
+        rerender(Math.random);
+      } else {
+        try {
+          setVerboseMsg("Requesting Seats...");
+          await axiosInstance
+            .post("/api/v1/seat_map", {
+              data: mySeatsTmp,
+            })
+            .then(() => {
+              notifySucces("Pesanan Ditambahkan, Mengalihkan...");
+              localStorage.removeItem("user_seats");
+              localStorage.removeItem("user_seats_pick");
+              setTimeout(function () {
+                router.push({
+                  pathname: "/seats/cart",
+                });
+              }, 1000);
+              setLoading(false);
+            });
+          // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
+          // fungsi then route push
+        } catch (err) {
+          //console.log(err);
+          if (err.response.data.error === "your credentials are invalid") {
+            notifyErrorMessage("Token Expired. Silakan login kembali");
+            router.push({
+              pathname: "/auth",
+            });
+          } else if (
+            err.response.data.error ===
+            "you are not authorized, please fill your name or phone number data"
+          ) {
+            notifyErrorMessage(
+              "Silakan lengkapi data profil Anda terlebih dahulu"
+            );
+            router.push({
+              pathname: "/profile",
+            });
+          } else {
+            setLoading(false);
+            notifyError(err);
+            rerender(Math.random);
+          }
+        }
+      }
+    }, getRandomInt(1000));
   }
 
   function cancelCheck() {
