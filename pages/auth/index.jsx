@@ -78,7 +78,11 @@ export default function Auth() {
           }
         });
     } catch (err) {
-      console.log(err.toString());
+      //console.log(err);
+      if(err.response.status === 425){
+        notifyErrorMessage("Anda belum bisa login. Silahkan coba lagi nanti.");
+      }
+      router.push("/")
       //notifyError();
     }
   }

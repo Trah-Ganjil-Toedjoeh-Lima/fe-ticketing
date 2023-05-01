@@ -126,18 +126,6 @@ export default function Profile() {
 
   // console.log(formUserData);
 
-  function mapCategory(price) {
-    const categories = {
-      60000: "Platinum",
-      85000: "Diamond",
-      120000: "Ascendant",
-      145000: "Immortal",
-      default: "Radiant",
-    };
-
-    return categories[price] || categories.default;
-  }
-
   function handleFormChange(e) {
     const { name, value } = e.target;
     setFormUserData({ ...formUserData, [name]: value });
@@ -146,15 +134,18 @@ export default function Profile() {
   function confirmSubmit(e) {
     e.preventDefault();
     Swal.fire({
-      html: `Pastikan data yang diisikan sudah sesuai.`,
+      html: `Apakah anda yakin data yang diisi sudah sesuai?`,
       toast: false,
       icon: "info",
       iconColor: "#f6f7f1",
       background: "#2d2d2f",
       color: "#f6f7f1",
       showConfirmButton: true,
-      confirmButtonText: "Oke",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Saya Yakin",
+      cancelButtonText: "Batalkan",
       confirmButtonColor: "#287d92",
+      cancelButtonColor: "#c76734",
       showClass: {
         popup: "",
       },
@@ -297,7 +288,7 @@ export default function Profile() {
                 <p className="mb-8 text-center text-2xl text-gmco-grey">
                   Anda belum membeli tiket.
                   <br />
-                  Silakan menuju ke halaman seat map untuk membeli tiket.
+                  Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
                   class="w-1/2 rounded border-b-8 border-gmco-blue-main/70 bg-gmco-blue/70 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-gmco-blue-main hover:bg-gmco-blue sm:w-1/4"
@@ -315,23 +306,23 @@ export default function Profile() {
                 className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row"
               >
                 {/* Kursi dan Tipe */}
-                <div className="flex w-full justify-center gap-1 text-start  sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                <div className="my-2 flex w-full justify-center gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
                   <h1 className="font-rubik text-lg font-bold text-gmco-grey md:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
                   <p
                     className={
-                      `w-fit rounded-lg p-1 text-center text-xs font-normal text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
+                      `w-fit rounded-lg px-1 text-center text-xs font-normal capitalize text-gmco-white sm:w-full sm:px-0 sm:py-1 lg:text-base ` +
                       ({
-                        Platinum: "bg-gmco-blue",
-                        Diamond: "bg-violet-700",
-                        Ascendant: "bg-emerald-700",
-                        Immortal: "bg-rose-400",
-                        Radiant: "bg-rose-800",
-                      }[mapCategory(seat.price)] || "bg-rose-800")
+                        gita: "bg-[#A3A3A3]",
+                        sekar: "bg-[#D8B830]",
+                        tala: "bg-[#2196F3]",
+                        irama: "bg-[#00CED1]",
+                        serenada: "bg-[#FF5A5F]",
+                      }[seat.category] || "bg-[#FFA500]")
                     }
                   >
-                    {mapCategory(seat.price)}
+                    {seat.category}
                   </p>
                 </div>
 
