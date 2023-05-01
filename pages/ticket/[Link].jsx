@@ -8,26 +8,12 @@ export async function getServerSideProps({ params }) {
   const { Link } = params;
 
   try {
-    const resProxy = await axiosInstance.get(
-      `http://localhost:3000/api/v1/seat/${Link}`
-    );
-    // console.log(resProxy.data);
-    const ticketProxy = resProxy.data.data;
-
-    return { props: { ticket: ticketProxy } };
-  } catch (errProxy) {
-    console.error(errProxy);
-    try {
-      const resRemote = await axiosInstance.get(
-        `https://dev-api.gmco-event.com/v1/seat/${Link}`
-      );
-      const ticketRemote = resRemote.data.data;
-
-      return { props: { ticket: ticketRemote } };
-    } catch (errRemote) {
-      console.error(errRemote);
-      return { props: { ticket: null } };
-    }
+    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/seat/${Link}`);
+    const ticketRemote = res.data.data;
+    return { props: { ticket: ticketRemote } };
+  } catch (err) {
+    console.error(err);
+    return { props: { ticket: null } };
   }
 }
 
