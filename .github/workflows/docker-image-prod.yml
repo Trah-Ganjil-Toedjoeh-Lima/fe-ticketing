@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+    - main
+    - master
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+    - name: Build the Dockerimage
+      run: rm -rf ./.env && cp -f ./.env.production ./.env && docker build . --file Dockerfile --tag trahganjil/gmco-ticketing-fe:$(git rev-parse --short HEAD)
+    - name: Push to Docker Hub
+      run: docker login -u ${{ secrets.DH_USER }} -p ${{ secrets.DH_PASS }} && docker push trahganjil/gmco-ticketing-fe:$(git rev-parse --short HEAD)
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+    - name: Deploy Docker Compose
+      run: export DOCKER_TAG=$(git rev-parse --short HEAD) && docker compose -f docker-compose.prod.yml up -d
