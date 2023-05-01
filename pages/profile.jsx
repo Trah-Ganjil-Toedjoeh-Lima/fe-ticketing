@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -41,9 +41,6 @@ export default function Profile() {
     router.push("/seats");
   }
 
-  // ini gk bisa dijadiin 1 karena kalo ticket ga ada, chandra ngasihnya 404 jadi error ya harus dipisah -weka
-  // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
-  // misal gini
   useEffect(() => {
     if (!localStorage.getItem("auth_token")) {
       notifyErrorMessage("Anda belum login. Silahkan login terlebih dahulu.");
@@ -177,7 +174,6 @@ export default function Profile() {
   //   console.log(userData[key]);
   // });
 
-  // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
     <>
       {/* HEADER */}
@@ -203,10 +199,6 @@ export default function Profile() {
             </div>
 
             <div className="mr-8 flex flex-col items-end lg:mr-48 lg:items-end">
-              {/* aku agak bingung kok gk keluar hasilnya */}
-              {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
-              {/* awal => {} harusnya => () */}
-              {/* kutambah kalo id gk ditampilin ya */}
               {Object.keys(userData).map((key) => (
                 <p
                   key={key}
@@ -299,7 +291,7 @@ export default function Profile() {
                   Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
-                  class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
+                  class="w-1/2 rounded border-b-8 border-gmco-blue-main/70 bg-gmco-blue/70 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-gmco-blue-main hover:bg-gmco-blue sm:w-1/4"
                   onClick={routeToSeats}
                 >
                   Beli Sekarang
@@ -393,11 +385,11 @@ export default function Profile() {
   );
 }
 
-// export async function getServerSideProps(ctx) {
-//   const { req } = ctx;
-//   let baseURL = "";
-//   if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
-//     baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-//   }
-//   return { props: {} };
-// }
+export async function getServerSideProps(ctx) {
+  const { req } = ctx;
+  let baseURL = "";
+  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+  }
+  return { props: {} };
+}
