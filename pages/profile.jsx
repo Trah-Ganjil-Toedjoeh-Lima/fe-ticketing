@@ -253,7 +253,7 @@ export default function Profile() {
             </label>
             <input
               className="mb-8 w-full rounded-lg border-transparent bg-white text-start text-lg focus:border-gmco-blue focus:ring-gmco-blue"
-              type="text"
+              type="email"
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               placeholder="Masukkan Email Anda"
               name="email"
@@ -299,7 +299,7 @@ export default function Profile() {
                   Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
-                  class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
+                  className="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
                   onClick={routeToSeats}
                 >
                   Beli Sekarang
