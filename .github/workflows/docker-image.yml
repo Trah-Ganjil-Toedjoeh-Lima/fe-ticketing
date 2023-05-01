@@ -13,7 +13,7 @@ jobs:
     - name: Checkout Source Code
       uses: actions/checkout@v3
     - name: Build the Dockerimage
-      run: rm -rf ./.env && cp -f ./.env.development ./.env && docker build . --file Dockerfile --tag trahganjil/gmco-ticketing-fe:$(git rev-parse --short HEAD)
+      run: cp -f ./.env.development ./.env && rm -rf ./.env.* && docker build . --file Dockerfile --tag trahganjil/gmco-ticketing-fe:$(git rev-parse --short HEAD)
     - name: Push to Docker Hub
       run: docker login -u ${{ secrets.DH_USER }} -p ${{ secrets.DH_PASS }} && docker push trahganjil/gmco-ticketing-fe:$(git rev-parse --short HEAD)
 
