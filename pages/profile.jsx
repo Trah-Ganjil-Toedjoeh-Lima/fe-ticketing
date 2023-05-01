@@ -230,7 +230,7 @@ export default function Profile() {
           {/* EDIT IDENTITY */}
           <form
             onSubmit={confirmSubmit}
-            className="grid-col lg:w-1/3 w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:pr-12"
+            className="grid-col w-full items-start bg-gmco-yellow-secondary px-8 py-8 lg:w-1/3 lg:pr-12"
           >
             {/* Name */}
             <label htmlFor="nama" className="font-rubik text-white">
@@ -299,7 +299,7 @@ export default function Profile() {
                   Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
-                  class="sm:w-1/4 w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700"
+                  class="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
                   onClick={routeToSeats}
                 >
                   Beli Sekarang
@@ -314,7 +314,7 @@ export default function Profile() {
                 className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-white p-4 sm:flex-row"
               >
                 {/* Kursi dan Tipe */}
-                <div className="sm:w-1/5 my-2 flex w-full justify-center gap-1 text-start sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
+                <div className="my-2 flex w-full justify-center gap-1 text-start sm:w-1/5 sm:flex-col sm:justify-center sm:gap-0 sm:text-center">
                   <h1 className="font-rubik text-lg font-bold text-gmco-grey md:text-xl lg:text-2xl">
                     Seat {seat.name}
                   </h1>
