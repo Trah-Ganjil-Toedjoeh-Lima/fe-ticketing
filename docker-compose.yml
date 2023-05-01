@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     container_name: gmco_fe
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3001:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gmco-fe-http.rule=Host(`dev.gmco-event.com`)"
