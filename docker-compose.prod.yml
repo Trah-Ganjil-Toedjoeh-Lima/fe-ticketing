@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  gmco-ticketing-fe:
+  gmco-ticketing-fe-prod:
     image: trahganjil/gmco-ticketing-fe:${DOCKER_TAG}
     restart: unless-stopped
     container_name: gmco_fe_prod
