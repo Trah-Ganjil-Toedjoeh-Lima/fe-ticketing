@@ -927,7 +927,7 @@ export default function Seats() {
             </div>
             <div className="space-y-4">
               {priceCategory.map((namePrice) => (
-                <div className="group relative flex border-b-4 border-gmco-grey">
+                <div className="group relative flex border-b-4 border-gmco-grey border-opacity-40">
                   <button
                     className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
@@ -953,7 +953,7 @@ export default function Seats() {
                     }}
                   >
                     <span
-                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
+                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-gmco-grey bg-opacity-40 transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
                         priceCategoryHighlight.includes(namePrice.price)
                           ? "-translate-x-0 -translate-y-0 bg-gmco-yellow-secondary"
                           : "bg-gmco-grey"
