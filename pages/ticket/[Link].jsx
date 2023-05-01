@@ -52,7 +52,7 @@ export default function Ticket() {
       } catch (err) {
         // Only goes here when the status isn't 200 OK
         if (err.response.status !== 200) {
-          console.log(`${err.response.status} ${err.response.statusText}`);
+          console.error(`${err.response.status} ${err.response.statusText}`);
           setIsAdmin(false);
           return false;
         } else {

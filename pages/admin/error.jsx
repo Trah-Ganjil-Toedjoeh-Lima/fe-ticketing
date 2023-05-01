@@ -1,11 +1,35 @@
 import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { axiosInstance } from "@/utils/config";
+import { notifyErrorMessage } from "@/components/notify";
 
 export default function Error() {
   const router = useRouter();
+
+  useEffect(() => {
+    async function checkIfTokenValid() {
+      if (localStorage.getItem("auth_token")) {
+        try {
+          const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
+          if (res.status === 200) notifyErrorMessage("Anda sudah login");
+          router.push({
+            pathname: "/profile",
+          });
+          return;
+        } catch (err) {
+          if (res.status !== 200) {
+            console.log(err);
+            notifyErrorMessage("Token Expired. Silahkan login kembali.");
+            localStorage.removeItem("auth_token");
+          }
+        }
+      }
+    }
+    checkIfTokenValid();
+  }, []);
 
   async function logoutSubmit(e) {
     e.preventDefault();
@@ -27,9 +51,9 @@ export default function Error() {
       <Head>
         <title>Error!</title>
       </Head>
-      <div className="max-w-screen relative min-h-screen bg-gmco-orange-secondarydark p-4 md:flex">
-        <div className="container relative items-center justify-center space-y-4">
-          <div className="text-4xl font-bold text-gray-50">
+      <div className='max-w-screen relative min-h-screen bg-gmco-orange-secondarydark p-4 md:flex'>
+        <div className='container relative items-center justify-center space-y-4'>
+          <div className='text-4xl font-bold text-gray-50'>
             Error: Unauthorized
           </div>
           <div>
@@ -37,7 +61,7 @@ export default function Error() {
               Oops! Your account is not authorized to access this route.
               <br /> Please log out, then log in as an admin.
               <br />
-              <p className="italic">Only click if you are an admin!</p>
+              <p className='italic'>Only click if you are an admin!</p>
             </label>
           </div>
           <div>

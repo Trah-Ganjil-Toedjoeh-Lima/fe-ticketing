@@ -140,7 +140,7 @@ export default function Auth() {
             onSubmit={LoginSubmit}
           >
             <div className='w-full'>
-              <label className=' pl-2 text-base text-gmco-white'>
+              <label className='pl-2 text-base text-gmco-white'>
                 Masukkan email anda
               </label>
               <div className='relative flex w-full items-stretch'>

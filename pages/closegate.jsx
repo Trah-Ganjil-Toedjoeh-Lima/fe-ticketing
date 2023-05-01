@@ -40,7 +40,7 @@ export default function CloseGatePage() {
               Pembelian Tiket Ditutup!
             </h1>
             <p className="pl-2 text-base text-gmco-white">
-              Saat ini belum memasuki masa pembelian tiket GC #10 GMCO UGM.
+              Saat ini belum memasuki masa pembelian tiket Grand Concert Vol. 10 GMCO UGM.
               Pantau lini masa kami di media sosial untuk info lebih lengkap.
             </p>
           </div>
