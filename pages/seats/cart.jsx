@@ -66,6 +66,7 @@ export default function Cart() {
                 axiosInstance.get("/api/v1/checkout"),
               ]);
               setSeatBoughts(res.data.data);
+              
               midtransSetup(res.data.midtrans_client_key);
             } catch (err) {
               notifyErrorMessage("Anda belum melakukan transaksi.");
