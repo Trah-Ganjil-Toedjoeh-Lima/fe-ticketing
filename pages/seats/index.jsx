@@ -253,10 +253,10 @@ export default function Seats() {
         // getReservedSeats(res.data.data);
         // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
-        // console.log(err);
+        console.log(err);
         // notifyError(err);
         try {
-          if (err.response.data.error === "the gate has not been opened") {
+          if (err.response.status === 425) {
             notifyErrorMessage("Pemesanan belum dibuka");
             router.push("/closegate");
           }
