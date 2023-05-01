@@ -6,7 +6,6 @@ import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
 import { axiosInstance } from "@/utils/config";
 import {
-  notifyError,
   notifyErrorMessage,
   notifySucces,
 } from "@/components/notify";
@@ -90,23 +89,6 @@ export default function Profile() {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const [adminRes] = await Promise.all([
-  //         axiosInstance.get("/api/v1/admin/healthAdmin"),
-  //       ]);
-  //       // console.log(adminRes)
-  //       if (adminRes.status === 200) {
-  //         notifySucces("Anda telah login sebagai admin.")
-  //         router.push("/admin");
-  //       }
-  //     } catch (err) {
-  //       // console.log(err);
-  //     }
-  //   })();
-  // }, []);
-
   useEffect(() => {
     (async () => {
       try {
@@ -169,10 +151,6 @@ export default function Profile() {
       notifyErrorMessage(err);
     }
   }
-
-  // Object.keys(userData).map((key) => {
-  //   console.log(userData[key]);
-  // });
 
   return (
     <>

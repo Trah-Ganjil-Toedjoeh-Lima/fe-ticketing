@@ -162,7 +162,6 @@ export default function Cart() {
         });
         notifySucces("Pesanan Dihapus");
         rerender()
-        localStorage.removeItem("user_seats");
         localStorage.removeItem("user_seats_pick");
       });
     } catch (err) {
