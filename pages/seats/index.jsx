@@ -344,56 +344,57 @@ export default function Seats() {
         // console.log(i)
         const obj = res.data.data[i];
 
-        for (let j = 0; j < reservedByOthers.length; j++) {
-          // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-          if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
-            isReservedByOthers = true;
-            // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
-            // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-            mySeatsTmp.splice(
-              mySeatsTmp.indexOf(reservedByOthers[j].seat_id),
-              1
-            );
-            // console.log("Kursi tersisa:", mySeatsTmp)
-          }
+        if (obj.status === "reserved") {
+          reservedByOthers.push(obj);
         }
+      }
 
-        if (mySeatsTmp.length === 0) {
-          seatsArr;
-          notifyErrorMessage(
-            "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
-          );
-          localStorage.removeItem("user_seats_pick");
-          setLoading(false);
-          rerender();
-        } else if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
-          Swal.fire({
-            html: `Sebagian kursi sudah dipesan orang lain. Apakah ingin melanjutkan dengan kursi tersisa?`,
-            toast: true,
-            icon: "warning",
-            background: "#2d2d2f",
-            iconColor: "#287d92",
-            showCancelButton: true,
-            showConfirmButton: true,
-            cancelButtonText: "Tidak",
-            cancelButtonColor: "#c76734",
-            confirmButtonText: "Ya",
-            confirmButtonColor: "#287d92",
-            color: "#f6f7f1",
-            showClass: {
-              popup: "",
-            },
-          }).then((result) => {
-            if (result.isConfirmed) {
-              postSeats(mySeatsTmp);
-            } else {
-              setLoading(false);
-              rerender();
-            }
-          });
-        } else {
-          postSeats(mySeatsTmp);
+      for (let j = 0; j < reservedByOthers.length; j++) {
+        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+        if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
+          isReservedByOthers = true;
+          // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
+          // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+          mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
+          // console.log("Kursi tersisa:", mySeatsTmp)
         }
+      }
+
+      if (mySeatsTmp.length === 0) {
+        seatsArr;
+        notifyErrorMessage(
+          "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
+        );
+        localStorage.removeItem("user_seats_pick");
+        setLoading(false);
+        rerender();
+      } else if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
+        Swal.fire({
+          html: `Sebagian kursi sudah dipesan orang lain. Apakah ingin melanjutkan dengan kursi tersisa?`,
+          toast: true,
+          icon: "warning",
+          background: "#2d2d2f",
+          iconColor: "#287d92",
+          showCancelButton: true,
+          showConfirmButton: true,
+          cancelButtonText: "Tidak",
+          cancelButtonColor: "#c76734",
+          confirmButtonText: "Ya",
+          confirmButtonColor: "#287d92",
+          color: "#f6f7f1",
+          showClass: {
+            popup: "",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            postSeats(mySeatsTmp);
+          } else {
+            setLoading(false);
+            rerender();
+          }
+        });
+      } else {
+        postSeats(mySeatsTmp);
       }
     }, getRandomInt(1000));
   }
