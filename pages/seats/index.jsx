@@ -285,7 +285,10 @@ export default function Seats() {
         console.log("User Seats:", userSeatsPick);
 
         savedUserSeatsPick.forEach((seatpick) => {
-          console.log("sasdad", userSeatsPick.some((e) => e.seat_id === seatpick.seat_id))
+          console.log(
+            "sasdad",
+            userSeatsPick.some((e) => e.seat_id === seatpick.seat_id)
+          );
           if (!userSeatsPick.some((e) => e.seat_id === seatpick.seat_id)) {
             console.log("Set User Seats Pick:", seatpick);
             nonDuplicateSeatsPick.push(seatpick);
@@ -306,14 +309,18 @@ export default function Seats() {
 
   useEffect(() => {
     console.log("User Seats Resolve:", userSeatsPick);
-    console.log(isReservedSeatLoaded, isLocalSeatLoaded)
+    console.log(isReservedSeatLoaded, isLocalSeatLoaded);
     if (isReservedSeatLoaded && isLocalSeatLoaded) {
       localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
     }
   }, [userSeatsPick]);
 
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
   // Post data to cart
-  async function handleConflict(seatsArr) {
+  function handleConflict(seatsArr) {
     if (isAdmin) {
       notifyErrorMessage("Admin tidak bisa memesan kursi");
       return;
@@ -323,69 +330,72 @@ export default function Seats() {
       return;
     }
 
-    setLoading(true);
-    setVerboseMsg("Validating seats order...");
-    let mySeatsTmp = seatsArr.map((item) => item.seat_id);
-    const reservedByOthers = [];
-    let isReservedByOthers = false;
-    const res = await axiosInstance.get("/api/v1/seat_map");
-    // console.log(res.length)
-    for (let i = 0; i < res.data.data.length; i++) {
-      // console.log(i)
-      const obj = res.data.data[i];
+    setTimeout(async () => {
+      setLoading(true);
+      setVerboseMsg("Validating seats order...");
+      //console.log(seatsArr);
+      let mySeatsTmp = seatsArr.map((item) => item.seat_id);
+      const reservedByOthers = [];
+      let isReservedByOthers = false;
+      //setVerboseMsg("Checking seats availability...");
+      const res = await axiosInstance.get("/api/v1/seat_map");
+      // console.log(res.length)
+      for (let i = 0; i < res.data.data.length; i++) {
+        // console.log(i)
+        const obj = res.data.data[i];
 
-      // untuk ambil kusi terpesan
-      if (obj.status === "reserved") {
-        reservedByOthers.push(obj);
-      }
-    }
-
-    for (let j = 0; j < reservedByOthers.length; j++) {
-      // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-      if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
-        isReservedByOthers = true;
-        // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
-        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-        mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
-        // console.log("Kursi tersisa:", mySeatsTmp)
-      }
-    }
-
-    if (mySeatsTmp.length === 0) {seatsArr
-      notifyErrorMessage(
-        "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
-      );
-      localStorage.removeItem("user_seats_pick");
-      setLoading(false);
-      rerender();
-    } else if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
-      Swal.fire({
-        html: `Sebagian kursi sudah dipesan orang lain. Apakah ingin melanjutkan dengan kursi tersisa?`,
-        toast: true,
-        icon: "warning",
-        background: "#2d2d2f",
-        iconColor: "#287d92",
-        showCancelButton: true,
-        showConfirmButton: true,
-        cancelButtonText: "Tidak",
-        cancelButtonColor: "#c76734",
-        confirmButtonText: "Ya",
-        confirmButtonColor: "#287d92",
-        color: "#f6f7f1",
-        showClass: {
-          popup: "",
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          postSeats(mySeatsTmp);
-        } else {
-          setLoading(false);
-          rerender()
+        for (let j = 0; j < reservedByOthers.length; j++) {
+          // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+          if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
+            isReservedByOthers = true;
+            // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
+            // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+            mySeatsTmp.splice(
+              mySeatsTmp.indexOf(reservedByOthers[j].seat_id),
+              1
+            );
+            // console.log("Kursi tersisa:", mySeatsTmp)
+          }
         }
-      });
-    } else {
-      postSeats(mySeatsTmp);
-    }
+
+        if (mySeatsTmp.length === 0) {
+          seatsArr;
+          notifyErrorMessage(
+            "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
+          );
+          localStorage.removeItem("user_seats_pick");
+          setLoading(false);
+          rerender();
+        } else if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
+          Swal.fire({
+            html: `Sebagian kursi sudah dipesan orang lain. Apakah ingin melanjutkan dengan kursi tersisa?`,
+            toast: true,
+            icon: "warning",
+            background: "#2d2d2f",
+            iconColor: "#287d92",
+            showCancelButton: true,
+            showConfirmButton: true,
+            cancelButtonText: "Tidak",
+            cancelButtonColor: "#c76734",
+            confirmButtonText: "Ya",
+            confirmButtonColor: "#287d92",
+            color: "#f6f7f1",
+            showClass: {
+              popup: "",
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              postSeats(mySeatsTmp);
+            } else {
+              setLoading(false);
+              rerender();
+            }
+          });
+        } else {
+          postSeats(mySeatsTmp);
+        }
+      }
+    }, getRandomInt(1000));
   }
 
   async function postSeats(mySeatsTmp) {
@@ -534,7 +544,7 @@ export default function Seats() {
     set_R_seatmap_2(floor2Seat[4]);
   }
 
-  console.log(userSeatsPick)
+  console.log(userSeatsPick);
 
   // Mapping the data
   function seatMapping(value, mappers, startMappers, numSeats) {
