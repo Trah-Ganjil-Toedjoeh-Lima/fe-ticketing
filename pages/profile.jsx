@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
@@ -63,9 +63,27 @@ export default function Profile() {
     checkIfTokenValid();
   }, []);
 
-  // ini gk bisa dijadiin 1 karena kalo ticket ga ada, chandra ngasihnya 404 jadi error ya harus dipisah -weka
-  // erronya pake yg error biasa aja, udah kupasin sama callbacknya chandra yg notifyErrorMessage buat custom error
-  // misal gini
+  useEffect(() => {
+    async function checkIfTokenValid() {
+      if (localStorage.getItem("auth_token")) {
+        try {
+          const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
+          if (res.status === 200) {
+            console.log("All Good.");
+          }
+          return;
+        } catch (err) {
+          if (err.response.status !== 200) {
+            notifyErrorMessage("Token Expired. Silahkan login kembali.");
+            localStorage.removeItem("auth_token");
+            router.push("/auth");
+          }
+        }
+      }
+    }
+    checkIfTokenValid();
+  }, []);
+
   useEffect(() => {
     if (!localStorage.getItem("auth_token")) {
       notifyErrorMessage("Anda belum login. Silahkan login terlebih dahulu.");
@@ -199,7 +217,6 @@ export default function Profile() {
   //   console.log(userData[key]);
   // });
 
-  // kubuat pake container biar sama kayak page lain, menunggu komen dafrom
   return (
     <>
       {/* HEADER */}
@@ -224,11 +241,7 @@ export default function Profile() {
               </h1>
             </div>
 
-            <div className='mr-8 flex flex-col items-end lg:mr-48 lg:items-end'>
-              {/* aku agak bingung kok gk keluar hasilnya */}
-              {/* cok aku debug lama ternyata cuma salah di kurawalnya asw -weka*/}
-              {/* awal => {} harusnya => () */}
-              {/* kutambah kalo id gk ditampilin ya */}
+            <div className="mr-8 flex flex-col items-end lg:mr-48 lg:items-end">
               {Object.keys(userData).map((key) => (
                 <p
                   key={key}
@@ -417,11 +430,11 @@ export default function Profile() {
   );
 }
 
-// export async function getServerSideProps(ctx) {
-//   const { req } = ctx;
-//   let baseURL = "";
-//   if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
-//     baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-//   }
-//   return { props: {} };
-// }
+export async function getServerSideProps(ctx) {
+  const { req } = ctx;
+  let baseURL = "";
+  if (`https://${req.headers.host}/` === process.env.NEXT_PUBLIC_BASE_URL) {
+    baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+  }
+  return { props: {} };
+}
