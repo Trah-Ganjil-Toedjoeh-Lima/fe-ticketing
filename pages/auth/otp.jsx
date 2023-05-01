@@ -5,14 +5,50 @@ import OTPInput from "react-otp-input";
 import { Card } from "flowbite-react";
 import { useRouter } from "next/router";
 
-import { notifyError } from "@/components/notify";
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
 
+import {
+  notifyError,
+  notifyErrorMessage,
+  notifySucces,
+} from "@/components/notify";
+import { useEffect } from "react";
 export default function OtpPage() {
   const router = useRouter();
   const loginInput = router.query;
   const [otp, setOtp] = useState("");
+
+  useEffect(() => {
+    async function checkIfTokenValid() {
+        try {
+          const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
+          notifyErrorMessage("Anda sudah login");
+          if (res.status === 200)
+            router.push({
+              pathname: "/profile",
+            });
+          return;
+        } catch (err) {
+          // Only goes here when the status isn't 200 OK
+          if (err.response.status !== 200) {
+            notifyErrorMessage("Token Expired. Silahkan login kembali.");
+            localStorage.removeItem("auth_token");
+            router.push("/auth");
+            return;
+          }
+        }
+    }
+
+    if (localStorage.getItem("auth_token")) {
+      checkIfTokenValid();
+    } else if(loginInput.email === undefined){
+      notifyErrorMessage("Email tidak boleh kosong")
+      router.push({
+        pathname: "/auth",
+      });
+    }
+  }, []);
 
   async function LoginSubmit(e) {
     e.preventDefault();
@@ -24,7 +60,6 @@ export default function OtpPage() {
             email: loginInput.email,
             otp: otp,
           })
-
           .then((res) => {
             if (res.status === 200) {
               localStorage.setItem(
@@ -45,6 +80,7 @@ export default function OtpPage() {
                   popup: "",
                 },
               }).then(() => {
+                notifySucces("Login Berhasil");
                 router.push({
                   pathname: "/profile",
                 });
@@ -52,10 +88,18 @@ export default function OtpPage() {
             }
           });
       } catch (err) {
-        notifyError(err);
+        if (err.response.data.message === "otp is not valid") {
+          notifyErrorMessage("Kode OTP tidak valid");
+        } else {
+          notifyErrorMessage(err.response.data.message);
+        }
       }
+    } else if (otp.length === 0) {
+      notifyErrorMessage("Kode OTP tidak boleh kosong");
+    } else {
+      notifyErrorMessage("Kode OTP harus 6 digit");
     }
-  }
+  } 
 
   if (typeof window !== "undefined") {
     const btn = document.getElementById("login");
@@ -77,17 +121,17 @@ export default function OtpPage() {
         <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
           Masukkan Kode Verifikasi
         </div>
-        <div className="text-md text-center font-thin text-gmco-white  sm:text-base ">
+        <div className='text-md text-center font-thin text-gmco-white  sm:text-base '>
           kode verifikasi telah dikirimkan melalui email terdaftar
         </div>
-        <div className="mx-auto mt-9 items-center object-center  ">
+        <div className='mx-auto mt-9 items-center object-center  '>
           <OTPInput
             value={otp}
             onChange={setOtp}
             numInputs={6}
             renderSeparator={<span>-</span>}
             renderInput={(props) => <input {...props} />}
-            inputType="number"
+            inputType='number'
             inputStyle={{
               fontFamily: "monospace",
               margin: "0.1em",
@@ -103,8 +147,8 @@ export default function OtpPage() {
           />
         </div>
         <button
-          type="submit"
-          className="font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+          type='submit'
+          className='font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg'
           onClick={LoginSubmit}
         >
           Submit

@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 
 export default function Error() {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function Error() {
             Error: Unauthorized
           </div>
           <div>
-            <label className="text-base text-gray-50">
+            <label className='text-base text-gray-50'>
               Oops! Your account is not authorized to access this route.
               <br /> Please log out, then log in as an admin.
               <br />
@@ -43,22 +43,22 @@ export default function Error() {
           <div>
             <button
               onClick={(e) => logoutSubmit(e)}
-              type="submit"
-              className="mb-6 w-40 rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white"
+              type='submit'
+              className='mb-6 w-40 rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
               LOG OUT
             </button>
           </div>
           <div>
-            <label className="text-base text-gray-50">
+            <label className='text-base text-gray-50'>
               If you are not an admin, you can go back home.
             </label>
           </div>
           <div>
             <button
               onClick={() => router.push("/")}
-              type="submit"
-              className="mb-6 w-56 rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white"
+              type='submit'
+              className='mb-6 w-56 rounded-full border-2 border-white bg-gmco-orange-secondarylight p-2 font-semibold text-white  hover:bg-gmco-yellow-secondary hover:text-gmco-white'
             >
               BACK TO HOME
             </button>
