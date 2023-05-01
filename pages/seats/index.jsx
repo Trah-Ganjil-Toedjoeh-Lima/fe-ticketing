@@ -296,7 +296,9 @@ export default function Seats() {
       if (savedUserSeatsPick !== null) {
         // console.log(savedUserSeatsPick)
         savedUserSeatsPick.forEach((seatpick) => {
-          if (userSeatsPick.some(e => e.seat_id === seatpick.seat_id) === false) {
+          if (
+            userSeatsPick.some((e) => e.seat_id === seatpick.seat_id) === false
+          ) {
             console.log("Set User Seats Pick:", seatpick);
             nonDuplicateSeatsPick.push(seatpick);
           }
@@ -305,11 +307,11 @@ export default function Seats() {
 
       if (nonDuplicateSeats.length > 0) {
         setUserSeats([...userSeats, ...nonDuplicateSeats]);
-        console.log("Adding user seats from local storage")
+        console.log("Adding user seats from local storage");
       }
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
-        console.log("Adding user seats pick from local storage")
+        console.log("Adding user seats pick from local storage");
       }
       setLocalSeatLoaded(true);
     }
@@ -326,10 +328,10 @@ export default function Seats() {
     if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
       localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
     }
-  }, [userSeatsPick]); 
+  }, [userSeatsPick]);
 
   function getRandomInt(max) {
-      return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max);
   }
 
   // Post data to cart
@@ -346,7 +348,7 @@ export default function Seats() {
     setLoading(true);
     setVerboseMsg("Validating seats order...");
     //console.log(seatsArr);
-    
+
     setTimeout(async () => {
       var mySeatsTmp = seatsArr;
       const reservedByOthers = [];
@@ -463,7 +465,9 @@ export default function Seats() {
     try {
       await axiosInstance.delete("/api/v1/checkout");
     } catch (err) {
-      if (err.response.data.error === "cannot find transaction data for this user") {
+      if (
+        err.response.data.error === "cannot find transaction data for this user"
+      ) {
         notifyInfo("Cart Anda kosong. Menghapus pilihan pada seatmap saja...");
       } else {
         notifyError(err);
