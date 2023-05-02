@@ -124,7 +124,7 @@ export default function Home() {
         </div>
 
         {/* Home Content2 - Addie MS */}
-        <div className="bg-[#191919] py-20">
+        <div className="bg-[#191919] py-16">
           <div
             id="about"
             className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2"
@@ -173,7 +173,7 @@ export default function Home() {
                 <Image
                   src="/homepage/addiems_clearnew.png"
                   alt="gambar addie ms"
-                  className="mx-auto h-auto w-full object-cover"
+                  className="mx-auto max-h-full w-full object-contain"
                   width={500}
                   height={500}
                 />
@@ -183,7 +183,7 @@ export default function Home() {
         </div>
 
         {/* Home Content 3 */}
-        <div className="bg-gmco-white py-20">
+        <div className="bg-gmco-white py-16">
           <div
             id="about"
             className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2"
@@ -199,7 +199,7 @@ export default function Home() {
                 <Image
                   src="/homepage/brian.png"
                   alt="gambar addie ms"
-                  className="mx-auto h-auto w-full object-cover"
+                  className="mx-auto max-h-full w-full object-contain"
                   width={500}
                   height={500}
                 />
@@ -224,7 +224,7 @@ export default function Home() {
                 <p className="mb-4 text-justify text-base font-light leading-normal opacity-90 md:text-lg">
                   Bro, lo tau ga sih Rich Brian? Dia tuh rapper asal Indo yang
                   udah terkenal banget di luar negeri, dulu dia dikenal juga
-                  sebagai Rich Chigga. Lagunya "Dat $tick" sempet viral di
+                  sebagai Rich Chigga. Lagunya Dat $tick sempet viral di
                   internet, trus dia juga sering manggung di festival-festival
                   musik dan konser internasional gitu. Musiknya keren banget,
                   liriknya juga unik abis. Gaya dia juga oke sih, dia suka pake
