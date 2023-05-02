@@ -7,7 +7,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 
 export default function NavBarAdmin() {
   const router = useRouter();
@@ -32,7 +32,7 @@ export default function NavBarAdmin() {
           axiosInstance.get("/api/v1/user/profile"),
         ]);
         setLogedUser(res.data.data);
-      } catch { }
+      } catch {}
     })();
   }, []);
 
@@ -74,7 +74,7 @@ export default function NavBarAdmin() {
 
   async function logoutSubmit() {
     await axiosInstance.post("/api/v1/user/logout").then((res) => {
-      if (res.data.message == "success") {
+      if (res.data.message == "success" || res.status == 400) {
         localStorage.removeItem("auth_token");
         Swal.fire({
           html: `<b>${res.data.message}</b> tunggu...`,
@@ -98,10 +98,11 @@ export default function NavBarAdmin() {
 
   return (
     <nav
-      className={`fixed z-50 w-full py-3 transition duration-300 ease-in-out ${scrollPosition > 0 || isOpen
-        ? "bg-gmco-white text-black"
-        : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
-        }`}
+      className={`fixed z-50 w-full py-3 transition duration-300 ease-in-out ${
+        scrollPosition > 0 || isOpen
+          ? "bg-gmco-white text-black"
+          : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
+      }`}
     >
       <div className='flex justify-between px-4 md:px-8 lg:px-48'>
         {/* Logo & Nama */}
@@ -116,10 +117,11 @@ export default function NavBarAdmin() {
                 <Link
                   key={index}
                   href={route.route}
-                  className={`rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out ${scrollPosition > 0
-                    ? "hover:bg-gray-700/10 "
-                    : "hover:bg-gmco-white/10"
-                    }`}
+                  className={`rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out ${
+                    scrollPosition > 0
+                      ? "hover:bg-gray-700/10 "
+                      : "hover:bg-gmco-white/10"
+                  }`}
                 >
                   {route.name}
                 </Link>
@@ -131,10 +133,11 @@ export default function NavBarAdmin() {
           {logedUser.Email === "" ? (
             <Link
               href='/auth'
-              className={`flex items-center rounded-md px-4 py-2 text-xl font-bold duration-150 ease-in-out hover:bg-gray-700/10 ${scrollPosition > 0
-                ? "hover:bg-gray-700/10 "
-                : "hover:bg-gmco-white/10"
-                }`}
+              className={`flex items-center rounded-md px-4 py-2 text-xl font-bold duration-150 ease-in-out hover:bg-gray-700/10 ${
+                scrollPosition > 0
+                  ? "hover:bg-gray-700/10 "
+                  : "hover:bg-gmco-white/10"
+              }`}
             >
               Login
             </Link>
@@ -146,7 +149,7 @@ export default function NavBarAdmin() {
                 <Avatar
                   rounded={true}
                   alt='User settings'
-                  img='/violin-picture.webp'
+                  img='navbar/violin-picture.webp'
                 />
               }
             >
@@ -155,10 +158,8 @@ export default function NavBarAdmin() {
                   {logedUser.Email}
                 </p>
               </Dropdown.Header>
-              <Link href="/profile">
-                <Dropdown.Item>
-                  Profile
-                </Dropdown.Item>
+              <Link href='/profile'>
+                <Dropdown.Item>Profile</Dropdown.Item>
               </Link>
               <Dropdown.Item onClick={logoutCheck}>
                 <a>Log Out</a>
@@ -178,8 +179,9 @@ export default function NavBarAdmin() {
                 <XMarkIcon className='h-6 w-6' />
               ) : (
                 <Bars3Icon
-                  className={`${scrollPosition > 0 ? "text-gmco-grey" : " text-gmco-white"
-                    } h-6 w-6`}
+                  className={`${
+                    scrollPosition > 0 ? "text-gmco-grey" : " text-gmco-white"
+                  } h-6 w-6`}
                 />
               )}
             </button>
@@ -189,8 +191,9 @@ export default function NavBarAdmin() {
 
       {/* Route when Mobile*/}
       <div
-        className={`${isOpen ? "block" : "hidden"
-          } transition duration-300 ease-in-out`}
+        className={`${
+          isOpen ? "block" : "hidden"
+        } transition duration-300 ease-in-out`}
       >
         <div className='px-2 pt-2'>
           {routes.map((route, index) => (

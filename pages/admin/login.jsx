@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 
-import { axiosInstance } from "@/atoms/config";
+import { axiosInstance } from "@/utils/config";
 import { notifySucces } from "@/components/notify";
 
 export default function AdminLogin() {

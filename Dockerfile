@@ -20,6 +20,7 @@ FROM node:lts-slim AS runner
 WORKDIR /app
 # Disable next telemetry for performance gain
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
 # Copying build artifact
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/.next/standalone ./

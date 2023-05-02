@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
 
-function CloseGatePage() {
+export default function CloseGatePage() {
   const router = useRouter();
   function handleGoHome() {
     router.push("/");
@@ -13,7 +12,7 @@ function CloseGatePage() {
         {/* leftside */}
         <div className="absolute h-full w-full bg-gmco-grey">
           <Image
-            src="/GMCO.webp"
+            src="/seatmap/GMCO.webp"
             alt="bg gmco concert"
             className="h-full w-auto object-cover opacity-50"
             width={2000}
@@ -41,7 +40,7 @@ function CloseGatePage() {
               Pembelian Tiket Ditutup!
             </h1>
             <p className="pl-2 text-base text-gmco-white">
-              Saat ini belum memasuki masa pembelian tiket GC #10 GMCO UGM.
+              Saat ini belum memasuki masa pembelian tiket Grand Concert Vol. 10 GMCO UGM.
               Pantau lini masa kami di media sosial untuk info lebih lengkap.
             </p>
           </div>
@@ -56,5 +55,3 @@ function CloseGatePage() {
     </section>
   );
 }
-
-export default CloseGatePage;
