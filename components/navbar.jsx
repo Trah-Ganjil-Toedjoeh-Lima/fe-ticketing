@@ -129,7 +129,8 @@ export default function NavigationBar({ doUpdate }) {
       }`}
     >
       <div className="flex h-auto justify-between px-4 py-4 md:px-8 md:py-0 lg:px-48">
-        {/* Logo & Nama */}
+
+        {/* Logo & Routes Link */}
         <div className="flex h-auto items-center">
           <Link href="/" className="flex items-center text-2xl font-bold">
             GC #10
@@ -152,6 +153,7 @@ export default function NavigationBar({ doUpdate }) {
           </div>
         </div>
 
+        {/* Cart dan User Profile */}
         <div className="flex h-auto items-center">
           {/* cart */}
           <div className="relative mr-4 flex h-full items-center md:mr-6">
@@ -233,7 +235,7 @@ export default function NavigationBar({ doUpdate }) {
         </div>
       </div>
 
-      {/* Route when Mobile*/}
+      {/* Route for Mobile*/}
       <div
         className={`${
           isOpen ? "block" : "hidden"
