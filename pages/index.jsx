@@ -183,10 +183,12 @@ export default function Home() {
         </div>
 
         {/* FAQ */}
-        <div id="FAQ" className=" flex flex-col bg-gmco-blue-secondary p-10 ">
-          <h1 className="mx-auto mb-6 text-4xl font-bold text-gray-900">FAQ</h1>
+        <div id="FAQ" className=" flex flex-col bg-[#191919] p-10 ">
+          <h1 className="mx-auto mb-6 text-4xl font-bold text-gmco-white">
+            FAQ
+          </h1>
           <div className="container mx-auto items-center justify-center">
-            <Accordion className="rounded-t-lg">
+            <Accordion className="rounded-t-lg bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -206,7 +208,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion className="">
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -258,7 +260,7 @@ export default function Home() {
                 </ul>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -280,7 +282,7 @@ export default function Home() {
                 </p>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -297,7 +299,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -316,7 +318,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -337,7 +339,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -357,7 +359,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion className="rounded-b-lg">
+            <Accordion className="rounded-b-lg bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
