@@ -211,25 +211,24 @@ export default function Cart() {
                   <tr className='text-center text-lg font-semibold md:text-xl'>
                     <td className='text-start'>No. Kursi</td>
                     <td>Kategori</td>
-                    <td>Jumlah</td>
                     <td>Harga</td>
                   </tr>
                 </thead>
                 <tbody>
                   {seatBoughts.seats.map((seatBought, index) => (
                     <tr key={index} className='divide-y'>
-                      <td className='border-t pt-4'>
+                      <td className='border-t border-gmco-white pt-4'>
                         <div className='flex items-center'>
-                          <h3 className='text-md font-extrabold md:text-xl'>
+                          <h3 className='text-xl font-extrabold'>
                             Kursi {seatBought.name}
                           </h3>
                         </div>
                       </td>
 
                       <td className='pt-4'>
-                        <div className='flex flex-col items-center justify-center gap-1 text-xs md:flex-row md:gap-3 md:text-sm'>
+                        <div className='flex flex-col items-center justify-center gap-1 md:flex-row md:gap-3 md:text-sm'>
                           <p
-                            className={`w-24 rounded-lg p-1 text-center font-semibold capitalize text-gmco-grey md:p-2 ${
+                            className={`w-24 rounded-lg p-1 text-center font-semibold text-md capitalize text-gmco-grey md:p-2 ${
                               category[seatBought.category]
                             }`}
                           >
@@ -248,13 +247,6 @@ export default function Cart() {
                       </td>
                       <td className='pt-4'>
                         <div className='flex justify-center'>
-                          <p className='w-max rounded-md bg-gmco-white px-3 py-1 text-gmco-grey'>
-                            1
-                          </p>
-                        </div>
-                      </td>
-                      <td className='pt-4'>
-                        <div className='flex justify-center'>
                           {formatNumber(seatBought.price)}
                         </div>
                       </td>
@@ -266,34 +258,35 @@ export default function Cart() {
 
             {/* Bagian Checkout */}
             <div className='md:col-span-2'>
-              {/* Batalkan Transaksi */}
-              <div className='h-min rounded-lg bg-gmco-white py-4 px-6'>
+              {/* Checkout */}
+              <div className='mt-2 h-min space-y-4 rounded-lg bg-gmco-white/80 p-6'>
+                <p className='text-2xl font-bold'>DETAIL PEMBAYARAN</p>
+                <hr class='my-6 h-px border-0 bg-gmco-grey'></hr>
+                <div className='flex-col justify-between text-base font-medium text-gmco-grey'>
+                  <div className='flex items-center justify-between'>
+                    <p className='text-xl'>Subtotal</p>
+                    <p>{formatNumber(orderTotal)}</p>
+                  </div>
+                  <p className='mt-0.5 text-sm text-gmco-grey/70'>
+                    Sudah termasuk pajak<span className='text-red-500'> *</span>
+                  </p>
+                </div>
+
+                <div className='mt-6 flex w-full justify-center'>
+                  <button
+                    onClick={() => handleCheckout()}
+                    className='flex w-full items-center justify-center rounded-lg border-2 border-gmco-grey/50 bg-gmco-orange-secondarylight py-2 text-lg font-bold text-gmco-white transition duration-200 ease-out hover:bg-gmco-orange-secondarydark hover:shadow-lg'
+                  >
+                    ORDER
+                  </button>
+                </div>
                 <div className='flex items-center justify-between'>
-                  <p className='text-xl font-bold'>BATALKAN TRANSAKSI</p>
+                  <p className='text-xl font-medium'>Batalkan Transaksi</p>
                   <button
                     onClick={() => cancelCheck()}
                     className='flex items-center justify-center rounded-md border border-transparent bg-gmco-orange-secondarydark bg-opacity-70 px-6 py-2 text-base font-medium text-white shadow-sm transition duration-200 ease-out hover:bg-gmco-orange-secondarydark'
                   >
                     <TrashIcon className='h-5 w-5' />
-                  </button>
-                </div>
-              </div>
-
-              {/* Checkout */}
-              <div className='mt-2 h-min rounded-lg bg-gmco-yellow p-6'>
-                <div className='flex justify-between text-base font-medium text-gmco-grey'>
-                  <p className='text-xl'>Subtotal</p>
-                  <p>{formatNumber(orderTotal)}</p>
-                </div>
-                <p className='mt-0.5 text-sm text-gmco-grey/70'>
-                  Sudah termasuk pajak<span className='text-red-500'>*</span>
-                </p>
-                <div className='mt-6 flex items-center justify-center md:justify-end'>
-                  <button
-                    onClick={() => handleCheckout()}
-                    className='flex items-center justify-center rounded-md border border-transparent bg-gmco-orange-secondarylight px-6 py-2 text-base font-medium text-white shadow-sm transition duration-200 ease-out hover:bg-gmco-orange-secondarydark'
-                  >
-                    Checkout
                   </button>
                 </div>
               </div>
