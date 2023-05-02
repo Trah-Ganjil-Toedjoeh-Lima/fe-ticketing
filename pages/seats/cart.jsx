@@ -182,13 +182,13 @@ export default function Cart() {
 
   return (
     <>
-      <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
+      {/* <Loading isLoading={isLoading} verboseMsg={verboseMsg} /> */}
       <NavigationBar doUpdate={update} />
-      <div className='max-w-screen relative overflow-hidden bg-gmco-blue-main md:min-h-screen'>
+      <div className='max-w-screen relative overflow-hidden bg-[#639891] md:min-h-screen'>
         <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
           <Image
-            src='/seatmap/GMCO-11_crop.webp'
-            className='h-full w-full object-cover opacity-20 md:object-top lg:object-left-bottom'
+            src='/IMG_9272.JPG'
+            className='h-full w-full object-cover opacity-40 md:object-right-bottom'
             alt='gmco concert'
             width={1920}
             height={1281}
@@ -203,15 +203,15 @@ export default function Cart() {
 
         <div className='container m-auto px-6 pb-8 md:px-1'>
           <div className='grid gap-10 overflow-hidden py-6 md:grid-cols-5'>
-            <div className='h-max md:col-span-3 '>
+            <div className='mt-2 h-max rounded-lg bg-gmco-white/60 md:col-span-3 '>
               {/* Display List */}
-              <table className='w-full table-auto border-separate border-spacing-y-4 divide-gray-200 text-gmco-white'>
+              <table className='w-full table-auto border-separate border-spacing-y-4 divide-gray-200 text-gmco-grey'>
                 {/* Item - nanti di map */}
                 <thead>
                   <tr className='text-center text-lg font-semibold md:text-xl'>
-                    <td className='text-start'>No. Kursi</td>
-                    <td>Kategori</td>
-                    <td>Harga</td>
+                    <td className='text-center'>No. Kursi</td>
+                    <td className='text-center'>Kategori</td>
+                    <td className='text-center'>Harga</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -228,7 +228,7 @@ export default function Cart() {
                       <td className='pt-4'>
                         <div className='flex flex-col items-center justify-center gap-1 md:flex-row md:gap-3 md:text-sm'>
                           <p
-                            className={`w-24 rounded-lg p-1 text-center font-semibold text-md capitalize text-gmco-grey md:p-2 ${
+                            className={`text-md w-24 rounded-lg p-1 text-center font-semibold capitalize text-gmco-grey md:p-2 ${
                               category[seatBought.category]
                             }`}
                           >
@@ -259,9 +259,9 @@ export default function Cart() {
             {/* Bagian Checkout */}
             <div className='md:col-span-2'>
               {/* Checkout */}
-              <div className='mt-2 h-min space-y-4 rounded-lg bg-gmco-white/80 p-6'>
-                <p className='text-2xl font-bold'>DETAIL PEMBAYARAN</p>
-                <hr class='my-6 h-px border-0 bg-gmco-grey'></hr>
+              <div className='mt-2 h-min space-y-4 rounded-lg bg-gmco-white/60 p-6'>
+                <p className='text-2xl font-bold'>DETAIL TRANSAKSI</p>
+                <hr class='my-6 h-px border-0 bg-gmco-grey/70'></hr>
                 <div className='flex-col justify-between text-base font-medium text-gmco-grey'>
                   <div className='flex items-center justify-between'>
                     <p className='text-xl'>Subtotal</p>
@@ -280,8 +280,9 @@ export default function Cart() {
                     ORDER
                   </button>
                 </div>
+                <hr class='my-10 h-px border-0 bg-gmco-grey/70'></hr>
                 <div className='flex items-center justify-between'>
-                  <p className='text-xl font-medium'>Batalkan Transaksi</p>
+                  <p className='text-sm text-gmco-grey'>Batalkan Transaksi</p>
                   <button
                     onClick={() => cancelCheck()}
                     className='flex items-center justify-center rounded-md border border-transparent bg-gmco-orange-secondarydark bg-opacity-70 px-6 py-2 text-base font-medium text-white shadow-sm transition duration-200 ease-out hover:bg-gmco-orange-secondarydark'
