@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import Swal from "sweetalert2";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { AiOutlineLogout } from "react-icons/ai";
 import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
@@ -21,36 +22,12 @@ export default function NavigationBar({ doUpdate }) {
     Phone: "",
     UserId: 0,
   });
-  const [isLoading, setIsLoading] = useState(true);
   const routes = [
     { name: "Home", route: "/" },
     { name: "About", route: "/#about" },
     { name: "FAQ", route: "/#FAQ" },
     { name: "Seat", route: "/seats" },
-    {
-      name: (
-        <>
-          <div className="relative hidden h-full w-full md:flex">
-            <FaShoppingCart className="scale-x-[-1] md:h-6 md:w-6" />
-            <p
-              className={`absolute right-0 top-0 rounded-sm bg-red-500 px-1 text-xs ${
-                checkout === 0 ? "hidden" : "inline"
-              }`}
-            >
-              {checkout}
-            </p>
-          </div>
-
-          <p className="md:hidden">Shopping Cart</p>
-        </>
-      ),
-      route: "/seats/cart",
-    },
   ];
-
-  // if (typeof window !== "undefined") {
-  //   useClearAuthTokenOnUnload(localStorage.getItem("auth_token"));
-  // }
 
   useEffect(() => {
     // get user profile
@@ -61,12 +38,12 @@ export default function NavigationBar({ doUpdate }) {
           axiosInstance.get("/api/v1/user/profile"),
         ]);
         setLogedUser(res.data.data);
-        setIsLoading(false);
       } catch {
-        setIsLoading(false);
+        // do nothing
       }
     })();
 
+    // only run if get user proflie succes
     // get user checkout
     (async () => {
       try {
@@ -145,51 +122,64 @@ export default function NavigationBar({ doUpdate }) {
 
   return (
     <nav
-      className={`fixed z-50 w-full py-3 transition duration-300 ease-in-out ${
+      className={`fixed z-50 w-full transition duration-300 ease-in-out ${
         scrollPosition > 0 || isOpen
           ? "bg-gmco-white text-black"
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
       }`}
     >
-      <div className="flex justify-between px-4 md:px-8 lg:px-48">
-        {/* Logo & Nama */}
-        <Link href="/" className="flex items-center text-2xl font-bold">
-          GC #10
-        </Link>
-        <div className="flex w-max">
+      <div className="flex h-auto justify-between px-4 py-4 md:px-8 md:py-0 lg:px-48">
+
+        {/* Logo & Routes Link */}
+        <div className="flex h-auto items-center">
+          <Link href="/" className="flex items-center text-2xl font-bold">
+            GC #10
+          </Link>
           {/* Route when MD*/}
-          <div className="mr-2 hidden md:flex md:w-auto md:items-center">
-            <div className="flex items-center space-x-2 text-lg">
-              {routes.map((route, index) => (
-                <Link
-                  key={index}
-                  href={route.route}
-                  className={`rounded-md p-2 px-6 font-semibold transition duration-150 ease-in-out ${
-                    scrollPosition > 0
-                      ? "hover:bg-gray-700/10 "
-                      : "hover:bg-gmco-white/10"
-                  }`}
-                >
-                  {route.name}
-                </Link>
-              ))}
-            </div>
+          <div className="ml-6 hidden h-full text-lg md:flex md:w-auto md:items-center">
+            {routes.map((route, index) => (
+              <Link
+                key={index}
+                href={route.route}
+                className={`flex h-full items-center border-b-2 border-transparent px-6 py-5 font-semibold transition duration-150 ease-in-out ${
+                  scrollPosition > 0
+                    ? "hover:border-gmco-grey hover:bg-gray-700/10"
+                    : "hover:border-gmco-white hover:bg-gmco-white/10"
+                }`}
+              >
+                {route.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Cart dan User Profile */}
+        <div className="flex h-auto items-center">
+          {/* cart */}
+          <div className="relative mr-4 flex h-full items-center md:mr-6">
+            <FaShoppingCart className="h-6 w-auto scale-x-[-1]" />
+            <p
+              className={`absolute right-0 top-0 rounded-sm bg-red-500 px-1 text-xs ${
+                checkout === 0 ? "hidden" : "inline"
+              }`}
+            >
+              {checkout}
+            </p>
           </div>
 
           {/* Profile */}
           {logedUser.Email === "" ? (
             <Link
               href="/auth"
-              className={`flex items-center rounded-md px-4 py-2 text-xl font-bold duration-150 ease-in-out hover:bg-gray-700/10 ${
-                scrollPosition > 0
-                  ? "hover:bg-gray-700/10 "
-                  : "hover:bg-gmco-white/10"
-              } ${isLoading ? "hidden" : "inline"}`}
+              className={`flex self-center rounded-xl border-2 border-gmco-yellow-secondary bg-gmco-yellow-secondary px-3 py-1 text-xl font-bold text-gmco-white duration-150 ease-in-out hover:border-gmco-white hover:bg-gmco-orange-secondarydark ${
+                logedUser.Email !== "" ? "hidden" : "inline"
+              }`}
             >
               Login
             </Link>
           ) : (
             <Dropdown
+              // className="flex self-center"
               arrowIcon={false}
               inline={true}
               label={
@@ -197,18 +187,29 @@ export default function NavigationBar({ doUpdate }) {
                   rounded={true}
                   alt="User settings"
                   img="/navbar/violin-picture.webp"
-                />
+                >
+                  <p className="hidden font-semibold md:inline">
+                    {logedUser.Email}
+                  </p>
+                </Avatar>
               }
             >
-              <Dropdown.Header>
-                <p className="block truncate text-sm font-medium">
-                  {logedUser.Email}
-                </p>
+              <Dropdown.Header className="md:hidden">
+                {logedUser.Email}
               </Dropdown.Header>
               <Link href="/profile">
-                <Dropdown.Item>Profile</Dropdown.Item>
+                <Dropdown.Item className="flex items-center gap-2">
+                  <FaUser />
+                  <span>Profile</span>
+                </Dropdown.Item>
               </Link>
-              <Dropdown.Item onClick={logoutCheck}>Log Out</Dropdown.Item>
+              <Dropdown.Item
+                onClick={logoutCheck}
+                className="flex items-center gap-2"
+              >
+                <AiOutlineLogout />
+                <span>Log Out</span>
+              </Dropdown.Item>
             </Dropdown>
           )}
 
@@ -234,7 +235,7 @@ export default function NavigationBar({ doUpdate }) {
         </div>
       </div>
 
-      {/* Route when Mobile*/}
+      {/* Route for Mobile*/}
       <div
         className={`${
           isOpen ? "block" : "hidden"

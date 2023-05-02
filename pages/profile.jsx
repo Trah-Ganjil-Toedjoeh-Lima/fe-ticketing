@@ -306,7 +306,7 @@ export default function Profile() {
             {/* TICKET */}
             {seatsBought.Seat.length === 0 ? (
               <div className="flex w-full flex-col items-center justify-center">
-                <p className="mb-8 text-center text-2xl text-gmco-grey">
+                <p className="mb-8 text-center text-2xl text-gmco-white">
                   Anda belum membeli tiket.
                   <br />
                   Silakan menuju ke halaman seat untuk membeli tiket.
