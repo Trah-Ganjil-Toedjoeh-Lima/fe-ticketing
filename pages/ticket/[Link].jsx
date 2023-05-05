@@ -8,7 +8,9 @@ export async function getServerSideProps({ params }) {
   const { Link } = params;
 
   try {
-    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/seat/${Link}`);
+    const res = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/seat/${Link}`
+    );
     const ticketRemote = res.data.data;
     return { props: { ticket: ticketRemote } };
   } catch (err) {
@@ -129,7 +131,7 @@ export default function Ticket() {
                   </span>
                 </div>
                 <div className='mt-2 rounded-[3px] bg-gmco-blue-main p-1 text-center md:rounded-lg md:p-2 lg:p-3'>
-                  Auditorium Driyarkara
+                  Auditorium Driyarkara Sanata Dharma
                 </div>
               </div>
             </div>
