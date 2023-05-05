@@ -122,11 +122,11 @@ export default function Seats() {
     "translate-y-[20px]",
   ];
   const row_width = [
-    "w-[57.5%]",
+    "w-[45%]",
+    "w-[50%]",
+    "w-[55%]",
     "w-[60%]",
-    "w-[62.5%]",
     "w-[65%]",
-    "w-[67.5%]",
     "w-[70%]",
     "w-[72.5%]",
     "w-[75%]",
@@ -155,12 +155,12 @@ export default function Seats() {
 
   // universal
   const priceCategory = [
-    { name: "Harmoni Rp170K", price: 170000, lantai: 1, isHover: 0 },
-    { name: "Serenada Rp145K", price: 145000, lantai: 1, isHover: 0 },
-    { name: "Irama Rp120K", price: 120000, lantai: 1, isHover: 0 },
-    { name: "Tala Rp85K", price: 85000, lantai: 1, isHover: 0 },
-    { name: "Sekar Rp65K", price: 65000, lantai: 1, isHover: 0 },
-    { name: "Gita Rp50K", price: 50000, lantai: 2, isHover: 0 },
+    { name: "Harmoni Rp175K", price: 175000, lantai: 1, isHover: 0 },
+    { name: "Serenada Rp150K", price: 150000, lantai: 1, isHover: 0 },
+    { name: "Irama Rp125K", price: 125000, lantai: 1, isHover: 0 },
+    { name: "Tala Rp90K", price: 90000, lantai: 1, isHover: 0 },
+    { name: "Sekar Rp70K", price: 70000, lantai: 1, isHover: 0 },
+    { name: "Gita Rp55K", price: 55000, lantai: 2, isHover: 0 },
   ];
   const statusColor = {
     available: "bg-[#8EBFD0]",
@@ -253,14 +253,12 @@ export default function Seats() {
         // getReservedSeats(res.data.data);
         // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         // notifyError(err);
-        try {
-          if (err.response.status === 425) {
-            notifyErrorMessage("Pemesanan belum dibuka");
-            router.push("/closegate");
-          }
-        } catch (err) {
+        if (err.response.status === 425) {
+          notifyErrorMessage("Pemesanan belum dibuka");
+          router.push("/closegate");
+        } else {
           notifyError(err);
         }
       } finally {
@@ -281,14 +279,10 @@ export default function Seats() {
       let nonDuplicateSeatsPick = [];
 
       if (savedUserSeatsPick !== null) {
-        console.log("Saved User Seats:", savedUserSeatsPick);
-        console.log("User Seats:", userSeatsPick);
+        // console.log("Saved User Seats:", savedUserSeatsPick);
+        // console.log("User Seats:", userSeatsPick);
 
         savedUserSeatsPick.forEach((seatpick) => {
-          console.log(
-            "sasdad",
-            userSeatsPick.some((e) => e.seat_id === seatpick.seat_id)
-          );
           if (!userSeatsPick.some((e) => e.seat_id === seatpick.seat_id)) {
             console.log("Set User Seats Pick:", seatpick);
             nonDuplicateSeatsPick.push(seatpick);
@@ -297,19 +291,19 @@ export default function Seats() {
         });
       }
 
-      console.log("Non Duplicate:", nonDuplicateSeatsPick);
+      // console.log("Non Duplicate:", nonDuplicateSeatsPick);
 
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
-        console.log("Adding user seats pick from local storage");
+        // console.log("Adding user seats pick from local storage");
       }
       setLocalSeatLoaded(true);
     }
   }, [isReservedSeatLoaded, update]);
 
   useEffect(() => {
-    console.log("User Seats Resolve:", userSeatsPick);
-    console.log(isReservedSeatLoaded, isLocalSeatLoaded);
+    // console.log("User Seats Resolve:", userSeatsPick);
+    // console.log(isReservedSeatLoaded, isLocalSeatLoaded);
     if (isReservedSeatLoaded && isLocalSeatLoaded) {
       localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
     }
@@ -356,12 +350,20 @@ export default function Seats() {
           // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
           // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
           mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
+          // remove searArr that same length
+          const index = seatsArr.findIndex(
+            (seat) => seat.seat_id === reservedByOthers[j].seat_id
+          );
+          if (index !== -1) {
+            seatsArr.splice(index, 1);
+          }
           // console.log("Kursi tersisa:", mySeatsTmp)
         }
       }
 
+      // console.log("seattmp", mySeatsTmp)
+
       if (mySeatsTmp.length === 0) {
-        seatsArr;
         notifyErrorMessage(
           "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
         );
@@ -544,8 +546,6 @@ export default function Seats() {
     set_MR_seatmap_2(floor2Seat[3]);
     set_R_seatmap_2(floor2Seat[4]);
   }
-
-  console.log(userSeatsPick);
 
   // Mapping the data
   function seatMapping(value, mappers, startMappers, numSeats) {
@@ -927,7 +927,7 @@ export default function Seats() {
             </div>
             <div className="space-y-4">
               {priceCategory.map((namePrice) => (
-                <div className="group relative flex border-b-4 border-gmco-grey">
+                <div className="group relative flex border-b-4 border-gmco-grey border-opacity-40">
                   <button
                     className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
@@ -953,7 +953,7 @@ export default function Seats() {
                     }}
                   >
                     <span
-                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
+                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-gmco-grey bg-opacity-40 transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
                         priceCategoryHighlight.includes(namePrice.price)
                           ? "-translate-x-0 -translate-y-0 bg-gmco-yellow-secondary"
                           : "bg-gmco-grey"
@@ -1043,16 +1043,20 @@ export default function Seats() {
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
                   <p>Purchased</p>
                 </div>
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary" />
-                  <div>
+                <div>
+                  <div className="flex content-center gap-2">
+                    <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow-secondary" />
                     <p>Reserved by Others</p>
+                  </div>
+                  <div className="flex content-center gap-2">
+                    <div className="h-5 w-5 min-w-[1.25rem]" />
                     <p className="text-base font-normal">
                       <span className="text-red-500">*</span>Kursi dapat dibeli
                       kembali setelah 15 menit tidak dibayar
                     </p>
                   </div>
                 </div>
+
                 <div className="flex content-center gap-2">
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
                   <p>Reserved by Me</p>
@@ -1149,7 +1153,7 @@ export default function Seats() {
 
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleleft.png')] bg-cover pb-12">
+                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center justify-end gap-[0.45rem] bg-[url('/seatmap/framemiddleleft.png')] bg-cover pb-12">
                     {ml_seatmap.map((seats, index) => (
                       // col wise
                       // prin)

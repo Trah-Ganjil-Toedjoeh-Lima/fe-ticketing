@@ -124,7 +124,7 @@ export default function Home() {
         </div>
 
         {/* Home Content2 - Addie MS */}
-        <div className="bg-[#191919] py-20">
+        <div className="bg-[#191919] py-16">
           <div
             id="about"
             className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2"
@@ -155,7 +155,7 @@ export default function Home() {
                 </p>
                 <a
                   className="delay-15 border-b-2 py-3 text-gmco-white transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight"
-                  href="https://gmco.ukm.ugm.ac.id/"
+                  href="https://id.wikipedia.org/wiki/Addie_MS"
                 >
                   More About Addie MS
                 </a>
@@ -169,11 +169,11 @@ export default function Home() {
               distance="100px"
               className="w-full"
             >
-              <div className="flex h-[50vh] items-center md:h-[70vh]">
+              <div className="flex h-[50vh] items-center md:h-[70vh] md:p-8">
                 <Image
                   src="/homepage/addiems_clearnew.png"
                   alt="gambar addie ms"
-                  className="mx-auto h-auto w-full object-cover"
+                  className="mx-auto max-h-full w-full object-contain"
                   width={500}
                   height={500}
                 />
@@ -182,11 +182,72 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Home Content 3 */}
+        <div className="bg-gmco-white py-16">
+          <div
+            id="about"
+            className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2"
+          >
+            {/* GMCO Image */}
+            <RevealWrapper
+              origin="right"
+              duration={2000}
+              distance="100px"
+              className="w-full"
+            >
+              <div className="flex h-[50vh] items-center md:h-[70vh] md:p-8">
+                <Image
+                  src="/homepage/brian.png"
+                  alt="gambar addie ms"
+                  className="mx-auto max-h-full w-full object-contain"
+                  width={500}
+                  height={500}
+                />
+              </div>
+            </RevealWrapper>
+
+            {/* Text */}
+            <RevealWrapper
+              duration={1000}
+              distance="0"
+              className="flex w-full justify-start text-gmco-grey"
+            >
+              <div className="py-12 text-center md:text-left lg:w-3/4">
+                <div className="text-md font-bold tracking-wide md:text-2xl">
+                  Special,
+                </div>
+                <h1 className="mb-4 mt-2 text-2xl font-extrabold leading-tight md:text-7xl">
+                  <span className="text-xs">Rich</span>
+                  <span>Brian</span>
+                  <span className="text-gmco-orange-secondarylight">.</span>
+                </h1>
+                <p className="mb-4 text-justify text-base font-light leading-normal opacity-90 md:text-lg">
+                  Bro, lo tau ga sih Rich Brian? Dia tuh rapper asal Indo yang
+                  udah terkenal banget di luar negeri, dulu dia dikenal juga
+                  sebagai Rich Chigga. Lagunya Dat $tick sempet viral di
+                  internet, trus dia juga sering manggung di festival-festival
+                  musik dan konser internasional gitu. Musiknya keren banget,
+                  liriknya juga unik abis. Gaya dia juga oke sih, dia suka pake
+                  teknologi dan media sosial buat promosiin karyanya.
+                </p>
+                <a
+                  className="delay-15 border-b-2 py-3 text-gmco-grey transition duration-300 ease-in-out border-gmco-orange-secondarylight hover:border-gmco-grey"
+                  href="https://id.wikipedia.org/wiki/Rich_Brian"
+                >
+                  More About This Chigga
+                </a>
+              </div>
+            </RevealWrapper>
+          </div>
+        </div>
+
         {/* FAQ */}
-        <div id="FAQ" className=" flex flex-col bg-gmco-blue-secondary p-10 ">
-          <h1 className="mx-auto mb-6 text-4xl font-bold text-gray-900">FAQ</h1>
+        <div id="FAQ" className=" flex flex-col bg-[#191919] p-10 ">
+          <h1 className="mx-auto mb-6 text-6xl font-bold text-gmco-white">
+            FAQ
+          </h1>
           <div className="container mx-auto items-center justify-center">
-            <Accordion className="rounded-t-lg">
+            <Accordion className="rounded-t-lg bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -206,7 +267,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion className="">
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -258,7 +319,7 @@ export default function Home() {
                 </ul>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -280,7 +341,7 @@ export default function Home() {
                 </p>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -297,7 +358,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -316,7 +377,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -337,7 +398,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion className="bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
@@ -357,7 +418,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-            <Accordion className="rounded-b-lg">
+            <Accordion className="rounded-b-lg bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
                 aria-controls="panel1a-content"
