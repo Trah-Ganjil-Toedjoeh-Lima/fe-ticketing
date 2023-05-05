@@ -131,7 +131,7 @@ export default function NavigationBar({ doUpdate }) {
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
       }`}
     >
-      <div className='container mx-auto flex h-auto justify-between px-4 py-4 md:px-8 md:py-0'>
+      <div className='container mx-auto flex h-auto justify-between px-4 py-4 md:px-0 md:py-0'>
         {/* Logo & Routes Link */}
         <div className='flex h-auto items-center'>
           <Link href='/' className='flex text-2xl font-bold'>
