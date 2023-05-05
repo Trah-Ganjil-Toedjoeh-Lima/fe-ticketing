@@ -125,7 +125,7 @@ export default function OtpPage() {
           <div className="text-md text-center text-gmco-white  sm:text-sm ">
             <p className="">Kode verifikasi telah dikirim ke <span className="font-medium text-cyan-200">{loginInput.email}</span> </p>{" "}
             <span className="text-justify">
-              Silakan tunggu beberapa menit. Periksa folder <b>spam</b> di email Anda jika Anda tidak melihat email masuk untuk memastikan pesan OTP tidak
+              Silakan tunggu beberapa menit. Periksa folder <b>spam</b> di email Anda jika tidak melihat email masuk untuk memastikan pesan OTP tidak
               terlewat.{" "}
             </span>
           </div>
