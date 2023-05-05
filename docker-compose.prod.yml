@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  gmco-ticketing-fe-prod:
+    image: trahganjil/gmco-ticketing-fe:${DOCKER_TAG}
+    restart: unless-stopped
+    container_name: gmco_fe_prod
+    ports:
+      - "127.0.0.1:3000:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gmco-fe-http-prod.rule=Host(`gmco-event.com`)"
+      - "traefik.http.routers.gmco-fe-http-prod.entrypoints=web"
+      - "traefik.http.routers.gmco-fe-http-prod.middlewares=redirect-to-https@docker"
+      - "traefik.http.routers.gmco-fe-http-prod.service=noop@internal"
+      - "traefik.http.routers.gmco-fe-https-prod.rule=Host(`gmco-event.com`)"
+      - "traefik.http.routers.gmco-fe-https-prod.entrypoints=websecure"
+      - "traefik.http.routers.gmco-fe-https-prod.tls=true"
+      - "traefik.http.routers.gmco-fe-https-prod.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.gmco-fe-https-prod.middlewares=cors-header@docker"
+    networks:
+      - gateway_ingress
+
+networks:
+  gateway_ingress:
+    external: true

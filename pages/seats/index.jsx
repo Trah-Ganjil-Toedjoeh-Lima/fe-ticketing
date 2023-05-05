@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import {
   ChevronRightIcon,
   ExclamationTriangleIcon,
-  TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
@@ -37,7 +36,6 @@ export default function Seats() {
   const [mr_seatmap_2, set_MR_seatmap_2] = useState([]);
   const [r_seatmap_2, set_R_seatmap_2] = useState([]);
   // ---
-  const [userSeats, setUserSeats] = useState([]);
   const [userSeatsPick, setUserSeatsPick] = useState([]);
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [purchasedSeat, setPurchasedSeat] = useState(0);
@@ -51,13 +49,11 @@ export default function Seats() {
   const [priceCategoryHighlight, setPriceCategoryHighlight] = useState([]);
   const [priceCategoryHoverHighlight, setPriceCategoryHoverHighlight] =
     useState([]);
-  const [isReservedSeatLoaded, setReservedListLoaded] = useState(false);
+  const [isReservedSeatLoaded, setReservedSeatLoaded] = useState(false);
   const [isLocalSeatLoaded, setLocalSeatLoaded] = useState(false);
   const [update, setUpdate] = useState("");
-  const [isReservedByOthers, setIsReservedByOthers] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [verboseMsg, setVerboseMsg] = useState("Loading...");
-  // const [writeToLocalStorage, setWriteToLocalStorage] = useState();
 
   // floor 1
   const mappersFloor1 = [
@@ -126,11 +122,11 @@ export default function Seats() {
     "translate-y-[20px]",
   ];
   const row_width = [
-    "w-[57.5%]",
+    "w-[45%]",
+    "w-[50%]",
+    "w-[55%]",
     "w-[60%]",
-    "w-[62.5%]",
     "w-[65%]",
-    "w-[67.5%]",
     "w-[70%]",
     "w-[72.5%]",
     "w-[75%]",
@@ -159,12 +155,12 @@ export default function Seats() {
 
   // universal
   const priceCategory = [
-    { name: "Harmoni Rp170K", price: 170000, lantai: 1, isHover: 0 },
-    { name: "Serenada Rp145K", price: 145000, lantai: 1, isHover: 0 },
-    { name: "Irama Rp120K", price: 120000, lantai: 1, isHover: 0 },
-    { name: "Tala Rp85K", price: 85000, lantai: 1, isHover: 0 },
-    { name: "Sekar Rp65K", price: 65000, lantai: 1, isHover: 0 },
-    { name: "Gita Rp50K", price: 50000, lantai: 2, isHover: 0 },
+    { name: "Harmoni Rp175K", price: 175000, lantai: 1, isHover: 0 },
+    { name: "Serenada Rp150K", price: 150000, lantai: 1, isHover: 0 },
+    { name: "Irama Rp125K", price: 125000, lantai: 1, isHover: 0 },
+    { name: "Tala Rp90K", price: 90000, lantai: 1, isHover: 0 },
+    { name: "Sekar Rp70K", price: 70000, lantai: 1, isHover: 0 },
+    { name: "Gita Rp55K", price: 55000, lantai: 2, isHover: 0 },
   ];
   const statusColor = {
     available: "bg-[#8EBFD0]",
@@ -209,6 +205,7 @@ export default function Seats() {
 
   useEffect(() => {
     if (counter === 0) {
+      localStorage.removeItem("user_seats_pick");
       window.location.reload();
     } else if (counter === 3) {
       notifyErrorMessage("Refresh dalam 3..2..1..");
@@ -252,18 +249,16 @@ export default function Seats() {
         const res = await axiosInstance.get("/api/v1/seat_map");
         // const res = await axiosInstance.get("seatmap.json");
         divideByFloor(res.data.data);
-        setReservedListLoaded(true);
+        setReservedSeatLoaded(true);
         // getReservedSeats(res.data.data);
         // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
         // console.log(err);
         // notifyError(err);
-        try {
-          if (err.response.data.error === "the gate has not been opened") {
-            notifyErrorMessage("Pemesanan belum dibuka");
-            router.push("/closegate");
-          }
-        } catch (err) {
+        if (err.response.status === 425) {
+          notifyErrorMessage("Pemesanan belum dibuka");
+          router.push("/closegate");
+        } else {
           notifyError(err);
         }
       } finally {
@@ -275,61 +270,51 @@ export default function Seats() {
   }, [update]);
 
   useEffect(() => {
-    if (isReservedSeatLoaded === true && isLocalSeatLoaded === false) {
+    if (isReservedSeatLoaded) {
       // console.log(userSeatsPick)
       // console.log("Get User Seats from Local Storage");
-      const savedUserSeats = JSON.parse(localStorage.getItem("user_seats"));
       const savedUserSeatsPick = JSON.parse(
         localStorage.getItem("user_seats_pick")
       );
-      let nonDuplicateSeats = [];
       let nonDuplicateSeatsPick = [];
 
-      if (savedUserSeats !== null) {
-        savedUserSeats.forEach((seat) => {
-          if (userSeats.includes(seat) === false) {
-            // console.log("Set User Seats:", seat);
-            nonDuplicateSeats.push(seat);
-          }
-        });
-      }
       if (savedUserSeatsPick !== null) {
-        // console.log(savedUserSeatsPick)
+        // console.log("Saved User Seats:", savedUserSeatsPick);
+        // console.log("User Seats:", userSeatsPick);
+
         savedUserSeatsPick.forEach((seatpick) => {
-          if (userSeatsPick.some(e => e.seat_id === seatpick.seat_id) === false) {
+          if (!userSeatsPick.some((e) => e.seat_id === seatpick.seat_id)) {
             console.log("Set User Seats Pick:", seatpick);
             nonDuplicateSeatsPick.push(seatpick);
           }
+          // console.log(seatpick);
         });
       }
 
-      if (nonDuplicateSeats.length > 0) {
-        setUserSeats([...userSeats, ...nonDuplicateSeats]);
-        console.log("Adding user seats from local storage")
-      }
+      // console.log("Non Duplicate:", nonDuplicateSeatsPick);
+
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
-        console.log("Adding user seats pick from local storage")
+        // console.log("Adding user seats pick from local storage");
       }
       setLocalSeatLoaded(true);
     }
-  }, [isReservedSeatLoaded]);
+  }, [isReservedSeatLoaded, update]);
 
   useEffect(() => {
-    // console.log("Save User Seats to Local Storage: ", canWriteLocalSeat);
-    if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
-      localStorage.setItem("user_seats", JSON.stringify(userSeats));
-    }
-  }, [userSeats]);
-
-  useEffect(() => {
-    if (isReservedSeatLoaded === true && isLocalSeatLoaded === true) {
+    // console.log("User Seats Resolve:", userSeatsPick);
+    // console.log(isReservedSeatLoaded, isLocalSeatLoaded);
+    if (isReservedSeatLoaded && isLocalSeatLoaded) {
       localStorage.setItem("user_seats_pick", JSON.stringify(userSeatsPick));
     }
-  }, [userSeatsPick]); 
+  }, [userSeatsPick]);
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 
   // Post data to cart
-  async function postSeats(seatsArr) {
+  function handleConflict(seatsArr) {
     if (isAdmin) {
       notifyErrorMessage("Admin tidak bisa memesan kursi");
       return;
@@ -339,90 +324,121 @@ export default function Seats() {
       return;
     }
 
-    setLoading(true);
-    setVerboseMsg("Validating seats order...");
-    console.log(seatsArr);
-    var mySeatsTmp = seatsArr;
-    const reservedByOthers = [];
-    const res = await axiosInstance.get("/api/v1/seat_map");
-    // console.log(res.length)
-    for (let i = 0; i < res.data.data.length; i++) {
-      // console.log(i)
-      const obj = res.data.data[i];
+    setTimeout(async () => {
+      setLoading(true);
+      setVerboseMsg("Validating seats order...");
+      //console.log(seatsArr);
+      let mySeatsTmp = seatsArr.map((item) => item.seat_id);
+      const reservedByOthers = [];
+      let isReservedByOthers = false;
+      //setVerboseMsg("Checking seats availability...");
+      const res = await axiosInstance.get("/api/v1/seat_map");
+      // console.log(res.length)
+      for (let i = 0; i < res.data.data.length; i++) {
+        // console.log(i)
+        const obj = res.data.data[i];
 
-      // untuk ambil kusi terpesan
-      if (obj.status === "reserved") {
-        reservedByOthers.push(obj);
-      }
-    }
-
-    for (let j = 0; j < reservedByOthers.length; j++) {
-      // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-      if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
-        setIsReservedByOthers(true);
-        // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
-        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
-        mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
-        // console.log("Kursi tersisa:", mySeatsTmp)
-      }
-    }
-
-    if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
-      notifyErrorMessage(
-        "Sebagian kursi sudah dipesan orang lain. Melanjutkan dengan kursi tersisa..."
-      );
-    }
-
-    if (mySeatsTmp.length === 0) {
-      notifyErrorMessage(
-        "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
-      );
-      localStorage.removeItem("user_seats");
-      localStorage.removeItem("user_seats_pick");
-      setLoading(false);
-      rerender(Math.random);
-    } else {
-      try {
-        setVerboseMsg("Requesting Seats...");
-        await axiosInstance
-          .post("/api/v1/seat_map", {
-            data: mySeatsTmp,
-          })
-          .then(() => {
-            notifySucces("Pesanan Ditambahkan, Mengalihkan...");
-            localStorage.removeItem("user_seats");
-            localStorage.removeItem("user_seats_pick");
-            setTimeout(function () {
-              router.push({
-                pathname: "/seats/cart",
-              });
-            }, 1000);
-            setLoading(false);
-          });
-        // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
-        // fungsi then route push
-      } catch (err) {
-        //console.log(err);
-        if (err.response.data.error === "your credentials are invalid") {
-          notifyErrorMessage("Token Expired. Silakan login kembali");
-          router.push({
-            pathname: "/auth",
-          });
-        } else if (
-          err.response.data.error ===
-          "you are not authorized, please fill your name or phone number data"
-        ) {
-          notifyErrorMessage(
-            "Silakan lengkapi data profil Anda terlebih dahulu"
-          );
-          router.push({
-            pathname: "/profile",
-          });
-        } else {
-          setLoading(false);
-          notifyError(err);
-          rerender(Math.random);
+        if (obj.status === "reserved") {
+          reservedByOthers.push(obj);
         }
+      }
+
+      for (let j = 0; j < reservedByOthers.length; j++) {
+        // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+        if (mySeatsTmp.includes(reservedByOthers[j].seat_id)) {
+          isReservedByOthers = true;
+          // notifyErrorMessage("Sebagian kursi sudah dipesan orang lain. Lanjut dengan kursi tersisa...");
+          // console.log("Kursi sudah di pesan: ", reservedByOthers[j].seat_id)
+          mySeatsTmp.splice(mySeatsTmp.indexOf(reservedByOthers[j].seat_id), 1);
+          // remove searArr that same length
+          const index = seatsArr.findIndex(
+            (seat) => seat.seat_id === reservedByOthers[j].seat_id
+          );
+          if (index !== -1) {
+            seatsArr.splice(index, 1);
+          }
+          // console.log("Kursi tersisa:", mySeatsTmp)
+        }
+      }
+
+      // console.log("seattmp", mySeatsTmp)
+
+      if (mySeatsTmp.length === 0) {
+        notifyErrorMessage(
+          "Semua kursi sudah dipesan orang lain. Silakan pilih kursi lain..."
+        );
+        localStorage.removeItem("user_seats_pick");
+        setLoading(false);
+        rerender();
+      } else if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
+        Swal.fire({
+          html: `Sebagian kursi sudah dipesan orang lain. Apakah ingin melanjutkan dengan kursi tersisa?`,
+          toast: true,
+          icon: "warning",
+          background: "#2d2d2f",
+          iconColor: "#287d92",
+          showCancelButton: true,
+          showConfirmButton: true,
+          cancelButtonText: "Tidak",
+          cancelButtonColor: "#c76734",
+          confirmButtonText: "Ya",
+          confirmButtonColor: "#287d92",
+          color: "#f6f7f1",
+          showClass: {
+            popup: "",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            postSeats(mySeatsTmp);
+          } else {
+            setLoading(false);
+            rerender();
+          }
+        });
+      } else {
+        postSeats(mySeatsTmp);
+      }
+    }, getRandomInt(1000));
+  }
+
+  async function postSeats(mySeatsTmp) {
+    try {
+      setVerboseMsg("Requesting Seats...");
+      await axiosInstance
+        .post("/api/v1/seat_map", {
+          data: mySeatsTmp,
+        })
+        .then(() => {
+          notifySucces("Pesanan Ditambahkan, Mengalihkan...");
+          localStorage.removeItem("user_seats_pick");
+          setTimeout(function () {
+            router.push({
+              pathname: "/seats/cart",
+            });
+          }, 1000);
+          setLoading(false);
+        });
+      // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
+      // fungsi then route push
+    } catch (err) {
+      //console.log(err);
+      if (err.response.data.error === "your credentials are invalid") {
+        notifyErrorMessage("Token Expired. Silakan login kembali");
+        router.push({
+          pathname: "/auth",
+        });
+      } else if (
+        err.response.data.error ===
+        "you are not authorized, please fill your name or phone number data"
+      ) {
+        notifyErrorMessage("Silakan lengkapi data profil Anda terlebih dahulu");
+        router.push({
+          pathname: "/profile",
+        });
+      } else {
+        setLoading(false);
+        notifyError(err);
+        rerender();
       }
     }
   }
@@ -455,15 +471,15 @@ export default function Seats() {
     try {
       await axiosInstance.delete("/api/v1/checkout");
     } catch (err) {
-      if (err.response.data.error === "cannot find transaction data for this user") {
+      if (
+        err.response.data.error === "cannot find transaction data for this user"
+      ) {
         notifyInfo("Cart Anda kosong. Menghapus pilihan pada seatmap saja...");
       } else {
         notifyError(err);
       }
     }
-    setUserSeats([]);
     setUserSeatsPick([]);
-    localStorage.removeItem("user_seats");
     localStorage.removeItem("user_seats_pick");
     rerender();
   }
@@ -499,16 +515,10 @@ export default function Seats() {
     }
 
     // kursi yang sudah dipesan sebelumnya
-    // console.log("Set User Seats from API (reserved_by_me)");
-    if (
-      userSeats.includes(reservedByMe.map((item) => item.seat_id)) === false
-    ) {
-      setUserSeats(reservedByMe.map((item) => item.seat_id));
-      // console.log("Adding User Seats from API (reserved_by_me): ", userSeats);
-    }
-    if (userSeatsPick.includes(reservedByMe) === false) {
-      setUserSeatsPick(reservedByMe);
-      // console.log("Adding User Seats Pick from API (reserved_by_me): ", userSeatsPick);
+    if (!userSeatsPick.includes(reservedByMe)) {
+      // console.log(userSeatsPick)
+      // console.log(reservedByMe)
+      setUserSeatsPick([...userSeatsPick, ...reservedByMe]);
     }
     setPurchasedSeat(purchased);
 
@@ -601,13 +611,12 @@ export default function Seats() {
 
   // Seat Clicking Behavior
   function onSeatPick(array, arrayUser) {
-    if (arrayUser.includes(array.seat_id)) {
-      setUserSeats(userSeats.filter((item) => item !== array.seat_id));
+    let userSeatsID = arrayUser.map((item) => item.seat_id);
+    if (userSeatsID.includes(array.seat_id)) {
       setUserSeatsPick(
         userSeatsPick.filter((item) => item.name !== array.name)
       );
-    } else if (userSeats.length < 5 - purchasedSeat) {
-      setUserSeats([...userSeats, array.seat_id]);
+    } else if (userSeatsPick.length < 5 - purchasedSeat) {
       setUserSeatsPick([...userSeatsPick, array]);
     } else {
       notifyErrorMessage("Maksimal membeli 5 kursi per akun");
@@ -617,10 +626,11 @@ export default function Seats() {
   // mapping lantai 1 sayap kiri
   function left_mapper(array, arrayUser) {
     let arr = [];
+    let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = 0; i < array.length; i++) {
       if (array[i]) {
         if (array[i].status === "available") {
-          const isSelected = userSeats.includes(array[i].seat_id);
+          const isSelected = userSeatsID.includes(array[i].seat_id);
           const isHighlight = seatHighlight.includes(array[i].price);
           const isHoverHighlight = seatHoverHighlight.includes(array[i].price);
           arr.push(
@@ -677,11 +687,12 @@ export default function Seats() {
   // mapping lantai 2 sayap kanan
   function right_mapper(array, arrayUser) {
     let arr = [];
+    let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = array.length; i > 0; i--) {
       let index = array.length - i;
       if (array[index]) {
         if (array[index].status == "available") {
-          const isSelected = arrayUser.includes(array[index].seat_id);
+          const isSelected = userSeatsID.includes(array[index].seat_id);
           const isHighlight = seatHighlight.includes(array[index].price);
           const isHoverHighlight = seatHoverHighlight.includes(
             array[index].price
@@ -740,11 +751,12 @@ export default function Seats() {
   // not my job ps: weka
   function secondfloor_mapper(array, arrayUser) {
     let arr = [];
+    let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = array.length; i > 0; i--) {
       const index = array.length - i;
       if (array[index]) {
         if (array[index].status == "available") {
-          const isSelected = arrayUser.includes(array[index].seat_id);
+          const isSelected = userSeatsID.includes(array[index].seat_id);
           const isHighlight = seatHighlight.includes(array[index].price);
           const isHoverHighlight = seatHoverHighlight.includes(
             array[index].price
@@ -792,9 +804,6 @@ export default function Seats() {
     }
     return arr;
   }
-
-  // console.log(userSeatsPick);
-  // console.log(userSeats);
 
   // Display
   // =================================
@@ -918,7 +927,7 @@ export default function Seats() {
             </div>
             <div className="space-y-4">
               {priceCategory.map((namePrice) => (
-                <div className="group relative flex border-b-4 border-gmco-grey">
+                <div className="group relative flex border-b-4 border-gmco-grey border-opacity-40">
                   <button
                     className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
@@ -944,7 +953,7 @@ export default function Seats() {
                     }}
                   >
                     <span
-                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-black transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
+                      className={`absolute inset-0 w-full translate-x-1 translate-y-1 transform bg-gmco-grey bg-opacity-40 transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0 ${
                         priceCategoryHighlight.includes(namePrice.price)
                           ? "-translate-x-0 -translate-y-0 bg-gmco-yellow-secondary"
                           : "bg-gmco-grey"
@@ -995,7 +1004,7 @@ export default function Seats() {
               <div className="flex w-full gap-2">
                 <button
                   className={`flex w-2/5 items-center justify-center rounded-lg px-4 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
-                    userSeats.length
+                    userSeatsPick.length
                       ? "bg-red-800 opacity-100 hover:scale-105"
                       : "pointer-events-none bg-gmco-grey opacity-50"
                   }`}
@@ -1006,11 +1015,11 @@ export default function Seats() {
                 </button>
                 <button
                   className={`flex w-3/5 items-center justify-center rounded-lg px-4 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
-                    userSeats.length
+                    userSeatsPick.length
                       ? "bg-gmco-orange-secondarylight opacity-100 hover:scale-105"
                       : "pointer-events-none bg-gmco-grey opacity-50"
                   }`}
-                  onClick={() => postSeats(userSeats)}
+                  onClick={() => handleConflict(userSeatsPick)}
                 >
                   <FaShoppingCart className="h-5 w-5 scale-x-[-1]" />
                   &nbsp; Checkout
@@ -1034,16 +1043,20 @@ export default function Seats() {
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
                   <p>Purchased</p>
                 </div>
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 min-w-[1.25rem] self-center rounded-md bg-gmco-yellow-secondary" />
-                  <div>
-                    <p>Reserved Seat</p>
+                <div>
+                  <div className="flex content-center gap-2">
+                    <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow-secondary" />
+                    <p>Reserved by Others</p>
+                  </div>
+                  <div className="flex content-center gap-2">
+                    <div className="h-5 w-5 min-w-[1.25rem]" />
                     <p className="text-base font-normal">
-                      <span className="text-red-500">*</span>Setelah 15 menit
-                      tidak dibayar, kursi dapat dibeli kembali
+                      <span className="text-red-500">*</span>Kursi dapat dibeli
+                      kembali setelah 15 menit tidak dibayar
                     </p>
                   </div>
                 </div>
+
                 <div className="flex content-center gap-2">
                   <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
                   <p>Reserved by Me</p>
@@ -1133,21 +1146,21 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {left_mapper(seats, userSeats, priceCategory)}
+                        {left_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
 
                   {/* middle left */}
                   {/* row wise */}
-                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleleft.png')] bg-cover pb-12">
+                  <div className="flex translate-y-44 rotate-[12deg] flex-col items-center justify-end gap-[0.45rem] bg-[url('/seatmap/framemiddleleft.png')] bg-cover pb-12">
                     {ml_seatmap.map((seats, index) => (
                       // col wise
                       // prin)
                       <div
                         className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                       >
-                        {left_mapper(seats, userSeats)}
+                        {left_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1163,7 +1176,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                       >
-                        {right_mapper(seats, userSeats)}
+                        {right_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1176,7 +1189,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {right_mapper(seats, userSeats)}
+                        {right_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1210,7 +1223,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1222,7 +1235,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1234,7 +1247,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1246,7 +1259,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1258,7 +1271,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeats)}
+                        {secondfloor_mapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>

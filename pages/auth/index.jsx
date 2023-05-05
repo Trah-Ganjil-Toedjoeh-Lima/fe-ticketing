@@ -78,7 +78,11 @@ export default function Auth() {
           }
         });
     } catch (err) {
-      console.log(err.toString());
+      //console.log(err);
+      if(err.response.status === 425){
+        notifyErrorMessage("Anda belum bisa login. Silahkan coba lagi nanti.");
+      }
+      router.push("/")
       //notifyError();
     }
   }
@@ -140,7 +144,7 @@ export default function Auth() {
             onSubmit={LoginSubmit}
           >
             <div className='w-full'>
-              <label className=' pl-2 text-base text-gmco-white'>
+              <label className='pl-2 text-base text-gmco-white'>
                 Masukkan email anda
               </label>
               <div className='relative flex w-full items-stretch'>

@@ -66,7 +66,7 @@ export default function Cart() {
                 axiosInstance.get("/api/v1/checkout"),
               ]);
               setSeatBoughts(res.data.data);
-              midtransSetup(res.data.midtrans_client_key);
+              midtransSetup(res.data.data.midtrans_client_key);
             } catch (err) {
               notifyErrorMessage("Anda belum melakukan transaksi.");
             }
@@ -91,6 +91,7 @@ export default function Cart() {
       try {
         const res = await axiosInstance.post("/api/v1/checkout");
         openMidtransWindow(res.data.snap_response.token);
+        console.log(res.data.snap_response.token)
       } catch (err) {
         notifyError(err);
       }
@@ -161,7 +162,6 @@ export default function Cart() {
         });
         notifySucces("Pesanan Dihapus");
         rerender()
-        localStorage.removeItem("user_seats");
         localStorage.removeItem("user_seats_pick");
       });
     } catch (err) {
