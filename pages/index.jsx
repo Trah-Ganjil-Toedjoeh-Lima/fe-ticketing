@@ -437,8 +437,6 @@ export default function Home() {
             </Accordion>
           </div>
         </div>
-
-        {/* Home Content 1 */}
       </div>
       <FooterBar />
     </>
