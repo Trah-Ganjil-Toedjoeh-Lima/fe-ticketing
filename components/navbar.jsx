@@ -243,16 +243,15 @@ export default function NavigationBar({ doUpdate }) {
           isOpen ? "block" : "hidden"
         } transition duration-300 ease-in-out`}
       >
-        <div className="px-2 pt-2">
-          {routes.map((route, index) => (
-            <div
-              key={index}
-              className="w-full rounded-md p-2 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
-            >
-              <Link href={route.route}>{route.name}</Link>
+        {routes.map((route, index) => (
+          <Link key={index} href={route.route}>
+            <div className="px-2 pt-2">
+              <div className="w-full rounded-md p-2 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10">
+                {route.name}
+              </div>
             </div>
-          ))}
-        </div>
+          </Link>
+        ))}
       </div>
     </nav>
   );
