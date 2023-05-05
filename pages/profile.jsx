@@ -309,11 +309,7 @@ export default function Profile() {
                   Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
-<<<<<<< HEAD
-                  className="w-1/2 rounded border-b-8 border-blue-800 bg-blue-500 px-4 py-2 text-lg font-bold text-white hover:scale-110 hover:border-blue-900 hover:bg-blue-700 sm:w-1/4"
-=======
                   class='hover:bg-gmco-yellow-secondarylight w-1/2 rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white'
->>>>>>> fc1f8d53ba1deb52b1ea2812e1c583e46ca8c678
                   onClick={routeToSeats}
                 >
                   Beli Sekarang
@@ -334,7 +330,7 @@ export default function Profile() {
                   </h1>
                   <p
                     className={
-                      `flex items-center rounded-lg px-1 text-center text-xs font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
+                      `flex items-center rounded-lg  ml-2 px-2 py-0.5 text-center text-base font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
                       ({
                         gita: "bg-[#A3A3A3]",
                         sekar: "bg-[#D8B830]",
@@ -366,15 +362,9 @@ export default function Profile() {
 
                   {/* Nama Konser */}
 
-<<<<<<< HEAD
-                  <div className=" w-1/2 rounded-md p-4 bg-gmco-grey ">
-                    <div className="hidden  items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex">
-                      <div className="mx-2 overflow-hidden">
-=======
-                  <div className=' w-1/2 rounded-md bg-gmco-white p-4 sm:bg-gmco-grey '>
+                  <div className=' w-1/2 rounded-md bg-gmco-grey p-4 '>
                     <div className='hidden  items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex'>
                       <div className='mx-2 overflow-hidden'>
->>>>>>> fc1f8d53ba1deb52b1ea2812e1c583e46ca8c678
                         <Image
                           src='/logo-anjangsana.webp'
                           alt='Logo GC'
