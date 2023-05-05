@@ -410,12 +410,18 @@ export default function Profile() {
                         </div>
                       </div>
                     </div>
-                    <div className="mt-4 flex w-full justify-center md:mt-1 lg:-mt-10">
+                    <div className="mt-4 flex w-full justify-center md:mt-2 lg:-mt-10">
                       <Link
                         href={`/ticket/${seat.link}`}
                         className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12"
                       >
-                        Lihat E-Ticket
+                        Lihat Tiket
+                      </Link>
+                      <Link
+                        href={`/ticket/${seat.link}/download`}
+                        className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12"
+                      >
+                        Unduh Tiket
                       </Link>
                     </div>
                     {/* <a
