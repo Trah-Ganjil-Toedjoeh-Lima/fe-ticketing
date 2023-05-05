@@ -97,18 +97,13 @@ export default function Home() {
                   Grand Concert #10
                 </h1>
                 <p className="text-md mb-4 leading-normal text-gray-900 md:text-lg">
-                  GMCO Live from the Living Room merupakan sebuah intimate
-                  orchestra concert yang dilaksanakan oleh Unit Kegiatan
-                  Mahasiswa Gadjah Mada Chamber Orchestra (GMCO UGM). Konser
-                  intim ini merupakan konser inovasi GMCO dengan nuansa santai
-                  layaknya suasana ruang keluarga, tetapi tetap mempertahankan
-                  esensi dan kualitas penampilan orkestra itu sendiri.
-                  <br />
-                  Selain penampilan dari para pemain GMCO, konser ini akan
-                  dimeriahkan oleh penampilan bintang tamu, penyanyi pria
-                  nasional, yaitu Sal Priadi. GMCO Live from the Living Room
-                  akan menjadi konser orkestra intim yang unik dan diminati
-                  banyak penikmat musik Yogyakarta.
+                  Gadjah Mada Chamber Orchestra (GMCO) kembali hadir menyambut
+                  para penikmat musik dalam &quot; Grand Concert Vol. 10:
+                  Anjangsana Simfoni &quot;. Anjangsana Simfoni berarti melepas
+                  rindu kidung masa kecil melalui alunan simfoni orkestra oleh
+                  Gadjah Mada Chamber Orchestra. Penampilan ini akan mengundang
+                  kembali anggota-anggota yang telah maupun sedang berkarya di
+                  Gadjah Mada Chamber Orchestra.
                 </p>
                 <a
                   className="text-gmco-white"
@@ -144,14 +139,20 @@ export default function Home() {
                   <span className="text-gmco-orange-secondarydark">.</span>
                 </h1>
                 <p className="mb-4 text-justify text-base font-light leading-normal opacity-80 md:text-lg">
-                  Addie MS adalah seorang musisi, konduktor, dan arranger
-                  terkenal asal Indonesia. Dia dikenal sebagai pendiri dan
-                  konduktor dari Orkestra Simfoni Jakarta, yang telah tampil
-                  dalam berbagai pertunjukan musik di dalam dan luar negeri.
-                  Selain itu, dia juga aktif dalam mendukung pendidikan musik di
-                  Indonesia dan terlibat dalam berbagai kegiatan sosial dan
-                  lingkungan. Dia telah menerima banyak penghargaan atas
-                  kontribusinya dalam dunia musik dan kebudayaan Indonesia.
+                  Seorang musisi, komponis, conductor, dan penata suara asal
+                  Indonesia. Kecintaannya pada dunia orkestra diwujudkan bersama
+                  Indra U. Bakrie dan Oddie Agam dalam mendirikan{" "}
+                  <b>Twilite Orchestra</b> tahun 1991. Untuk meningkatkan
+                  apresiasi musik di kalangan remaja, Addie juga mendirikan{" "}
+                  <b>Twilite Chorus</b>
+                  dan <b>Twilite Youth Orchestra</b>. Semangat kebangsaan Addie
+                  tercurah dalam album rekaman yang dibuatnya bersama Youk
+                  Tanzil, berjudul <b>Simfoni Negeriku</b> , dimana dia merekam
+                  kembali lagu kebangsaan &quot;Indonesia Raya&quot;, serta
+                  mengorkestrasi lagu-lagu perjuangan yang sekarang digunakan
+                  secara luas. Didukung Garuda Indonesia, Addie juga
+                  mengorkestrasi puluhan lagu-lagu daerah yang dikemas dalam
+                  album CD <b>&quot;The Sounds of Indonesia&quot;.</b>
                 </p>
                 <a
                   className="delay-15 border-b-2 py-3 text-gmco-white transition duration-300 ease-in-out hover:border-gmco-orange-secondarylight"
@@ -197,8 +198,8 @@ export default function Home() {
             >
               <div className="flex h-[50vh] items-center md:h-[70vh] md:p-8">
                 <Image
-                  src="/homepage/brian.png"
-                  alt="gambar addie ms"
+                  src="/homepage/brian2.webp"
+                  alt="gambar brian p"
                   className="mx-auto max-h-full w-full object-contain"
                   width={500}
                   height={500}
@@ -217,24 +218,29 @@ export default function Home() {
                   Special,
                 </div>
                 <h1 className="mb-4 mt-2 text-2xl font-extrabold leading-tight md:text-7xl">
-                  <span className="text-xs">Rich</span>
-                  <span>Brian</span>
+                  <span className="">Brian </span>
+                  <span className="text-xs">Prasetyoadi</span>
                   <span className="text-gmco-orange-secondarylight">.</span>
                 </h1>
                 <p className="mb-4 text-justify text-base font-light leading-normal opacity-90 md:text-lg">
-                  Bro, lo tau ga sih Rich Brian? Dia tuh rapper asal Indo yang
-                  udah terkenal banget di luar negeri, dulu dia dikenal juga
-                  sebagai Rich Chigga. Lagunya Dat $tick sempet viral di
-                  internet, trus dia juga sering manggung di festival-festival
-                  musik dan konser internasional gitu. Musiknya keren banget,
-                  liriknya juga unik abis. Gaya dia juga oke sih, dia suka pake
-                  teknologi dan media sosial buat promosiin karyanya.
+                  Penyanyi dan penulis lagu ini pernah mengibarkan bendera
+                  Jikustik sebagai vokalis dari tahun 2009-2023. Bersama
+                  Jikustik, Brian ikut berkontribusi dalam 4 album studio dan
+                  sederetan single. Pria kelahiran Yogyakarta 13 Oktober 1992
+                  ini pernah juga merilis single berjudul Kau Satu-Satunya
+                  bersama Gaby, istri tercintanya. Dan jauh sebelumnya lagi,
+                  Brian pun pernah menghadirkan 3 karya lagu dalam konsep
+                  musikalisasi puisi berjudul Pelabuhan Hati, Pelangi Cinta dan
+                  Cahaya Di Penjuru Hati. Kini Brian memulai langkah karirnya
+                  sebagai soloist di skena musik tanah air. Sebagai penanda
+                  langkah tersebut, Brian memperkenalkan estafet musikalnya
+                  dalam single lagu yang diberi judul <b>Sudah</b>.
                 </p>
                 <a
-                  className="delay-15 border-b-2 py-3 text-gmco-grey transition duration-300 ease-in-out border-gmco-orange-secondarylight hover:border-gmco-grey"
-                  href="https://id.wikipedia.org/wiki/Rich_Brian"
+                  className="delay-15 border-b-2 border-gmco-orange-secondarylight py-3 text-gmco-grey transition duration-300 ease-in-out hover:border-gmco-grey"
+                  href="https://open.spotify.com/artist/17Yb156MR5C8M2Ktr22mww"
                 >
-                  More About This Chigga
+                  More About Brian Prasetyoadi
                 </a>
               </div>
             </RevealWrapper>
@@ -243,10 +249,22 @@ export default function Home() {
 
         {/* FAQ */}
         <div id="FAQ" className=" flex flex-col bg-[#191919] p-10 ">
-          <h1 className="mx-auto mb-6 text-6xl font-bold text-gmco-white">
-            FAQ
-          </h1>
-          <div className="container mx-auto items-center justify-center">
+          <RevealWrapper
+            origin="right"
+            duration={1500}
+            distance="100px"
+            className="mx-auto"
+          >
+            <h1 className=" mb-6 text-3xl font-bold text-gmco-white">
+              Frequently Ask Question
+            </h1>
+          </RevealWrapper>
+
+          <RevealWrapper
+            className="container mx-auto items-center justify-center"
+            duration={1000}
+            distance="0"
+          >
             <Accordion className="rounded-t-lg bg-gmco-white">
               <AccordionSummary
                 expandIcon={<ChevronDownIcon className="w-5 text-gmco-grey" />}
@@ -435,7 +453,7 @@ export default function Home() {
                 </span>
               </AccordionDetails>
             </Accordion>
-          </div>
+          </RevealWrapper>
         </div>
 
         {/* Home Content 1 */}

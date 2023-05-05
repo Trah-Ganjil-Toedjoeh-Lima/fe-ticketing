@@ -330,7 +330,7 @@ export default function Profile() {
                   </h1>
                   <p
                     className={
-                      `flex items-center rounded-lg px-1 text-center text-xs font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
+                      `flex items-center rounded-lg  ml-2 px-2 py-0.5 text-center text-base font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
                       ({
                         gita: "bg-[#A3A3A3]",
                         sekar: "bg-[#D8B830]",
@@ -362,7 +362,7 @@ export default function Profile() {
 
                   {/* Nama Konser */}
 
-                  <div className=' w-1/2 rounded-md bg-gmco-white p-4 sm:bg-gmco-grey '>
+                  <div className=' w-1/2 rounded-md bg-gmco-grey p-4 '>
                     <div className='hidden  items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex'>
                       <div className='mx-2 overflow-hidden'>
                         <Image

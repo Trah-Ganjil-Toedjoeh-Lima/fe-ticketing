@@ -125,9 +125,9 @@ export default function Auth() {
           <p className=' font-base text-2xl md:text-2xl'>Anjangsana Simfoni </p>
         </div>
         <Image
-          src='/logo_gmco.webp'
+          src='/logo-anjangsana.webp'
           alt='logo'
-          className='absolute left-5 top-3 w-32 md:left-9 md:top-3/4 md:w-52'
+          className='absolute left-5 top-3 w-12  md:left-9 md:top-3/4 md:w-32'
           width={1000}
           height={1000}
         />
