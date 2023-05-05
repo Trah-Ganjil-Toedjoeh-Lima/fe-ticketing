@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import {
+  ArrowPathIcon,
   ChevronRightIcon,
   ExclamationTriangleIcon,
   XMarkIcon,
@@ -122,11 +123,11 @@ export default function Seats() {
     "translate-y-[20px]",
   ];
   const row_width = [
-    "w-[45%]",
-    "w-[50%]",
-    "w-[55%]",
+    "w-[57.5%]",
     "w-[60%]",
+    "w-[62.5%]",
     "w-[65%]",
+    "w-[67.5%]",
     "w-[70%]",
     "w-[72.5%]",
     "w-[75%]",
@@ -168,6 +169,7 @@ export default function Seats() {
     purchased_by_me: "bg-[#7E7E7E]",
     reserved: "bg-[#C0925E]",
     purchased: "bg-[#7E7E7E]",
+    not_for_sale: "bg-[#7E7E7E]",
   };
   const scaleFactor = [
     "scale-[10%]",
@@ -247,14 +249,10 @@ export default function Seats() {
       try {
         setLoading(true);
         const res = await axiosInstance.get("/api/v1/seat_map");
-        // const res = await axiosInstance.get("seatmap.json");
+        console.log(res.data.data);
         divideByFloor(res.data.data);
         setReservedSeatLoaded(true);
-        // getReservedSeats(res.data.data);
-        // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
-        // console.log(err);
-        // notifyError(err);
         if (err.response.status === 425) {
           notifyErrorMessage("Pemesanan belum dibuka");
           router.push("/closegate");
@@ -284,14 +282,12 @@ export default function Seats() {
 
         savedUserSeatsPick.forEach((seatpick) => {
           if (!userSeatsPick.some((e) => e.seat_id === seatpick.seat_id)) {
-            console.log("Set User Seats Pick:", seatpick);
+            // console.log("Set User Seats Pick:", seatpick);
             nonDuplicateSeatsPick.push(seatpick);
           }
           // console.log(seatpick);
         });
       }
-
-      // console.log("Non Duplicate:", nonDuplicateSeatsPick);
 
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
@@ -327,13 +323,13 @@ export default function Seats() {
     setTimeout(async () => {
       setLoading(true);
       setVerboseMsg("Validating seats order...");
-      //console.log(seatsArr);
       let mySeatsTmp = seatsArr.map((item) => item.seat_id);
+      const takenByOthers = [];
       const reservedByOthers = [];
       let isReservedByOthers = false;
       //setVerboseMsg("Checking seats availability...");
       const res = await axiosInstance.get("/api/v1/seat_map");
-      // console.log(res.length)
+
       for (let i = 0; i < res.data.data.length; i++) {
         // console.log(i)
         const obj = res.data.data[i];
@@ -355,10 +351,12 @@ export default function Seats() {
             (seat) => seat.seat_id === reservedByOthers[j].seat_id
           );
           if (index !== -1) {
+            takenByOthers.push(seatsArr[index].name);
+            console.log("Kursi dihapus:", seatsArr[index].name);
             seatsArr.splice(index, 1);
           }
-          // console.log("Kursi tersisa:", mySeatsTmp)
         }
+        // console.log("Kursi tersisa:", seatsArr)
       }
 
       // console.log("seattmp", mySeatsTmp)
@@ -371,8 +369,9 @@ export default function Seats() {
         setLoading(false);
         rerender();
       } else if (isReservedByOthers === true && mySeatsTmp.length !== 0) {
+        const seatLeft = seatsArr.map((item) => item.name);
         Swal.fire({
-          html: `Sebagian kursi sudah dipesan orang lain. Apakah ingin melanjutkan dengan kursi tersisa?`,
+          html: `Sebagian kursi sudah dipesan orang lain.<br> <i>Kursi Terpesan: <b>${takenByOthers.toString()}</b></i> <br><br> Apakah ingin melanjutkan dengan kursi tersisa? <br> <i>Sisa Pilihan: <b>${seatLeft.toString()}</b></i>`,
           toast: true,
           icon: "warning",
           background: "#2d2d2f",
@@ -417,6 +416,7 @@ export default function Seats() {
             });
           }, 1000);
           setLoading(false);
+          rerender();
         });
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
@@ -624,7 +624,7 @@ export default function Seats() {
   }
 
   // mapping lantai 1 sayap kiri
-  function left_mapper(array, arrayUser) {
+  function leftMapper(array, arrayUser) {
     let arr = [];
     let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = 0; i < array.length; i++) {
@@ -685,7 +685,7 @@ export default function Seats() {
   }
 
   // mapping lantai 2 sayap kanan
-  function right_mapper(array, arrayUser) {
+  function rightMapper(array, arrayUser) {
     let arr = [];
     let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = array.length; i > 0; i--) {
@@ -747,9 +747,7 @@ export default function Seats() {
 
   // mapping lantai 2
   // still need rework
-  // please change @akbar
-  // not my job ps: weka
-  function secondfloor_mapper(array, arrayUser) {
+  function secondFloorMapper(array, arrayUser) {
     let arr = [];
     let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = array.length; i > 0; i--) {
@@ -822,13 +820,15 @@ export default function Seats() {
             height={1281}
           />
         </div>
-        <div className="relative p-7 pt-20">
-          <p className="text-xl font-semibold text-gmco-white md:text-2xl">
-            Anjangsana Simfoni
-          </p>
-          <p className="text-3xl font-bold text-gmco-white md:text-5xl">
-            Grand Concert Vol. 10
-          </p>
+        <div className="relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row">
+          <div className="items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end">
+            <h2 className="text-md flex w-max font-bold text-gmco-white md:text-xl lg:text-2xl">
+              Anjangsana Simfoni
+            </h2>
+            <h2 className="flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-5xl">
+              Grand Concert Vol. 10
+            </h2>
+          </div>
         </div>
       </div>
 
@@ -840,31 +840,39 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "inline" : "hidden"
-          } order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter md:order-first md:w-1/5`}
+          } order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter md:order-first md:w-2/5 lg:w-1/5`}
         >
           {/* Minimize Button */}
           <div className="my-3 flex w-full items-center justify-between pr-2">
-            <p
-              className={`mb-2 flex items-center pl-4 text-lg ${
-                counter <= 10
-                  ? "text-red-600"
-                  : counter <= 60
-                  ? "text-yellow-400"
-                  : "text-gmco-grey"
-              }`}
-            >
-              Refresh in &nbsp;
-              <b>
-                {Math.floor(counter / 60)}:{counter % 60}
-              </b>
-              <span>
-                <ExclamationTriangleIcon
-                  className={`ml-2 h-8 w-8 ${
-                    counter <= 60 ? "inline" : "hidden"
-                  }`}
-                />{" "}
-              </span>
-            </p>
+            <div className="flex h-10 items-center pl-4">
+              <button
+                onClick={() => window.location.reload()}
+                className="h-full rounded-lg bg-gmco-white p-2 drop-shadow-md duration-300 hover:scale-110 hover:bg-gmco-blue-main "
+              >
+                <ArrowPathIcon className="h-full rounded-lg duration-300 hover:rotate-180" />
+              </button>
+              <p
+                className={`pl-2 text-lg ${
+                  counter <= 10
+                    ? "text-red-600"
+                    : counter <= 60
+                    ? "text-yellow-400"
+                    : "text-gmco-grey"
+                }`}
+              >
+                Refresh in &nbsp;
+                <b>
+                  {Math.floor(counter / 60)}:{counter % 60}
+                </b>
+                <span>
+                  <ExclamationTriangleIcon
+                    className={`ml-2 h-8 w-8 ${
+                      counter <= 60 ? "inline" : "hidden"
+                    }`}
+                  />{" "}
+                </span>
+              </p>
+            </div>
 
             <button
               className="hidden p-2 text-lg text-gmco-grey hover:scale-105 md:inline"
@@ -1010,7 +1018,7 @@ export default function Seats() {
                   }`}
                   onClick={() => cancelCheck()}
                 >
-                  <FaTrash className="h-4 w-4" />
+                  <FaTrash className="hidden h-4 w-4 lg:flex" />
                   &nbsp; Hapus
                 </button>
                 <button
@@ -1021,7 +1029,7 @@ export default function Seats() {
                   }`}
                   onClick={() => handleConflict(userSeatsPick)}
                 >
-                  <FaShoppingCart className="h-5 w-5 scale-x-[-1]" />
+                  <FaShoppingCart className="hidden h-5 w-5 scale-x-[-1] lg:flex" />
                   &nbsp; Checkout
                 </button>
               </div>
@@ -1124,8 +1132,8 @@ export default function Seats() {
                   width={2000}
                   height={2000}
                 />
-                <p className="absolute z-20 text-6xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
-                  Stage
+                <p className="hite absolute z-20 text-8xl font-bold text-gmco-orange-secondarylight drop-shadow-md">
+                  STAGE
                 </p>
               </div>
 
@@ -1146,7 +1154,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {left_mapper(seats, userSeatsPick)}
+                        {leftMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1160,7 +1168,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                       >
-                        {left_mapper(seats, userSeatsPick)}
+                        {leftMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1176,7 +1184,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                       >
-                        {right_mapper(seats, userSeatsPick)}
+                        {rightMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1189,7 +1197,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {right_mapper(seats, userSeatsPick)}
+                        {rightMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1223,7 +1231,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1235,7 +1243,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1247,7 +1255,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1259,7 +1267,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1271,7 +1279,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
