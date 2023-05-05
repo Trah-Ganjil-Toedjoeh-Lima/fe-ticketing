@@ -217,8 +217,10 @@ export default function Seats() {
   // set Scale
   useEffect(() => {
     (() => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setScaleN(8);
+      } else if ((window.innerWidth >= 768) ) {
+        setScaleN(6);
       } else {
         setScaleN(5);
       }
@@ -1077,7 +1079,7 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "w-full md:w-4/5" : "w-full"
-          } relative min-h-[50vh] overflow-hidden md:min-h-screen`}
+          } relative min-h-[40vh] overflow-hidden md:min-h-screen`}
         >
           {/* Hide Sidebar dan Zoom */}
           <div

@@ -131,14 +131,14 @@ export default function NavigationBar({ doUpdate }) {
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
       }`}
     >
-      <div className='container mx-auto flex h-auto justify-between px-4 py-4 md:px-0 md:py-0'>
+      <div className="container mx-auto flex h-auto justify-between p-4 md:py-0">
         {/* Logo & Routes Link */}
-        <div className='flex h-auto items-center'>
-          <Link href='/' className='flex text-2xl font-bold'>
+        <div className="flex h-auto items-center">
+          <Link href="/" className="flex text-2xl font-bold">
             GC #10
           </Link>
           {/* Route when MD*/}
-          <div className='ml-6 hidden h-full text-lg md:flex md:w-auto md:items-center'>
+          <div className="ml-6 hidden h-full text-lg md:flex md:w-auto md:items-center">
             {routes.map((route, index) => (
               <Link
                 key={index}
@@ -156,10 +156,10 @@ export default function NavigationBar({ doUpdate }) {
         </div>
 
         {/* Cart dan User Profile */}
-        <div className='flex h-auto items-center'>
+        <div className="flex h-auto items-center">
           {/* cart */}
-          <Link href='/seats/cart' className='relative mr-4 flex h-max md:mr-6'>
-            <FaShoppingCart className='h-6 w-auto scale-x-[-1]' />
+          <Link href="/seats/cart" className="relative mr-4 flex h-max md:mr-6">
+            <FaShoppingCart className="h-6 w-auto scale-x-[-1]" />
             <p
               className={`absolute right-0 top-0 rounded-sm bg-red-500 px-1 text-xs ${
                 checkout === 0 ? "hidden" : "inline"
@@ -172,7 +172,7 @@ export default function NavigationBar({ doUpdate }) {
           {/* Profile */}
           {!isLogedIn ? (
             <Link
-              href='/auth'
+              href="/auth"
               className={`flex self-center rounded-xl border-2 border-gmco-yellow-secondary bg-gmco-yellow-secondary px-3 py-1 text-xl font-bold text-gmco-white duration-150 ease-in-out hover:border-gmco-white hover:bg-gmco-orange-secondarydark ${
                 isLogedIn ? "hidden" : "inline"
               }`}
@@ -187,27 +187,27 @@ export default function NavigationBar({ doUpdate }) {
               label={
                 <Avatar
                   rounded={true}
-                  alt='User settings'
-                  img='/navbar/violin-picture.webp'
+                  alt="User settings"
+                  img="/navbar/violin-picture.webp"
                 >
-                  <p className='hidden font-semibold lg:inline'>
+                  <p className="hidden font-semibold lg:inline">
                     {logedUser.Email}
                   </p>
                 </Avatar>
               }
             >
-              <Dropdown.Header className='lg:hidden'>
+              <Dropdown.Header className="lg:hidden">
                 {logedUser.Email}
               </Dropdown.Header>
-              <Link href='/profile'>
-                <Dropdown.Item className='flex items-center gap-2'>
+              <Link href="/profile">
+                <Dropdown.Item className="flex items-center gap-2">
                   <FaUser />
                   <span>Profile</span>
                 </Dropdown.Item>
               </Link>
               <Dropdown.Item
                 onClick={logoutCheck}
-                className='flex items-center gap-2'
+                className="flex items-center gap-2"
               >
                 <AiOutlineLogout />
                 <span>Log Out</span>
@@ -216,15 +216,15 @@ export default function NavigationBar({ doUpdate }) {
           )}
 
           {/* Hamburger Button */}
-          <div className='ml-2 flex items-center md:m-0 md:hidden'>
+          <div className="ml-2 flex items-center md:m-0 md:hidden">
             <button
-              type='button'
-              className='inline-flex items-center justify-center rounded-md p-2 text-gray-800 transition duration-300 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none'
-              aria-label='Toggle navigation'
+              type="button"
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-800 transition duration-300 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none"
+              aria-label="Toggle navigation"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <XMarkIcon className='h-6 w-6' />
+                <XMarkIcon className="h-6 w-6" />
               ) : (
                 <Bars3Icon
                   className={`${
@@ -243,11 +243,11 @@ export default function NavigationBar({ doUpdate }) {
           isOpen ? "block" : "hidden"
         } transition duration-300 ease-in-out`}
       >
-        <div className='px-2 pt-2'>
+        <div className="px-2 pt-2">
           {routes.map((route, index) => (
             <div
               key={index}
-              className='w-full rounded-md p-2 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10'
+              className="w-full rounded-md p-2 font-semibold transition duration-150 ease-in-out hover:bg-gray-700/10"
             >
               <Link href={route.route}>{route.name}</Link>
             </div>
