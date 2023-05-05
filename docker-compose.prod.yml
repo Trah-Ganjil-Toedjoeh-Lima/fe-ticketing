@@ -17,7 +17,6 @@ services:
       - "traefik.http.routers.gmco-fe-https-prod.entrypoints=websecure"
       - "traefik.http.routers.gmco-fe-https-prod.tls=true"
       - "traefik.http.routers.gmco-fe-https-prod.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.gmco-fe-https-prod.middlewares=cors-header@docker"
     networks:
       - gateway_ingress
 
