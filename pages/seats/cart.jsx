@@ -42,42 +42,27 @@ export default function Cart() {
   }
 
   useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      !localStorage.getItem("auth_token")
+    ) {
+      notifyErrorMessage("Anda belum login.");
+      setIsLoading(false);
+      return;
+    }
+
     (async () => {
       try {
-        setIsLoading(true);
-        setVerboseMsg("Loading Cart...");
-        const [adminRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/healthAdmin"),
+        const [res] = await Promise.all([
+          axiosInstance.get("/api/v1/checkout"),
         ]);
-        // console.log(adminRes)
-        if (adminRes.status === 200) {
-          setIsAdmin(true);
-          notifyInfo("Anda login sebagai admin. Checkout tidak tersedia.");
-          return;
-        }
+        setSeatBoughts(res.data.data);
+        // console.log(res.data.data.midtrans_client_key)
+        midtransSetup(res.data.data.midtrans_client_key);
       } catch (err) {
-        setIsAdmin(false);
-        if (
-          typeof window !== "undefined" &&
-          !localStorage.getItem("auth_token")
-        ) {
-          notifyErrorMessage("Anda belum login.");
-        } else {
-          (async () => {
-            try {
-              const [res] = await Promise.all([
-                axiosInstance.get("/api/v1/checkout"),
-              ]);
-              setSeatBoughts(res.data.data);
-              // console.log(res.data.data.midtrans_client_key)
-              midtransSetup(res.data.data.midtrans_client_key);
-            } catch (err) {
-              notifyErrorMessage("Anda belum melakukan transaksi.");
-            }
-            setIsLoading(false);
-          })();
-        }
+        notifyErrorMessage("Anda belum melakukan transaksi.");
       }
+      setIsLoading(false);
     })();
   }, []);
 
