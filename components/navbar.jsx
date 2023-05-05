@@ -9,14 +9,14 @@ import { Dropdown, Avatar } from "flowbite-react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
 import { axiosInstance } from "@/utils/config";
-import { notifySucces } from "./notify";
+import { notifyError, notifySucces } from "./notify";
 
 export default function NavigationBar({ doUpdate }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [checkout, setCheckout] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [isLogedIn, setLogedIn] = useState(false)
+  const [isLogedIn, setLogedIn] = useState(false);
   const [logedUser, setLogedUser] = useState({
     Email: "",
     Name: "",
@@ -34,12 +34,12 @@ export default function NavigationBar({ doUpdate }) {
     // get user profile
     (async () => {
       try {
-        const res = await axiosInstance.get("/api/v1/user/profile")
-        console.log(res.data)
+        const res = await axiosInstance.get("/api/v1/user/profile");
+        console.log(res.data);
         setLogedUser(res.data.data);
-        setLogedIn(true)
+        setLogedIn(true);
       } catch {
-        setLogedIn(false)
+        setLogedIn(false);
       }
     })();
 
@@ -59,13 +59,13 @@ export default function NavigationBar({ doUpdate }) {
     // get user checkout
     (async () => {
       try {
-        const res = await axiosInstance.get("/api/v1/checkout")
+        const res = await axiosInstance.get("/api/v1/checkout");
         setCheckout(res.data.data.seats.length);
       } catch (err) {
         setCheckout(0);
       }
     })();
-  }, [doUpdate])
+  }, [doUpdate]);
 
   function logoutCheck() {
     Swal.fire({
@@ -91,7 +91,9 @@ export default function NavigationBar({ doUpdate }) {
   }
 
   async function logoutSubmit() {
-    await axiosInstance.post("/api/v1/user/logout").then((res) => {
+    try {
+      const res = await axiosInstance.post("/api/v1/user/logout");
+      
       if (res.data.message == "success" || res.status == 400) {
         localStorage.removeItem("auth_token");
         Swal.fire({
@@ -116,7 +118,9 @@ export default function NavigationBar({ doUpdate }) {
           }
         });
       }
-    });
+    } catch (err) {
+      notifyError(err);
+    }
   }
 
   return (
@@ -127,7 +131,7 @@ export default function NavigationBar({ doUpdate }) {
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
       }`}
     >
-      <div className="flex h-auto mx-auto justify-between py-4 md:px-8 md:py-0 container">
+      <div className="container mx-auto flex h-auto justify-between py-4 md:px-8 md:py-0">
         {/* Logo & Routes Link */}
         <div className="flex h-auto items-center">
           <Link href="/" className="flex items-center text-2xl font-bold">
@@ -153,12 +157,8 @@ export default function NavigationBar({ doUpdate }) {
 
         {/* Cart dan User Profile */}
         <div className="flex h-auto items-center">
-
           {/* cart */}
-          <Link
-            href="/seats/cart"
-            className="relative mr-4 flex h-max md:mr-6"
-          >
+          <Link href="/seats/cart" className="relative mr-4 flex h-max md:mr-6">
             <FaShoppingCart className="h-6 w-auto scale-x-[-1]" />
             <p
               className={`absolute right-0 top-0 rounded-sm bg-red-500 px-1 text-xs ${
