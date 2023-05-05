@@ -822,13 +822,15 @@ export default function Seats() {
             height={1281}
           />
         </div>
-        <div className='relative p-7 pt-20'>
-          <p className='text-xl font-semibold text-gmco-white md:text-2xl'>
-            Anjangsana Simfoni
-          </p>
-          <p className='text-3xl font-bold text-gmco-white md:text-5xl'>
-            Grand Concert Vol. 10
-          </p>
+        <div className='relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row'>
+          <div className='items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end'>
+            <h2 className='text-md flex w-max font-bold text-gmco-white md:text-xl lg:text-2xl'>
+              Anjangsana Simfoni
+            </h2>
+            <h2 className='flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-5xl'>
+              Grand Concert Vol. 10
+            </h2>
+          </div>
         </div>
       </div>
 
