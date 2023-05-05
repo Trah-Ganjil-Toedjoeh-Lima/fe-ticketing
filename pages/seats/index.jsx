@@ -812,21 +812,21 @@ export default function Seats() {
       <Loading isLoading={loading} verboseMsg={verboseMsg} />
       <NavigationBar doUpdate={update} />
 
-      <div className="max-w-screen relative h-max overflow-hidden bg-gmco-blue-main">
-        <div className="absolute h-64 w-screen overflow-hidden bg-gmco-grey">
+      <div className='max-w-screen relative h-max overflow-hidden bg-gmco-blue-main'>
+        <div className='absolute h-64 w-screen overflow-hidden bg-gmco-grey'>
           <Image
-            src="/seatmap/GMCO.webp"
-            className="h-full w-full object-cover object-center opacity-50"
-            alt="bg gmco concert"
+            src='/seatmap/GMCO.webp'
+            className='h-full w-full object-cover object-center opacity-50'
+            alt='bg gmco concert'
             width={1920}
             height={1281}
           />
         </div>
-        <div className="relative p-7 pt-20">
-          <p className="text-xl font-semibold text-gmco-white md:text-2xl">
+        <div className='relative p-7 pt-20'>
+          <p className='text-xl font-semibold text-gmco-white md:text-2xl'>
             Anjangsana Simfoni
           </p>
-          <p className="text-3xl font-bold text-gmco-white md:text-5xl">
+          <p className='text-3xl font-bold text-gmco-white md:text-5xl'>
             Grand Concert Vol. 10
           </p>
         </div>
@@ -834,7 +834,7 @@ export default function Seats() {
 
       {/* SIDE BAR START */}
       {/* ================== */}
-      <div className="flex h-max w-full flex-col bg-gmco-white md:flex-row">
+      <div className='flex h-max w-full flex-col bg-gmco-white md:flex-row'>
         {/* Left Bar */}
 
         <div
@@ -843,7 +843,7 @@ export default function Seats() {
           } order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter md:order-first md:w-1/5`}
         >
           {/* Minimize Button */}
-          <div className="my-3 flex w-full items-center justify-between pr-2">
+          <div className='my-3 flex w-full items-center justify-between pr-2'>
             <p
               className={`mb-2 flex items-center pl-4 text-lg ${
                 counter <= 10
@@ -867,15 +867,15 @@ export default function Seats() {
             </p>
 
             <button
-              className="hidden p-2 text-lg text-gmco-grey hover:scale-105 md:inline"
+              className='hidden p-2 text-lg text-gmco-grey hover:scale-105 md:inline'
               onClick={() => setSideBarOpen(false)}
             >
-              <XMarkIcon className="h-7 w-7 stroke-2" />
+              <XMarkIcon className='h-7 w-7 stroke-2' />
             </button>
           </div>
 
           {/* Milih Lantai */}
-          <div className="flex w-full justify-center">
+          <div className='flex w-full justify-center'>
             <button
               onClick={() => setCurFloor(1)}
               className={`w-[45%] rounded-md py-2 font-semibold drop-shadow-md duration-300 ease-in-out hover:scale-105 ${
@@ -886,7 +886,7 @@ export default function Seats() {
             >
               Lantai 1
             </button>
-            <div className="w-[2%]" />
+            <div className='w-[2%]' />
             <button
               onClick={() => setCurFloor(2)}
               className={`w-[45%] rounded-md py-2 font-semibold drop-shadow-md duration-300 ease-in-out hover:scale-105 ${
@@ -900,34 +900,34 @@ export default function Seats() {
           </div>
 
           {/* Jumlah Kursi */}
-          <div className="flex justify-between px-5 pt-3 md:pt-6">
-            <div className="text-xl font-semibold md:text-2xl">
+          <div className='flex justify-between px-5 pt-3 md:pt-6'>
+            <div className='text-xl font-semibold md:text-2xl'>
               Jumlah Kursi
-              <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Maksimal pembelian 5
+              <p className='text-base font-normal'>
+                <span className='text-red-500'>*</span>Maksimal pembelian 5
                 kursi
               </p>
             </div>
-            <div className="self-center text-lg font-semibold md:text-xl">
+            <div className='self-center text-lg font-semibold md:text-xl'>
               {userSeatsPick.length} kursi
-              <p className="text-base font-normal">
-                <span className="text-red-500">*</span>Sisa{" "}
+              <p className='text-base font-normal'>
+                <span className='text-red-500'>*</span>Sisa{" "}
                 {5 - userSeatsPick.length - purchasedSeat}
               </p>
             </div>
           </div>
 
           {/* Kategori Kursi */}
-          <div className="px-5 pt-6 text-black">
-            <div className="pb-3 text-xl font-semibold md:text-2xl">
+          <div className='px-5 pt-6 text-black'>
+            <div className='pb-3 text-xl font-semibold md:text-2xl'>
               Kategori
-              <p className="text-base font-normal">
-                <span className="text-red-500">*</span>klik untuk melihat
+              <p className='text-base font-normal'>
+                <span className='text-red-500'>*</span>klik untuk melihat
               </p>
             </div>
-            <div className="space-y-4">
+            <div className='space-y-4'>
               {priceCategory.map((namePrice) => (
-                <div className="group relative flex border-b-4 border-gmco-grey border-opacity-40">
+                <div className='group relative flex border-b-4 border-gmco-grey border-opacity-40'>
                   <button
                     className={`group relative inline-block w-48 px-4 py-2 font-medium`}
                     onClick={() => {
@@ -985,10 +985,10 @@ export default function Seats() {
                     </span>
                   </button>
 
-                  <div className="flex basis-1/2 flex-wrap justify-end">
+                  <div className='flex basis-1/2 flex-wrap justify-end'>
                     {userSeatsPick.map((item) =>
                       item.price == namePrice.price ? (
-                        <span className="self-center pl-2">
+                        <span className='self-center pl-2'>
                           {item.name}
                           {","}{" "}
                         </span>
@@ -1001,7 +1001,7 @@ export default function Seats() {
               ))}
 
               {/* Pesan Button */}
-              <div className="flex w-full gap-2">
+              <div className='flex w-full gap-2'>
                 <button
                   className={`flex w-2/5 items-center justify-center rounded-lg px-4 py-2 text-white drop-shadow-md transition duration-200 ease-out ${
                     userSeatsPick.length
@@ -1010,7 +1010,7 @@ export default function Seats() {
                   }`}
                   onClick={() => cancelCheck()}
                 >
-                  <FaTrash className="h-4 w-4" />
+                  <FaTrash className='h-4 w-4' />
                   &nbsp; Hapus
                 </button>
                 <button
@@ -1021,7 +1021,7 @@ export default function Seats() {
                   }`}
                   onClick={() => handleConflict(userSeatsPick)}
                 >
-                  <FaShoppingCart className="h-5 w-5 scale-x-[-1]" />
+                  <FaShoppingCart className='h-5 w-5 scale-x-[-1]' />
                   &nbsp; Checkout
                 </button>
               </div>
@@ -1029,36 +1029,36 @@ export default function Seats() {
           </div>
 
           {/* Keterangan Kursi */}
-          <div className="p-5">
-            <div className="text-black">
-              <p className="pb-3 text-xl font-semibold md:text-2xl">
+          <div className='p-5'>
+            <div className='text-black'>
+              <p className='pb-3 text-xl font-semibold md:text-2xl'>
                 Keterangan Warna
               </p>
-              <div className="flex flex-col gap-2 text-lg font-semibold">
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 self-center rounded-md bg-gmco-blue" />
+              <div className='flex flex-col gap-2 text-lg font-semibold'>
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 self-center rounded-md bg-gmco-blue' />
                   <p>Available Seat</p>
                 </div>
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 self-center rounded-md bg-gmco-grey-secondary" />
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 self-center rounded-md bg-gmco-grey-secondary' />
                   <p>Purchased</p>
                 </div>
                 <div>
-                  <div className="flex content-center gap-2">
-                    <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow-secondary" />
+                  <div className='flex content-center gap-2'>
+                    <div className='h-5 w-5 self-center rounded-md bg-gmco-yellow-secondary' />
                     <p>Reserved by Others</p>
                   </div>
-                  <div className="flex content-center gap-2">
-                    <div className="h-5 w-5 min-w-[1.25rem]" />
-                    <p className="text-base font-normal">
-                      <span className="text-red-500">*</span>Kursi dapat dibeli
+                  <div className='flex content-center gap-2'>
+                    <div className='h-5 w-5 min-w-[1.25rem]' />
+                    <p className='text-base font-normal'>
+                      <span className='text-red-500'>*</span>Kursi dapat dibeli
                       kembali setelah 15 menit tidak dibayar
                     </p>
                   </div>
                 </div>
 
-                <div className="flex content-center gap-2">
-                  <div className="h-5 w-5 self-center rounded-md bg-gmco-yellow" />
+                <div className='flex content-center gap-2'>
+                  <div className='h-5 w-5 self-center rounded-md bg-gmco-yellow' />
                   <p>Reserved by Me</p>
                 </div>
               </div>
@@ -1085,11 +1085,11 @@ export default function Seats() {
             >
               Detail{" "}
               <span>
-                <ChevronRightIcon className="h-5 w-5" />
+                <ChevronRightIcon className='h-5 w-5' />
               </span>
             </button>
 
-            <div className="pointer-events-auto m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey ">
+            <div className='pointer-events-auto m-3 flex w-max flex-col rounded-lg border-2 border-gmco-grey-secondary bg-gmco-white text-xl font-bold text-gmco-grey '>
               <button
                 className={`h-max px-4 py-2 duration-300 hover:scale-150`}
                 onClick={() => {
@@ -1112,20 +1112,20 @@ export default function Seats() {
           {/* ============================ */}
           {/* SEAT MAP START */}
 
-          <div className="relative h-full justify-start overflow-scroll">
+          <div className='relative h-full justify-start overflow-scroll'>
             <div
               className={`flex h-full w-max origin-top-left ${scaleFactor[scaleN]} flex-col items-center justify-start p-6`}
             >
-              <div className="relative flex h-max w-3/4 translate-y-[100px] items-center justify-center">
+              <div className='relative flex h-max w-3/4 translate-y-[100px] items-center justify-center'>
                 <Image
-                  src="/seatmap/stage.png"
-                  className="h-full w-full object-cover object-center"
-                  alt="bg gmco concert"
+                  src='/seatmap/stage.png'
+                  className='h-full w-full object-cover object-center'
+                  alt='bg gmco concert'
                   width={2000}
                   height={2000}
                 />
-                <p className="absolute z-20 text-6xl text-gmco-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
-                  Stage
+                <p className='hite absolute z-20 text-8xl font-bold text-gmco-orange-secondarylight drop-shadow-md'>
+                  STAGE
                 </p>
               </div>
 
@@ -1137,7 +1137,7 @@ export default function Seats() {
                 }`}
               >
                 {/* Left wing */}
-                <div className="pointer-events-none flex translate-x-10">
+                <div className='pointer-events-none flex translate-x-10'>
                   {/* left */}
                   {/* row wise */}
                   <div className="flex translate-x-12 rotate-[24deg] flex-col gap-2 bg-[url('/seatmap/frameleft.png')] bg-cover pl-5">
@@ -1167,7 +1167,7 @@ export default function Seats() {
                 </div>
 
                 {/* Right Wing */}
-                <div className="pointer-events-none flex -translate-x-10">
+                <div className='pointer-events-none flex -translate-x-10'>
                   {/* middle right */}
                   {/* row wise */}
                   <div className="flex translate-y-44 -rotate-[12deg] flex-col items-center gap-[0.45rem] bg-[url('/seatmap/framemiddleright.png')] bg-cover">
@@ -1203,20 +1203,20 @@ export default function Seats() {
                   curFloor === 2 ? "inline" : "hidden"
                 }`}
               >
-                <div className="relative flex h-3/4 items-center justify-center">
+                <div className='relative flex h-3/4 items-center justify-center'>
                   <Image
-                    src="/seatmap/shadow_floor1.webp"
-                    alt="floor1"
-                    className="h-full w-auto p-20 opacity-10"
+                    src='/seatmap/shadow_floor1.webp'
+                    alt='floor1'
+                    className='h-full w-auto p-20 opacity-10'
                     width={1000}
                     height={1000}
                   />
-                  <p className="absolute z-20 text-4xl text-gmco-white opacity-70 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]">
+                  <p className='absolute z-20 text-4xl text-gmco-white opacity-70 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]'>
                     Lantai 1
                   </p>
                 </div>
 
-                <div className="mt-2 flex gap-6 ">
+                <div className='mt-2 flex gap-6 '>
                   <div className="flex -translate-y-36 rotate-[16deg] flex-col gap-2 bg-[url('/seatmap/frametop.png')] bg-cover pt-10">
                     {l_seatmap_2.map((seats) => (
                       // col wise

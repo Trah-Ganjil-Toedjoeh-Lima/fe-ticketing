@@ -182,7 +182,7 @@ export default function Cart() {
 
   return (
     <>
-      {/* <Loading isLoading={isLoading} verboseMsg={verboseMsg} /> */}
+      <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar doUpdate={update} />
       <div className='max-w-screen relative overflow-hidden bg-[#639891] md:min-h-screen'>
         <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
@@ -218,8 +218,8 @@ export default function Cart() {
                   {seatBoughts.seats.map((seatBought, index) => (
                     <tr key={index} className='divide-y'>
                       <td className='border-t border-gmco-white pt-4'>
-                        <div className='flex items-center'>
-                          <h3 className='text-xl font-extrabold'>
+                        <div className='flex justify-center'>
+                          <h3 className='text-center text-xl font-extrabold'>
                             Kursi {seatBought.name}
                           </h3>
                         </div>
@@ -282,7 +282,7 @@ export default function Cart() {
                 </div>
                 <hr class='my-10 h-px border-0 bg-gmco-grey/70'></hr>
                 <div className='flex items-center justify-between'>
-                  <p className='text-sm text-gmco-grey'>Batalkan Transaksi</p>
+                  <p className='text-md text-gmco-grey'>Batalkan Transaksi</p>
                   <button
                     onClick={() => cancelCheck()}
                     className='flex items-center justify-center rounded-md border border-transparent bg-gmco-orange-secondarydark bg-opacity-70 px-6 py-2 text-base font-medium text-white shadow-sm transition duration-200 ease-out hover:bg-gmco-orange-secondarydark'
