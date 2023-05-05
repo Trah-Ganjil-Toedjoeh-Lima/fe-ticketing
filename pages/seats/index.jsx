@@ -122,11 +122,11 @@ export default function Seats() {
     "translate-y-[20px]",
   ];
   const row_width = [
-    "w-[45%]",
-    "w-[50%]",
-    "w-[55%]",
+    "w-[57.5%]",
     "w-[60%]",
+    "w-[62.5%]",
     "w-[65%]",
+    "w-[67.5%]",
     "w-[70%]",
     "w-[72.5%]",
     "w-[75%]",
@@ -168,6 +168,7 @@ export default function Seats() {
     purchased_by_me: "bg-[#7E7E7E]",
     reserved: "bg-[#C0925E]",
     purchased: "bg-[#7E7E7E]",
+    not_for_sale: "bg-[#7E7E7E]",
   };
   const scaleFactor = [
     "scale-[10%]",
@@ -247,14 +248,10 @@ export default function Seats() {
       try {
         setLoading(true);
         const res = await axiosInstance.get("/api/v1/seat_map");
-        // const res = await axiosInstance.get("seatmap.json");
+        console.log(res.data.data)
         divideByFloor(res.data.data);
         setReservedSeatLoaded(true);
-        // getReservedSeats(res.data.data);
-        // seatMapping(res.data.data, mappersFloor1, startMappersFloor1);
       } catch (err) {
-        // console.log(err);
-        // notifyError(err);
         if (err.response.status === 425) {
           notifyErrorMessage("Pemesanan belum dibuka");
           router.push("/closegate");
@@ -291,8 +288,6 @@ export default function Seats() {
         });
       }
 
-      // console.log("Non Duplicate:", nonDuplicateSeatsPick);
-
       if (nonDuplicateSeatsPick.length > 0) {
         setUserSeatsPick([...userSeatsPick, ...nonDuplicateSeatsPick]);
         // console.log("Adding user seats pick from local storage");
@@ -327,13 +322,12 @@ export default function Seats() {
     setTimeout(async () => {
       setLoading(true);
       setVerboseMsg("Validating seats order...");
-      //console.log(seatsArr);
       let mySeatsTmp = seatsArr.map((item) => item.seat_id);
       const reservedByOthers = [];
       let isReservedByOthers = false;
       //setVerboseMsg("Checking seats availability...");
       const res = await axiosInstance.get("/api/v1/seat_map");
-      // console.log(res.length)
+      
       for (let i = 0; i < res.data.data.length; i++) {
         // console.log(i)
         const obj = res.data.data[i];
@@ -624,7 +618,7 @@ export default function Seats() {
   }
 
   // mapping lantai 1 sayap kiri
-  function left_mapper(array, arrayUser) {
+  function leftMapper(array, arrayUser) {
     let arr = [];
     let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = 0; i < array.length; i++) {
@@ -685,7 +679,7 @@ export default function Seats() {
   }
 
   // mapping lantai 2 sayap kanan
-  function right_mapper(array, arrayUser) {
+  function rightMapper(array, arrayUser) {
     let arr = [];
     let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = array.length; i > 0; i--) {
@@ -747,9 +741,7 @@ export default function Seats() {
 
   // mapping lantai 2
   // still need rework
-  // please change @akbar
-  // not my job ps: weka
-  function secondfloor_mapper(array, arrayUser) {
+  function secondFloorMapper(array, arrayUser) {
     let arr = [];
     let userSeatsID = arrayUser.map((item) => item.seat_id);
     for (let i = array.length; i > 0; i--) {
@@ -1146,7 +1138,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {left_mapper(seats, userSeatsPick)}
+                        {leftMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1160,7 +1152,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                       >
-                        {left_mapper(seats, userSeatsPick)}
+                        {leftMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1176,7 +1168,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex gap-2 ${row_width[index]} justify-between`}
                       >
-                        {right_mapper(seats, userSeatsPick)}
+                        {rightMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1189,7 +1181,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {right_mapper(seats, userSeatsPick)}
+                        {rightMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1223,7 +1215,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1235,7 +1227,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-start gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1247,7 +1239,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1259,7 +1251,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
@@ -1271,7 +1263,7 @@ export default function Seats() {
                       <div
                         className={`pointer-events-auto flex origin-top-right flex-row justify-end gap-2`}
                       >
-                        {secondfloor_mapper(seats, userSeatsPick)}
+                        {secondFloorMapper(seats, userSeatsPick)}
                       </div>
                     ))}
                   </div>
