@@ -48,7 +48,7 @@ export default function Home() {
                     Vol. 10
                   </p>
                   <p className='font-normal text-white drop-shadow md:text-2xl'>
-                    Sabtu, <b>27</b> Mei 2023 @ <b>17.00 WIB</b>
+                    Sabtu, <b>27</b> Mei 2023 @ <b>17.30 WIB</b>
                     <br />
                     Auditorium Driyarkara Sanata Dharma
                   </p>
