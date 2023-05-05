@@ -292,7 +292,7 @@ export default function Profile() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="hover:bg-gmco-yellow-secondarylight mt-4 w-full rounded-full border-2 border-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
+              className="hover:bg-gmco-yellow-secondarylight mt-4 w-full rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
             >
               PERBARUI PROFIL
             </button>
@@ -306,7 +306,7 @@ export default function Profile() {
             {/* TICKET */}
             {seatsBought.Seat.length === 0 ? (
               <div className="flex w-full flex-col items-center justify-center">
-                <p className="mb-8 text-center text-2xl text-gmco-grey">
+                <p className="mb-8 text-center text-2xl text-gmco-white">
                   Anda belum membeli tiket.
                   <br />
                   Silakan menuju ke halaman seat untuk membeli tiket.
