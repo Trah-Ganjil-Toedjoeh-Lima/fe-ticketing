@@ -184,12 +184,12 @@ export default function Cart() {
     <>
       <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar doUpdate={update} />
-      <div className='max-w-screen relative overflow-hidden bg-[#639891] md:min-h-screen'>
+      <div className='max-w-screen relative overflow-hidden bg-gmco-blue-main md:min-h-screen'>
         <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
           <Image
-            src='/IMG_9272.JPG'
-            className='h-full w-full object-cover opacity-40 md:object-right-bottom'
-            alt='gmco concert'
+            src='/MoreMicon.webp'
+            className='h-full w-full object-cover opacity-40 md:object-right'
+            alt='gmco mini concert'
             width={1920}
             height={1281}
           />
@@ -205,7 +205,7 @@ export default function Cart() {
           <div className='grid gap-10 overflow-hidden py-6 md:grid-cols-5'>
             <div className='mt-2 h-max rounded-lg bg-gmco-white/60 md:col-span-3 '>
               {/* Display List */}
-              <table className='w-full table-auto border-separate border-spacing-y-4 divide-gray-200 text-gmco-grey'>
+              <table className='w-full table-auto border-separate border-spacing-y-4 border-gmco-grey text-gmco-grey'>
                 {/* Item - nanti di map */}
                 <thead>
                   <tr className='text-center text-lg font-semibold md:text-xl'>
@@ -217,7 +217,7 @@ export default function Cart() {
                 <tbody>
                   {seatBoughts.seats.map((seatBought, index) => (
                     <tr key={index} className='divide-y'>
-                      <td className='border-t border-gmco-white pt-4'>
+                      <td className='border-t border-gmco-grey pt-4'>
                         <div className='flex justify-center'>
                           <h3 className='text-center text-xl font-extrabold'>
                             Kursi {seatBought.name}
@@ -225,7 +225,7 @@ export default function Cart() {
                         </div>
                       </td>
 
-                      <td className='pt-4'>
+                      <td className='border-t border-gmco-grey pt-4'>
                         <div className='flex flex-col items-center justify-center gap-1 md:flex-row md:gap-3 md:text-sm'>
                           <p
                             className={`text-md w-24 rounded-lg p-1 text-center font-semibold capitalize text-gmco-grey md:p-2 ${
@@ -245,7 +245,7 @@ export default function Cart() {
                           </p>
                         </div>
                       </td>
-                      <td className='pt-4'>
+                      <td className='border-t border-gmco-grey pt-4'>
                         <div className='flex justify-center'>
                           {formatNumber(seatBought.price)}
                         </div>
