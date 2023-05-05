@@ -102,13 +102,19 @@ export default function FooterBar() {
       <div className='inline items-center justify-between md:flex'>
         <div className='text-sm text-gray-500'>
           &copy;
-          <Link href='' className='font-bold hover:text-gmco-white'>
-            GMCO UGM{" "}
+          <Link
+            href='https://gmco.ukm.ugm.ac.id/'
+            className='font-bold hover:text-gmco-white'
+          >
+            GMCO UGM.{" "}
           </Link>
-          courtesy of
-          <Link href='' className='font-bold hover:text-gmco-white'>
+          Powered by
+          <Link
+            href='https://discord.gg/VJwwMYNM'
+            className='font-bold hover:text-gmco-white'
+          >
             {" "}
-            Trah Ganjil 75{" "}
+            Trah Ganjil 75. {" "}
           </Link>
           {new Date().getFullYear()}
         </div>

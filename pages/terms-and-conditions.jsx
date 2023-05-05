@@ -12,14 +12,14 @@ export default function Tnc() {
         {/* HEADER */}
         <div className='max-w-screen relative h-max overflow-hidden bg-gmco-blue-main'>
           <div className='relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row'>
-            <div className='items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end'>
-              <h2 className='flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl'>
+            <div className='items-center md:items-start lg:ml-40 lg:items-end'>
+              <h2 className='ml-8 flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl'>
                 Terms & Conditions
               </h2>
             </div>
           </div>
         </div>
-        <div className='container mx-auto content-center space-y-4'>
+        <div className='container mx-auto content-center space-y-4 px-8'>
           <h3 className='pt-8 text-2xl font-bold md:text-4xl'>
             Pembelian Tiket
           </h3>
