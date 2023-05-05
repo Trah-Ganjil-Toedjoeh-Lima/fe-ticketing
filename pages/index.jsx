@@ -213,7 +213,7 @@ export default function Home() {
               distance="100px"
               className="w-full"
             >
-              <div className="flex h-[50vh] items-center md:h-[70vh] md:p-8">
+              <div className="flex h-[50vh] items-center md:h-[90vh] md:p-8">
                 <Image
                   src="/homepage/brian2.webp"
                   alt="gambar brian p"
