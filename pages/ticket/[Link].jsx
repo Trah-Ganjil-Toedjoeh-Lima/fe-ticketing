@@ -116,11 +116,11 @@ export default function Ticket() {
                   <p className='text-[5px] md:text-xs lg:text-base'>
                     OPEN GATE
                   </p>
-                  <p className='font-bold'>17.00</p>
+                  <p className='font-bold'>17.30</p>
                   <p className='text-[5px] md:text-xs lg:text-base'>
                     START SHOW
                   </p>
-                  <p className='font-bold'> 18.00</p>
+                  <p className='font-bold'>TBA</p>
                 </div>
               </div>
               <div className='flex basis-4/6 flex-col justify-between px-1 text-[7px] text-gmco-white md:text-base lg:text-lg '>

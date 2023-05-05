@@ -355,7 +355,7 @@ export default function Profile() {
                       2023
                     </p>
                     <p>
-                      <FaClock className='visible inline' /> Open Gate 17.00 WIB
+                      <FaClock className='visible inline' /> Open Gate 17.30 WIB
                     </p>
                   </div>
 
