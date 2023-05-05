@@ -43,8 +43,7 @@ export default function Profile() {
       if (localStorage.getItem("auth_token")) {
         try {
           const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
-          if (res.status === 200) {
-            console.log("All Good.");
+          if (res.status === 200) { 
           }
           return;
         } catch (err) {

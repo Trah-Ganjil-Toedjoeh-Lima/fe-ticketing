@@ -35,8 +35,7 @@ export default function FooterBar() {
     {
       title: "Legal",
       submenu: [
-        { name: "Privacy Policy", route: "/" },
-        { name: "Terms & Conditions", route: "/" },
+        { name: "Terms & Conditions", route: "/terms-and-conditions" },
       ],
     },
   ];
