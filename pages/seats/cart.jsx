@@ -6,7 +6,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance, midtransSetup } from "@/utils/config";
+import { axiosInstance } from "@/utils/config";
 import {
   notifyError,
   notifySucces,
@@ -69,7 +69,7 @@ export default function Cart() {
                 axiosInstance.get("/api/v1/checkout"),
               ]);
               setSeatBoughts(res.data.data);
-              console.log(res.data.data.midtrans_client_key)
+              // console.log(res.data.data.midtrans_client_key)
               midtransSetup(res.data.data.midtrans_client_key);
             } catch (err) {
               notifyErrorMessage("Anda belum melakukan transaksi.");
@@ -101,6 +101,25 @@ export default function Cart() {
     } else {
       notifyErrorMessage("Admin tidak bisa membeli tiket");
     }
+  }
+
+  function midtransSetup(myMidtransClientKey) {
+    // You can also change below url value to any script url you wish to load,
+    // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
+    const midtransScriptUrl = process.env.NEXT_PUBLIC_MIDTRANS_SCRIPT_URL;
+  
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+    // Optional: set script attribute, for example snap.js have data-client-key attribute
+    // (change the value according to your client-key)
+    // const midtransClientKey = process.env.NEXT_MIDTRANS_CLIENT_KEY
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+  
+    document.body.appendChild(scriptTag);
+  
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
   }
 
   function openMidtransWindow(token) {

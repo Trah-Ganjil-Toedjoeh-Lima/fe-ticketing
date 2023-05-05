@@ -93,7 +93,7 @@ export default function NavigationBar({ doUpdate }) {
   async function logoutSubmit() {
     try {
       const res = await axiosInstance.post("/api/v1/user/logout");
-      
+
       if (res.data.message == "success" || res.status == 400) {
         localStorage.removeItem("auth_token");
         Swal.fire({
@@ -131,10 +131,10 @@ export default function NavigationBar({ doUpdate }) {
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
       }`}
     >
-      <div className="container mx-auto flex h-auto justify-between py-4 md:px-8 md:py-0">
+      <div className="container mx-auto flex h-auto justify-between p-4 md:py-0">
         {/* Logo & Routes Link */}
         <div className="flex h-auto items-center">
-          <Link href="/" className="flex items-center text-2xl font-bold">
+          <Link href="/" className="flex text-2xl font-bold">
             GC #10
           </Link>
           {/* Route when MD*/}
