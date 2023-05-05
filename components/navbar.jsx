@@ -16,6 +16,7 @@ export default function NavigationBar({ doUpdate }) {
   const [isOpen, setIsOpen] = useState(false);
   const [checkout, setCheckout] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isLogedIn, setLogedIn] = useState(false)
   const [logedUser, setLogedUser] = useState({
     Email: "",
     Name: "",
@@ -33,27 +34,12 @@ export default function NavigationBar({ doUpdate }) {
     // get user profile
     (async () => {
       try {
-        setIsLoading(true);
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/user/profile"),
-        ]);
+        const res = await axiosInstance.get("/api/v1/user/profile")
+        console.log(res.data)
         setLogedUser(res.data.data);
+        setLogedIn(true)
       } catch {
-        // do nothing
-      }
-    })();
-
-    // only run if get user proflie succes
-    // get user checkout
-    (async () => {
-      try {
-        const [res] = await Promise.all([
-          axiosInstance.get("/api/v1/checkout"),
-        ]);
-        setCheckout(res.data.data.seats.length);
-        console.log("kakakakaka");
-      } catch (err) {
-        setCheckout(0);
+        setLogedIn(false)
       }
     })();
 
@@ -66,7 +52,20 @@ export default function NavigationBar({ doUpdate }) {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [doUpdate]);
+  }, []);
+
+  useEffect(() => {
+    // only run if get user proflie succes
+    // get user checkout
+    (async () => {
+      try {
+        const res = await axiosInstance.get("/api/v1/checkout")
+        setCheckout(res.data.data.seats.length);
+      } catch (err) {
+        setCheckout(0);
+      }
+    })();
+  }, [doUpdate])
 
   function logoutCheck() {
     Swal.fire({
@@ -128,8 +127,7 @@ export default function NavigationBar({ doUpdate }) {
           : "bg-gradient-to-b from-gmco-grey-secondary/30 to-transparent text-white"
       }`}
     >
-      <div className="flex h-auto justify-between px-4 py-4 md:px-8 md:py-0 lg:px-48">
-
+      <div className="flex h-auto mx-auto justify-between py-4 md:px-8 md:py-0 container">
         {/* Logo & Routes Link */}
         <div className="flex h-auto items-center">
           <Link href="/" className="flex items-center text-2xl font-bold">
@@ -155,8 +153,12 @@ export default function NavigationBar({ doUpdate }) {
 
         {/* Cart dan User Profile */}
         <div className="flex h-auto items-center">
+
           {/* cart */}
-          <div className="relative mr-4 flex h-full items-center md:mr-6">
+          <Link
+            href="/seats/cart"
+            className="relative mr-4 flex h-max md:mr-6"
+          >
             <FaShoppingCart className="h-6 w-auto scale-x-[-1]" />
             <p
               className={`absolute right-0 top-0 rounded-sm bg-red-500 px-1 text-xs ${
@@ -165,14 +167,14 @@ export default function NavigationBar({ doUpdate }) {
             >
               {checkout}
             </p>
-          </div>
+          </Link>
 
           {/* Profile */}
-          {logedUser.Email === "" ? (
+          {!isLogedIn ? (
             <Link
               href="/auth"
               className={`flex self-center rounded-xl border-2 border-gmco-yellow-secondary bg-gmco-yellow-secondary px-3 py-1 text-xl font-bold text-gmco-white duration-150 ease-in-out hover:border-gmco-white hover:bg-gmco-orange-secondarydark ${
-                logedUser.Email !== "" ? "hidden" : "inline"
+                isLogedIn ? "hidden" : "inline"
               }`}
             >
               Login
@@ -188,13 +190,13 @@ export default function NavigationBar({ doUpdate }) {
                   alt="User settings"
                   img="/navbar/violin-picture.webp"
                 >
-                  <p className="hidden font-semibold md:inline">
+                  <p className="hidden font-semibold lg:inline">
                     {logedUser.Email}
                   </p>
                 </Avatar>
               }
             >
-              <Dropdown.Header className="md:hidden">
+              <Dropdown.Header className="lg:hidden">
                 {logedUser.Email}
               </Dropdown.Header>
               <Link href="/profile">
