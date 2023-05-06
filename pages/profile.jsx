@@ -43,8 +43,7 @@ export default function Profile() {
       if (localStorage.getItem("auth_token")) {
         try {
           const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
-          if (res.status === 200) {
-            console.log("All Good.");
+          if (res.status === 200) { 
           }
           return;
         } catch (err) {
@@ -321,7 +320,7 @@ export default function Profile() {
             {seatsBought.Seat.map((seat, index) => (
               <div
                 key={index}
-                className='flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-gmco-grey p-4 sm:flex-row'
+                className='flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-gmco-grey p-2 sm:flex-row'
               >
                 {/* Kursi dan Tipe */}
                 <div className='my-2 flex w-full items-center justify-center gap-1 space-y-2 text-start sm:w-1/5 sm:flex-col sm:gap-0 sm:text-center'>
@@ -362,7 +361,7 @@ export default function Profile() {
 
                   {/* Nama Konser */}
 
-                  <div className=' w-1/2 rounded-md bg-gmco-grey p-4 '>
+                  <div className=' w-1/2 rounded-md bg-gmco-grey p-4 -mt-5 sm:mt-10 md:mt-5'>
                     <div className='hidden  items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex'>
                       <div className='mx-2 overflow-hidden'>
                         <Image
