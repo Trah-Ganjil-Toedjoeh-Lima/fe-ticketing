@@ -28,7 +28,7 @@ export default function Admin() {
   }
 
   async function handleAuth() {
-    const postURL = isChecked
+    const postURL = authOpen
       ? "/api/v1/admin/close_the_auth"
       : "/api/v1/admin/open_the_auth";
 
@@ -158,7 +158,7 @@ export default function Admin() {
               <input
                 type='checkbox'
                 onChange={() => handleAuth()}
-                checked={false || authOpen}
+                checked={authOpen}
                 value='false'
                 className='peer sr-only'
               />
