@@ -42,10 +42,7 @@ export default function Cart() {
   }
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      !localStorage.getItem("auth_token")
-    ) {
+    if (typeof window !== "undefined" && !localStorage.getItem("auth_token")) {
       notifyErrorMessage("Anda belum login.");
       setIsLoading(false);
       return;
@@ -92,16 +89,16 @@ export default function Cart() {
     // You can also change below url value to any script url you wish to load,
     // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
     const midtransScriptUrl = process.env.NEXT_PUBLIC_MIDTRANS_SCRIPT_URL;
-  
+
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
     // Optional: set script attribute, for example snap.js have data-client-key attribute
     // (change the value according to your client-key)
     // const midtransClientKey = process.env.NEXT_MIDTRANS_CLIENT_KEY
     scriptTag.setAttribute("data-client-key", myMidtransClientKey);
-  
+
     document.body.appendChild(scriptTag);
-  
+
     return () => {
       document.body.removeChild(scriptTag);
     };
@@ -188,49 +185,49 @@ export default function Cart() {
     <>
       <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar doUpdate={update} />
-      <div className='max-w-screen relative overflow-hidden bg-gmco-blue-main md:min-h-screen'>
-        <div className='absolute h-48 w-full overflow-hidden bg-gmco-grey'>
+      <div className="max-w-screen relative overflow-hidden bg-gmco-blue-main md:min-h-screen">
+        <div className="absolute h-48 w-full overflow-hidden bg-gmco-grey">
           <Image
-            src='/MoreMicon.webp'
-            className='h-full w-full object-cover opacity-40 md:object-right'
-            alt='gmco mini concert'
+            src="/MoreMicon.webp"
+            className="h-full w-full object-cover opacity-40 md:object-right"
+            alt="gmco mini concert"
             width={1920}
             height={1281}
           />
         </div>
 
-        <div className='container relative m-auto px-6 pb-12 pt-28 md:px-1 '>
-          <h2 className='w-max border-b-2 text-2xl font-bold text-gmco-white'>
+        <div className="container relative m-auto px-6 pb-12 pt-28 md:px-1 ">
+          <h2 className="w-max border-b-2 text-2xl font-bold text-gmco-white">
             Keranjang - ({seatBoughts.seats.length} item)
           </h2>
         </div>
 
-        <div className='container m-auto px-6 pb-8 md:px-1'>
-          <div className='grid gap-10 overflow-hidden py-6 md:grid-cols-5'>
-            <div className='mt-2 h-max rounded-lg bg-gmco-white/60 md:col-span-3 '>
+        <div className="container m-auto px-6 pb-8 md:px-1">
+          <div className="grid gap-10 overflow-hidden py-6 md:grid-cols-5">
+            <div className="mt-2 h-max rounded-lg bg-gmco-white/60 md:col-span-3 ">
               {/* Display List */}
-              <table className='w-full table-auto border-separate border-spacing-y-4 border-gmco-grey text-gmco-grey'>
+              <table className="w-full table-auto border-separate border-spacing-y-4 border-gmco-grey text-gmco-grey">
                 {/* Item - nanti di map */}
                 <thead>
-                  <tr className='text-center text-lg font-semibold md:text-xl'>
-                    <td className='text-center'>No. Kursi</td>
-                    <td className='text-center'>Kategori</td>
-                    <td className='text-center'>Harga</td>
+                  <tr className="text-center text-lg font-semibold md:text-xl">
+                    <td className="text-center">No. Kursi</td>
+                    <td className="text-center">Kategori</td>
+                    <td className="text-center">Harga</td>
                   </tr>
                 </thead>
                 <tbody>
                   {seatBoughts.seats.map((seatBought, index) => (
-                    <tr key={index} className='divide-y'>
-                      <td className='border-t border-gmco-grey pt-4'>
-                        <div className='flex justify-center'>
-                          <h3 className='text-center text-xl font-extrabold'>
+                    <tr key={index} className="divide-y">
+                      <td className="border-t border-gmco-grey pt-4">
+                        <div className="flex justify-center">
+                          <h3 className="text-center text-xl font-extrabold">
                             Kursi {seatBought.name}
                           </h3>
                         </div>
                       </td>
 
-                      <td className='border-t border-gmco-grey pt-4'>
-                        <div className='flex flex-col items-center justify-center gap-1 md:flex-row md:gap-3 md:text-sm'>
+                      <td className="border-t border-gmco-grey pt-4">
+                        <div className="flex flex-col items-center justify-center gap-1 md:flex-row md:gap-3 md:text-sm">
                           <p
                             className={`text-md w-24 rounded-lg p-1 text-center font-semibold capitalize text-gmco-grey md:p-2 ${
                               category[seatBought.category]
@@ -249,8 +246,8 @@ export default function Cart() {
                           </p>
                         </div>
                       </td>
-                      <td className='border-t border-gmco-grey pt-4'>
-                        <div className='flex justify-center'>
+                      <td className="border-t border-gmco-grey pt-4">
+                        <div className="flex justify-center">
                           {formatNumber(seatBought.price)}
                         </div>
                       </td>
@@ -261,37 +258,37 @@ export default function Cart() {
             </div>
 
             {/* Bagian Checkout */}
-            <div className='md:col-span-2'>
+            <div className="md:col-span-2">
               {/* Checkout */}
-              <div className='mt-2 h-min space-y-4 rounded-lg bg-gmco-white/60 p-6'>
-                <p className='text-2xl font-bold'>DETAIL TRANSAKSI</p>
-                <hr class='my-6 h-px border-0 bg-gmco-grey/70'></hr>
-                <div className='flex-col justify-between text-base font-medium text-gmco-grey'>
-                  <div className='flex items-center justify-between'>
-                    <p className='text-xl'>Subtotal</p>
+              <div className="mt-2 h-min space-y-4 rounded-lg bg-gmco-white/60 p-6">
+                <p className="text-2xl font-bold">DETAIL TRANSAKSI</p>
+                <hr class="my-6 h-px border-0 bg-gmco-grey/70"></hr>
+                <div className="flex-col justify-between text-base font-medium text-gmco-grey">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xl">Subtotal</p>
                     <p>{formatNumber(orderTotal)}</p>
                   </div>
-                  <p className='mt-0.5 text-sm text-gmco-grey/70'>
+                  {/* <p className='mt-0.5 text-sm text-gmco-grey/70'>
                     Sudah termasuk pajak<span className='text-red-500'> *</span>
-                  </p>
+                  </p> */}
                 </div>
 
-                <div className='mt-6 flex w-full justify-center'>
+                <div className="mt-6 flex w-full justify-center">
                   <button
                     onClick={() => handleCheckout()}
-                    className='flex w-full items-center justify-center rounded-lg border-2 border-gmco-grey/50 bg-gmco-orange-secondarylight py-2 text-lg font-bold text-gmco-white transition duration-200 ease-out hover:bg-gmco-orange-secondarydark hover:shadow-lg'
+                    className="flex w-full items-center justify-center rounded-lg border-2 border-gmco-grey/50 bg-gmco-orange-secondarylight py-2 text-lg font-bold text-gmco-white transition duration-200 ease-out hover:bg-gmco-orange-secondarydark hover:shadow-lg"
                   >
                     ORDER
                   </button>
                 </div>
-                <hr class='my-10 h-px border-0 bg-gmco-grey/70'></hr>
-                <div className='flex items-center justify-between'>
-                  <p className='text-md text-gmco-grey'>Batalkan Transaksi</p>
+                <hr class="my-10 h-px border-0 bg-gmco-grey/70"></hr>
+                <div className="flex items-center justify-between">
+                  <p className="text-md text-gmco-grey">Batalkan Transaksi</p>
                   <button
                     onClick={() => cancelCheck()}
-                    className='flex items-center justify-center rounded-md border border-transparent bg-gmco-orange-secondarydark bg-opacity-70 px-6 py-2 text-base font-medium text-white shadow-sm transition duration-200 ease-out hover:bg-gmco-orange-secondarydark'
+                    className="flex items-center justify-center rounded-md border border-transparent bg-gmco-orange-secondarydark bg-opacity-70 px-6 py-2 text-base font-medium text-white shadow-sm transition duration-200 ease-out hover:bg-gmco-orange-secondarydark"
                   >
-                    <TrashIcon className='h-5 w-5' />
+                    <TrashIcon className="h-5 w-5" />
                   </button>
                 </div>
               </div>
