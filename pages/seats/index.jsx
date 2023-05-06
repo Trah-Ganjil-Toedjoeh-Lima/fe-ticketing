@@ -251,7 +251,7 @@ export default function Seats() {
       try {
         setLoading(true);
         const res = await axiosInstance.get("/api/v1/seat_map");
-        console.log(res.data.data);
+        // console.log(res.data.data);
         divideByFloor(res.data.data);
         setReservedSeatLoaded(true);
       } catch (err) {
@@ -354,7 +354,7 @@ export default function Seats() {
           );
           if (index !== -1) {
             takenByOthers.push(seatsArr[index].name);
-            console.log("Kursi dihapus:", seatsArr[index].name);
+            // console.log("Kursi dihapus:", seatsArr[index].name);
             seatsArr.splice(index, 1);
           }
         }
@@ -423,7 +423,7 @@ export default function Seats() {
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      //console.log(err);
+      // console.log(err);
       if (err.response.data.error === "your credentials are invalid") {
         notifyErrorMessage("Token Expired. Silakan login kembali");
         router.push({

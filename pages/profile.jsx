@@ -69,7 +69,7 @@ export default function Profile() {
         try {
           const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
           if (res.status === 200) {
-            console.log("All Good.");
+            // console.log("All Good.");
           }
           return;
         } catch (err) {
@@ -194,7 +194,7 @@ export default function Profile() {
       const [userRes] = await Promise.all([
         axiosInstance.get("/api/v1/user/profile"),
       ]);
-      console.log(userRes);
+      // console.log(userRes);
       setUserData(userRes.data.data);
       notifySucces("Your profile has been successfully updated!");
       setIsEditing(false);
@@ -257,7 +257,7 @@ export default function Profile() {
             onSubmit={confirmSubmit}
             className='relative inline-block h-full w-full items-start bg-gmco-yellow-secondary p-8 lg:w-1/3 lg:pr-12'
           >
-            <div className='right-0 float-right inline-flex space-x-4 items-center'>
+            <div className='right-0 float-right inline-flex items-center space-x-4'>
               <div>
                 {isEditing ? (
                   <span className='text-md ml-3 font-medium text-gmco-white'>
@@ -433,12 +433,15 @@ export default function Profile() {
                       >
                         Lihat Tiket
                       </Link>
-                      <Link
-                        href={`/ticket/${seat.link}/download`}
+                      {/* <Link
+                        href=''
+                        onClick={notifyErrorMessage(
+                          "Mohon maaf, aksi ini belum dapat dilakukan."
+                        )}
                         className='delay-15 text-md h-1/2 w-full rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-center font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12'
                       >
                         Kirim Ulang Email
-                      </Link>
+                      </Link> */}
                     </div>
                     {/* <a
                       href={`/ticket/${seat.link}`}

@@ -50,7 +50,7 @@ export default function Admin() {
       } catch (err) {
         // Only goes here when the status isn't 200 OK
         if (err.response.status !== 200) {
-          console.log(`${err.response.status} ${err.response.statusText}`);
+          // console.log(`${err.response.status} ${err.response.statusText}`);
           setAsAdmin(false); // If user is not an admin
           router.push("/admin/error");
           return false;
