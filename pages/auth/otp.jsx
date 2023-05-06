@@ -125,6 +125,13 @@ export default function OtpPage() {
     <div className="max-w-screen flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
       <form action="#" onSubmit={LoginSubmit}>
         <Card className=" flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 ">
+          <div
+            className="-mt-3 flex cursor-pointer gap-3 duration-300  hover:scale-y-125 hover:scale-x-105"
+            onClick={handleBack}
+          >
+            <FaArrowLeft className=" left-0  h-6 w-6  text-gmco-white"></FaArrowLeft>
+            <span className="text-base text-gmco-white"> Kembali</span>
+          </div>
           <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white" />
           <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
             Masukkan Kode Verifikasi
@@ -171,16 +178,8 @@ export default function OtpPage() {
               className="font type mt-1 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
               onClick={LoginSubmit}
             >
-              <FaCheck className="inline-block mr-2" />
+              <FaCheck className="mr-2 inline-block" />
               Submit
-            </button>
-            <button
-              type="button"
-              className="font type mt-1 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
-              onClick={handleBack}
-            >
-              <FaArrowLeft className="inline-block mr-2" />
-              Kembali
             </button>
           </div>
         </Card>
