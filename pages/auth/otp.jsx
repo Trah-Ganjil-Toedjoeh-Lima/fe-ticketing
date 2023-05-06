@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 import { axiosInstance } from "@/utils/config";
 import { EnvelopeOpenIcon } from "@heroicons/react/24/solid";
+import { FaArrowLeft, FaCheck } from "react-icons/fa";
 
 import {
   notifyError,
@@ -101,6 +102,12 @@ export default function OtpPage() {
     }
   }
 
+  function handleBack() {
+    router.push({
+      pathname: "/auth",
+    });
+  }
+
   if (typeof window !== "undefined") {
     const btn = document.getElementById("Submit");
     if (btn) {
@@ -123,10 +130,16 @@ export default function OtpPage() {
             Masukkan Kode Verifikasi
           </div>
           <div className="text-md text-center text-gmco-white  sm:text-sm ">
-            <p className="">Kode verifikasi telah dikirim ke <span className="font-medium text-cyan-200">{loginInput.email}</span> </p>{" "}
+            <p className="">
+              Kode verifikasi telah dikirim ke{" "}
+              <span className="font-medium text-cyan-200">
+                {loginInput.email}
+              </span>{" "}
+            </p>{" "}
             <span className="text-justify">
-              Silakan tunggu beberapa menit. Periksa folder <b>spam</b> di email Anda jika tidak melihat email masuk untuk memastikan pesan OTP tidak
-              terlewat.{" "}
+              Silakan tunggu beberapa menit. Periksa folder <b>spam</b> di email
+              Anda jika tidak melihat email masuk untuk memastikan pesan OTP
+              tidak terlewat.{" "}
             </span>
           </div>
           <div className="mx-auto mt-9 items-center object-center  ">
@@ -151,14 +164,25 @@ export default function OtpPage() {
               }}
             />
           </div>
-
-          <button
-            type="submit"
-            className="font type mt-6 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
-            onClick={LoginSubmit}
-          >
-            Submit
-          </button>
+          <br />
+          <div className="text-md text-center text-gmco-white  sm:text-sm ">
+            <button
+              type="submit"
+              className="font type mt-1 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+              onClick={LoginSubmit}
+            >
+              <FaCheck className="inline-block mr-2" />
+              Submit
+            </button>
+            <button
+              type="button"
+              className="font type mt-1 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+              onClick={handleBack}
+            >
+              <FaArrowLeft className="inline-block mr-2" />
+              Kembali
+            </button>
+          </div>
         </Card>
       </form>
     </div>

@@ -228,21 +228,21 @@ export default function Seats() {
   }, []);
 
   // get admin
-  useEffect(() => {
-    (async () => {
-      try {
-        const [adminRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/healthAdmin"),
-        ]);
-        // console.log(adminRes)
-        if (adminRes.status === 200) {
-          setIsAdmin(true);
-        }
-      } catch (err) {
-        setIsAdmin(false);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const [adminRes] = await Promise.all([
+  //         axiosInstance.get("/api/v1/admin/healthAdmin"),
+  //       ]);
+  //       // console.log(adminRes)
+  //       if (adminRes.status === 200) {
+  //         setIsAdmin(true);
+  //       }
+  //     } catch (err) {
+  //       setIsAdmin(false);
+  //     }
+  //   })();
+  // }, []);
 
   // get kursi
   useEffect(() => {

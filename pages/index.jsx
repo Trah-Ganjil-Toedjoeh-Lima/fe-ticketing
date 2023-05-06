@@ -7,7 +7,20 @@ import FooterBar from "@/components/footer";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import { useState, useEffect } from "react";
 export default function Home() {
+  const [supportAV1, setSupportAV1] = useState(false);
+
+  useEffect(() => {
+    const video = document.createElement("video");
+    const canPlayAV1 = video.canPlayType("video/webm; codecs=\"av01.0.05M.08\"");
+    if (canPlayAV1 === "probably") {
+      setSupportAV1(true);
+    } else {
+      setSupportAV1(false);
+    }
+  }, []);
+
   return (
     <>
       <NavigationBar />
@@ -22,7 +35,14 @@ export default function Home() {
             loop
             className="absolute h-full w-full bg-clip-content object-cover opacity-40"
           >
-            <source src="/homepage/video_v3.mp4" type="video/mp4" />
+            {supportAV1 ? (
+              <source
+                src="/homepage/video_v3.av1.webm"
+                type="video/webm; codecs=av01"
+              />
+            ) : (
+              <source src="/homepage/video_v3.mp4" type="video/mp4" />
+            )}
           </video>
           <RevealWrapper
             rotate={{ x: 10, y: 40, z: 0 }}
@@ -48,7 +68,7 @@ export default function Home() {
                     Vol. 10
                   </p>
                   <p className="font-normal text-white drop-shadow md:text-2xl">
-                    Sabtu, <b>27</b> Mei 2023 @ <b>17.00 WIB</b>
+                    Sabtu, <b>27</b> Mei 2023 @ <b>17.30 WIB</b>
                     <br />
                     Auditorium Driyarkara Sanata Dharma
                   </p>
@@ -196,7 +216,7 @@ export default function Home() {
               distance="100px"
               className="w-full"
             >
-              <div className="flex h-[50vh] items-center md:h-[70vh] md:p-8">
+              <div className="flex h-[50vh] items-center md:h-[90vh] md:p-8">
                 <Image
                   src="/homepage/brian2.webp"
                   alt="gambar brian p"
@@ -256,7 +276,7 @@ export default function Home() {
             className="mx-auto"
           >
             <h1 className=" mb-6 text-3xl font-bold text-gmco-white">
-              Frequently Ask Question
+              Frequently Asked Questions
             </h1>
           </RevealWrapper>
 

@@ -6,7 +6,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 import FooterBar from "@/components/footer";
 import NavigationBar from "@/components/navbar";
-import { axiosInstance, midtransSetup } from "@/utils/config";
+import { axiosInstance } from "@/utils/config";
 import {
   notifyError,
   notifySucces,
@@ -42,42 +42,27 @@ export default function Cart() {
   }
 
   useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      !localStorage.getItem("auth_token")
+    ) {
+      notifyErrorMessage("Anda belum login.");
+      setIsLoading(false);
+      return;
+    }
+
     (async () => {
       try {
-        setIsLoading(true);
-        setVerboseMsg("Loading Cart...");
-        const [adminRes] = await Promise.all([
-          axiosInstance.get("/api/v1/admin/healthAdmin"),
+        const [res] = await Promise.all([
+          axiosInstance.get("/api/v1/checkout"),
         ]);
-        // console.log(adminRes)
-        if (adminRes.status === 200) {
-          setIsAdmin(true);
-          notifyInfo("Anda login sebagai admin. Checkout tidak tersedia.");
-          return;
-        }
+        setSeatBoughts(res.data.data);
+        // console.log(res.data.data.midtrans_client_key)
+        midtransSetup(res.data.data.midtrans_client_key);
       } catch (err) {
-        setIsAdmin(false);
-        if (
-          typeof window !== "undefined" &&
-          !localStorage.getItem("auth_token")
-        ) {
-          notifyErrorMessage("Anda belum login.");
-        } else {
-          (async () => {
-            try {
-              const [res] = await Promise.all([
-                axiosInstance.get("/api/v1/checkout"),
-              ]);
-              setSeatBoughts(res.data.data);
-              console.log(res.data.data.midtrans_client_key)
-              midtransSetup(res.data.data.midtrans_client_key);
-            } catch (err) {
-              notifyErrorMessage("Anda belum melakukan transaksi.");
-            }
-            setIsLoading(false);
-          })();
-        }
+        notifyErrorMessage("Anda belum melakukan transaksi.");
       }
+      setIsLoading(false);
     })();
   }, []);
 
@@ -101,6 +86,25 @@ export default function Cart() {
     } else {
       notifyErrorMessage("Admin tidak bisa membeli tiket");
     }
+  }
+
+  function midtransSetup(myMidtransClientKey) {
+    // You can also change below url value to any script url you wish to load,
+    // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
+    const midtransScriptUrl = process.env.NEXT_PUBLIC_MIDTRANS_SCRIPT_URL;
+  
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+    // Optional: set script attribute, for example snap.js have data-client-key attribute
+    // (change the value according to your client-key)
+    // const midtransClientKey = process.env.NEXT_MIDTRANS_CLIENT_KEY
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+  
+    document.body.appendChild(scriptTag);
+  
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
   }
 
   function openMidtransWindow(token) {
@@ -237,7 +241,7 @@ export default function Cart() {
                           <p
                             className={`w-24 rounded-lg p-1 text-center font-semibold md:p-2 ${
                               seatBought.name[0] > "S"
-                                ? "bg-gmco-white/75 text-gmco-white"
+                                ? "bg-gmco-white/75 text-gmco-grey"
                                 : "bg-gmco-grey/50 text-gmco-white/100"
                             }`}
                           >
