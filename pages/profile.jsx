@@ -184,7 +184,7 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    isEditing ? notifyInfo("Mode edit profil aktif") : notifyInfo("Mode edit profil nonaktif");
+    isEditing ? notifyInfo("Mode edit profil aktif") : "";
   }, [isEditing]);
 
   async function handleSubmit(e) {
@@ -212,26 +212,26 @@ export default function Profile() {
       {/* HEADER */}
       <Loading isLoading={isLoading} verboseMsg={verboseMsg} />
       <NavigationBar />
-      <div className="max-w-screen h-full bg-gmco-grey">
+      <div className='max-w-screen h-full bg-gmco-grey'>
         {/*This is the header */}
-        <div className="relative h-max w-full overflow-hidden ">
-          <div className="absolute flex h-64 w-full overflow-hidden bg-gmco-grey">
+        <div className='relative h-max w-full overflow-hidden '>
+          <div className='absolute flex h-64 w-full overflow-hidden bg-gmco-grey'>
             <Image
-              src="/profile/GMCO_10.webp"
-              alt="background gmco"
-              className="w-full scale-105 object-cover object-top opacity-50"
+              src='/profile/GMCO_10.webp'
+              alt='background gmco'
+              className='w-full scale-105 object-cover object-top opacity-50'
               width={1920}
               height={650}
             />
           </div>
-          <div className="relative flex h-full w-full justify-between pb-8 pt-24 lg:flex-row">
-            <div className="items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end">
-              <h1 className="flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-4xl">
+          <div className='relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row'>
+            <div className='items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end'>
+              <h1 className='flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-4xl'>
                 Profil
               </h1>
             </div>
 
-            <div className="mr-8 flex flex-col items-end lg:mr-48 lg:items-end">
+            <div className='mr-8 flex flex-col items-end lg:mr-48 lg:items-end'>
               {Object.keys(userData).map((key) => (
                 <p
                   key={key}
@@ -251,92 +251,108 @@ export default function Profile() {
         </div>
 
         {/* CONTENT */}
-        <div className="container m-auto flex h-max flex-col items-center lg:h-screen lg:flex-row lg:items-start">
+        <div className='container m-auto flex h-max flex-col items-center lg:h-screen lg:flex-row lg:items-start'>
           {/* EDIT IDENTITY */}
           <form
             onSubmit={confirmSubmit}
-            className="relative inline-block h-full w-full items-start bg-gmco-yellow-secondary p-8 lg:w-1/3 lg:pr-12"
+            className='relative inline-block h-full w-full items-start bg-gmco-yellow-secondary p-8 lg:w-1/3 lg:pr-12'
           >
-            <button
-              class="hover:bg-gmco-yellow-secondarylight absolute right-8 top-4 w-1/4 rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
-              onClick={handleEdit}
-              type="button"
-            >
-              Edit
-            </button>
+            <div className='right-0 float-right inline-flex space-x-4 items-center'>
+              <div>
+                {isEditing ? (
+                  <span className='text-md ml-3 font-medium text-gmco-white'>
+                    Editing
+                  </span>
+                ) : (
+                  <span className='text-md ml-3 font-medium text-gmco-white'>
+                    Viewing
+                  </span>
+                )}
+              </div>
+              <label className='relative cursor-pointer items-center'>
+                <input
+                  type='checkbox'
+                  onChange={handleEdit}
+                  checked={isEditing}
+                  value='false'
+                  className='peer sr-only'
+                />
+                <div className="peer h-7 w-14 rounded-full bg-gmco-white after:absolute after:left-[4px] after:top-0.5 after:h-6 after:w-6 after:rounded-full after:border after:border-gray-300 after:bg-gmco-orange-secondarydark after:transition-all after:content-[''] peer-checked:bg-gmco-white peer-checked:after:translate-x-full peer-checked:after:border-gmco-orange-secondarydark peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gmco-orange-secondarylight "></div>
+              </label>
+            </div>
             <br />
             {/* Name */}
-            <label htmlFor="nama" className="font-rubik text-white">
+            <label htmlFor='nama' className='text-gmco-white'>
               Nama
             </label>
             <input
               disabled={isEditing ? false : true}
-              className="text-md mb-4 mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500 focus:ring-gmco-yellow sm:mb-4 md:text-lg"
-              type="text"
-              pattern=".{3,}"
-              placeholder="Masukkan Nama Anda"
-              name="name" // update the name property
+              className='text-md mb-4 mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500 focus:ring-gmco-yellow disabled:text-gmco-grey/60 sm:mb-4 md:text-lg'
+              type='text'
+              pattern='.{3,}'
+              placeholder='Masukkan Nama Anda'
+              name='name' // update the name property
               value={formUserData.name}
               onChange={handleFormChange}
-              title="Name needs to be 3 characters or more"
+              title='Name needs to be 3 characters or more'
             />
 
             {/*Email*/}
-            <label htmlFor="email" className="font-rubik text-white">
-              Email<span className="text-red-500">*</span>
+            <label htmlFor='email' className='text-gmco-white'>
+              Email<span className='text-red-500'>*</span>
             </label>
             <input
-              className="text-md mb-4 mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500 focus:ring-gmco-yellow sm:mb-4 md:text-lg"
-              type="text"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-              placeholder="Masukkan Email Anda"
-              name="email"
+              className='text-md mb-4 mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500 focus:ring-gmco-yellow disabled:text-gmco-grey/60 sm:mb-4 md:text-lg'
+              type='text'
+              pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
+              placeholder='Masukkan Email Anda'
+              name='email'
               value={formUserData.email}
               onChange={handleFormChange}
               disabled={isEditing ? false : true}
-              title="Please enter a valid email address!"
+              title='Please enter a valid email address!'
             />
 
             {/* Phone Number */}
-            <label type="whatsapp" className="font-rubik text-white">
-              Nomor WhatsApp<span className="text-red-500">*</span>
+            <label type='whatsapp' className='text-gmco-white'>
+              Nomor WhatsApp<span className='text-red-500'>*</span>
             </label>
             <input
-              className="text-md mb-4 mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500 focus:ring-gmco-yellow sm:mb-4 md:text-lg"
-              type="text"
-              pattern="(^\+62|62|08)(\d{8,12}$)"
-              placeholder="Masukkan Nomor WhatsApp Anda"
-              name="phone"
+              className='text-md mb-4 mt-2 w-full rounded-[20px] border border-gray-300 py-2 placeholder:font-light placeholder:text-gray-500 focus:ring-gmco-yellow disabled:text-gmco-grey/60 sm:mb-4 md:text-lg'
+              type='text'
+              pattern='(^\+62|62|08)(\d{8,14}$)'
+              placeholder='Masukkan Nomor WhatsApp Anda'
+              name='phone'
               disabled={isEditing ? false : true}
               value={formUserData.phone}
               onChange={handleFormChange}
-              title="Please enter a valid phone number!"
+              title='Please enter a valid phone number!'
             />
             {/* Submit Button */}
             <button
-              type="submit"
+              type='submit'
               disabled={isEditing ? false : true}
-              className="hover:bg-gmco-yellow-secondarylight mt-4 w-full rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
+              className='mt-4 w-full rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold text-gmco-white  duration-300 hover:scale-105 hover:bg-gmco-orange-secondarylight hover:text-gmco-white'
             >
               PERBARUI PROFIL
             </button>
           </form>
 
           {/* List of Tickets */}
-          <div className="flex h-full w-screen flex-col gap-4 overflow-auto bg-gmco-grey px-8 py-8 drop-shadow backdrop-blur-sm backdrop-filter lg:w-full">
-            <p className="text-start text-2xl font-medium text-gmco-grey">
+          <div className='flex h-full w-screen flex-col gap-4 overflow-auto bg-gmco-grey px-8 py-8 drop-shadow backdrop-blur-sm backdrop-filter lg:w-full'>
+            <p className='text-start text-2xl font-medium text-gmco-grey'>
               Pembelian Saya &#40;{seatsBought.Seat.length}&#41;
             </p>
             {/* TICKET */}
             {seatsBought.Seat.length === 0 ? (
-              <div className="flex w-full flex-col items-center justify-center">
-                <p className="mb-8 text-center text-2xl text-gmco-white">
+              <div className='flex w-full flex-col items-center justify-center'>
+                <p className='mb-8 text-center text-2xl text-gmco-white'>
                   Anda belum membeli tiket.
                   <br />
                   Silakan menuju ke halaman seat untuk membeli tiket.
                 </p>
                 <button
-                  class="hover:bg-gmco-yellow-secondarylight w-1/2 rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
+                  class='hover:bg-gmco-yellow-secondarylight w-1/2 rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-105 hover:text-gmco-white'
                   onClick={routeToSeats}
                 >
                   Beli Sekarang
@@ -348,16 +364,16 @@ export default function Profile() {
             {seatsBought.Seat.map((seat, index) => (
               <div
                 key={index}
-                className="flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-gmco-grey p-4 sm:flex-row"
+                className='flex h-fit w-full flex-col rounded-lg border-4 border-gmco-yellow bg-gmco-grey p-4 sm:flex-row'
               >
                 {/* Kursi dan Tipe */}
-                <div className="my-2 flex w-full items-center justify-center gap-1 space-y-2 text-start sm:w-1/5 sm:flex-col sm:gap-0 sm:text-center">
-                  <h1 className="font-rubik text-lg font-bold text-gmco-white md:text-2xl lg:text-2xl">
+                <div className='my-2 flex w-full items-center justify-center gap-1 space-y-2 text-start sm:w-1/5 sm:flex-col sm:gap-0 sm:text-center'>
+                  <h1 className='text-lg font-bold text-gmco-white md:text-2xl lg:text-2xl'>
                     Seat {seat.name}
                   </h1>
                   <p
                     className={
-                      `ml-2 flex items-center  rounded-lg px-2 py-0.5 text-center text-base font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
+                      `ml-2 flex items-baseline rounded-lg px-2 py-0.5 text-center text-base font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
                       ({
                         gita: "bg-[#A3A3A3]",
                         sekar: "bg-[#D8B830]",
@@ -372,50 +388,56 @@ export default function Profile() {
                 </div>
 
                 {/* Waktu dan Tempat */}
-                <div className="flex  w-full flex-row items-center justify-center p-2 md:justify-between">
-                  <div className="ml-3 flex w-1/2 flex-col gap-2 text-start text-sm text-gmco-white sm:w-fit sm:items-start sm:text-start sm:text-sm lg:text-base">
+                <div className='flex  w-full flex-row items-center justify-center p-2 md:justify-between'>
+                  <div className='ml-3 flex w-1/2 flex-col gap-2 text-start text-sm text-gmco-white sm:w-fit sm:items-start sm:text-start sm:text-sm lg:text-base'>
                     <p>
-                      <FaMapMarkerAlt className="visible inline" /> Auditorium
+                      <FaMapMarkerAlt className='visible inline' /> Auditorium
                       Driyarkara Sanata Dharma
                     </p>
                     <p>
-                      <FaCalendarAlt className="visible inline" /> Sabtu, 27 Mei
+                      <FaCalendarAlt className='visible inline' /> Sabtu, 27 Mei
                       2023
                     </p>
                     <p>
-                      <FaClock className="visible inline" /> Open Gate 17.30 WIB
+                      <FaClock className='visible inline' /> Open Gate 17.30 WIB
                     </p>
                   </div>
 
                   {/* Nama Konser */}
 
-                  <div className=" w-1/2 rounded-md bg-gmco-grey p-4 ">
-                    <div className="hidden  items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex">
-                      <div className="mx-2 overflow-hidden">
+                  <div className=' w-1/2 rounded-md bg-gmco-grey p-4 '>
+                    <div className='hidden  items-center rounded-lg bg-gmco-grey py-4 pr-4 sm:flex'>
+                      <div className='mx-2 overflow-hidden'>
                         <Image
-                          src="/logo-anjangsana.webp"
-                          alt="Logo GC"
+                          src='/logo-anjangsana.webp'
+                          alt='Logo GC'
                           width={80}
                           height={80}
                         />
                       </div>
                       <div>
-                        <div className="flex w-full flex-col text-start sm:text-end">
-                          <h1 className="font-inter text-sm font-bold text-white sm:text-base lg:text-2xl">
+                        <div className='flex w-full flex-col text-start sm:text-end'>
+                          <h1 className='text-sm font-bold text-white sm:text-base lg:text-2xl'>
                             Grand Concert Vol.10
                           </h1>
-                          <p className="font-inter text-sm font-light text-white lg:text-lg">
+                          <p className='text-sm font-light text-white lg:text-lg'>
                             Anjangsana Simfoni
                           </p>
                         </div>
                       </div>
                     </div>
-                    <div className="mt-4 flex w-full justify-center md:mt-2 lg:-mt-10">
+                    <div className='mt-4 flex w-full flex-col justify-center md:mt-2 lg:-mt-10'>
                       <Link
                         href={`/ticket/${seat.link}`}
-                        className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12"
+                        className='delay-15 text-md h-1/2 w-full rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-center font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12'
                       >
                         Lihat Tiket
+                      </Link>
+                      <Link
+                        href={`/ticket/${seat.link}/download`}
+                        className='delay-15 text-md h-1/2 w-full rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-center font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12'
+                      >
+                        Kirim Ulang Email
                       </Link>
                     </div>
                     {/* <a
