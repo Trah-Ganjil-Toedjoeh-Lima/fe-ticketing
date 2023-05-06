@@ -375,12 +375,12 @@ export default function Profile() {
                     className={
                       `ml-2 flex items-baseline rounded-lg px-2 py-0.5 text-center text-base font-normal capitalize text-gmco-white sm:w-full sm:justify-center sm:px-0 sm:py-1 sm:text-center md:w-2/3 lg:text-base ` +
                       ({
-                        gita: "bg-[#A3A3A3]",
-                        sekar: "bg-[#D8B830]",
-                        tala: "bg-[#2196F3]",
-                        irama: "bg-[#00CED1]",
-                        serenada: "bg-[#FF5A5F]",
-                      }[seat.category] || "bg-[#FFA500]")
+                        gita: "bg-gmco-orange-secondarydark",
+                        sekar: "bg-gmco-orange-secondarylight",
+                        tala: "bg-gmco-yellow-secondary",
+                        irama: "bg-gmco-yellow",
+                        serenada: "bg-gmco-blue",
+                      }[seat.category] || "bg-gmco-blue-main")
                     }
                   >
                     {seat.category}
