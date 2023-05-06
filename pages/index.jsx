@@ -73,7 +73,7 @@ export default function Home() {
                     Auditorium Driyarkara Sanata Dharma
                   </p>
                 </div>
-                <div className="mt-4 flex w-full justify-center md:mt-1 lg:-mt-10">
+                <div className="mt-4 flex  w-full justify-center md:mt-1 lg:-mt-10">
                   <Link
                     href="/seats"
                     className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-4 md:text-2xl"
@@ -89,7 +89,7 @@ export default function Home() {
         {/* Home Content 1 */}
         <div
           id="about"
-          className="container mx-auto grid grid-cols-1 items-center justify-between px-10 py-20 lg:grid-cols-2"
+          className="container mx-auto grid w-full grid-cols-1 items-center justify-between px-10 py-20 lg:grid-cols-2"
         >
           {/* GMCO Image */}
           <RevealWrapper origin="left" duration={1000} distance="100px">
@@ -140,7 +140,10 @@ export default function Home() {
 
         {/* Home Content2 - Addie MS */}
         <div className="bg-[#191919] py-16">
-          <div className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2">
+          <div
+            id="GS"
+            className="container mx-auto grid grid-cols-1 items-center justify-between px-10 lg:grid-cols-2"
+          >
             {/* Text */}
             <RevealWrapper
               duration={1000}

@@ -251,7 +251,7 @@ export default function Seats() {
       try {
         setLoading(true);
         const res = await axiosInstance.get("/api/v1/seat_map");
-        console.log(res.data.data);
+        // console.log(res.data.data);
         divideByFloor(res.data.data);
         setReservedSeatLoaded(true);
       } catch (err) {
@@ -354,7 +354,7 @@ export default function Seats() {
           );
           if (index !== -1) {
             takenByOthers.push(seatsArr[index].name);
-            console.log("Kursi dihapus:", seatsArr[index].name);
+            // console.log("Kursi dihapus:", seatsArr[index].name);
             seatsArr.splice(index, 1);
           }
         }
@@ -423,7 +423,7 @@ export default function Seats() {
       // notifySucces("Pesanan Ditambahkan").then(router.push("/seats/cart"))
       // fungsi then route push
     } catch (err) {
-      //console.log(err);
+      // console.log(err);
       if (err.response.data.error === "your credentials are invalid") {
         notifyErrorMessage("Token Expired. Silakan login kembali");
         router.push({
@@ -822,13 +822,13 @@ export default function Seats() {
             height={1281}
           />
         </div>
-        <div className='relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row'>
-          <div className='items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end'>
-            <h2 className='text-md flex w-max font-bold text-gmco-white md:text-xl lg:text-2xl'>
-              Anjangsana Simfoni
-            </h2>
-            <h2 className='flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-5xl'>
+        <div className="relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row">
+          <div className="items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end">
+            <h2 className="text-md flex w-max font-bold text-gmco-white md:text-xl lg:text-2xl">
               Grand Concert Vol. 10
+            </h2>
+            <h2 className="flex w-max  text-2xl font-bold text-gmco-white md:text-4xl lg:text-5xl">
+              Anjangsana Simfoni
             </h2>
           </div>
         </div>
@@ -842,7 +842,7 @@ export default function Seats() {
         <div
           className={`${
             sideBarOpen ? "inline" : "hidden"
-          } order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter md:order-first md:w-2/5 lg:w-1/5`}
+          }  order-last flex w-full flex-col bg-gray-100 bg-opacity-50 drop-shadow-lg backdrop-blur-sm backdrop-filter transition duration-300 ease-in-out md:order-first md:w-2/5 lg:w-1/5`}
         >
           {/* Minimize Button */}
           <div className='my-3 flex w-full items-center justify-between pr-2'>

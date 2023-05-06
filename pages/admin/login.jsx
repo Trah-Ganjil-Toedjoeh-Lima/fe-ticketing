@@ -18,7 +18,7 @@ export default function AdminLogin() {
       } catch (err) {
         // Only goes here when the status isn't 200 OK
         if (err.response.status !== 200) {
-          console.log(`${err.response.status} ${err.response.statusText}`);
+          // console.log(`${err.response.status} ${err.response.statusText}`);
           router.push("/admin/error");
           return false;
         } else {
@@ -55,7 +55,7 @@ export default function AdminLogin() {
   async function loginSubmit(e) {
     e.preventDefault();
     try {
-      console.log(JSON.stringify(loginInput));
+      // console.log(JSON.stringify(loginInput));
       await axiosInstance
         .post("/api/v1/user/login", {
           name: loginInput.name,
@@ -64,7 +64,7 @@ export default function AdminLogin() {
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data);
+            // console.log(res.data);
             localStorage.setItem(
               "auth_token",
               `Bearer ${res.data.token.AccessToken}`
@@ -74,7 +74,7 @@ export default function AdminLogin() {
           }
         });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 

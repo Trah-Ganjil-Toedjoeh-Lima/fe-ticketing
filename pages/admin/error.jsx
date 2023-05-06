@@ -21,7 +21,7 @@ export default function Error() {
           return;
         } catch (err) {
           if (res.status !== 200) {
-            console.log(err);
+            // console.log(err);
             notifyErrorMessage("Token Expired. Silahkan login kembali.");
             localStorage.removeItem("auth_token");
           }

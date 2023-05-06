@@ -25,7 +25,7 @@ export default function NavigationBar({ doUpdate }) {
   });
   const routes = [
     { name: "Home", route: "/" },
-    { name: "About", route: "/#about" },
+    { name: "Line Up", route: "/#GS" },
     { name: "FAQ", route: "/#FAQ" },
     { name: "Seat", route: "/seats" },
   ];
@@ -35,7 +35,7 @@ export default function NavigationBar({ doUpdate }) {
     (async () => {
       try {
         const res = await axiosInstance.get("/api/v1/user/profile");
-        console.log(res.data);
+        // console.log(res.data);
         setLogedUser(res.data.data);
         setLogedIn(true);
       } catch {
