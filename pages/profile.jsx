@@ -224,7 +224,7 @@ export default function Profile() {
               height={650}
             />
           </div>
-          <div className="relative m-auto flex h-full flex-col justify-between pb-8 pt-24 lg:flex-row">
+          <div className="relative flex h-full w-full justify-between pb-8 pt-24 lg:flex-row">
             <div className="items-center px-4 md:items-start md:px-8 lg:ml-40 lg:items-end">
               <h1 className="flex w-max border-b-2 text-2xl font-bold text-gmco-white md:text-4xl lg:text-4xl">
                 Profil
@@ -258,7 +258,7 @@ export default function Profile() {
             className="relative inline-block h-full w-full items-start bg-gmco-yellow-secondary p-8 lg:w-1/3 lg:pr-12"
           >
             <button
-              class="hover:bg-gmco-yellow-secondarylight absolute right-0 right-1 top-0 top-1 w-1/4 rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
+              class="hover:bg-gmco-yellow-secondarylight absolute right-8 top-4 w-1/4 rounded-full border-2 border-gmco-white bg-gmco-orange-secondarydark p-2 font-semibold  text-gmco-white duration-300 hover:scale-110 hover:text-gmco-white"
               onClick={handleEdit}
               type="button"
             >
@@ -416,12 +416,6 @@ export default function Profile() {
                         className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12"
                       >
                         Lihat Tiket
-                      </Link>
-                      <Link
-                        href={`/ticket/${seat.link}/download`}
-                        className="delay-15 w-max rounded-md border-2 border-gmco-yellow-secondary px-1.5 py-2 text-lg font-bold text-gmco-yellow-secondary transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gmco-yellow-secondary hover:text-gmco-white focus:-translate-y-1 focus:scale-110 focus:bg-gmco-yellow-secondary focus:text-gmco-white md:px-6 md:py-2 md:text-2xl lg:mt-12"
-                      >
-                        Unduh Tiket
                       </Link>
                     </div>
                     {/* <a

@@ -241,7 +241,7 @@ export default function Cart() {
                           <p
                             className={`w-24 rounded-lg p-1 text-center font-semibold md:p-2 ${
                               seatBought.name[0] > "S"
-                                ? "bg-gmco-white/75 text-gmco-white"
+                                ? "bg-gmco-white/75 text-gmco-grey"
                                 : "bg-gmco-grey/50 text-gmco-white/100"
                             }`}
                           >
