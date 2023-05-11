@@ -12,6 +12,7 @@ import { FaArrowLeft, FaCheck } from "react-icons/fa";
 import {
   notifyError,
   notifyErrorMessage,
+  notifyInfo,
   notifySucces,
 } from "@/components/notify";
 import { useEffect } from "react";
@@ -49,6 +50,24 @@ export default function OtpPage() {
         pathname: "/auth",
       });
     }
+  }, []);
+
+  useEffect(() => {
+    Swal.fire({
+      html: `Kode OTP anda <br><br> ${loginInput.otp}`,
+      toast: false,
+      icon: "warning",
+      iconColor: "#f6f7f1",
+      background: "#2d2d2f",
+      color: "#f6f7f1",
+      showConfirmButton: true,
+      cancelButtonColor: "#c76734",
+      confirmButtonText: "OK",
+      confirmButtonColor: "#287d92",
+      showClass: {
+        popup: "",
+      },
+    });
   }, []);
 
   async function LoginSubmit(e) {
@@ -120,43 +139,45 @@ export default function OtpPage() {
       });
     }
   }
+  console.log(loginInput.otp);
+  // notifyInfo("kode otp anda: " + loginInput.otp)
 
   return (
-    <div className="max-w-screen flex min-h-screen flex-col items-center justify-center bg-gmco-grey">
-      <form action="#" onSubmit={LoginSubmit}>
-        <Card className=" flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 ">
+    <div className='max-w-screen flex min-h-screen flex-col items-center justify-center bg-gmco-grey'>
+      <form action='#' onSubmit={LoginSubmit}>
+        <Card className=' flex  max-w-sm items-center rounded-lg border border-slate-100 bg-slate-300 bg-opacity-40 bg-clip-padding py-4 backdrop-blur-sm backdrop-filter sm:pl-1 md:max-w-xl md:px-4 md:py-7 lg:px-6 '>
           <div
-            className="-mt-3 flex cursor-pointer gap-3 duration-300  hover:scale-y-125 hover:scale-x-105"
+            className='-mt-3 flex cursor-pointer gap-3 duration-300  hover:scale-x-105 hover:scale-y-125'
             onClick={handleBack}
           >
-            <FaArrowLeft className=" left-0  h-6 w-6  text-gmco-white"></FaArrowLeft>
-            <span className="text-base text-gmco-white"> Kembali</span>
+            <FaArrowLeft className=' left-0  h-6 w-6  text-gmco-white'></FaArrowLeft>
+            <span className='text-base text-gmco-white'> Kembali</span>
           </div>
-          <EnvelopeOpenIcon className="mx-auto h-16 w-16 stroke-gmco-white text-gmco-white" />
-          <div className="self-center text-2xl font-bold  text-gmco-white md:text-3xl">
+          <EnvelopeOpenIcon className='mx-auto h-16 w-16 stroke-gmco-white text-gmco-white' />
+          <div className='self-center text-2xl font-bold  text-gmco-white md:text-3xl'>
             Masukkan Kode Verifikasi
           </div>
-          <div className="text-md text-center text-gmco-white  sm:text-sm ">
-            <p className="">
+          <div className='text-md text-center text-gmco-white  sm:text-sm '>
+            <p className=''>
               Kode verifikasi telah dikirim ke{" "}
-              <span className="font-medium text-cyan-200">
+              <span className='font-medium text-cyan-200'>
                 {loginInput.email}
               </span>{" "}
             </p>{" "}
-            <span className="text-justify">
+            <span className='text-justify'>
               Silakan tunggu beberapa menit. Periksa folder <b>spam</b> di email
               Anda jika tidak melihat email masuk untuk memastikan pesan OTP
               tidak terlewat.{" "}
             </span>
           </div>
-          <div className="mx-auto mt-9 items-center object-center  ">
+          <div className='mx-auto mt-9 items-center object-center  '>
             <OTPInput
               value={otp}
               onChange={setOtp}
               numInputs={6}
               renderSeparator={<span>-</span>}
               renderInput={(props) => <input {...props} />}
-              inputType="number"
+              inputType='number'
               inputStyle={{
                 fontFamily: "monospace",
                 margin: "0.1em",
@@ -172,13 +193,13 @@ export default function OtpPage() {
             />
           </div>
           <br />
-          <div className="text-md text-center text-gmco-white  sm:text-sm ">
+          <div className='text-md text-center text-gmco-white  sm:text-sm '>
             <button
-              type="submit"
-              className="font type mt-1 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg"
+              type='submit'
+              className='font type mt-1 w-full rounded-xl border border-gmco-white bg-gmco-orange-secondarylight p-2 text-base font-semibold text-white hover:border  hover:border-gray-300 hover:bg-gmco-yellow-secondary hover:text-gmco-white md:p-2 md:text-lg'
               onClick={LoginSubmit}
             >
-              <FaCheck className="mr-2 inline-block" />
+              <FaCheck className='mr-2 inline-block' />
               Submit
             </button>
           </div>
