@@ -33,11 +33,10 @@ export default function Auth() {
       if (localStorage.getItem("auth_token")) {
         try {
           const res = await axiosInstance.get("/api/v1/user/profile"); //login-only endpoint
-          if (res.status === 200)
-            notifyErrorMessage("Anda sudah login");
-            router.push({
-              pathname: "/profile",
-            });
+          if (res.status === 200) notifyErrorMessage("Anda sudah login");
+          router.push({
+            pathname: "/profile",
+          });
           return;
         } catch (err) {
           if (err.response.status !== 200) {
@@ -71,18 +70,19 @@ export default function Auth() {
               // "/auth/otp"
               {
                 pathname: "/auth/otp",
-                query: { email: loginInput.email },
+                query: { email: loginInput.email, otp: res.data.totp_token },
               },
               "/auth/otp"
             );
+            console.log(res.data);
           }
         });
     } catch (err) {
       //console.log(err);
-      if(err.response.status === 425){
+      if (err.response.status === 425) {
         notifyErrorMessage("Anda belum bisa login. Silahkan coba lagi nanti.");
       }
-      router.push("/")
+      router.push("/");
       //notifyError();
     }
   }
